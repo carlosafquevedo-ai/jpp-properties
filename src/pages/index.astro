@@ -37,7 +37,7 @@ const tiles: { id: ZoneId; span: string; image?: string }[] = [
 >
   <!-- Hero -->
   <section class="container-x" style="padding-top: calc(var(--header-h) + 1rem)">
-    <div class="relative isolate flex h-[calc(100svh-var(--header-h)-3rem)] min-h-[600px] items-end overflow-hidden rounded-[1.75rem] sm:rounded-[2.25rem]">
+    <div class="relative isolate flex h-[62svh] min-h-[440px] lg:h-[calc(100svh-14rem)] lg:min-h-[420px] items-end overflow-hidden rounded-[1.75rem] sm:rounded-[2.25rem]">
       <img
         src={heroImage}
         alt="Piscina rodeada de palmeiras, com o campo de golfe ao fundo"
@@ -47,15 +47,15 @@ const tiles: { id: ZoneId; span: string; image?: string }[] = [
       />
       <div class="absolute inset-0 -z-10 bg-gradient-to-t from-forest/80 via-forest/25 to-forest/10"></div>
 
-      <div class="hero-copy px-6 pb-24 text-white sm:px-12 sm:pb-28">
-        <h1 class="max-w-4xl font-serif text-[clamp(3.25rem,9vw,7.5rem)] leading-[0.95]">
+      <div class="hero-copy px-6 pb-20 text-white sm:px-12 sm:pb-24">
+        <h1 class="max-w-4xl font-serif text-[clamp(2.75rem,6.2vw,5.5rem)] leading-[0.95]">
           Encontre a sua casa no Algarve.
         </h1>
-        <p class="mt-6 max-w-xl text-lg leading-relaxed text-white/90">
+        <p class="mt-5 max-w-xl text-lg leading-relaxed text-white/90 [@media(max-height:740px)]:hidden">
           Apartamentos e moradias em Vilamoura, Quarteira, Vale do Lobo e Quinta do Lago.
           Acompanhamos cada passo, da primeira visita à decisão.
         </p>
-        <div class="mt-8 flex flex-wrap items-center gap-3">
+        <div class="mt-6 flex flex-wrap items-center gap-3">
           <a href="/imoveis/" class="btn btn-lime">
             Ver todos os imóveis
           </a>
