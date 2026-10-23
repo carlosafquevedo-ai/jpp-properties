@@ -35,7 +35,3 @@ export function heroSlides() {
   }));
   return [intro, ...withListing];
 }
-
-/** The most recently added listings (sold ones excluded), newest first. */
-export const latestProperties = (n: number, list: Property[] = visibleProperties) =>
-  [...list].sort((a, b) => b.addedAt.localeCompare(a.addedAt)).slice(0, n);

@@ -1,3 +1,5 @@
+import { findProperty, heroImage } from './properties';
+
 /**
  * Home page choices, in the order the editor sets them. In production this is the Sanity
  * "Página inicial" document: two lists of listing references that the team can drag to reorder.
@@ -22,3 +24,47 @@ export const homePage = {
     'casuarinas-residences-vilamoura',
   ],
 };
+
+/** One free-form highlight: an image plus text, for a new development, a campaign, a service... */
+export interface Highlight {
+  label: string;
+  title: string;
+  text: string;
+  image: string;
+  imageAlt: string;
+  href: string;
+}
+
+const photoOf = (slug: string, i = 0) => findProperty(slug)?.images[i] ?? heroImage;
+
+/**
+ * Side panel next to the zones ("Destaques"). The first is the large one. In production this is a list
+ * on the Sanity home page document (image, label, title, text, link); the team can add, remove and reorder.
+ * Texts below come from the client's own listings; TODO: reviewed copy.
+ */
+export const sideHighlights: Highlight[] = [
+  {
+    label: 'Novo empreendimento',
+    title: 'Casuarinas Residences',
+    text: 'Condomínio privado de luxo no centro de Vilamoura, a 1 km da praia da Falésia: 25 frações, entre apartamentos T2 e moradias em banda T2+1.',
+    image: photoOf('casuarinas-residences-vilamoura', 1),
+    imageAlt: 'Casuarinas Residences, Vilamoura',
+    href: '/imoveis/casuarinas-residences-vilamoura/',
+  },
+  {
+    label: 'Novo empreendimento',
+    title: 'Oliveiras Residence',
+    text: 'Moradias contemporâneas na Cascalheira, em Quarteira, com eficiência energética.',
+    image: photoOf('oliveiras-residence-quarteira', 1),
+    imageAlt: 'Oliveiras Residence, Quarteira',
+    href: '/imoveis/oliveiras-residence-quarteira/',
+  },
+  {
+    label: 'Novo empreendimento',
+    title: 'Edifício novo na Rua da Azinheira',
+    text: 'Edifício contemporâneo em Quarteira, a poucos minutos a pé da praia, do passeio marítimo e do comércio.',
+    image: photoOf('t1-novo-rua-da-azinheira-quarteira', 0),
+    imageAlt: 'Edifício novo na Rua da Azinheira, Quarteira',
+    href: '/imoveis/t1-novo-rua-da-azinheira-quarteira/',
+  },
+];
