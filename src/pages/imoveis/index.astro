@@ -2,7 +2,7 @@
 import SiteLayout from '../../layouts/SiteLayout.astro';
 import PropertyCard from '../../components/PropertyCard.astro';
 import Icon from '../../components/Icon.astro';
-import { properties } from '../../data/properties';
+import { visibleProperties as properties } from '../../data/properties';
 import { getSearchOptions } from '../../lib/search-options';
 
 const { zoneOptions, typeOptions, bedroomOptions } = getSearchOptions();

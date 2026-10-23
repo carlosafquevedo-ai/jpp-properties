@@ -1,4 +1,4 @@
-import { properties, propertyTypeLabels, zones } from '../data/properties';
+import { propertyTypeLabels, visibleProperties, zones } from '../data/properties';
 
 /**
  * Options for the search fields. Nothing here is typed by hand per option:
@@ -16,12 +16,12 @@ export interface Option {
  * never go below the cheapest listing or above the dearest one, and it starts at the exact
  * middle between the two. Listings without a price ("preço sob consulta") are ignored.
  */
-export function getPriceRange(list = properties) {
+export function getPriceRange(list = visibleProperties) {
   const prices = list.map((p) => p.price).filter((n) => n > 0);
   return { min: Math.min(...prices), max: Math.max(...prices) };
 }
 
-export function getSearchOptions(list = properties) {
+export function getSearchOptions(list = visibleProperties) {
   const zoneOptions: Option[] = Object.entries(zones).map(([value, z]) => ({
     value,
     label: z.name,

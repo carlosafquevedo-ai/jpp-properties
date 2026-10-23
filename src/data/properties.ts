@@ -27,7 +27,8 @@ export interface Property {
   usableArea: number;
   yearBuilt: number;
   energyClass: string | null;
-  featured: boolean;
+  /** Sold listings drop out of every list on the site; reserved ones stay. */
+  availability: 'available' | 'reserved' | 'sold';
   addedAt: string;
   images: string[];
   description: string[];
@@ -101,7 +102,7 @@ export const properties: Property[] = [
     usableArea: 130,
     yearBuilt: 2024,
     energyClass: null,
-    featured: true,
+    availability: 'available',
     addedAt: '2026-03-10',
     images: [
       `${OLD}/2024/04/image00004.png`,
@@ -129,7 +130,7 @@ export const properties: Property[] = [
     usableArea: 100,
     yearBuilt: 2024,
     energyClass: 'A',
-    featured: true,
+    availability: 'available',
     addedAt: '2026-02-18',
     images: [
       `${OLD}/2023/04/villas-entrance-Large-1.png`,
@@ -167,7 +168,7 @@ export const properties: Property[] = [
     usableArea: 80,
     yearBuilt: 2022,
     energyClass: null,
-    featured: true,
+    availability: 'available',
     addedAt: '2026-04-12',
     images: [
       ...quarteiraPhotos,
@@ -202,7 +203,7 @@ export const properties: Property[] = [
     usableArea: 106,
     yearBuilt: 2026,
     energyClass: null,
-    featured: true,
+    availability: 'available',
     addedAt: '2026-06-02',
     images: [1, 2, 3, 4].map((n) => `${OLD}/2026/06/${n}.png`),
     description: [
@@ -225,7 +226,7 @@ export const properties: Property[] = [
     usableArea: 58,
     yearBuilt: 2026,
     energyClass: null,
-    featured: true,
+    availability: 'available',
     addedAt: '2026-07-05',
     images: [5, 1, 2, 3].map((n) => `${OLD}/2026/07/Azinheira-${n}.jpeg`),
     description: [
@@ -248,7 +249,7 @@ export const properties: Property[] = [
     usableArea: 160,
     yearBuilt: 2026,
     energyClass: null,
-    featured: true,
+    availability: 'available',
     addedAt: '2026-07-20',
     images: [
       '2_b7de29d5-a7df-4691-892b-3dfb8a0f7448',
@@ -262,6 +263,9 @@ export const properties: Property[] = [
     features: ['Moradia nova', 'Arquitetura contemporânea', 'Eficiência energética'],
   },
 ];
+
+/** Listings shown in lists, filters and counts. Sold ones drop out (their page can still exist). */
+export const visibleProperties = properties.filter((p) => p.availability !== 'sold');
 
 export const findProperty = (slug: string) => properties.find((p) => p.slug === slug);
 

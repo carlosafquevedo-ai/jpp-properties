@@ -1,28 +1,37 @@
 import { heroImage, properties, zones, type Property } from '../data/properties';
+import { homePage, MAX_FEATURED, MAX_HERO_LISTINGS } from '../data/home';
+
+/** Listings that can be shown on the site (sold ones drop out). */
+const showable = (list: Property[]) => list.filter((p) => p.availability !== 'sold');
 
 /**
- * Slides of the home hero: the original photo first (no listing attached), then listings.
- * TODO: in production the editor picks which listings appear here (Sanity: "Imagens do topo").
+ * The editor's ordered choice of listings. Safety rules: unknown or sold listings are skipped,
+ * the list is capped, and if nothing usable is left the newest listings are shown instead,
+ * so a section is never empty.
  */
-const heroListingSlugs = [
-  'oliveiras-residence-quarteira',
-  't2-vista-mar-forte-novo-quarteira',
-  'casuarinas-residences-vilamoura',
-];
+function pick(slugs: string[], max: number, list: Property[] = properties): Property[] {
+  const chosen = slugs
+    .map((slug) => list.find((p) => p.slug === slug))
+    .filter((p): p is Property => Boolean(p))
+    .filter((p) => p.availability !== 'sold')
+    .slice(0, max);
+  if (chosen.length > 0) return chosen;
+  return [...showable(list)].sort((a, b) => b.addedAt.localeCompare(a.addedAt)).slice(0, max);
+}
 
+export const featuredProperties = () => pick(homePage.featuredSlugs, MAX_FEATURED);
+
+/** Slides of the home hero: the original photo first (no listing attached), then the chosen listings. */
 export function heroSlides() {
   const intro = {
     image: heroImage,
     alt: 'Piscina rodeada de palmeiras, com o campo de golfe ao fundo',
     property: undefined as Property | undefined,
   };
-  const withListing = heroListingSlugs
-    .map((slug) => properties.find((p) => p.slug === slug))
-    .filter((p): p is Property => Boolean(p))
-    .map((p) => ({
-      image: p.images[0],
-      alt: `${p.title}, ${zones[p.zone].name}`,
-      property: p as Property | undefined,
-    }));
+  const withListing = pick(homePage.heroSlugs, MAX_HERO_LISTINGS).map((p) => ({
+    image: p.images[0],
+    alt: `${p.title}, ${zones[p.zone].name}`,
+    property: p as Property | undefined,
+  }));
   return [intro, ...withListing];
 }

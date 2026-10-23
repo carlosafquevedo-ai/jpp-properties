@@ -62,6 +62,16 @@ O header (e o rodapé, a barra de contacto móvel e a página de contactos) lê 
 - Validação do formato dos números e dos endereços, com frase de ajuda em português em cada campo.
 - `TODO` no protótipo: o WhatsApp é provisório (telemóvel principal) e o Instagram aponta para a página inicial do Instagram até haver o perfil real.
 
+## Página inicial: destaques e imagens do topo (decisão: lista ordenada)
+
+Decidido com o cliente: a equipa escolhe os imóveis numa **lista ordenada na Página inicial** (Sanity: Páginas → Página inicial), e não com um visto em cada imóvel.
+
+- **Imóveis em destaque**: lista de referências a imóveis, pesquisável por nome ou referência, **arrastar para ordenar**, máximo 6 (grelha completa). A ordem da lista é a ordem no site.
+- **Imagens do topo** (hero): lista igual, máximo 3 imóveis (a foto original entra à frente).
+- Regras de segurança (já no código, `src/lib/catalog.ts`): imóvel **vendido** sai sozinho das listas; referência inexistente é ignorada; se não sobrar nenhum, mostram-se os **mais recentes** (a secção nunca fica vazia).
+- Studio: frase de ajuda em cada lista ("Escolha até 6 imóveis. Arraste para mudar a ordem."), validação do máximo, e bloquear/avisar ao apagar um imóvel que esteja numa lista.
+- Os dados de protótipo estão em `src/data/home.ts`, com a mesma forma do documento Sanity.
+
 ## Fases
 
 1. Setup · 2. Protótipo de design (aprovação do cliente) · 3. Sanity · 4. Integração · 5. Formulários · 6. Migração · 7. SEO · 8. Segurança e QA · 9. Lançamento · 10. Entrega.
