@@ -390,10 +390,10 @@
     }
   }
 
-  /* Side highlights panel: its right edge runs to the edge of the screen, content stays in the column. */
+  /* Side highlights panel: the zones band is full width, so the panel runs to the screen edge. */
   @media (min-width: 64rem) {
     .highlight-bleed {
-      --bleed: max(var(--gutter), calc((100vw - var(--page-w)) / 2 + var(--gutter)));
+      --bleed: var(--gutter);
       margin-right: calc(var(--bleed) * -1);
       padding-right: calc(var(--bleed) + 1.25rem);
       border-top-right-radius: 0;
