@@ -150,34 +150,17 @@
       padding: 0 6px 0 16px;
     }
   }
-  /* Listing card: no box and no shadow. The info panel is frosted glass floating over the
-     bottom of the photo (and hanging a little below it). */
+  /* Listing card (white card, photo carousel, agency footer) */
   .property-card {
-    --card-overlap: 6.5rem;
-    background: transparent;
-  }
-  .property-card [data-carousel] {
+    overflow: hidden;
+    border: 1px solid var(--color-line);
     border-radius: 0.5rem;
+    background: #fff;
+    box-shadow: 0 2px 14px -6px rgba(24, 35, 26, 0.22);
+    transition: box-shadow 0.25s;
   }
-  .card-info {
-    position: relative;
-    z-index: 20;
-    display: flex;
-    flex: 1;
-    flex-direction: column;
-    margin: calc(var(--card-overlap) * -1) 0.75rem 0;
-    padding: 1rem 1.25rem 1.25rem;
-    border: 1px solid rgba(24, 35, 26, 0.1);
-    border-radius: 0.5rem;
-    background: rgba(255, 255, 255, 0.62);
-    -webkit-backdrop-filter: blur(20px) saturate(170%);
-    backdrop-filter: blur(20px) saturate(170%);
-    transition: transform 0.4s var(--ease-out);
-  }
-  @media (hover: hover) and (prefers-reduced-motion: no-preference) {
-    .property-card:hover .card-info {
-      transform: translateY(-6px);
-    }
+  .property-card:hover {
+    box-shadow: 0 14px 34px -14px rgba(24, 35, 26, 0.35);
   }
   .card-scroller {
     scrollbar-width: none;
@@ -210,7 +193,7 @@
   }
   .card-arrow {
     position: absolute;
-    top: calc((100% - var(--card-overlap)) / 2);
+    top: 50%;
     z-index: 5;
     display: grid;
     place-items: center;
@@ -236,7 +219,7 @@
   }
   .card-dots {
     position: absolute;
-    bottom: calc(var(--card-overlap) + 0.5rem);
+    bottom: 0.75rem;
     left: 50%;
     z-index: 5;
     display: flex;
@@ -266,7 +249,7 @@
   .card-go {
     position: absolute;
     right: 0.75rem;
-    top: 0.75rem;
+    bottom: 0.75rem;
     z-index: 5;
     display: grid;
     place-items: center;
@@ -285,6 +268,16 @@
     background: var(--color-lime);
     color: var(--color-forest);
     transform: translate(-2px, -2px);
+  }
+  .property-card {
+    transition:
+      box-shadow 0.25s,
+      transform 0.35s var(--ease-out);
+  }
+  @media (hover: hover) and (prefers-reduced-motion: no-preference) {
+    .property-card:hover {
+      transform: translateY(-4px);
+    }
   }
   /* Sequenced entrance. Only hides cards when scripting is on, so nothing is lost without JS. */
   @media (prefers-reduced-motion: no-preference) and (scripting: enabled) {
