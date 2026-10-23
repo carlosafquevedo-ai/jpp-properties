@@ -4,7 +4,8 @@ import SearchBar from '../components/SearchBar.astro';
 import PropertyCard from '../components/PropertyCard.astro';
 import ContactForm from '../components/ContactForm.astro';
 import Icon from '../components/Icon.astro';
-import { heroImage, properties, zones, type ZoneId } from '../data/properties';
+import { formatPrice, properties, zones, type ZoneId } from '../data/properties';
+import { heroSlides, zonesWithListings } from '../lib/catalog';
 import { AMI, offices, email } from '../lib/site';
 
 const countByZone = (id: ZoneId) => properties.filter((p) => p.zone === id).length;
@@ -14,6 +15,8 @@ const countLabel = (id: ZoneId) => {
   return n === 1 ? '1 imóvel' : `${n} imóveis`;
 };
 const featured = properties.filter((p) => p.featured);
+const slides = heroSlides();
+const quickZones = zonesWithListings();
 const photo = (slug: string) => properties.find((p) => p.slug === slug)!.images[0];
 
 const tiles: { id: ZoneId; span: string; image?: string }[] = [
@@ -36,35 +39,110 @@ const tiles: { id: ZoneId; span: string; image?: string }[] = [
   route="home"
   padTop={false}
 >
-  <!-- Hero: full-bleed image, rounded bottom corners and a hanging tab that holds the search box -->
+  <!-- Hero: full-bleed rotating photos, rounded bottom corners and a hanging tab that holds the search box -->
   <section>
-    <div class="hero-shape relative isolate z-20 flex min-h-[clamp(600px,76svh,800px)] flex-col justify-end">
-      <div class="absolute inset-0 -z-20 overflow-hidden">
-        <img
-          src={heroImage}
-          alt="Piscina rodeada de palmeiras, com o campo de golfe ao fundo"
-          class="hero-image size-full object-cover"
-          fetchpriority="high"
-          referrerpolicy="no-referrer"
-        />
+    <div class="hero-shape relative isolate z-20 flex min-h-[clamp(620px,78svh,820px)] flex-col justify-end">
+      <div class="absolute inset-0 -z-20 overflow-hidden" data-hero-media>
+        {slides.map((slide, i) => (
+          <img
+            src={slide.image}
+            alt={slide.alt}
+            class:list={['hero-slide size-full object-cover', i === 0 && 'is-active']}
+            loading={i === 0 ? 'eager' : 'lazy'}
+            fetchpriority={i === 0 ? 'high' : undefined}
+            referrerpolicy="no-referrer"
+          />
+        ))}
       </div>
       <div class="hero-shade absolute inset-0 -z-10"></div>
 
-      <div class="hero-copy container-x pb-8 pt-32 text-white">
-        <h1 class="max-w-4xl font-display text-[clamp(2rem,4.2vw,3.5rem)] leading-[1]">
-          Encontre a sua casa no Algarve.
-        </h1>
-        <p class="mt-5 max-w-xl text-lg leading-relaxed text-white/90 [@media(max-height:740px)]:hidden">
-          Apartamentos e moradias em Vilamoura, Quarteira, Vale do Lobo e Quinta do Lago.
-          Acompanhamos cada passo, da primeira visita à decisão.
-        </p>
-        <div class="mt-6 flex flex-wrap items-center gap-3">
-          <a href="/imoveis/" class="btn btn-lime">
-            Ver todos os imóveis
-          </a>
-          <a href="#vender" class="btn bg-white text-forest hover:bg-paper-2">
-            Quero vender
-          </a>
+      <div class="container-x pb-8 pt-32 text-white lg:flex lg:items-end lg:justify-between lg:gap-10">
+        <div class="hero-copy">
+          <h1 class="max-w-4xl font-display text-[clamp(2rem,4.2vw,3.5rem)] leading-[1]">
+            Encontre a sua casa no Algarve.
+          </h1>
+          <p class="mt-5 max-w-xl text-lg leading-relaxed text-white/90 [@media(max-height:740px)]:hidden">
+            Apartamentos e moradias em Vilamoura, Quarteira, Vale do Lobo e Quinta do Lago.
+            Acompanhamos cada passo, da primeira visita à decisão.
+          </p>
+          <div class="mt-6 flex flex-wrap items-center gap-3">
+            <a href="/imoveis/" class="btn btn-lime">
+              Ver todos os imóveis
+            </a>
+            <a href="#vender" class="btn bg-white text-forest hover:bg-paper-2">
+              Quero vender
+            </a>
+          </div>
+          {quickZones.length > 0 && (
+            <nav class="mt-5 flex flex-wrap items-center gap-2" aria-label="Zonas com imóveis">
+              {quickZones.map((z) => (
+                <a href={`/imoveis/?zona=${z.id}`} class="hero-chip">
+                  {z.name}
+                  <span class="hero-chip-count">{z.count}</span>
+                </a>
+              ))}
+            </nav>
+          )}
+        </div>
+
+        <div class="mt-8 lg:mt-0 lg:w-[21rem] lg:shrink-0">
+          <div class="hero-cards hidden lg:grid">
+            {slides.map((slide, i) =>
+              slide.property ? (
+                <article class="hero-card" data-slide={i} inert={i !== 0} aria-hidden={i !== 0}>
+                  <h2 class="font-display text-xl leading-tight">{slide.property.title}</h2>
+                  <p class="mt-1 flex items-center gap-1.5 text-sm text-white/80">
+                    <Icon name="pin" class="size-4" />
+                    {[slide.property.locality, zones[slide.property.zone].name]
+                      .filter(Boolean)
+                      .join(', ')}
+                  </p>
+                  <p class="mt-3 font-display text-3xl leading-none">
+                    {formatPrice(slide.property.price)}
+                  </p>
+                  <ul class="mt-3 flex gap-4 text-sm text-white/85">
+                    <li class="flex items-center gap-1.5">
+                      <Icon name="bed" class="size-4" /> {slide.property.bedrooms}
+                    </li>
+                    <li class="flex items-center gap-1.5">
+                      <Icon name="bath" class="size-4" /> {slide.property.bathrooms}
+                    </li>
+                    <li class="flex items-center gap-1.5">
+                      <Icon name="area" class="size-4" /> {slide.property.usableArea} m²
+                    </li>
+                  </ul>
+                  <a
+                    href={`/imoveis/${slide.property.slug}/`}
+                    class="btn mt-4 w-full bg-white text-forest hover:bg-paper-2"
+                  >
+                    Ver imóvel
+                  </a>
+                </article>
+              ) : null,
+            )}
+          </div>
+          <div class="hero-controls" role="group" aria-label="Imagens do topo">
+            {slides.map((_, i) => (
+              <button
+                type="button"
+                class="hero-dot"
+                data-dot={i}
+                aria-label={`Ver imagem ${i + 1} de ${slides.length}`}
+                aria-current={i === 0 ? 'true' : 'false'}
+              >
+                <span></span>
+              </button>
+            ))}
+            <button
+              type="button"
+              class="hero-pause"
+              data-pause
+              aria-label="Pausar a rotação das imagens"
+            >
+              <Icon name="pause" class="hero-ic-pause size-4" />
+              <Icon name="play" class="hero-ic-play size-4" />
+            </button>
+          </div>
         </div>
       </div>
 
@@ -249,3 +327,66 @@ const tiles: { id: ZoneId; span: string; image?: string }[] = [
     </div>
   </section>
 </SiteLayout>
+
+<script>
+  // Hero slideshow: crossfade between photos, with the matching listing card.
+  // Pauses on hover/focus, when the tab is hidden, on request, and never autoplays
+  // for people who prefer reduced motion.
+  const media = document.querySelector<HTMLElement>('[data-hero-media]');
+  const slides = [...document.querySelectorAll<HTMLElement>('.hero-slide')];
+  const cards = [...document.querySelectorAll<HTMLElement>('.hero-card')];
+  const dots = [...document.querySelectorAll<HTMLButtonElement>('.hero-dot')];
+  const pauseBtn = document.querySelector<HTMLButtonElement>('[data-pause]');
+  const hero = document.querySelector<HTMLElement>('.hero-shape');
+
+  if (media && slides.length > 1 && hero) {
+    const INTERVAL = 6500;
+    const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    let index = 0;
+    let timer = 0;
+    let userPaused = reduce;
+    let hoverPaused = false;
+    document.documentElement.style.setProperty('--hero-interval', `${INTERVAL}ms`);
+
+    const show = (n: number) => {
+      index = (n + slides.length) % slides.length;
+      slides.forEach((s, k) => s.classList.toggle('is-active', k === index));
+      cards.forEach((c) => {
+        const on = Number(c.dataset.slide) === index;
+        c.toggleAttribute('data-active', on);
+        c.inert = !on;
+        c.setAttribute('aria-hidden', String(!on));
+      });
+      dots.forEach((d, k) => d.setAttribute('aria-current', String(k === index)));
+      restart();
+    };
+    const restart = () => {
+      clearTimeout(timer);
+      dots.forEach((d) => d.classList.remove('is-run'));
+      const running = !userPaused && !hoverPaused && !document.hidden;
+      if (!running) return;
+      void dots[index]?.offsetWidth; // restart the progress bar animation
+      dots[index]?.classList.add('is-run');
+      timer = window.setTimeout(() => show(index + 1), INTERVAL);
+    };
+    const setPaused = (value: boolean) => {
+      userPaused = value;
+      pauseBtn?.setAttribute(
+        'aria-label',
+        value ? 'Retomar a rotação das imagens' : 'Pausar a rotação das imagens',
+      );
+      pauseBtn?.toggleAttribute('data-paused', value);
+      restart();
+    };
+
+    dots.forEach((d, k) => d.addEventListener('click', () => show(k)));
+    pauseBtn?.addEventListener('click', () => setPaused(!userPaused));
+    hero.addEventListener('pointerenter', () => ((hoverPaused = true), restart()));
+    hero.addEventListener('pointerleave', () => ((hoverPaused = false), restart()));
+    hero.addEventListener('focusin', () => ((hoverPaused = true), restart()));
+    hero.addEventListener('focusout', () => ((hoverPaused = false), restart()));
+    document.addEventListener('visibilitychange', restart);
+    setPaused(userPaused);
+    show(0);
+  }
+</script>

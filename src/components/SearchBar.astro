@@ -1,9 +1,18 @@
 ---
 import Icon from './Icon.astro';
+import { properties } from '../data/properties';
 import { getSearchOptions, getPriceRange } from '../lib/search-options';
 
 const { zoneOptions, typeOptions, bedroomOptions } = getSearchOptions();
 const price = getPriceRange();
+// Minimal data for the live result counter (same fields the filters use).
+const searchData = properties.map((p) => ({
+  l: p.listingType,
+  z: p.zone,
+  t: p.propertyType,
+  b: p.bedrooms,
+  p: p.price,
+}));
 ---
 
 <form action="/imoveis/" method="get">
@@ -76,11 +85,13 @@ const price = getPriceRange();
       class="btn btn-lime self-stretch lg:min-h-0 col-span-2 sm:col-span-4 lg:col-span-1"
     >
       <Icon name="search" class="size-5" />
-      Pesquisar
+      <span>Pesquisar</span>
+      <span class="font-normal opacity-75" data-count></span>
     </button>
+    <p class="sr-only" role="status" aria-live="polite" data-count-live></p>
   </div>
 </form>
-
+<script type="application/json" id="search-data" set:html={JSON.stringify(searchData)} />
 <script>
   // Custom option list for mouse users (the native one can't be styled). Touch devices keep the
   // native <select>, which is the best experience there. The real <select> stays in the form.
@@ -290,4 +301,37 @@ const price = getPriceRange();
     window.addEventListener('pageshow', reset);
     reset();
   });
+</script>
+
+<script>
+  // Live result count: "Pesquisar · 4 imóveis" updates as the filters change.
+  const form = document.querySelector<HTMLFormElement>('form[action="/imoveis/"]');
+  const dataEl = document.getElementById('search-data');
+  const countEl = form?.querySelector<HTMLElement>('[data-count]');
+  const liveEl = form?.querySelector<HTMLElement>('[data-count-live]');
+  if (form && dataEl && countEl) {
+    type Row = { l: string; z: string; t: string; b: number; p: number };
+    const rows: Row[] = JSON.parse(dataEl.textContent ?? '[]');
+    const listing: Record<string, string> = { comprar: 'sale', arrendar: 'rent' };
+    const count = () => {
+      const d = new FormData(form);
+      const v = (k: string) => String(d.get(k) ?? '');
+      const n = rows.filter(
+        (r) =>
+          (!v('tipo') || r.l === listing[v('tipo')]) &&
+          (!v('zona') || r.z === v('zona')) &&
+          (!v('imovel') || r.t === v('imovel')) &&
+          (!v('quartos') || r.b >= Number(v('quartos'))) &&
+          (!v('precoMax') || r.p <= Number(v('precoMax'))),
+      ).length;
+      const label = n === 1 ? '1 imóvel' : `${n} imóveis`;
+      countEl.textContent = `· ${label}`;
+      if (liveEl) liveEl.textContent = `${label} correspondem à pesquisa`;
+    };
+    form.addEventListener('input', count);
+    form.addEventListener('change', count);
+    form.addEventListener('reset', () => setTimeout(count));
+    window.addEventListener('pageshow', () => setTimeout(count));
+    count();
+  }
 </script>

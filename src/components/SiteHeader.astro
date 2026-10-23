@@ -1,16 +1,30 @@
 ---
 import Icon from './Icon.astro';
-import { logoImage } from '../data/properties';
+import { formatPrice, logoImage, zones } from '../data/properties';
+import { latestProperty, typesWithListings, zonesWithListings } from '../lib/catalog';
+import { locales, localizedPath } from '../i18n/routes';
 import { mainPhone } from '../lib/site';
 
 const path = Astro.url.pathname;
 const links = [
-  { href: '/imoveis/', label: 'Imóveis', match: '/imoveis' },
+  { href: '/imoveis/', label: 'Imóveis', match: '/imoveis', mega: true },
   { href: '/#zonas', label: 'Zonas' },
   { href: '/#vender', label: 'Vender' },
   { href: '/#sobre', label: 'Sobre nós' },
   { href: '/#contacto', label: 'Contactos' },
 ];
+
+// Mega menu content comes from the catalogue, so it grows with the listings.
+const megaZones = zonesWithListings();
+const megaTypes = typesWithListings();
+const newest = latestProperty();
+const newestPlace = [newest.locality, zones[newest.zone].name].filter(Boolean).join(', ');
+
+// TODO: EN/FR pages are placeholders for now, so the switcher points to their home pages.
+const currentLocale = 'pt';
+const langLinks = locales.map((l) => ({ l, href: localizedPath('home', l) }));
+const linkClass =
+  'rounded-full px-4 py-2 whitespace-nowrap text-[0.95rem] font-medium text-ink/80 transition-colors hover:bg-paper-2 hover:text-ink aria-[current=page]:bg-paper-2 aria-[current=page]:text-ink';
 ---
 
 <header class="site-header" id="site-header">
@@ -19,22 +33,56 @@ const links = [
       <img src={logoImage} alt="JPP Properties" class="h-10 w-auto" width="133" height="40" />
     </a>
 
-    <nav class="hidden items-center gap-1 lg:flex" aria-label="Principal">
-      {links.map((l) => (
-        <a
-          href={l.href}
-          aria-current={l.match && path.startsWith(l.match) ? 'page' : undefined}
-          class="rounded-full px-4 py-2 whitespace-nowrap text-[0.95rem] font-medium text-ink/80 transition-colors hover:bg-paper-2 hover:text-ink aria-[current=page]:bg-paper-2 aria-[current=page]:text-ink"
-        >
-          {l.label}
-        </a>
-      ))}
+    <nav class="hidden items-center lg:flex" aria-label="Principal">
+      <ul class="flex items-center gap-1">
+        {links.map((l) =>
+          l.mega ? (
+            <li data-mega-item class="flex items-center">
+              <a
+                href={l.href}
+                aria-current={path.startsWith(l.match) ? 'page' : undefined}
+                class:list={[linkClass, '!pr-1']}
+              >
+                {l.label}
+              </a>
+              <button
+                type="button"
+                class="mega-caret"
+                aria-expanded="false"
+                aria-controls="mega-menu"
+                aria-label="Mostrar o menu de imóveis"
+              >
+                <Icon name="chevronDown" class="size-4" />
+              </button>
+            </li>
+          ) : (
+            <li>
+              <a href={l.href} class={linkClass}>
+                {l.label}
+              </a>
+            </li>
+          ),
+        )}
+      </ul>
     </nav>
 
     <div class="flex items-center gap-2">
+      <nav class="hidden items-center gap-0.5 text-sm font-semibold lg:flex" aria-label="Idioma">
+        {langLinks.map(({ l, href }) => (
+          <a
+            href={href}
+            hreflang={l}
+            lang={l}
+            aria-current={l === currentLocale ? 'true' : undefined}
+            class="rounded-md px-2 py-1 uppercase tracking-wide text-ink/55 transition-colors hover:text-ink aria-[current=true]:text-ink"
+          >
+            {l}
+          </a>
+        ))}
+      </nav>
       <a
         href={`tel:${mainPhone.tel}`}
-        class="hidden items-center gap-2 rounded-full px-4 py-2 whitespace-nowrap text-[0.95rem] font-semibold text-ink hover:bg-paper-2 md:inline-flex"
+        class="hidden items-center gap-2 rounded-full px-4 py-2 whitespace-nowrap text-[0.95rem] font-semibold text-ink hover:bg-paper-2 xl:inline-flex"
       >
         <Icon name="phone" class="size-4 text-olive" />
         {mainPhone.label}
@@ -55,6 +103,71 @@ const links = [
     </div>
   </div>
 
+  <!-- Mega menu (desktop): zones, property types and the newest listing -->
+  <div id="mega-menu" class="hdr-mega" hidden>
+    <div class="grid gap-8 lg:grid-cols-[1fr_1fr_1.2fr]">
+      <section aria-labelledby="mega-zonas">
+        <h2 id="mega-zonas" class="mega-title">
+          Zonas
+        </h2>
+        <ul class="mt-2">
+          {megaZones.map((z) => (
+            <li>
+              <a href={`/imoveis/?zona=${z.id}`} class="mega-link">
+                <span>{z.name}</span>
+                <span class="mega-count">{z.count}</span>
+              </a>
+            </li>
+          ))}
+        </ul>
+      </section>
+
+      <section aria-labelledby="mega-tipos">
+        <h2 id="mega-tipos" class="mega-title">
+          Tipo de imóvel
+        </h2>
+        <ul class="mt-2">
+          {megaTypes.map((t) => (
+            <li>
+              <a href={`/imoveis/?imovel=${t.id}`} class="mega-link">
+                <span>{t.name}</span>
+                <span class="mega-count">{t.count}</span>
+              </a>
+            </li>
+          ))}
+        </ul>
+        <div class="mt-4 flex flex-wrap gap-2">
+          <a href="/imoveis/" class="btn btn-dark min-h-11 px-4">
+            Ver todos os imóveis
+          </a>
+          <a href="/#contacto" class="btn btn-ghost min-h-11 px-4">
+            Pedir um imóvel
+          </a>
+        </div>
+      </section>
+
+      <a href={`/imoveis/${newest.slug}/`} class="mega-card group">
+        <span class="block overflow-hidden rounded-xl">
+          <img
+            src={newest.images[0]}
+            alt=""
+            class="aspect-[16/10] w-full object-cover transition-transform duration-500 group-hover:scale-[1.03]"
+            loading="lazy"
+            referrerpolicy="no-referrer"
+          />
+        </span>
+        <span class="mt-3 block text-xs font-medium text-muted">Último imóvel adicionado</span>
+        <span class="mt-1 block font-display text-lg leading-tight text-forest">
+          {newest.title}
+        </span>
+        <span class="mt-1 flex items-baseline justify-between gap-3 text-sm text-muted">
+          <span>{newestPlace}</span>
+          <span class="font-semibold text-forest">{formatPrice(newest.price)}</span>
+        </span>
+      </a>
+    </div>
+  </div>
+
   <div
     id="mobile-menu"
     hidden
@@ -71,6 +184,19 @@ const links = [
         ))}
       </ul>
     </nav>
+    <nav class="mt-3 flex items-center gap-1 text-sm font-semibold" aria-label="Idioma">
+      {langLinks.map(({ l, href }) => (
+        <a
+          href={href}
+          hreflang={l}
+          lang={l}
+          aria-current={l === currentLocale ? 'true' : undefined}
+          class="rounded-md px-3 py-2 uppercase tracking-wide text-ink/55 aria-[current=true]:bg-paper-2 aria-[current=true]:text-ink"
+        >
+          {l}
+        </a>
+      ))}
+    </nav>
     <a href={`tel:${mainPhone.tel}`} class="btn btn-lime mt-4 w-full">
       <Icon name="phone" class="size-5" />
       {mainPhone.label}
@@ -84,6 +210,7 @@ const links = [
   syncHeader();
   window.addEventListener('scroll', syncHeader, { passive: true });
 
+  // Mobile menu
   const btn = document.getElementById('menu-btn');
   const panel = document.getElementById('mobile-menu');
   const setOpen = (open: boolean) => {
@@ -96,5 +223,48 @@ const links = [
   panel?.addEventListener('click', (e) => {
     if ((e.target as HTMLElement).closest('a')) setOpen(false);
   });
-  document.addEventListener('keydown', (e) => e.key === 'Escape' && setOpen(false));
+
+  // Mega menu: opens on hover (mouse), on the caret button (keyboard/touch), closes on Esc,
+  // outside click or when focus leaves the header.
+  const mega = document.getElementById('mega-menu');
+  const item = document.querySelector<HTMLElement>('[data-mega-item]');
+  const caret = item?.querySelector<HTMLButtonElement>('.mega-caret');
+  const fine = window.matchMedia('(hover: hover) and (pointer: fine)');
+  let closeTimer = 0;
+  const openMega = () => {
+    clearTimeout(closeTimer);
+    if (!mega || !mega.hidden) return;
+    mega.hidden = false;
+    caret?.setAttribute('aria-expanded', 'true');
+  };
+  const closeMega = () => {
+    if (!mega || mega.hidden) return;
+    mega.hidden = true;
+    caret?.setAttribute('aria-expanded', 'false');
+  };
+  const closeSoon = () => {
+    clearTimeout(closeTimer);
+    closeTimer = window.setTimeout(closeMega, 180);
+  };
+  if (mega && item && caret) {
+    item.addEventListener('pointerenter', () => fine.matches && openMega());
+    item.addEventListener('pointerleave', () => fine.matches && closeSoon());
+    mega.addEventListener('pointerenter', () => clearTimeout(closeTimer));
+    mega.addEventListener('pointerleave', () => fine.matches && closeSoon());
+    caret.addEventListener('click', () => (mega.hidden ? openMega() : closeMega()));
+  }
+  document.addEventListener('keydown', (e) => {
+    if (e.key !== 'Escape') return;
+    setOpen(false);
+    if (mega && !mega.hidden) {
+      closeMega();
+      caret?.focus();
+    }
+  });
+  header?.addEventListener('focusout', (e) => {
+    if (!header.contains((e as FocusEvent).relatedTarget as Node | null)) closeMega();
+  });
+  document.addEventListener('pointerdown', (e) => {
+    if (header && !header.contains(e.target as Node)) closeMega();
+  });
 </script>

@@ -79,7 +79,7 @@
     @apply w-full rounded-xl border border-line bg-white px-4 py-3 text-base text-ink placeholder:text-muted/70;
   }
   .btn {
-    @apply inline-flex min-h-12 cursor-pointer items-center justify-center gap-2 rounded-md px-6 text-[0.95rem] font-semibold transition-colors duration-200;
+    @apply inline-flex min-h-12 cursor-pointer items-center justify-center gap-2 whitespace-nowrap rounded-md px-6 text-[0.95rem] font-semibold transition-colors duration-200;
   }
   .btn-lime {
     @apply bg-lime text-forest hover:bg-[#b0cd4d];
@@ -150,6 +150,144 @@
       padding: 0 6px 0 16px;
     }
   }
+  /* Hero slideshow (crossfade + slow zoom), listing card and controls. */
+  .hero-slide {
+    position: absolute;
+    inset: 0;
+    opacity: 0;
+    transition: opacity 1.2s ease;
+  }
+  .hero-slide.is-active {
+    opacity: 1;
+  }
+  @media (prefers-reduced-motion: no-preference) {
+    .hero-slide.is-active {
+      animation: hero-zoom 7s ease-out both;
+    }
+    @keyframes hero-zoom {
+      from {
+        transform: scale(1.07);
+      }
+    }
+  }
+  .hero-cards {
+    display: grid;
+  }
+  .hero-card {
+    grid-area: 1 / 1;
+    padding: 1.25rem;
+    border: 1px solid rgba(255, 255, 255, 0.28);
+    border-radius: 1.25rem;
+    background: rgba(14, 24, 16, 0.42);
+    -webkit-backdrop-filter: blur(18px) saturate(130%);
+    backdrop-filter: blur(18px) saturate(130%);
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.2);
+    opacity: 0;
+    transform: translateY(10px);
+    pointer-events: none;
+    transition:
+      opacity 0.6s ease,
+      transform 0.6s var(--ease-out);
+  }
+  .hero-card[data-active] {
+    opacity: 1;
+    transform: none;
+    pointer-events: auto;
+  }
+  .hero-controls {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 0.25rem;
+    margin-top: 0.75rem;
+  }
+  .hero-dot {
+    display: grid;
+    place-items: center;
+    width: 2.25rem;
+    height: 2rem;
+    cursor: pointer;
+  }
+  .hero-dot > span {
+    position: relative;
+    display: block;
+    width: 100%;
+    height: 3px;
+    border-radius: 3px;
+    background: rgba(255, 255, 255, 0.35);
+    overflow: hidden;
+  }
+  .hero-dot > span::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    background: #fff;
+    transform: scaleX(0);
+    transform-origin: left;
+  }
+  .hero-dot[aria-current='true'] > span::after {
+    transform: scaleX(1);
+  }
+  .hero-dot.is-run > span::after {
+    animation: hero-progress var(--hero-interval, 6500ms) linear both;
+  }
+  @keyframes hero-progress {
+    from {
+      transform: scaleX(0);
+    }
+  }
+  .hero-pause {
+    display: grid;
+    place-items: center;
+    width: 2rem;
+    height: 2rem;
+    margin-left: 0.25rem;
+    border-radius: 9999px;
+    background: rgba(255, 255, 255, 0.14);
+    color: #fff;
+    cursor: pointer;
+    transition: background-color 0.2s;
+  }
+  .hero-pause:hover {
+    background: rgba(255, 255, 255, 0.26);
+  }
+  .hero-ic-play,
+  .hero-pause[data-paused] .hero-ic-pause {
+    display: none;
+  }
+  .hero-pause[data-paused] .hero-ic-play {
+    display: block;
+  }
+  .hero-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.375rem 0.875rem;
+    border: 1px solid rgba(255, 255, 255, 0.32);
+    border-radius: 9999px;
+    background: rgba(255, 255, 255, 0.12);
+    -webkit-backdrop-filter: blur(10px);
+    backdrop-filter: blur(10px);
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: #fff;
+    transition:
+      background-color 0.2s,
+      border-color 0.2s;
+  }
+  .hero-chip:hover {
+    background: rgba(255, 255, 255, 0.24);
+    border-color: rgba(255, 255, 255, 0.6);
+  }
+  .hero-chip-count {
+    padding: 0 0.4rem;
+    border-radius: 9999px;
+    background: rgba(255, 255, 255, 0.22);
+    font-size: 0.75rem;
+    font-weight: 600;
+  }
+
   /* Hero scrim (same idea as MeewVision): a dark tint on the text side plus a vertical
      gradient, so the headline stays readable whatever photo is used. */
   .hero-shade {
@@ -513,6 +651,104 @@
         transform: translateY(-6px) scale(0.98);
       }
     }
+  }
+
+  /* Header mega menu */
+  .mega-caret {
+    display: grid;
+    place-items: center;
+    width: 1.75rem;
+    height: 1.75rem;
+    margin-left: -0.125rem;
+    border-radius: 9999px;
+    color: rgba(27, 36, 25, 0.7);
+    cursor: pointer;
+    transition:
+      background-color 0.2s,
+      transform 0.25s;
+  }
+  .mega-caret:hover {
+    background: var(--color-paper-2);
+  }
+  .mega-caret[aria-expanded='true'] {
+    transform: rotate(180deg);
+  }
+  .hdr-mega {
+    pointer-events: auto;
+    margin: 0.5rem auto 0;
+    max-width: calc(var(--page-w) - 2 * var(--gutter));
+    padding: 1.5rem;
+    border: 1px solid var(--color-line);
+    border-radius: 1.25rem;
+    background: rgba(255, 255, 255, 0.97);
+    -webkit-backdrop-filter: blur(18px);
+    backdrop-filter: blur(18px);
+    box-shadow: 0 30px 60px -28px rgba(24, 35, 26, 0.5);
+  }
+  .hdr-mega[hidden] {
+    display: none;
+  }
+  @media (max-width: 1023px) {
+    .hdr-mega {
+      display: none;
+    }
+  }
+  @media (prefers-reduced-motion: no-preference) {
+    .hdr-mega:not([hidden]) {
+      animation: mega-in 0.2s var(--ease-out);
+    }
+    @keyframes mega-in {
+      from {
+        opacity: 0;
+        transform: translateY(-6px);
+      }
+    }
+  }
+  .mega-title {
+    font-size: 0.8125rem;
+    font-weight: 600;
+    color: var(--color-muted);
+    letter-spacing: 0;
+    line-height: 1.2;
+  }
+  .mega-link {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    padding: 0.625rem 0.75rem;
+    margin-inline: -0.75rem;
+    border-radius: 0.75rem;
+    font-weight: 500;
+    transition: background-color 0.15s;
+  }
+  .mega-link:hover,
+  .mega-link:focus-visible {
+    background: var(--color-paper-2);
+    color: var(--color-olive);
+  }
+  .mega-count {
+    min-width: 1.5rem;
+    padding: 0 0.4rem;
+    border-radius: 9999px;
+    background: var(--color-paper-2);
+    text-align: center;
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: var(--color-muted);
+  }
+  .mega-card {
+    display: block;
+    padding: 0.75rem;
+    border: 1px solid var(--color-line);
+    border-radius: 1rem;
+    transition: border-color 0.2s;
+  }
+  .mega-card:hover {
+    border-color: var(--color-olive);
+  }
+  .mega-card .overflow-hidden {
+    overflow: hidden;
   }
 
   .hdr-panel {
