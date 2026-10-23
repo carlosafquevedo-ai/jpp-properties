@@ -171,9 +171,23 @@ const tiles: { id: ZoneId; span: string; image?: string }[] = [
         Ver todos <Icon name="arrowRight" class="size-5" />
       </a>
     </div>
-    <div class="mt-10 grid gap-x-6 gap-y-12 sm:grid-cols-2 lg:grid-cols-3">
+    <!-- Staggered layout: each column sits at a different height and photos vary in proportion -->
+    <div class="mt-10 grid items-start gap-x-6 gap-y-12 sm:grid-cols-2 lg:grid-cols-3">
       {featured.map((p, i) => (
-        <PropertyCard property={p} eager={i < 3} />
+        <div
+          class:list={[
+            i % 2 === 1 && 'sm:mt-12',
+            i % 3 === 0 && 'lg:mt-0',
+            i % 3 === 1 && 'lg:mt-16',
+            i % 3 === 2 && 'lg:mt-8',
+          ]}
+        >
+          <PropertyCard
+            property={p}
+            eager={i < 3}
+            aspect={['aspect-[4/5]', 'aspect-[4/3]', 'aspect-square'][i % 3]}
+          />
+        </div>
       ))}
     </div>
   </section>

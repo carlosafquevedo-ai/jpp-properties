@@ -15,11 +15,13 @@ interface Props {
   /** Adds data attributes used by the client-side listing filters. */
   filterable?: boolean;
   eager?: boolean;
+  /** Photo proportion (Tailwind aspect class). Varied on the home page for the staggered layout. */
+  aspect?: string;
 }
 
 const MAX_SLIDES = 6;
 
-const { property: p, filterable = false, eager = false } = Astro.props;
+const { property: p, filterable = false, eager = false, aspect = 'aspect-[4/3]' } = Astro.props;
 const href = `/imoveis/${p.slug}/`;
 const place = [p.locality, zones[p.zone].name].filter(Boolean).join(', ');
 const slides = p.images.slice(0, MAX_SLIDES);
@@ -41,7 +43,11 @@ const filterAttrs = filterable
 ---
 
 <article class="property-card group relative" {...filterAttrs}>
-  <div class="relative z-10 aspect-[4/3] overflow-hidden bg-paper-2" data-carousel data-href={href}>
+  <div
+    class:list={['relative z-10 overflow-hidden bg-paper-2', aspect]}
+    data-carousel
+    data-href={href}
+  >
     <div class="card-scroller flex size-full snap-x snap-mandatory overflow-x-auto">
       {slides.map((src, i) => (
         <img
