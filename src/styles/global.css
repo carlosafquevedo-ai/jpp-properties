@@ -230,25 +230,15 @@
   /* Search panel on the hero photo: nearly clear glass with hairline dividers, so the
      photo stays visible and nothing competes with it. */
   .glass-panel {
-    position: relative;
     padding: 0.875rem 1rem 1rem;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    border-bottom-width: 0;
     border-radius: 1.5rem 1.5rem 0 0; /* rounded on top only, square at the bottom */
     background: rgba(255, 255, 255, 0.06);
     -webkit-backdrop-filter: blur(10px) saturate(120%);
     backdrop-filter: blur(10px) saturate(120%);
     box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.25);
     color: #fff;
-  }
-  /* The outline is a masked layer: full strength at the top, fading to nothing at the bottom. */
-  .glass-panel::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    border: 1px solid rgba(255, 255, 255, 0.42);
-    border-radius: inherit;
-    pointer-events: none;
-    -webkit-mask-image: linear-gradient(to bottom, #000 0%, #000 30%, transparent 100%);
-    mask-image: linear-gradient(to bottom, #000 0%, #000 30%, transparent 100%);
   }
   .glass-seg {
     display: inline-flex;
