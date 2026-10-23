@@ -417,11 +417,11 @@
     }
   }
 
-  /* Floating widgets: WhatsApp (top right, below the header) and back to top (bottom left). */
+  /* Floating widgets: WhatsApp (bottom right) and back to top (bottom left). */
   .fab-wa {
     position: fixed;
     right: var(--gutter);
-    top: 6.25rem;
+    bottom: 1.5rem;
     z-index: 45;
     display: none;
     align-items: center;
