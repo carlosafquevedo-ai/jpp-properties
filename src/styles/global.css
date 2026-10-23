@@ -40,6 +40,20 @@
     scroll-behavior: smooth;
     scroll-padding-top: 6rem;
   }
+  /* Typography: light high-contrast serif for headlines, set tight; neutral grotesk for text. */
+  h1,
+  h2,
+  h3 {
+    font-weight: 400;
+    letter-spacing: -0.025em;
+    text-wrap: balance;
+  }
+  h1 {
+    letter-spacing: -0.035em;
+  }
+  p {
+    text-wrap: pretty;
+  }
   body {
     font-family: var(--font-sans);
     color: var(--color-ink);
@@ -149,7 +163,7 @@
     inset: auto 0 0;
     height: var(--hero-tab-d);
     display: grid;
-    grid-template-columns: 1fr min(100% - 2 * var(--gutter), var(--page-w) - 2 * var(--gutter)) 1fr;
+    grid-template-columns: 1fr min(100% - 1.5rem, var(--page-w)) 1fr;
     pointer-events: none;
   }
   .hero-strip > * {
