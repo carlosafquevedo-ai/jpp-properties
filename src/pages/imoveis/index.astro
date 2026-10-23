@@ -2,7 +2,10 @@
 import SiteLayout from '../../layouts/SiteLayout.astro';
 import PropertyCard from '../../components/PropertyCard.astro';
 import Icon from '../../components/Icon.astro';
-import { properties, zones, propertyTypeLabels } from '../../data/properties';
+import { properties } from '../../data/properties';
+import { getSearchOptions } from '../../lib/search-options';
+
+const { zoneOptions, typeOptions, bedroomOptions } = getSearchOptions();
 ---
 
 <SiteLayout
@@ -69,8 +72,8 @@ import { properties, zones, propertyTypeLabels } from '../../data/properties';
           </label>
           <select id="f-zona" name="zona" class="field">
             <option value="">Todas as zonas</option>
-            {Object.entries(zones).map(([id, z]) => (
-              <option value={id}>{z.name}</option>
+            {zoneOptions.map((o) => (
+              <option value={o.value}>{o.label}</option>
             ))}
           </select>
         </div>
@@ -80,8 +83,8 @@ import { properties, zones, propertyTypeLabels } from '../../data/properties';
           </label>
           <select id="f-imovel" name="imovel" class="field">
             <option value="">Todos os tipos</option>
-            {Object.entries(propertyTypeLabels).map(([id, l]) => (
-              <option value={id}>{l}</option>
+            {typeOptions.map((o) => (
+              <option value={o.value}>{o.label}</option>
             ))}
           </select>
         </div>
@@ -91,11 +94,9 @@ import { properties, zones, propertyTypeLabels } from '../../data/properties';
           </label>
           <select id="f-quartos" name="quartos" class="field">
             <option value="">Qualquer</option>
-            <option value="1">1</option>
-            <option value="2">2</option>
-            <option value="3">3</option>
-            <option value="4">4</option>
-            <option value="5">5</option>
+            {bedroomOptions.map((o) => (
+              <option value={o.value}>{o.value}</option>
+            ))}
           </select>
         </div>
         <fieldset>
