@@ -3,12 +3,10 @@ import Icon from './Icon.astro';
 import {
   formatPerSqm,
   formatPrice,
-  logoImage,
   propertyTypeLabels,
   zones,
   type Property,
 } from '../data/properties';
-import { AMI } from '../lib/site';
 
 interface Props {
   property: Property;
@@ -21,7 +19,7 @@ interface Props {
 
 const MAX_SLIDES = 6;
 
-const { property: p, filterable = false, eager = false, aspect = 'aspect-[16/10]' } = Astro.props;
+const { property: p, filterable = false, eager = false, aspect = 'aspect-[1.38]' } = Astro.props;
 const href = `/imoveis/${p.slug}/`;
 const place = [p.locality, zones[p.zone].name].filter(Boolean).join(', ');
 const slides = p.images.slice(0, MAX_SLIDES);
@@ -134,14 +132,6 @@ const filterAttrs = filterable
         {p.usableArea} m²
       </li>
     </ul>
-    <div class="mt-4 flex items-center gap-3 border-t border-forest/10 pt-3 [margin-top:auto]">
-      <img src={logoImage} alt="" class="h-6 w-auto" width="72" height="24" loading="lazy" />
-      <p class="text-xs leading-tight text-muted">
-        JPP Properties
-        <br />
-        AMI {AMI}
-      </p>
-    </div>
   </div>
 </article>
 
