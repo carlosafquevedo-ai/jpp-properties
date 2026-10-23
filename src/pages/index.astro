@@ -35,9 +35,9 @@ const tiles: { id: ZoneId; span: string; image?: string }[] = [
   route="home"
   padTop={false}
 >
-  <!-- Hero: full-bleed, rounded bottom corners, with the search docked in a notch (white tab with concave fillets) -->
+  <!-- Hero: full-bleed image, rounded bottom corners and a hanging tab that holds the search box -->
   <section>
-    <div class="relative isolate flex min-h-[100svh] flex-col justify-end overflow-hidden rounded-b-[2.25rem]">
+    <div class="hero-shape relative isolate flex min-h-[calc(100svh-1rem)] flex-col justify-end overflow-hidden">
       <img
         src={heroImage}
         alt="Piscina rodeada de palmeiras, com o campo de golfe ao fundo"
@@ -65,10 +65,18 @@ const tiles: { id: ZoneId; span: string; image?: string }[] = [
         </div>
       </div>
 
-      <div class="container-x">
-        <div class="hero-tab">
-          <SearchBar />
+      <div class="container-x relative z-10 pb-3">
+        <div class="px-3">
+          <div class="rounded-3xl bg-white p-3 shadow-[0_24px_50px_-28px_rgba(24,35,26,0.6)] sm:p-4">
+            <SearchBar />
+          </div>
         </div>
+      </div>
+
+      <div class="hero-strip" aria-hidden="true">
+        <i class="hs-l"></i>
+        <i class="hs-m"></i>
+        <i class="hs-r"></i>
       </div>
     </div>
   </section>

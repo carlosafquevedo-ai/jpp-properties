@@ -135,40 +135,81 @@
       padding: 0 6px 0 16px;
     }
   }
-  /* Hero notch: a white tab that merges with the page below, joined to the hero's bottom
-     edge by concave fillets (the shape in the approved reference). */
-  .hero-tab {
-    --r: 1.75rem;
-    position: relative;
-    padding: 1.25rem 1rem 1.5rem;
-    background: #fff;
-    border-radius: var(--r) var(--r) 0 0;
+  /* Hero silhouette (from the approved reference): full-bleed image with rounded bottom
+     corners and a tab that hangs below the bottom edge, joined by concave fillets.
+     The strip paints the page background over the image on both sides of the tab. */
+  .hero-shape {
+    --hero-tab-d: 5.5rem; /* how far the tab hangs below the hero edge */
+    --R: 2.25rem; /* outer bottom corners */
+    --r: 1.5rem; /* concave fillets */
+    --q: 1.5rem; /* tab bottom corners */
   }
-  .hero-tab::before,
-  .hero-tab::after {
-    content: '';
+  .hero-strip {
     position: absolute;
-    bottom: 0;
-    width: var(--r);
-    height: var(--r);
+    inset: auto 0 0;
+    height: var(--hero-tab-d);
+    display: grid;
+    grid-template-columns: 1fr min(100% - 2 * var(--gutter), var(--page-w) - 2 * var(--gutter)) 1fr;
     pointer-events: none;
   }
-  .hero-tab::before {
-    left: calc(var(--r) * -1);
-    background: radial-gradient(circle at 0 0, transparent var(--r), #fff calc(var(--r) + 0.5px));
+  .hero-strip > * {
+    position: relative;
   }
-  .hero-tab::after {
-    right: calc(var(--r) * -1);
+  .hs-l,
+  .hs-r {
+    background: #fff;
+  }
+  .hs-l {
+    border-top-right-radius: var(--r);
+  }
+  .hs-r {
+    border-top-left-radius: var(--r);
+  }
+  .hs-l::before,
+  .hs-r::before,
+  .hs-m::before,
+  .hs-m::after {
+    content: '';
+    position: absolute;
+    pointer-events: none;
+  }
+  /* outer rounded corners of the hero */
+  .hs-l::before,
+  .hs-r::before {
+    top: calc(var(--R) * -1);
+    width: var(--R);
+    height: var(--R);
+  }
+  .hs-l::before {
+    left: 0;
     background: radial-gradient(
       circle at 100% 0,
-      transparent var(--r),
-      #fff calc(var(--r) + 0.5px)
+      transparent var(--R),
+      #fff calc(var(--R) + 0.5px)
     );
   }
-  @media (min-width: 640px) {
-    .hero-tab {
-      padding: 1.5rem 1.5rem 1.75rem;
-    }
+  .hs-r::before {
+    right: 0;
+    background: radial-gradient(circle at 0 0, transparent var(--R), #fff calc(var(--R) + 0.5px));
+  }
+  /* rounded bottom corners of the tab */
+  .hs-m::before,
+  .hs-m::after {
+    bottom: 0;
+    width: var(--q);
+    height: var(--q);
+  }
+  .hs-m::before {
+    left: 0;
+    background: radial-gradient(
+      circle at 100% 0,
+      transparent var(--q),
+      #fff calc(var(--q) + 0.5px)
+    );
+  }
+  .hs-m::after {
+    right: 0;
+    background: radial-gradient(circle at 0 0, transparent var(--q), #fff calc(var(--q) + 0.5px));
   }
 
   .hdr-panel {
