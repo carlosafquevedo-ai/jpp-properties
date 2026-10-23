@@ -268,32 +268,30 @@
   }
   .glass-field {
     position: relative;
-    padding: 0.5rem 0.875rem 0.25rem;
+    padding: 0.5rem 0.875rem 0.375rem;
     border-radius: 0.875rem;
+    background: rgba(255, 255, 255, 0.1);
     transition: background-color 0.25s;
   }
-  .glass-field:hover,
-  .glass-field:focus-within {
-    background: rgba(255, 255, 255, 0.1);
-  }
-  .glass-field:focus-within::after {
+  /* The lime underline is always visible; it brightens on focus. */
+  .glass-field::after {
     content: '';
     position: absolute;
-    inset: auto 0.875rem 0.125rem;
+    inset: auto 0.875rem 0.25rem;
     height: 2px;
     border-radius: 2px;
     background: var(--color-lime);
+    opacity: 0.7;
+    transition: opacity 0.25s;
   }
-  @media (min-width: 1024px) {
-    .glass-field + .glass-field::before {
-      content: '';
-      position: absolute;
-      left: -0.375rem;
-      top: 22%;
-      bottom: 22%;
-      width: 1px;
-      background: rgba(255, 255, 255, 0.28);
-    }
+  .glass-field:hover {
+    background: rgba(255, 255, 255, 0.15);
+  }
+  .glass-field:focus-within {
+    background: rgba(255, 255, 255, 0.2);
+  }
+  .glass-field:focus-within::after {
+    opacity: 1;
   }
   .glass-field > label {
     display: block;
