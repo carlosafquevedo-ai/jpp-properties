@@ -135,6 +135,42 @@
       padding: 0 6px 0 16px;
     }
   }
+  /* Hero notch: a white tab that merges with the page below, joined to the hero's bottom
+     edge by concave fillets (the shape in the approved reference). */
+  .hero-tab {
+    --r: 1.75rem;
+    position: relative;
+    padding: 1.25rem 1rem 1.5rem;
+    background: #fff;
+    border-radius: var(--r) var(--r) 0 0;
+  }
+  .hero-tab::before,
+  .hero-tab::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    width: var(--r);
+    height: var(--r);
+    pointer-events: none;
+  }
+  .hero-tab::before {
+    left: calc(var(--r) * -1);
+    background: radial-gradient(circle at 0 0, transparent var(--r), #fff calc(var(--r) + 0.5px));
+  }
+  .hero-tab::after {
+    right: calc(var(--r) * -1);
+    background: radial-gradient(
+      circle at 100% 0,
+      transparent var(--r),
+      #fff calc(var(--r) + 0.5px)
+    );
+  }
+  @media (min-width: 640px) {
+    .hero-tab {
+      padding: 1.5rem 1.5rem 1.75rem;
+    }
+  }
+
   .hdr-panel {
     pointer-events: auto;
     margin: 0.5rem auto 0;

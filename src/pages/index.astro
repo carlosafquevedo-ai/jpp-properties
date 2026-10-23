@@ -35,9 +35,9 @@ const tiles: { id: ZoneId; span: string; image?: string }[] = [
   route="home"
   padTop={false}
 >
-  <!-- Hero -->
+  <!-- Hero: full-bleed, rounded bottom corners, with the search docked in a notch (white tab with concave fillets) -->
   <section>
-    <div class="relative isolate flex h-[72svh] min-h-[520px] items-end overflow-hidden lg:h-[calc(100svh-8.5rem)] lg:min-h-[520px]">
+    <div class="relative isolate flex min-h-[100svh] flex-col justify-end overflow-hidden rounded-b-[2.25rem]">
       <img
         src={heroImage}
         alt="Piscina rodeada de palmeiras, com o campo de golfe ao fundo"
@@ -47,7 +47,7 @@ const tiles: { id: ZoneId; span: string; image?: string }[] = [
       />
       <div class="absolute inset-0 -z-10 bg-gradient-to-t from-forest/85 via-forest/35 to-forest/10"></div>
 
-      <div class="hero-copy container-x pb-20 text-white sm:pb-24">
+      <div class="hero-copy container-x pb-10 pt-36 text-white">
         <h1 class="max-w-4xl font-serif text-[clamp(2.75rem,6.2vw,5.5rem)] leading-[0.95]">
           Encontre a sua casa no Algarve.
         </h1>
@@ -64,13 +64,14 @@ const tiles: { id: ZoneId; span: string; image?: string }[] = [
           </a>
         </div>
       </div>
+
+      <div class="container-x">
+        <div class="hero-tab">
+          <SearchBar />
+        </div>
+      </div>
     </div>
   </section>
-
-  <!-- Search overlaps the hero -->
-  <div class="container-x relative z-10 -mt-14">
-    <SearchBar />
-  </div>
 
   <!-- Featured -->
   <section class="container-x pt-24" aria-labelledby="destaques">
