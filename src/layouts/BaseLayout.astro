@@ -3,21 +3,26 @@ import '../styles/global.css';
 import { alternateLinks, defaultLocale, type Locale, type RouteKey } from '../i18n/routes';
 import { useTranslations } from '../i18n/ui';
 import { SITE_URL } from '../lib/site';
-import LanguageSwitcher from '../components/LanguageSwitcher.astro';
 
 interface Props {
   locale: Locale;
-  route: RouteKey;
+  /** Route key for hreflang/canonical. Omit on prototype-only pages without translations. */
+  route?: RouteKey;
   title: string;
   description: string;
   noindex?: boolean;
+  bodyClass?: string;
 }
 
-const { locale, route, title, description, noindex = false } = Astro.props;
+const { locale, route, title, description, noindex = false, bodyClass = '' } = Astro.props;
 const t = useTranslations(locale);
-const alternates = alternateLinks(route);
-const canonical = new URL(alternates.find((a) => a.locale === locale)!.href, SITE_URL).href;
-const xDefault = new URL(alternates.find((a) => a.locale === defaultLocale)!.href, SITE_URL).href;
+const alternates = route ? alternateLinks(route) : [];
+const canonical = route
+  ? new URL(alternates.find((a) => a.locale === locale)!.href, SITE_URL).href
+  : new URL(Astro.url.pathname, SITE_URL).href;
+const xDefault = route
+  ? new URL(alternates.find((a) => a.locale === defaultLocale)!.href, SITE_URL).href
+  : undefined;
 ---
 
 <!doctype html>
@@ -31,23 +36,17 @@ const xDefault = new URL(alternates.find((a) => a.locale === defaultLocale)!.hre
     {alternates.map((a) => (
       <link rel="alternate" hreflang={a.locale} href={new URL(a.href, SITE_URL).href} />
     ))}
-    <link rel="alternate" hreflang="x-default" href={xDefault} />
+    {xDefault && <link rel="alternate" hreflang="x-default" href={xDefault} />}
     {noindex && <meta name="robots" content="noindex, nofollow" />}
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
   </head>
-  <body class="min-h-screen bg-paper text-ink antialiased">
+  <body class:list={['min-h-screen bg-paper text-ink antialiased', bodyClass]}>
     <a
       href="#main"
-      class="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-4 focus:rounded focus:bg-white focus:px-4 focus:py-2"
+      class="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[100] focus:rounded focus:bg-white focus:px-4 focus:py-2"
     >
       {t('a11y.skipToContent')}
     </a>
-    <header class="flex items-center justify-between px-4 py-4 sm:px-8">
-      <span class="font-serif text-xl font-semibold text-olive-700">{t('site.name')}</span>
-      <LanguageSwitcher locale={locale} route={route} />
-    </header>
-    <main id="main">
-      <slot />
-    </main>
+    <slot />
   </body>
 </html>

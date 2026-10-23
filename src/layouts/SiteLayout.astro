@@ -1,0 +1,62 @@
+---
+import BaseLayout from './BaseLayout.astro';
+import SiteHeader from '../components/SiteHeader.astro';
+import SiteFooter from '../components/SiteFooter.astro';
+import MobileContactBar from '../components/MobileContactBar.astro';
+import type { RouteKey } from '../i18n/routes';
+
+interface Props {
+  title: string;
+  description: string;
+  route?: RouteKey;
+  /** Inner pages reserve space under the floating header. */
+  padTop?: boolean;
+}
+
+const { title, description, route, padTop = true } = Astro.props;
+---
+
+<BaseLayout locale="pt" {title} {description} {route} noindex bodyClass="pb-14 lg:pb-0">
+  <SiteHeader />
+  <main id="main" class:list={[padTop && 'pt-28']}>
+    <slot />
+  </main>
+  <SiteFooter />
+  <MobileContactBar />
+</BaseLayout>
+
+<script>
+  // Favourite hearts: stored only in this browser (never sent anywhere).
+  const KEY = 'jpp:favs';
+  const read = (): string[] => {
+    try {
+      return JSON.parse(localStorage.getItem(KEY) ?? '[]');
+    } catch {
+      return [];
+    }
+  };
+  const write = (v: string[]) => {
+    try {
+      localStorage.setItem(KEY, JSON.stringify(v));
+    } catch {
+      /* storage unavailable: hearts still toggle for this visit */
+    }
+  };
+  const favs = new Set(read());
+  const paint = (btn: HTMLElement) => {
+    const on = favs.has(btn.dataset.fav!);
+    btn.setAttribute('aria-pressed', String(on));
+    btn.classList.toggle('text-red-600', on);
+    btn.querySelector('svg')?.setAttribute('fill', on ? 'currentColor' : 'none');
+  };
+  document.querySelectorAll<HTMLElement>('[data-fav]').forEach((btn) => {
+    paint(btn);
+    btn.addEventListener('click', (e) => {
+      e.preventDefault();
+      const id = btn.dataset.fav!;
+      favs.has(id) ? favs.delete(id) : favs.add(id);
+      write([...favs]);
+      paint(btn);
+    });
+  });
+</script>
