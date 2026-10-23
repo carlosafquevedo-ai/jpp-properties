@@ -275,3 +275,7 @@ const eur = new Intl.NumberFormat('pt-PT', {
   maximumFractionDigits: 0,
 });
 export const formatPrice = (price: number) => eur.format(price).replace(/ /g, ' ');
+
+/** Price per m², always grouped (e.g. 6 269 €/m²). */
+const grouped = new Intl.NumberFormat('pt-PT', { maximumFractionDigits: 0, useGrouping: 'always' });
+export const formatPerSqm = (n: number) => `${grouped.format(n).replace(/\u00a0/g, ' ')} €/m²`;

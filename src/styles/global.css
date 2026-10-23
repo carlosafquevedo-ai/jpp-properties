@@ -150,6 +150,101 @@
       padding: 0 6px 0 16px;
     }
   }
+  /* Listing card (white card, photo carousel, agency footer) */
+  .property-card {
+    overflow: hidden;
+    border: 1px solid var(--color-line);
+    border-radius: 0.5rem;
+    background: #fff;
+    box-shadow: 0 2px 14px -6px rgba(24, 35, 26, 0.22);
+    transition: box-shadow 0.25s;
+  }
+  .property-card:hover {
+    box-shadow: 0 14px 34px -14px rgba(24, 35, 26, 0.35);
+  }
+  .card-scroller {
+    scrollbar-width: none;
+  }
+  .card-scroller::-webkit-scrollbar {
+    display: none;
+  }
+  .card-count {
+    position: absolute;
+    left: 0.75rem;
+    top: 0.75rem;
+    z-index: 5;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    padding: 0.35rem 0.7rem;
+    border-radius: 9999px;
+    background: var(--color-forest);
+    color: #fff;
+    font-size: 0.875rem;
+    font-weight: 600;
+    pointer-events: none;
+  }
+  .card-tag {
+    padding: 0.2rem 0.65rem;
+    border-radius: 9999px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: var(--color-forest);
+  }
+  .card-arrow {
+    position: absolute;
+    top: 50%;
+    z-index: 5;
+    display: grid;
+    place-items: center;
+    width: 2.5rem;
+    height: 2.5rem;
+    border-radius: 9999px;
+    background: #fff;
+    color: var(--color-ink);
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.28);
+    opacity: 0;
+    transform: translateY(-50%);
+    cursor: pointer;
+    transition: opacity 0.2s;
+  }
+  .property-card:hover .card-arrow,
+  .card-arrow:focus-visible {
+    opacity: 1;
+  }
+  @media (hover: none) {
+    .card-arrow {
+      display: none;
+    }
+  }
+  .card-dots {
+    position: absolute;
+    bottom: 0.75rem;
+    left: 50%;
+    z-index: 5;
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    transform: translateX(-50%);
+    pointer-events: none;
+  }
+  .card-dot {
+    width: 0.5rem;
+    height: 0.5rem;
+    border-radius: 9999px;
+    background: rgba(255, 255, 255, 0.85);
+    box-shadow: 0 0 4px rgba(0, 0, 0, 0.35);
+    transition:
+      width 0.2s,
+      height 0.2s,
+      background-color 0.2s;
+  }
+  .card-dot[data-active] {
+    width: 0.75rem;
+    height: 0.75rem;
+    background: var(--color-lime);
+  }
+
   /* Hero slideshow (crossfade + slow zoom), listing card and controls. */
   .hero-slide {
     position: absolute;
