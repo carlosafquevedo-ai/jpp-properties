@@ -2,7 +2,7 @@
  * Home page choices, in the order the editor sets them. In production this is the Sanity
  * "Página inicial" document: two lists of listing references that the team can drag to reorder.
  */
-export const MAX_FEATURED = 6;
+export const MAX_FEATURED = 8; // two full rows of 4
 export const MAX_HERO_LISTINGS = 3;
 
 export const homePage = {
