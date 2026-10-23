@@ -390,15 +390,57 @@
     }
   }
 
-  /* Side highlights panel: the zones band is full width, so the panel runs to the screen edge. */
+  /* Zones band: left text lines up with the page column; the photo side runs to the screen edge. */
+  .zones-intro {
+    padding-inline: var(--gutter);
+  }
   @media (min-width: 64rem) {
-    .highlight-bleed {
-      --bleed: var(--gutter);
-      margin-right: calc(var(--bleed) * -1);
-      padding-right: calc(var(--bleed) + 1.25rem);
-      border-top-right-radius: 0;
-      border-bottom-right-radius: 0;
+    .zones-intro {
+      padding-left: max(var(--gutter), calc((100vw - var(--page-w)) / 2 + var(--gutter)));
+      padding-right: 3rem;
     }
+  }
+  .zone-row-name {
+    transition:
+      transform 0.35s var(--ease-out),
+      color 0.25s;
+  }
+  .zone-row:hover .zone-row-name {
+    transform: translateX(0.5rem);
+    color: var(--color-lime);
+  }
+  .zone-row-go {
+    display: grid;
+    width: 2.25rem;
+    height: 2.25rem;
+    place-items: center;
+    border-radius: 0.375rem;
+    background: rgba(255, 255, 255, 0.12);
+    color: #fff;
+    transition:
+      background-color 0.25s,
+      color 0.25s,
+      transform 0.35s var(--ease-out);
+  }
+  .zone-row:hover .zone-row-go {
+    background: var(--color-lime);
+    color: var(--color-forest);
+    transform: translate(2px, -2px);
+  }
+  .zone-mini {
+    display: flex;
+    align-items: center;
+    gap: 0.875rem;
+    padding: 0.625rem;
+    border: 1px solid rgba(255, 255, 255, 0.18);
+    border-radius: 0.5rem;
+    background: rgba(24, 35, 26, 0.45);
+    -webkit-backdrop-filter: blur(14px) saturate(130%);
+    backdrop-filter: blur(14px) saturate(130%);
+    transition: background-color 0.25s;
+  }
+  .zone-mini:hover {
+    background: rgba(24, 35, 26, 0.7);
   }
 
   /* Hero slideshow (crossfade + slow zoom), listing card and controls. */
