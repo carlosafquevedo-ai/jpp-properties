@@ -49,7 +49,7 @@ const tiles: { id: ZoneId; span: string; image?: string }[] = [
       <div class="absolute inset-0 -z-10 bg-gradient-to-t from-forest/90 via-forest/40 to-forest/10"></div>
 
       <div class="hero-copy container-x pb-8 pt-32 text-white">
-        <h1 class="max-w-4xl font-display text-[clamp(2.5rem,5.6vw,5rem)] leading-[0.95]">
+        <h1 class="max-w-4xl font-display text-[clamp(2rem,4.2vw,3.5rem)] leading-[1]">
           Encontre a sua casa no Algarve.
         </h1>
         <p class="mt-5 max-w-xl text-lg leading-relaxed text-white/90 [@media(max-height:740px)]:hidden">
@@ -86,7 +86,7 @@ const tiles: { id: ZoneId; span: string; image?: string }[] = [
   <!-- Featured -->
   <section class="container-x pt-24" aria-labelledby="destaques">
     <div class="flex flex-wrap items-end justify-between gap-4">
-      <h2 id="destaques" class="font-display text-5xl text-forest sm:text-6xl">
+      <h2 id="destaques" class="font-display text-3xl text-forest sm:text-4xl">
         Imóveis em destaque
       </h2>
       <a
@@ -106,7 +106,7 @@ const tiles: { id: ZoneId; span: string; image?: string }[] = [
   <!-- Zones -->
   <section id="zonas" class="mt-28" aria-labelledby="zonas-titulo">
     <div class="container-x">
-      <h2 id="zonas-titulo" class="max-w-2xl font-display text-5xl text-forest sm:text-6xl">
+      <h2 id="zonas-titulo" class="max-w-2xl font-display text-3xl text-forest sm:text-4xl">
         Conhecemos cada zona do Algarve onde atuamos
       </h2>
       <div class="mt-12 grid gap-4 lg:grid-cols-4 lg:auto-rows-[15rem]">
@@ -134,7 +134,7 @@ const tiles: { id: ZoneId; span: string; image?: string }[] = [
             <span class="absolute right-5 top-5 grid size-10 place-items-center rounded-full bg-white/15 backdrop-blur transition-colors group-hover:bg-lime group-hover:text-forest">
               <Icon name="arrowUpRight" class="size-5" />
             </span>
-            <h3 class="font-display text-4xl">{zones[t.id].name}</h3>
+            <h3 class="font-display text-2xl">{zones[t.id].name}</h3>
             <p class="mt-1 max-w-xs text-sm text-white/85">{zones[t.id].blurb}</p>
             <p class="mt-3 text-sm font-semibold text-lime">{countLabel(t.id)}</p>
           </a>
@@ -148,7 +148,7 @@ const tiles: { id: ZoneId; span: string; image?: string }[] = [
     <div class="grid gap-4 lg:grid-cols-2">
       <div class="flex flex-col justify-between rounded-[2rem] bg-forest p-8 text-white sm:p-12">
         <div>
-          <h2 class="font-display text-5xl leading-tight sm:text-6xl">Quer vender o seu imóvel?</h2>
+          <h2 class="font-display text-3xl leading-tight sm:text-4xl">Quer vender o seu imóvel?</h2>
           <p class="mt-5 max-w-md text-white/80">
             Diga-nos onde fica e o que tem. Avaliamos o imóvel e propomos a melhor forma de o
             apresentar a quem procura.
@@ -160,7 +160,7 @@ const tiles: { id: ZoneId; span: string; image?: string }[] = [
       </div>
       <div class="flex flex-col justify-between rounded-[2rem] bg-olive p-8 text-white sm:p-12">
         <div>
-          <h2 class="font-display text-5xl leading-tight sm:text-6xl">
+          <h2 class="font-display text-3xl leading-tight sm:text-4xl">
             Não encontra o que procura?
           </h2>
           <p class="mt-5 max-w-md text-white/90">
@@ -181,7 +181,7 @@ const tiles: { id: ZoneId; span: string; image?: string }[] = [
     class="container-x mt-28 grid gap-10 lg:grid-cols-2 lg:gap-20"
     aria-labelledby="sobre-titulo"
   >
-    <h2 id="sobre-titulo" class="font-display text-5xl text-forest sm:text-6xl">
+    <h2 id="sobre-titulo" class="font-display text-3xl text-forest sm:text-4xl">
       Somos daqui. Sentimos o mercado como poucos.
     </h2>
     <div class="space-y-5 text-lg leading-relaxed text-ink/85">
@@ -206,7 +206,7 @@ const tiles: { id: ZoneId; span: string; image?: string }[] = [
     aria-labelledby="contacto-titulo"
   >
     <div>
-      <h2 id="contacto-titulo" class="font-display text-5xl text-forest sm:text-6xl">
+      <h2 id="contacto-titulo" class="font-display text-3xl text-forest sm:text-4xl">
         Fale connosco
       </h2>
       <p class="mt-4 max-w-md text-ink/80">
@@ -216,7 +216,7 @@ const tiles: { id: ZoneId; span: string; image?: string }[] = [
       <div class="mt-10 grid gap-8 sm:grid-cols-2">
         {offices.map((o) => (
           <div>
-            <h3 class="font-display text-3xl text-forest">{o.name}</h3>
+            <h3 class="font-display text-xl text-forest">{o.name}</h3>
             <address class="mt-2 text-sm not-italic leading-relaxed text-ink/80">
               {o.address.map((l) => (
                 <div>{l}</div>
