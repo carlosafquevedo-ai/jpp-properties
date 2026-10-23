@@ -157,14 +157,9 @@
   /* Listing card (white card, photo carousel, agency footer) */
   .property-card {
     overflow: hidden;
-    border: 1px solid #3a3e3b;
     border-radius: 0.5rem;
     background: #2a2d2b; /* opaque charcoal grey, slightly warm */
     color: #fff;
-    transition: border-color 0.25s;
-  }
-  .property-card:hover {
-    border-color: var(--color-lime);
   }
   .property-card :focus-visible {
     outline-color: var(--color-lime);
@@ -277,9 +272,7 @@
     transform: translate(-2px, -2px);
   }
   .property-card {
-    transition:
-      border-color 0.25s,
-      transform 0.35s var(--ease-out);
+    transition: transform 0.35s var(--ease-out);
   }
   @media (hover: hover) and (prefers-reduced-motion: no-preference) {
     .property-card:hover {
