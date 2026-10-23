@@ -353,39 +353,41 @@ const zoneTiles = (Object.keys(zones) as ZoneId[]).map((id) => ({ id, image: zon
       </ul>
     </div>
 
-    <div class:list={['mt-14 grid gap-4', offices.length > 1 && 'md:grid-cols-2']}>
+    <div class="mt-14 grid gap-4">
       {offices.map((o) => (
-        <article
-          class:list={[
-            'flex min-h-64 flex-col justify-between rounded-3xl bg-paper-2 p-7',
-            offices.length === 1 && 'md:min-h-0 md:flex-row md:items-end',
-          ]}
-        >
-          <div>
-            <span class="grid size-11 place-items-center rounded-xl bg-white text-olive">
-              <Icon name="pin" class="size-5" />
-            </span>
-            <h3 class="mt-5 font-display text-2xl text-forest">Escritório de {o.name}</h3>
-            <address class="mt-2 text-sm not-italic leading-relaxed text-muted">
-              {o.address.map((line) => (
-                <div>{line}</div>
-              ))}
-            </address>
+        <div class="grid gap-4 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.7fr)]">
+          <article class="flex min-h-64 flex-col justify-between rounded-3xl bg-paper-2 p-7">
+            <div>
+              <span class="grid size-11 place-items-center rounded-xl bg-white text-olive">
+                <Icon name="pin" class="size-5" />
+              </span>
+              <h3 class="mt-5 font-display text-2xl text-forest">Escritório de {o.name}</h3>
+              <address class="mt-2 text-sm not-italic leading-relaxed text-muted">
+                {o.address.map((line) => (
+                  <div>{line}</div>
+                ))}
+              </address>
+            </div>
+            <div class="mt-8 flex flex-wrap gap-3">
+              <a href={`tel:${o.phones[0].tel}`} class="btn btn-dark">
+                <Icon name="phone" class="size-4" /> Ligar
+              </a>
+              <a href={o.mapUrl} class="btn btn-ghost" target="_blank" rel="noopener">
+                Ver no mapa
+              </a>
+            </div>
+          </article>
+          <div class="min-h-72 overflow-hidden rounded-3xl bg-paper-2">
+            <iframe
+              title={`Mapa: Escritório de ${o.name}`}
+              src={`https://www.google.com/maps?q=${encodeURIComponent(`JPP Properties, ${o.address.join(', ')}`)}&hl=pt-PT&z=16&output=embed`}
+              class="size-full min-h-72 border-0"
+              loading="lazy"
+              referrerpolicy="no-referrer-when-downgrade"
+              allowfullscreen
+            ></iframe>
           </div>
-          <div class:list={['mt-8 flex flex-wrap gap-3', offices.length === 1 && 'md:mt-0']}>
-            <a href={`tel:${o.phones[0].tel}`} class="btn btn-dark">
-              <Icon name="phone" class="size-4" /> Ligar
-            </a>
-            <a
-              href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(o.address.join(', '))}`}
-              class="btn btn-ghost"
-              target="_blank"
-              rel="noopener"
-            >
-              Ver no mapa
-            </a>
-          </div>
-        </article>
+        </div>
       ))}
     </div>
   </section>

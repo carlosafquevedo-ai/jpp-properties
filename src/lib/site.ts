@@ -6,6 +6,7 @@ export const offices = [
   {
     id: 'vilamoura',
     name: 'Vilamoura',
+    mapUrl: 'https://share.google/53JRHbtb1BUG44fbl',
     address: ['Praceta Tivoli, Edifício Tália, Loja nº 3', '8125-410 Vilamoura'],
     phones: [
       { label: '+351 917 629 447', tel: '+351917629447', note: 'Chamada para rede móvel nacional' },
