@@ -390,6 +390,17 @@
     }
   }
 
+  /* Side highlights panel: its right edge runs to the edge of the screen, content stays in the column. */
+  @media (min-width: 64rem) {
+    .highlight-bleed {
+      --bleed: max(var(--gutter), calc((100vw - var(--page-w)) / 2 + var(--gutter)));
+      margin-right: calc(var(--bleed) * -1);
+      padding-right: calc(var(--bleed) + 1.25rem);
+      border-top-right-radius: 0;
+      border-bottom-right-radius: 0;
+    }
+  }
+
   /* Hero slideshow (crossfade + slow zoom), listing card and controls. */
   .hero-slide {
     position: absolute;
