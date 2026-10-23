@@ -1,0 +1,23 @@
+# Dependências e builds
+node_modules/
+dist/
+.astro/
+.wrangler/
+
+# Variáveis de ambiente (nunca fazer commit de chaves)
+.env
+.env.*
+!.env.example
+.dev.vars
+
+# Migração e backups: podem conter dados do cliente
+migration-output/
+backups/
+
+# Sistema e editores
+.DS_Store
+.idea/
+.vscode/*
+!.vscode/extensions.json
+*.log
+.claude/settings.local.json
