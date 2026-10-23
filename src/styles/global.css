@@ -169,14 +169,11 @@
     }
   }
   /* Listing card (white card, photo carousel, agency footer) */
-  /* Featured carousel: first card lines up with the page column, the right side runs off-screen. */
+  /* Featured carousel: stays inside the page column on both sides (clipped at its edges). */
   .feat-track {
-    --edge: max(var(--gutter), calc((100vw - var(--page-w)) / 2 + var(--gutter)));
     display: flex;
     gap: 1.5rem;
     overflow-x: auto;
-    padding-inline: var(--edge);
-    scroll-padding-inline: var(--edge);
     scroll-snap-type: x mandatory;
     scrollbar-width: none;
   }
@@ -190,12 +187,12 @@
   }
   @media (min-width: 40rem) {
     .feat-item {
-      width: calc((100vw - 2 * var(--edge) - 1.5rem) / 2);
+      width: calc((100% - 1.5rem) / 2);
     }
   }
   @media (min-width: 64rem) {
     .feat-item {
-      width: calc((min(100vw, var(--page-w)) - 2 * var(--gutter) - 4.5rem) / 4);
+      width: calc((100% - 4.5rem) / 4);
     }
   }
   .feat-nav {
