@@ -1,0 +1,3 @@
+# TODO: replace with the real robots.txt (allow all + sitemap) at launch.
+User-agent: *
+Disallow: /

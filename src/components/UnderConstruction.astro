@@ -1,0 +1,28 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import type { Locale } from '../i18n/routes';
+import { useTranslations } from '../i18n/ui';
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+const t = useTranslations(locale);
+---
+
+<BaseLayout
+  locale={locale}
+  route="home"
+  title={`${t('site.name')} | ${t('wip.title')}`}
+  description={t('wip.description')}
+  noindex
+>
+  <section class="mx-auto flex min-h-[70vh] max-w-2xl flex-col justify-center px-4 py-16 sm:px-8">
+    <h1 class="font-serif text-4xl font-semibold text-olive-800 sm:text-5xl">{t('wip.title')}</h1>
+    <p class="mt-6 text-lg text-ink/80">{t('wip.text')}</p>
+    <p class="mt-10 text-sm text-ink/60">
+      {t('site.name')} · {t('footer.ami')}
+    </p>
+  </section>
+</BaseLayout>
