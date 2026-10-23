@@ -11,7 +11,7 @@ import {
   zones,
   type ZoneId,
 } from '../data/properties';
-import { featuredProperties, heroSlides } from '../lib/catalog';
+import { featuredProperties, heroSlides, latestProperties } from '../lib/catalog';
 import { AMI, offices, email } from '../lib/site';
 
 const countByZone = (id: ZoneId) => properties.filter((p) => p.zone === id).length;
@@ -22,6 +22,9 @@ const countLabel = (id: ZoneId) => {
 };
 const featured = featuredProperties();
 const slides = heroSlides();
+const [newest, ...alsoNew] = latestProperties(3);
+const placeOf = (p: (typeof properties)[number]) =>
+  [p.locality, zones[p.zone].name].filter(Boolean).join(', ');
 const photo = (slug: string) => properties.find((p) => p.slug === slug)!.images[0];
 
 // Zone photos used on the tiles. TODO: in production each zone document has its own photo (Sanity).
@@ -180,34 +183,92 @@ const zoneTiles = (Object.keys(zones) as ZoneId[]).map((id) => ({ id, image: zon
     <h2 id="zonas-titulo" class="font-display text-3xl text-forest sm:text-4xl">
       Explore por zona
     </h2>
-    <div class="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-      {zoneTiles.map((t) => (
-        <a
-          href={`/imoveis/?zona=${t.id}`}
-          class="group relative isolate flex aspect-[4/3] flex-col justify-end overflow-hidden rounded-lg p-6 text-white"
-        >
-          {t.image ? (
-            <>
-              <img
-                src={t.image}
-                alt=""
-                class="absolute inset-0 -z-20 size-full object-cover transition-transform duration-700 group-hover:scale-105"
-                loading="lazy"
-                referrerpolicy="no-referrer"
-              />
-              <div class="absolute inset-0 -z-10 bg-gradient-to-t from-forest/90 via-forest/35 to-forest/5" />
-            </>
-          ) : (
-            <div class="absolute inset-0 -z-10 bg-gradient-to-br from-olive to-forest transition-transform duration-700 group-hover:scale-105" />
-          )}
-          <span class="absolute right-4 top-4 grid size-9 place-items-center rounded-md bg-white/15 backdrop-blur transition-colors group-hover:bg-lime group-hover:text-forest">
-            <Icon name="arrowUpRight" class="size-5" />
+    <div class="mt-10 grid gap-6 lg:grid-cols-[2fr_1fr]">
+      <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+        {zoneTiles.map((t) => (
+          <a
+            href={`/imoveis/?zona=${t.id}`}
+            class="group relative isolate flex aspect-[4/3] flex-col justify-end lg:aspect-[4/5] overflow-hidden rounded-lg p-6 text-white"
+          >
+            {t.image ? (
+              <>
+                <img
+                  src={t.image}
+                  alt=""
+                  class="absolute inset-0 -z-20 size-full object-cover transition-transform duration-700 group-hover:scale-105"
+                  loading="lazy"
+                  referrerpolicy="no-referrer"
+                />
+                <div class="absolute inset-0 -z-10 bg-gradient-to-t from-forest/90 via-forest/35 to-forest/5" />
+              </>
+            ) : (
+              <div class="absolute inset-0 -z-10 bg-gradient-to-br from-olive to-forest transition-transform duration-700 group-hover:scale-105" />
+            )}
+            <span class="absolute right-4 top-4 grid size-9 place-items-center rounded-md bg-white/15 backdrop-blur transition-colors group-hover:bg-lime group-hover:text-forest">
+              <Icon name="arrowUpRight" class="size-5" />
+            </span>
+            <h3 class="font-display text-2xl">{zones[t.id].name}</h3>
+            <span class="mt-3 block h-px w-8 bg-white/70 transition-all duration-500 group-hover:w-16 group-hover:bg-lime" />
+            <p class="mt-3 text-sm text-white/85">{countLabel(t.id)}</p>
+          </a>
+        ))}
+      </div>
+
+      <!-- Side panel: the newest listings -->
+      <aside
+        class="flex flex-col rounded-lg bg-paper-2 p-5"
+        aria-label="Imóveis adicionados recentemente"
+      >
+        <a href={`/imoveis/${newest.slug}/`} class="group block">
+          <span class="block overflow-hidden rounded-md">
+            <img
+              src={newest.images[0]}
+              alt=""
+              class="aspect-[16/10] w-full object-cover transition-transform duration-500 group-hover:scale-[1.04]"
+              loading="lazy"
+              referrerpolicy="no-referrer"
+            />
           </span>
-          <h3 class="font-display text-2xl">{zones[t.id].name}</h3>
-          <span class="mt-3 block h-px w-8 bg-white/70 transition-all duration-500 group-hover:w-16 group-hover:bg-lime" />
-          <p class="mt-3 text-sm text-white/85">{countLabel(t.id)}</p>
+          <span class="mt-4 block text-xs font-medium text-olive">Último imóvel adicionado</span>
+          <span class="mt-1 block font-display text-2xl leading-tight text-forest">
+            {newest.title}
+          </span>
+          <span class="mt-1 block text-sm text-muted">{placeOf(newest)}</span>
+          <span class="mt-2 block font-display text-xl text-forest">
+            {formatPrice(newest.price)}
+          </span>
         </a>
-      ))}
+
+        {alsoNew.length > 0 && (
+          <>
+            <hr class="my-5 border-olive/40" />
+            <div class="grid grid-cols-2 gap-4">
+              {alsoNew.map((p) => (
+                <a href={`/imoveis/${p.slug}/`} class="group block">
+                  <span class="block overflow-hidden rounded-md">
+                    <img
+                      src={p.images[0]}
+                      alt=""
+                      class="aspect-[4/3] w-full object-cover transition-transform duration-500 group-hover:scale-[1.04]"
+                      loading="lazy"
+                      referrerpolicy="no-referrer"
+                    />
+                  </span>
+                  <span class="mt-3 block text-xs font-medium text-olive">
+                    Adicionado recentemente
+                  </span>
+                  <span class="mt-1 line-clamp-2 block font-display text-base leading-snug text-forest">
+                    {p.title}
+                  </span>
+                  <span class="mt-1 block text-sm font-semibold text-forest">
+                    {formatPrice(p.price)}
+                  </span>
+                </a>
+              ))}
+            </div>
+          </>
+        )}
+      </aside>
     </div>
   </section>
 

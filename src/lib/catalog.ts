@@ -1,4 +1,4 @@
-import { heroImage, properties, zones, type Property } from '../data/properties';
+import { heroImage, properties, visibleProperties, zones, type Property } from '../data/properties';
 import { homePage, MAX_FEATURED, MAX_HERO_LISTINGS } from '../data/home';
 
 /** Listings that can be shown on the site (sold ones drop out). */
@@ -35,3 +35,7 @@ export function heroSlides() {
   }));
   return [intro, ...withListing];
 }
+
+/** The most recently added listings (sold ones excluded), newest first. */
+export const latestProperties = (n: number, list: Property[] = visibleProperties) =>
+  [...list].sort((a, b) => b.addedAt.localeCompare(a.addedAt)).slice(0, n);
