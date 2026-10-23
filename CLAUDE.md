@@ -50,7 +50,7 @@ A pesquisa (hero e listagem) é dirigida por dados. Ao construir o Sanity (fase 
 - **Zona sem imóveis**: campo "Mostrar na pesquisa" para a equipa decidir se aparece.
 - **Apagar zona/tipo em uso**: bloqueado enquanto houver imóveis associados.
 - **Quartos**: opções geradas a partir do máximo de quartos dos imóveis publicados (`getSearchOptions`).
-- **Preço máximo (barra)**: o topo da barra é **sempre o imóvel publicado mais caro** (`getPriceRange`). Ignorar imóveis "preço sob consulta" e os vendidos/arrendados. O campo `price` leva texto de ajuda a dizer que o preço mais alto define o limite da barra, e um aviso de validação para valores muito altos (erro de zeros).
+- **Preço máximo (barra)**: os extremos são **exatamente** o imóvel publicado mais barato e o mais caro (`getPriceRange`): nunca fica abaixo nem acima. Abre sempre no **ponto médio** entre os dois. Ignorar imóveis "preço sob consulta" e os vendidos/arrendados. O campo `price` leva texto de ajuda a dizer que o preço mais alto e o mais baixo definem os limites da barra, e um aviso de validação para valores muito altos (erro de zeros).
 - Cada campo do Studio com uma frase de ajuda em português; menu: Imóveis, Zonas, Tipos de imóvel, Páginas, Testemunhos, Equipa, Definições do site.
 
 ## Fases

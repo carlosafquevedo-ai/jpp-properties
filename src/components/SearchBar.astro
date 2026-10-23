@@ -47,13 +47,7 @@ const price = getPriceRange();
         ))}
       </select>
     </div>
-    <div
-      class="glass-field glass-range"
-      data-range
-      data-min={price.min}
-      data-max={price.max}
-      data-step={price.step}
-    >
+    <div class="glass-field glass-range" data-range data-min={price.min} data-max={price.max}>
       <div class="glass-range-head">
         <label for="s-preco">Preço máximo</label>
         <output for="s-preco" class="glass-range-value">
@@ -70,7 +64,7 @@ const price = getPriceRange();
         value="1000"
         autocomplete="off"
       />
-      <input type="hidden" name="precoMax" value="" disabled />
+      <input type="hidden" name="precoMax" value="" />
     </div>
     <button
       type="submit"
@@ -241,36 +235,45 @@ const price = getPriceRange();
 </script>
 
 <script>
-  // Price slider: the right end is the dearest listing on the site ("sem limite"),
-  // so the filter is only sent when the handle is moved left.
+  // Price slider. Its ends are the cheapest and the dearest listing on the site, so it can never
+  // go outside that range, and it always opens at the exact middle.
   const money = new Intl.NumberFormat('pt-PT', {
     style: 'currency',
     currency: 'EUR',
     maximumFractionDigits: 0,
   });
+  const MIDDLE = 500; // slider runs 0..1000
   document.querySelectorAll<HTMLElement>('[data-range]').forEach((box) => {
     const min = Number(box.dataset.min);
     const max = Number(box.dataset.max);
-    const step = Number(box.dataset.step);
     const slider = box.querySelector<HTMLInputElement>('input[type=range]')!;
     const out = box.querySelector<HTMLOutputElement>('output')!;
     const hidden = box.querySelector<HTMLInputElement>('input[type=hidden]')!;
 
+    const priceAt = (v: number) => {
+      if (v <= 0) return min;
+      if (v >= 1000) return max;
+      const raw = min + ((max - min) * v) / 1000;
+      return Math.min(max, Math.max(min, Math.round(raw / 500) * 500));
+    };
     const update = () => {
-      const v = Number(slider.value);
-      const atEnd = v >= 1000;
-      const value = atEnd ? max : Math.round((min + ((max - min) * v) / 1000) / step) * step;
-      const text = atEnd ? 'Sem limite' : `Até ${money.format(value).replace(/\u00a0/g, ' ')}`;
+      const value = priceAt(Number(slider.value));
+      const text = `Até ${money.format(value).replace(/\u00a0/g, ' ')}`;
       out.textContent = text;
       slider.setAttribute('aria-valuetext', text);
-      slider.style.setProperty('--pct', `${v / 10}%`);
-      hidden.disabled = atEnd;
-      hidden.value = atEnd ? '' : String(value);
+      slider.style.setProperty('--pct', `${Number(slider.value) / 10}%`);
+      hidden.value = String(value);
     };
+    const reset = () => {
+      slider.value = String(MIDDLE);
+      update();
+    };
+
+    if (min === max) slider.disabled = true; // a single price: nothing to choose
     slider.addEventListener('input', update);
-    slider.form?.addEventListener('reset', () => setTimeout(update));
-    // Browsers may restore a previous slider position after load / on back navigation.
-    window.addEventListener('pageshow', update);
-    update();
+    slider.form?.addEventListener('reset', () => setTimeout(reset));
+    // Always open at the middle, even if the browser restores an old position (back/reload).
+    window.addEventListener('pageshow', reset);
+    reset();
   });
 </script>

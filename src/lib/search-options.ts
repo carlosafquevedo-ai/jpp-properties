@@ -12,17 +12,13 @@ export interface Option {
 }
 
 /**
- * Price slider range, always taken from the listings that are on the site:
- * the top of the slider is the dearest listing, the bottom the cheapest (rounded down).
- * Listings without a price ("preço sob consulta") are ignored.
+ * Price slider range, always taken from the listings that are on the site: the slider can
+ * never go below the cheapest listing or above the dearest one, and it starts at the exact
+ * middle between the two. Listings without a price ("preço sob consulta") are ignored.
  */
 export function getPriceRange(list = properties) {
   const prices = list.map((p) => p.price).filter((n) => n > 0);
-  const max = Math.max(...prices);
-  const min = Math.min(...prices);
-  const step =
-    max >= 3_000_000 ? 100_000 : max >= 1_000_000 ? 50_000 : max >= 300_000 ? 10_000 : 5_000;
-  return { min: Math.floor(min / step) * step, max, step };
+  return { min: Math.min(...prices), max: Math.max(...prices) };
 }
 
 export function getSearchOptions(list = properties) {
