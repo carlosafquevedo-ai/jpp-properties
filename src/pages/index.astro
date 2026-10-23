@@ -1,5 +1,236 @@
 ---
-import UnderConstruction from '../components/UnderConstruction.astro';
+import SiteLayout from '../layouts/SiteLayout.astro';
+import SearchBar from '../components/SearchBar.astro';
+import PropertyCard from '../components/PropertyCard.astro';
+import ContactForm from '../components/ContactForm.astro';
+import Icon from '../components/Icon.astro';
+import { heroImage, properties, zones, type ZoneId } from '../data/properties';
+import { AMI, offices, email } from '../lib/site';
+
+const countByZone = (id: ZoneId) => properties.filter((p) => p.zone === id).length;
+const countLabel = (id: ZoneId) => {
+  const n = countByZone(id);
+  return n === 1 ? '1 imóvel' : `${n} imóveis`;
+};
+const featured = properties.filter((p) => p.featured);
+const photo = (slug: string) => properties.find((p) => p.slug === slug)!.images[0];
+
+const tiles: { id: ZoneId; span: string; image?: string }[] = [
+  {
+    id: 'vilamoura',
+    span: 'lg:col-span-2 lg:row-span-2',
+    image: photo('casuarinas-residences-vilamoura'),
+  },
+  { id: 'quarteira', span: 'lg:col-span-2', image: photo('t2-perto-da-praia-quarteira') },
+  { id: 'vale-do-lobo', span: '' },
+  { id: 'quinta-do-lago', span: '' },
+  { id: 'vilasol', span: 'lg:col-span-2' },
+  { id: 'loule', span: 'lg:col-span-2' },
+];
 ---
 
-<UnderConstruction locale="pt" />
+<SiteLayout
+  title="JPP Properties | Imóveis no Algarve"
+  description="Apartamentos e moradias em Vilamoura, Quarteira, Vale do Lobo e Quinta do Lago. JPP Properties, AMI 9361."
+  route="home"
+  padTop={false}
+>
+  <!-- Hero -->
+  <section class="px-3 pt-3 sm:px-4">
+    <div class="relative isolate flex min-h-[640px] h-[88svh] items-end overflow-hidden rounded-[1.75rem] sm:rounded-[2.25rem]">
+      <img
+        src={heroImage}
+        alt="Piscina rodeada de palmeiras, com o campo de golfe ao fundo"
+        class="hero-image absolute inset-0 -z-20 size-full object-cover"
+        fetchpriority="high"
+        referrerpolicy="no-referrer"
+      />
+      <div class="absolute inset-0 -z-10 bg-gradient-to-t from-forest/80 via-forest/25 to-forest/10"></div>
+
+      <div class="hero-copy container-x pb-24 text-white sm:pb-28">
+        <h1 class="max-w-4xl font-serif text-[clamp(3.25rem,9vw,7.5rem)] leading-[0.95]">
+          Encontre a sua casa no Algarve.
+        </h1>
+        <p class="mt-6 max-w-xl text-lg leading-relaxed text-white/90">
+          Apartamentos e moradias em Vilamoura, Quarteira, Vale do Lobo e Quinta do Lago.
+          Acompanhamos cada passo, da primeira visita à decisão.
+        </p>
+        <div class="mt-8 flex flex-wrap items-center gap-3">
+          <a href="/imoveis/" class="btn btn-lime">
+            Ver todos os imóveis
+          </a>
+          <a href="#vender" class="btn border border-white/50 text-white hover:bg-white/10">
+            Quero vender
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Search overlaps the hero -->
+  <div class="container-x relative z-10 -mt-14 max-w-6xl">
+    <SearchBar />
+  </div>
+
+  <!-- Featured -->
+  <section class="container-x pt-24" aria-labelledby="destaques">
+    <div class="flex flex-wrap items-end justify-between gap-4">
+      <h2 id="destaques" class="font-serif text-5xl text-forest sm:text-6xl">
+        Imóveis em destaque
+      </h2>
+      <a
+        href="/imoveis/"
+        class="inline-flex items-center gap-2 font-semibold text-olive hover:text-forest"
+      >
+        Ver todos <Icon name="arrowRight" class="size-5" />
+      </a>
+    </div>
+    <div class="mt-10 grid gap-x-6 gap-y-12 sm:grid-cols-2 lg:grid-cols-3">
+      {featured.map((p, i) => (
+        <PropertyCard property={p} eager={i < 3} />
+      ))}
+    </div>
+  </section>
+
+  <!-- Zones -->
+  <section id="zonas" class="mt-28 bg-paper-2 py-24" aria-labelledby="zonas-titulo">
+    <div class="container-x">
+      <h2 id="zonas-titulo" class="max-w-2xl font-serif text-5xl text-forest sm:text-6xl">
+        Conhecemos cada zona do Algarve onde atuamos
+      </h2>
+      <div class="mt-12 grid gap-4 lg:grid-cols-4 lg:auto-rows-[15rem]">
+        {tiles.map((t) => (
+          <a
+            href={`/imoveis/?zona=${t.id}`}
+            class:list={[
+              'group relative isolate flex min-h-52 flex-col justify-end overflow-hidden rounded-3xl p-6 text-white transition-colors',
+              t.image ? 'bg-forest' : 'bg-olive hover:bg-forest-2',
+              t.span,
+            ]}
+          >
+            {t.image && (
+              <>
+                <img
+                  src={t.image}
+                  alt=""
+                  class="absolute inset-0 -z-20 size-full object-cover transition-transform duration-700 group-hover:scale-105"
+                  loading="lazy"
+                  referrerpolicy="no-referrer"
+                />
+                <div class="absolute inset-0 -z-10 bg-gradient-to-t from-forest/90 via-forest/50 to-forest/10" />
+              </>
+            )}
+            <span class="absolute right-5 top-5 grid size-10 place-items-center rounded-full bg-white/15 backdrop-blur transition-colors group-hover:bg-lime group-hover:text-forest">
+              <Icon name="arrowUpRight" class="size-5" />
+            </span>
+            <h3 class="font-serif text-4xl">{zones[t.id].name}</h3>
+            <p class="mt-1 max-w-xs text-sm text-white/85">{zones[t.id].blurb}</p>
+            <p class="mt-3 text-sm font-semibold text-lime">{countLabel(t.id)}</p>
+          </a>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- Sell / request a property -->
+  <section id="vender" class="on-dark container-x mt-24" aria-label="Vender ou pedir um imóvel">
+    <div class="grid gap-4 lg:grid-cols-2">
+      <div class="flex flex-col justify-between rounded-[2rem] bg-forest p-8 text-white sm:p-12">
+        <div>
+          <h2 class="font-serif text-5xl leading-tight sm:text-6xl">Quer vender o seu imóvel?</h2>
+          <p class="mt-5 max-w-md text-white/80">
+            Diga-nos onde fica e o que tem. Avaliamos o imóvel e propomos a melhor forma de o
+            apresentar a quem procura.
+          </p>
+        </div>
+        <a href="#contacto" class="btn btn-lime mt-10 self-start">
+          Pedir avaliação
+        </a>
+      </div>
+      <div class="flex flex-col justify-between rounded-[2rem] bg-olive p-8 text-white sm:p-12">
+        <div>
+          <h2 class="font-serif text-5xl leading-tight sm:text-6xl">Não encontra o que procura?</h2>
+          <p class="mt-5 max-w-md text-white/90">
+            Descreva o imóvel ideal e procuramos por si, incluindo propriedades que ainda não estão
+            no site.
+          </p>
+        </div>
+        <a href="#contacto" class="btn mt-10 self-start bg-white text-forest hover:bg-paper">
+          Pedir um imóvel
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- About -->
+  <section
+    id="sobre"
+    class="container-x mt-28 grid gap-10 lg:grid-cols-2 lg:gap-20"
+    aria-labelledby="sobre-titulo"
+  >
+    <h2 id="sobre-titulo" class="font-serif text-5xl text-forest sm:text-6xl">
+      Somos daqui. Sentimos o mercado como poucos.
+    </h2>
+    <div class="space-y-5 text-lg leading-relaxed text-ink/85">
+      <p>
+        A JPP Properties é uma agência imobiliária que trabalha sobretudo em Vilamoura, Quarteira,
+        Vilasol, Vale do Lobo, Quinta do Lago e em toda a zona central do Algarve.
+      </p>
+      <p>
+        Com muitos anos de experiência, apresentamos as melhores opções de negócio, dando prioridade
+        ao que cada cliente quer e precisa.
+      </p>
+      <p class="inline-flex rounded-full bg-paper-2 px-4 py-2 text-sm font-semibold text-forest">
+        Licença AMI {AMI}
+      </p>
+    </div>
+  </section>
+
+  <!-- Contact -->
+  <section
+    id="contacto"
+    class="container-x mt-28 grid gap-10 lg:grid-cols-[1fr_1.1fr] lg:gap-16"
+    aria-labelledby="contacto-titulo"
+  >
+    <div>
+      <h2 id="contacto-titulo" class="font-serif text-5xl text-forest sm:text-6xl">
+        Fale connosco
+      </h2>
+      <p class="mt-4 max-w-md text-ink/80">
+        Ligue, escreva ou visite um dos nossos dois escritórios. Respondemos o mais depressa
+        possível.
+      </p>
+      <div class="mt-10 grid gap-8 sm:grid-cols-2">
+        {offices.map((o) => (
+          <div>
+            <h3 class="font-serif text-3xl text-forest">{o.name}</h3>
+            <address class="mt-2 text-sm not-italic leading-relaxed text-ink/80">
+              {o.address.map((l) => (
+                <div>{l}</div>
+              ))}
+            </address>
+            <ul class="mt-3 space-y-2 text-sm">
+              {o.phones.map((p) => (
+                <li>
+                  <a href={`tel:${p.tel}`} class="font-semibold text-forest hover:text-olive">
+                    {p.label}
+                  </a>
+                  <span class="block text-xs text-muted">({p.note})</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+        ))}
+      </div>
+      <a
+        href={`mailto:${email}`}
+        class="mt-8 inline-flex items-center gap-2 font-semibold text-olive hover:text-forest"
+      >
+        <Icon name="mail" class="size-5" /> {email}
+      </a>
+    </div>
+    <div class="rounded-[2rem] border border-line bg-white p-6 sm:p-8">
+      <ContactForm idPrefix="home" />
+    </div>
+  </section>
+</SiteLayout>

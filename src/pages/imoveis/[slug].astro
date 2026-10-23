@@ -1,0 +1,295 @@
+---
+import SiteLayout from '../../layouts/SiteLayout.astro';
+import ContactForm from '../../components/ContactForm.astro';
+import PropertyCard from '../../components/PropertyCard.astro';
+import Icon from '../../components/Icon.astro';
+import {
+  properties,
+  zones,
+  propertyTypeLabels,
+  formatPrice,
+  type Property,
+} from '../../data/properties';
+import { mainPhone, whatsappUrl } from '../../lib/site';
+
+export function getStaticPaths() {
+  return properties.map((property) => ({ params: { slug: property.slug }, props: { property } }));
+}
+
+interface Props {
+  property: Property;
+}
+const { property: p } = Astro.props;
+const place = [p.locality, zones[p.zone].name].filter(Boolean).join(', ');
+const similar = properties.filter((o) => o.slug !== p.slug && o.zone === p.zone).slice(0, 3);
+const extra =
+  similar.length < 3
+    ? properties.filter((o) => o.slug !== p.slug && o.zone !== p.zone).slice(0, 3 - similar.length)
+    : [];
+const gallery = p.images;
+const more = gallery.length - 5;
+
+const facts = [
+  { icon: 'bed', label: 'Quartos', value: String(p.bedrooms) },
+  { icon: 'bath', label: 'Casas de banho', value: String(p.bathrooms) },
+  { icon: 'car', label: 'Garagem', value: String(p.garageSpaces) },
+  { icon: 'area', label: 'Área útil', value: `${p.usableArea} m²` },
+  { icon: 'calendar', label: 'Construção', value: String(p.yearBuilt) },
+  { icon: 'zap', label: 'Classe energética', value: p.energyClass ?? 'A indicar' }, // TODO: mandatory in real listings
+] as const;
+---
+
+<SiteLayout
+  title={`${p.title}, ${place} | JPP Properties`}
+  description={`${propertyTypeLabels[p.propertyType]} T${p.bedrooms} em ${place}. ${p.usableArea} m². ${formatPrice(p.price)}.`}
+>
+  <div class="container-x">
+    <nav aria-label="Localização" class="text-sm text-muted">
+      <ol class="flex flex-wrap items-center gap-2">
+        <li>
+          <a href="/" class="hover:text-ink">
+            Início
+          </a>
+        </li>
+        <li aria-hidden="true">/</li>
+        <li>
+          <a href="/imoveis/" class="hover:text-ink">
+            Imóveis
+          </a>
+        </li>
+        <li aria-hidden="true">/</li>
+        <li>
+          <a href={`/imoveis/?zona=${p.zone}`} class="hover:text-ink">
+            {zones[p.zone].name}
+          </a>
+        </li>
+      </ol>
+    </nav>
+
+    <!-- Gallery -->
+    <div class="mt-4 grid gap-2 lg:h-[34rem] lg:grid-cols-4 lg:grid-rows-2">
+      <button
+        type="button"
+        data-open="0"
+        class="group relative cursor-pointer overflow-hidden rounded-3xl bg-paper-2 lg:col-span-2 lg:row-span-2"
+        aria-label="Abrir fotografia 1"
+      >
+        <img
+          src={gallery[0]}
+          alt={`${p.title}: fotografia principal`}
+          class="aspect-[4/3] size-full object-cover transition-transform duration-700 group-hover:scale-[1.03] lg:aspect-auto"
+          fetchpriority="high"
+          referrerpolicy="no-referrer"
+        />
+      </button>
+      {gallery.slice(1, 5).map((src, i) => (
+        <button
+          type="button"
+          data-open={i + 1}
+          class:list={[
+            'group relative hidden cursor-pointer overflow-hidden rounded-2xl bg-paper-2 lg:block',
+          ]}
+          aria-label={`Abrir fotografia ${i + 2}`}
+        >
+          <img
+            src={src}
+            alt=""
+            class="size-full object-cover transition-transform duration-700 group-hover:scale-[1.04]"
+            loading="lazy"
+            referrerpolicy="no-referrer"
+          />
+          {i === 3 && more > 0 && (
+            <span class="absolute inset-0 grid place-items-center bg-forest/60 text-lg font-semibold text-white">
+              +{more} fotografias
+            </span>
+          )}
+        </button>
+      ))}
+    </div>
+    <button type="button" data-open="0" class="btn btn-ghost mt-3 w-full lg:hidden">
+      <Icon name="images" class="size-5" /> Ver as {gallery.length} fotografias
+    </button>
+
+    <div class="mt-10 grid items-start gap-10 lg:grid-cols-[1fr_24rem] lg:gap-14">
+      <div>
+        <div class="flex flex-wrap items-start justify-between gap-4">
+          <div>
+            <h1 class="max-w-2xl font-serif text-4xl leading-tight text-forest sm:text-5xl">
+              {p.title}
+            </h1>
+            <p class="mt-3 flex items-center gap-2 text-muted">
+              <Icon name="pin" class="size-5" /> {place}
+              {p.reference && ` · Ref. ${p.reference}`}
+            </p>
+          </div>
+          <p class="font-serif text-5xl text-forest">{formatPrice(p.price)}</p>
+        </div>
+
+        <dl class="mt-8 grid grid-cols-2 gap-px overflow-hidden rounded-2xl border border-line bg-line sm:grid-cols-3">
+          {facts.map((f) => (
+            <div class="flex items-center gap-3 bg-white p-4">
+              <Icon name={f.icon} class="size-6 shrink-0 text-olive" />
+              <div>
+                <dt class="text-xs text-muted">{f.label}</dt>
+                <dd class="font-semibold">{f.value}</dd>
+              </div>
+            </div>
+          ))}
+        </dl>
+
+        <section class="mt-12" aria-labelledby="desc">
+          <h2 id="desc" class="font-serif text-4xl text-forest">
+            Sobre este imóvel
+          </h2>
+          <div class="mt-4 max-w-2xl space-y-4 text-lg leading-relaxed text-ink/85">
+            {p.description.map((para) => (
+              <p>{para}</p>
+            ))}
+          </div>
+        </section>
+
+        <section class="mt-12" aria-labelledby="feat">
+          <h2 id="feat" class="font-serif text-4xl text-forest">
+            Características
+          </h2>
+          <ul class="mt-4 grid gap-x-8 gap-y-3 sm:grid-cols-2">
+            {p.features.map((f) => (
+              <li class="flex items-start gap-3 border-b border-line pb-3">
+                <Icon name="check" class="mt-0.5 size-5 shrink-0 text-olive" /> {f}
+              </li>
+            ))}
+          </ul>
+        </section>
+
+        <section class="mt-12" aria-labelledby="loc">
+          <h2 id="loc" class="font-serif text-4xl text-forest">
+            Localização
+          </h2>
+          <p class="mt-3 text-ink/85">Localização aproximada: {place}.</p>
+          <a
+            href={`https://www.openstreetmap.org/search?query=${encodeURIComponent(`${zones[p.zone].name}, Portugal`)}`}
+            rel="noopener"
+            target="_blank"
+            class="mt-3 inline-flex items-center gap-2 font-semibold text-olive hover:text-forest"
+          >
+            Ver no mapa <Icon name="arrowUpRight" class="size-5" />
+          </a>
+        </section>
+      </div>
+
+      <!-- Contact card -->
+      <aside
+        class="rounded-[2rem] border border-line bg-white p-6 lg:sticky lg:top-28"
+        aria-labelledby="info"
+      >
+        <h2 id="info" class="font-serif text-3xl text-forest">
+          Pedir informações
+        </h2>
+        <p class="mt-1 text-sm text-muted">Respondemos o mais depressa possível.</p>
+        <div class="mt-5 grid grid-cols-2 gap-2">
+          <a href={`tel:${mainPhone.tel}`} class="btn btn-lime px-3">
+            <Icon name="phone" class="size-5" /> Ligar
+          </a>
+          <a href={whatsappUrl} rel="noopener" class="btn btn-ghost px-3">
+            <Icon name="chat" class="size-5" /> WhatsApp
+          </a>
+        </div>
+        <p class="mt-2 text-xs text-muted">
+          {mainPhone.label} ({mainPhone.note})
+        </p>
+        <hr class="my-5 border-line" />
+        <ContactForm
+          idPrefix="detail"
+          reference={p.reference}
+          propertyTitle={p.title}
+          submitLabel="Pedir informações"
+        />
+      </aside>
+    </div>
+
+    <section class="mt-24" aria-labelledby="sim">
+      <h2 id="sim" class="font-serif text-4xl text-forest sm:text-5xl">
+        Imóveis semelhantes
+      </h2>
+      <div class="mt-8 grid gap-x-6 gap-y-12 sm:grid-cols-2 lg:grid-cols-3">
+        {[...similar, ...extra].map((o) => (
+          <PropertyCard property={o} />
+        ))}
+      </div>
+    </section>
+  </div>
+
+  <!-- Lightbox -->
+  <dialog
+    id="lightbox"
+    class="m-0 h-dvh max-h-none w-dvw max-w-none bg-forest/95 p-0 text-white backdrop:bg-black"
+    aria-label="Galeria de fotografias"
+  >
+    <div class="on-dark flex h-full flex-col">
+      <div class="flex items-center justify-between p-4">
+        <p id="lb-count" class="text-sm text-white/80" aria-live="polite"></p>
+        <button
+          type="button"
+          id="lb-close"
+          class="grid size-12 cursor-pointer place-items-center rounded-full bg-white/10 hover:bg-white/20"
+          aria-label="Fechar galeria"
+        >
+          <Icon name="close" class="size-6" />
+        </button>
+      </div>
+      <div class="relative flex min-h-0 flex-1 items-center justify-center px-2 sm:px-16">
+        <button
+          type="button"
+          id="lb-prev"
+          class="absolute left-2 z-10 grid size-12 cursor-pointer place-items-center rounded-full bg-white/10 hover:bg-white/20 sm:left-4"
+          aria-label="Fotografia anterior"
+        >
+          <Icon name="chevronLeft" class="size-6" />
+        </button>
+        <img
+          id="lb-img"
+          src=""
+          alt=""
+          class="max-h-full max-w-full rounded-xl object-contain"
+          referrerpolicy="no-referrer"
+        />
+        <button
+          type="button"
+          id="lb-next"
+          class="absolute right-2 z-10 grid size-12 cursor-pointer place-items-center rounded-full bg-white/10 hover:bg-white/20 sm:right-4"
+          aria-label="Fotografia seguinte"
+        >
+          <Icon name="chevronRight" class="size-6" />
+        </button>
+      </div>
+      <div class="h-6"></div>
+    </div>
+  </dialog>
+
+  <script is:inline define:vars={{ gallery, title: p.title }}>
+    const dlg = document.getElementById('lightbox');
+    const img = document.getElementById('lb-img');
+    const count = document.getElementById('lb-count');
+    let i = 0;
+    const show = (n) => {
+      i = (n + gallery.length) % gallery.length;
+      img.src = gallery[i];
+      img.alt = `${title}: fotografia ${i + 1} de ${gallery.length}`;
+      count.textContent = `${i + 1} / ${gallery.length}`;
+    };
+    document.querySelectorAll('[data-open]').forEach((b) =>
+      b.addEventListener('click', () => {
+        show(Number(b.dataset.open));
+        dlg.showModal();
+      }),
+    );
+    document.getElementById('lb-close').addEventListener('click', () => dlg.close());
+    document.getElementById('lb-prev').addEventListener('click', () => show(i - 1));
+    document.getElementById('lb-next').addEventListener('click', () => show(i + 1));
+    dlg.addEventListener('keydown', (e) => {
+      if (e.key === 'ArrowLeft') show(i - 1);
+      if (e.key === 'ArrowRight') show(i + 1);
+    });
+    dlg.addEventListener('click', (e) => e.target === dlg && dlg.close());
+  </script>
+</SiteLayout>
