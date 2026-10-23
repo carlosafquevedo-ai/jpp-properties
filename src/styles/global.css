@@ -294,6 +294,40 @@
     }
   }
 
+  /* Zone tile call to action: small text + arrow, tucked in the top-right corner. */
+  .zone-go {
+    position: absolute;
+    right: 0.75rem;
+    top: 0.75rem;
+    z-index: 5;
+    display: flex;
+    align-items: center;
+    background: rgba(255, 255, 255, 0.15);
+    -webkit-backdrop-filter: blur(8px);
+    backdrop-filter: blur(8px);
+    color: #fff;
+    transition:
+      background-color 0.25s,
+      color 0.25s;
+  }
+  .zone-go-text {
+    padding-left: 0.75rem;
+    font-size: 0.6875rem;
+    font-weight: 500;
+    line-height: 1;
+    white-space: nowrap;
+  }
+  a:hover > .zone-go {
+    background: var(--color-lime);
+    color: var(--color-forest);
+  }
+  /* The highlights panel covers 24px of the last column on wide screens: keep that arrow in view. */
+  @media (min-width: 1024px) {
+    .zone-grid-overlap > a:nth-child(3n) .zone-go {
+      right: 2.25rem;
+    }
+  }
+
   /* Hero slideshow (crossfade + slow zoom), listing card and controls. */
   .hero-slide {
     position: absolute;
