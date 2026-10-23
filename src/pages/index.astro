@@ -380,7 +380,7 @@ const zoneTiles = (Object.keys(zones) as ZoneId[]).map((id) => ({ id, image: zon
           <div class="min-h-72 overflow-hidden rounded-3xl bg-paper-2">
             <iframe
               title={`Mapa: Escritório de ${o.name}`}
-              src={`https://www.google.com/maps?q=${encodeURIComponent(`JPP Properties, ${o.address.join(', ')}`)}&hl=pt-PT&z=16&output=embed`}
+              src={`https://www.google.com/maps?q=${encodeURIComponent(`JPP Properties, ${o.address.join(', ')}`)}&hl=pt-PT&t=h&z=16&output=embed`}
               class="size-full min-h-72 border-0"
               loading="lazy"
               referrerpolicy="no-referrer-when-downgrade"
