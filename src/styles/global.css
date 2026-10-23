@@ -641,6 +641,46 @@
     color: var(--color-olive);
   }
 
+  /* Round icon buttons in the header (phone, Instagram, WhatsApp) */
+  .hdr-icon {
+    display: grid;
+    place-items: center;
+    width: 2.5rem;
+    height: 2.5rem;
+    border-radius: 9999px;
+    color: rgba(27, 36, 25, 0.85);
+    cursor: pointer;
+    transition:
+      background-color 0.2s,
+      color 0.2s;
+  }
+  .hdr-icon:hover,
+  .hdr-icon[aria-expanded='true'] {
+    background: var(--color-paper-2);
+    color: var(--color-olive);
+  }
+  .lang-menu.phone-menu {
+    min-width: 20rem;
+    padding: 0.5rem;
+  }
+  .phone-office {
+    padding: 0.5rem 0.75rem 0.25rem;
+    font-size: 0.8125rem;
+    font-weight: 600;
+    letter-spacing: 0;
+    color: var(--color-muted);
+  }
+  .phone-menu ul {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+  .phone-note {
+    font-size: 0.75rem;
+    font-weight: 400;
+    color: var(--color-muted);
+  }
+
   /* Language dropdown */
   .lang-btn {
     display: inline-flex;

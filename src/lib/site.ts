@@ -31,3 +31,5 @@ export const mainPhone = offices[0].phones[0];
 export const whatsappUrl = 'https://wa.me/351917629447';
 export const facebookUrl = 'https://www.facebook.com/JPP-Properties-107531187529584/';
 export const complaintsBookUrl = 'https://www.livroreclamacoes.pt/inicio';
+// TODO: confirm the real Instagram profile with the client (placeholder points to the Instagram home).
+export const instagramUrl = 'https://www.instagram.com/';

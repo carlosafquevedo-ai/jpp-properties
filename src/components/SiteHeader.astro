@@ -3,7 +3,7 @@ import Icon from './Icon.astro';
 import { logoImage } from '../data/properties';
 import { locales, localizedPath } from '../i18n/routes';
 import { useTranslations } from '../i18n/ui';
-import { mainPhone } from '../lib/site';
+import { instagramUrl, mainPhone, offices, whatsappUrl } from '../lib/site';
 
 const path = Astro.url.pathname;
 const links = [
@@ -76,12 +76,60 @@ const linkClass =
           ))}
         </ul>
       </div>
+      <div class="relative hidden md:block" data-phone>
+        <button
+          type="button"
+          class="hdr-icon"
+          aria-expanded="false"
+          aria-controls="phone-menu"
+          aria-label="Ligar: ver os números de telefone"
+        >
+          <Icon name="phone" class="size-5" />
+        </button>
+        <div
+          id="phone-menu"
+          class="lang-menu phone-menu"
+          role="group"
+          aria-label="Números de telefone"
+          hidden
+        >
+          {offices.map((o) => (
+            <section>
+              <h2 class="phone-office">{o.name}</h2>
+              <ul>
+                {o.phones.map((p) => (
+                  <li>
+                    <a href={`tel:${p.tel}`} class="mega-link lang-item">
+                      <span class="flex flex-col">
+                        <span class="font-semibold">{p.label}</span>
+                        <span class="phone-note">({p.note})</span>
+                      </span>
+                      <Icon name="phone" class="size-4 text-olive" />
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            </section>
+          ))}
+        </div>
+      </div>
       <a
-        href={`tel:${mainPhone.tel}`}
-        class="hidden items-center gap-2 rounded-full px-4 py-2 whitespace-nowrap text-[0.95rem] font-semibold text-ink hover:bg-paper-2 xl:inline-flex"
+        href={instagramUrl}
+        class="hdr-icon hidden md:grid"
+        aria-label="Instagram"
+        target="_blank"
+        rel="noopener"
       >
-        <Icon name="phone" class="size-4 text-olive" />
-        {mainPhone.label}
+        <Icon name="instagram" class="size-5" />
+      </a>
+      <a
+        href={whatsappUrl}
+        class="hdr-icon hidden md:grid"
+        aria-label="WhatsApp"
+        target="_blank"
+        rel="noopener"
+      >
+        <Icon name="whatsapp" class="size-5" />
       </a>
       <a href="/#contacto" class="btn btn-dark hidden min-h-11 sm:inline-flex">
         Falar connosco
@@ -132,6 +180,14 @@ const linkClass =
       <Icon name="phone" class="size-5" />
       {mainPhone.label}
     </a>
+    <div class="mt-2 grid grid-cols-2 gap-2">
+      <a href={whatsappUrl} class="btn btn-ghost" target="_blank" rel="noopener">
+        <Icon name="whatsapp" class="size-5" /> WhatsApp
+      </a>
+      <a href={instagramUrl} class="btn btn-ghost" target="_blank" rel="noopener">
+        <Icon name="instagram" class="size-5" /> Instagram
+      </a>
+    </div>
   </div>
 </header>
 
@@ -155,7 +211,7 @@ const linkClass =
     if ((e.target as HTMLElement).closest('a')) setOpen(false);
   });
 
-  // Dropdown (language list): open on hover (mouse) and on the button
+  // Dropdowns (language list, phone list): the language list opens on hover (mouse) and on the button
   // (keyboard/touch); close on Esc, outside click or when focus leaves. Only one is open at a time.
   const fine = window.matchMedia('(hover: hover) and (pointer: fine)');
   type Drop = { root: HTMLElement; button: HTMLButtonElement; panel: HTMLElement; timer: number };
@@ -176,20 +232,28 @@ const linkClass =
     clearTimeout(d.timer);
     d.timer = window.setTimeout(() => close(d), 180);
   };
-  const register = (root: HTMLElement | null, panel: HTMLElement | null) => {
+  const register = (root: HTMLElement | null, panel: HTMLElement | null, hover = true) => {
     const button = root?.querySelector<HTMLButtonElement>('button[aria-controls]');
     if (!root || !panel || !button) return;
     const d: Drop = { root, button, panel, timer: 0 };
     drops.push(d);
-    root.addEventListener('pointerenter', () => fine.matches && open(d));
-    root.addEventListener('pointerleave', () => fine.matches && closeSoon(d));
-    panel.addEventListener('pointerenter', () => clearTimeout(d.timer));
-    panel.addEventListener('pointerleave', () => fine.matches && closeSoon(d));
+    if (hover) {
+      root.addEventListener('pointerenter', () => fine.matches && open(d));
+      root.addEventListener('pointerleave', () => fine.matches && closeSoon(d));
+      panel.addEventListener('pointerenter', () => clearTimeout(d.timer));
+      panel.addEventListener('pointerleave', () => fine.matches && closeSoon(d));
+    }
     button.addEventListener('click', () => (isOpen(d) ? close(d) : open(d)));
   };
   register(
     document.querySelector<HTMLElement>('[data-lang]'),
     document.getElementById('lang-menu'),
+  );
+  // The phone list opens on click only (it holds the numbers people may want to call).
+  register(
+    document.querySelector<HTMLElement>('[data-phone]'),
+    document.getElementById('phone-menu'),
+    false,
   );
 
   document.addEventListener('keydown', (e) => {

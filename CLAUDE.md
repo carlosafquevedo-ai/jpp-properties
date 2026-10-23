@@ -53,6 +53,15 @@ A pesquisa (hero e listagem) é dirigida por dados. Ao construir o Sanity (fase 
 - **Preço máximo (barra)**: os extremos são **exatamente** o imóvel publicado mais barato e o mais caro (`getPriceRange`): nunca fica abaixo nem acima. Abre sempre no **ponto médio** entre os dois. Ignorar imóveis "preço sob consulta" e os vendidos/arrendados. O campo `price` leva texto de ajuda a dizer que o preço mais alto e o mais baixo definem os limites da barra, e um aviso de validação para valores muito altos (erro de zeros).
 - Cada campo do Studio com uma frase de ajuda em português; menu: Imóveis, Zonas, Tipos de imóvel, Páginas, Testemunhos, Equipa, Definições do site.
 
+## Definições do site (Sanity): contactos do header
+
+O header (e o rodapé, a barra de contacto móvel e a página de contactos) lê tudo de `siteSettings`; nada fica escrito à mão no código. O painel tem de pedir, como **obrigatórios**:
+
+- **Escritórios**: nome, morada e **telefones** (número + tipo "rede móvel" ou "rede fixa", para a nota legal "(Chamada para rede ... nacional)"). O ícone de telefone do header abre a lista destes números, agrupados por escritório.
+- **WhatsApp** (número, formato internacional) e **Instagram** (endereço do perfil). Os ícones do header só aparecem se estiverem preenchidos.
+- Validação do formato dos números e dos endereços, com frase de ajuda em português em cada campo.
+- `TODO` no protótipo: o WhatsApp é provisório (telemóvel principal) e o Instagram aponta para a página inicial do Instagram até haver o perfil real.
+
 ## Fases
 
 1. Setup · 2. Protótipo de design (aprovação do cliente) · 3. Sanity · 4. Integração · 5. Formulários · 6. Migração · 7. SEO · 8. Segurança e QA · 9. Lançamento · 10. Entrega.
