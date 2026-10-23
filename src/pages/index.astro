@@ -176,7 +176,7 @@ const zoneTiles = (Object.keys(zones) as ZoneId[]).map((id) => ({ id, image: zon
     <h2 id="zonas-titulo" class="font-display text-3xl text-forest sm:text-4xl">
       Explore por zona
     </h2>
-    <div class:list={['mt-10 grid gap-6', mainHighlight && 'lg:grid-cols-[2fr_1fr]']}>
+    <div class:list={['mt-10 grid gap-6', mainHighlight && 'lg:grid-cols-[1fr_24.5rem]']}>
       <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
         {zoneTiles.map((t) => (
           <a
@@ -197,7 +197,7 @@ const zoneTiles = (Object.keys(zones) as ZoneId[]).map((id) => ({ id, image: zon
             ) : (
               <div class="absolute inset-0 -z-10 bg-gradient-to-br from-olive to-forest transition-transform duration-700 group-hover:scale-105" />
             )}
-            <span class="absolute right-4 top-4 grid size-9 place-items-center bg-white/15 backdrop-blur transition-colors group-hover:bg-lime group-hover:text-forest">
+            <span class="absolute right-9 top-4 grid size-9 place-items-center bg-white/15 backdrop-blur transition-colors group-hover:bg-lime group-hover:text-forest">
               <Icon name="arrowUpRight" class="size-5" />
             </span>
             <h3 class="font-display text-2xl">{zones[t.id].name}</h3>
@@ -208,9 +208,12 @@ const zoneTiles = (Object.keys(zones) as ZoneId[]).map((id) => ({ id, image: zon
 
       <!-- Side panel: free-form highlights (image + text), editable by the team -->
       {mainHighlight && (
-        <aside class="flex flex-col rounded-lg bg-paper-2 p-5" aria-label="Destaques">
+        <aside
+          class="flex flex-col rounded-lg bg-paper-2 p-5 lg:relative lg:z-10 lg:-my-12 lg:-ml-12 lg:shadow-[0_34px_70px_-34px_rgba(24,35,26,0.55)]"
+          aria-label="Destaques"
+        >
           <a href={mainHighlight.href} class="group flex min-h-0 flex-1 flex-col">
-            <span class="relative block min-h-32 flex-1 overflow-hidden rounded-md">
+            <span class="relative block min-h-40 flex-1 overflow-hidden rounded-md">
               <img
                 src={mainHighlight.image}
                 alt={mainHighlight.imageAlt}
@@ -219,7 +222,7 @@ const zoneTiles = (Object.keys(zones) as ZoneId[]).map((id) => ({ id, image: zon
                 referrerpolicy="no-referrer"
               />
             </span>
-            <span class="mt-4 block text-xs font-medium text-olive">{mainHighlight.label}</span>
+            <span class="mt-5 block text-xs font-medium text-olive">{mainHighlight.label}</span>
             <span class="mt-1 block font-display text-2xl leading-tight text-forest">
               {mainHighlight.title}
             </span>
