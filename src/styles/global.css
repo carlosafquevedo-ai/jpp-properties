@@ -19,6 +19,15 @@
   --color-muted: #5b6556;
 }
 
+/* One page width for the whole site: every section, the hero, the footer and the header
+   align to the same column. Change --page-w here and everything follows. */
+:root {
+  --page-w: 80rem;
+  --gutter: clamp(1.25rem, 4vw, 2rem);
+  --header-h: 4.5rem;
+  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
 @layer base {
   html {
     scroll-behavior: smooth;
@@ -60,7 +69,70 @@
     @apply border border-line bg-white text-ink hover:border-olive;
   }
   .container-x {
-    @apply mx-auto w-full max-w-7xl px-5 sm:px-8;
+    width: 100%;
+    max-width: var(--page-w);
+    margin-inline: auto;
+    padding-inline: var(--gutter);
+  }
+
+  /* Header: full-width bar at the top, condenses into a capsule on the page column when scrolling. */
+  .site-header {
+    position: fixed;
+    inset: 0 0 auto 0;
+    z-index: 50;
+    padding-inline: 0;
+    padding-top: 0;
+    transition: padding 0.4s var(--ease-out);
+  }
+  .site-header[data-stuck] {
+    padding-inline: var(--gutter);
+    padding-top: 0.75rem;
+  }
+  .hdr-bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    margin-inline: auto;
+    max-width: 100%;
+    height: var(--header-h);
+    /* keeps logo and buttons on the page column while the bar is full width */
+    padding-inline: calc(max(0px, (100% - var(--page-w)) / 2) + var(--gutter));
+    border: 1px solid transparent;
+    border-bottom-color: var(--color-line);
+    border-radius: 0;
+    background: color-mix(in oklab, var(--color-paper) 96%, transparent);
+    backdrop-filter: blur(14px);
+    transition:
+      max-width 0.4s var(--ease-out),
+      height 0.4s var(--ease-out),
+      padding 0.4s var(--ease-out),
+      border-radius 0.4s var(--ease-out),
+      background-color 0.4s,
+      box-shadow 0.4s;
+  }
+  .site-header[data-stuck] .hdr-bar {
+    max-width: calc(var(--page-w) - 2 * var(--gutter));
+    height: 4rem;
+    padding-inline: 1.25rem 0.5rem;
+    border-color: color-mix(in oklab, var(--color-line) 80%, transparent);
+    border-radius: 9999px;
+    background: color-mix(in oklab, var(--color-paper) 90%, transparent);
+    box-shadow: 0 10px 30px -14px rgba(24, 35, 26, 0.35);
+  }
+  .hdr-panel {
+    margin: 0.5rem auto 0;
+    width: calc(100% - 2 * var(--gutter));
+    max-width: calc(var(--page-w) - 2 * var(--gutter));
+  }
+  .site-header[data-stuck] .hdr-panel {
+    width: 100%;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .site-header,
+    .hdr-bar {
+      transition: none;
+    }
   }
 }
 

@@ -36,8 +36,8 @@ const tiles: { id: ZoneId; span: string; image?: string }[] = [
   padTop={false}
 >
   <!-- Hero -->
-  <section class="px-3 pt-3 sm:px-4">
-    <div class="relative isolate flex min-h-[640px] h-[88svh] items-end overflow-hidden rounded-[1.75rem] sm:rounded-[2.25rem]">
+  <section class="container-x" style="padding-top: calc(var(--header-h) + 1rem)">
+    <div class="relative isolate flex h-[calc(100svh-var(--header-h)-3rem)] min-h-[600px] items-end overflow-hidden rounded-[1.75rem] sm:rounded-[2.25rem]">
       <img
         src={heroImage}
         alt="Piscina rodeada de palmeiras, com o campo de golfe ao fundo"
@@ -47,7 +47,7 @@ const tiles: { id: ZoneId; span: string; image?: string }[] = [
       />
       <div class="absolute inset-0 -z-10 bg-gradient-to-t from-forest/80 via-forest/25 to-forest/10"></div>
 
-      <div class="hero-copy container-x pb-24 text-white sm:pb-28">
+      <div class="hero-copy px-6 pb-24 text-white sm:px-12 sm:pb-28">
         <h1 class="max-w-4xl font-serif text-[clamp(3.25rem,9vw,7.5rem)] leading-[0.95]">
           Encontre a sua casa no Algarve.
         </h1>
@@ -68,7 +68,7 @@ const tiles: { id: ZoneId; span: string; image?: string }[] = [
   </section>
 
   <!-- Search overlaps the hero -->
-  <div class="container-x relative z-10 -mt-14 max-w-6xl">
+  <div class="container-x relative z-10 -mt-14">
     <SearchBar />
   </div>
 
