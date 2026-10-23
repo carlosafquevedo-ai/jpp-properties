@@ -24,39 +24,3 @@ const { title, description, route, padTop = true } = Astro.props;
   <SiteFooter />
   <MobileContactBar />
 </BaseLayout>
-
-<script>
-  // Favourite hearts: stored only in this browser (never sent anywhere).
-  const KEY = 'jpp:favs';
-  const read = (): string[] => {
-    try {
-      return JSON.parse(localStorage.getItem(KEY) ?? '[]');
-    } catch {
-      return [];
-    }
-  };
-  const write = (v: string[]) => {
-    try {
-      localStorage.setItem(KEY, JSON.stringify(v));
-    } catch {
-      /* storage unavailable: hearts still toggle for this visit */
-    }
-  };
-  const favs = new Set(read());
-  const paint = (btn: HTMLElement) => {
-    const on = favs.has(btn.dataset.fav!);
-    btn.setAttribute('aria-pressed', String(on));
-    btn.classList.toggle('text-red-600', on);
-    btn.querySelector('svg')?.setAttribute('fill', on ? 'currentColor' : 'none');
-  };
-  document.querySelectorAll<HTMLElement>('[data-fav]').forEach((btn) => {
-    paint(btn);
-    btn.addEventListener('click', (e) => {
-      e.preventDefault();
-      const id = btn.dataset.fav!;
-      favs.has(id) ? favs.delete(id) : favs.add(id);
-      write([...favs]);
-      paint(btn);
-    });
-  });
-</script>
