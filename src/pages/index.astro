@@ -38,14 +38,16 @@ const tiles: { id: ZoneId; span: string; image?: string }[] = [
 >
   <!-- Hero: full-bleed image, rounded bottom corners and a hanging tab that holds the search box -->
   <section>
-    <div class="hero-shape relative isolate flex min-h-[clamp(600px,76svh,800px)] flex-col justify-end overflow-hidden">
-      <img
-        src={heroImage}
-        alt="Piscina rodeada de palmeiras, com o campo de golfe ao fundo"
-        class="hero-image absolute inset-0 -z-20 size-full object-cover"
-        fetchpriority="high"
-        referrerpolicy="no-referrer"
-      />
+    <div class="hero-shape relative isolate z-20 flex min-h-[clamp(600px,76svh,800px)] flex-col justify-end">
+      <div class="absolute inset-0 -z-20 overflow-hidden">
+        <img
+          src={heroImage}
+          alt="Piscina rodeada de palmeiras, com o campo de golfe ao fundo"
+          class="hero-image size-full object-cover"
+          fetchpriority="high"
+          referrerpolicy="no-referrer"
+        />
+      </div>
       <div class="absolute inset-0 -z-10 bg-gradient-to-t from-forest/90 via-forest/40 to-forest/10"></div>
 
       <div class="hero-copy container-x pb-8 pt-32 text-white">

@@ -321,7 +321,7 @@
     background: #fff;
   }
 
-  /* Custom option list that opens above the field (over the hero photo). */
+  /* Custom option list that opens below the field. */
   .glass-trigger {
     display: block;
     text-align: left;
@@ -332,7 +332,7 @@
   .glass-list {
     position: absolute;
     left: 0;
-    bottom: calc(100% + 0.625rem);
+    top: calc(100% + 0.5rem);
     z-index: 60;
     min-width: 100%;
     width: max-content;
@@ -348,7 +348,7 @@
       0 28px 60px -22px rgba(24, 35, 26, 0.6),
       0 0 0 1px rgba(24, 35, 26, 0.06);
     color: var(--color-ink);
-    transform-origin: bottom left;
+    transform-origin: top left;
     list-style: none;
   }
   .glass-list:focus {
@@ -388,7 +388,7 @@
     @keyframes list-in {
       from {
         opacity: 0;
-        transform: translateY(6px) scale(0.98);
+        transform: translateY(-6px) scale(0.98);
       }
     }
   }

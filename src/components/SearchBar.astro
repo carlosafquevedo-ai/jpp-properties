@@ -135,6 +135,9 @@ import { zones, propertyTypeLabels } from '../data/properties';
       trigger.setAttribute('aria-expanded', 'true');
       paint();
       list.focus({ preventScroll: true });
+      // The list opens downward: bring it fully into view if it runs past the fold.
+      const overflow = list.getBoundingClientRect().bottom - window.innerHeight + 24;
+      if (overflow > 0) window.scrollBy({ top: overflow, behavior: 'smooth' });
       options[active].scrollIntoView({ block: 'nearest' });
     };
     const close = (refocus = true) => {
