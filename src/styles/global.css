@@ -374,6 +374,9 @@
     justify-content: space-between;
     gap: 0.5rem;
   }
+  .glass-range:not([data-touched]) .glass-range-value {
+    opacity: 0.7; /* starting suggestion: not applied until the bar is moved */
+  }
   .glass-range-value {
     font-size: 0.875rem;
     font-weight: 600;

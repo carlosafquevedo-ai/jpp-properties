@@ -20,7 +20,7 @@ const price = getPriceRange();
   </fieldset>
 
   <div class="grid grid-cols-2 gap-x-3 gap-y-1 sm:grid-cols-4 lg:grid-cols-[1.1fr_1.1fr_0.9fr_1.4fr_auto] lg:gap-x-3 lg:items-center">
-    <div class="glass-field">
+    <div class="glass-field col-span-2 sm:col-span-1">
       <label for="s-zona">Zona</label>
       <select id="s-zona" name="zona" class="glass-select">
         <option value="">Todas as zonas</option>
@@ -47,7 +47,12 @@ const price = getPriceRange();
         ))}
       </select>
     </div>
-    <div class="glass-field glass-range" data-range data-min={price.min} data-max={price.max}>
+    <div
+      class="glass-field glass-range col-span-2 sm:col-span-1"
+      data-range
+      data-min={price.min}
+      data-max={price.max}
+    >
       <div class="glass-range-head">
         <label for="s-preco">Preço máximo</label>
         <output for="s-preco" class="glass-range-value">
@@ -64,7 +69,7 @@ const price = getPriceRange();
         value="1000"
         autocomplete="off"
       />
-      <input type="hidden" name="precoMax" value="" />
+      <input type="hidden" name="precoMax" value="" disabled />
     </div>
     <button
       type="submit"
@@ -256,6 +261,8 @@ const price = getPriceRange();
       const raw = min + ((max - min) * v) / 1000;
       return Math.min(max, Math.max(min, Math.round(raw / 500) * 500));
     };
+    // The bar opens at the middle as a starting point only. The filter is sent
+    // once the person moves it, so nobody gets hidden results by default.
     const update = () => {
       const value = priceAt(Number(slider.value));
       const text = `Até ${money.format(value).replace(/\u00a0/g, ' ')}`;
@@ -264,13 +271,20 @@ const price = getPriceRange();
       slider.style.setProperty('--pct', `${Number(slider.value) / 10}%`);
       hidden.value = String(value);
     };
+    const touch = () => {
+      box.setAttribute('data-touched', '');
+      hidden.disabled = false;
+      update();
+    };
     const reset = () => {
       slider.value = String(MIDDLE);
+      box.removeAttribute('data-touched');
+      hidden.disabled = true;
       update();
     };
 
     if (min === max) slider.disabled = true; // a single price: nothing to choose
-    slider.addEventListener('input', update);
+    slider.addEventListener('input', touch);
     slider.form?.addEventListener('reset', () => setTimeout(reset));
     // Always open at the middle, even if the browser restores an old position (back/reload).
     window.addEventListener('pageshow', reset);

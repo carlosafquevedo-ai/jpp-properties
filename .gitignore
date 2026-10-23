@@ -21,3 +21,6 @@ backups/
 !.vscode/extensions.json
 *.log
 .claude/settings.local.json
+
+# Client source files (originals); only the trimmed logos in public/brand are committed
+jpp_logos/

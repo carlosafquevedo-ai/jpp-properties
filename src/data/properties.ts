@@ -83,7 +83,8 @@ const quarteiraPhotos = [
 ].map((n) => `${OLD}/2026/04/${n}.jpg1_.jpg`);
 
 export const heroImage = `${OLD}/2020/07/930747_v8.jpeg`;
-export const logoImage = `${OLD}/2020/07/logopng-1.png`;
+export const logoImage = '/brand/logo-black.png';
+export const logoWhiteImage = '/brand/logo-white.png';
 
 export const properties: Property[] = [
   {

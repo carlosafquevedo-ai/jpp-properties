@@ -1,6 +1,6 @@
 ---
 import Icon from './Icon.astro';
-import { logoImage } from '../data/properties';
+import { logoWhiteImage } from '../data/properties';
 import { AMI, offices, email, facebookUrl, complaintsBookUrl } from '../lib/site';
 
 const year = new Date().getFullYear();
@@ -9,15 +9,14 @@ const year = new Date().getFullYear();
 <footer class="on-dark mt-24 bg-forest text-white/80">
   <div class="container-x grid gap-12 py-16 lg:grid-cols-[1.1fr_2fr_1fr]">
     <div>
-      <span class="inline-block rounded-2xl bg-paper px-4 py-3">
-        <img
-          src={logoImage}
-          alt="JPP Properties"
-          class="h-11 w-auto"
-          height="44"
-          referrerpolicy="no-referrer"
-        />
-      </span>
+      <img
+        src={logoWhiteImage}
+        alt="JPP Properties"
+        class="h-12 w-auto"
+        width="143"
+        height="48"
+        loading="lazy"
+      />
       <p class="mt-5 max-w-xs text-sm leading-relaxed">
         Mediação imobiliária no Algarve. Vilamoura, Quarteira, Vilasol, Vale do Lobo e Quinta do
         Lago.
