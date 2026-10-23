@@ -64,3 +64,158 @@ import { zones, propertyTypeLabels } from '../data/properties';
     </button>
   </div>
 </form>
+
+<script>
+  // Custom option list for mouse users (the native one can't be styled). Touch devices keep the
+  // native <select>, which is the best experience there. The real <select> stays in the form.
+  const CHECK =
+    '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" class="glass-check"><path d="M20 6 9 17l-5-5"/></svg>';
+
+  const enhance = (select: HTMLSelectElement) => {
+    const field = select.closest<HTMLElement>('.glass-field');
+    const label = field?.querySelector('label');
+    if (!field || !label) return;
+
+    const uid = select.id;
+    const trigger = document.createElement('button');
+    trigger.type = 'button';
+    trigger.id = `${uid}-btn`;
+    trigger.className = 'glass-select glass-trigger';
+    trigger.setAttribute('aria-haspopup', 'listbox');
+    trigger.setAttribute('aria-expanded', 'false');
+    trigger.setAttribute('aria-controls', `${uid}-list`);
+    label.setAttribute('for', trigger.id);
+
+    const list = document.createElement('ul');
+    list.id = `${uid}-list`;
+    list.className = 'glass-list';
+    list.setAttribute('role', 'listbox');
+    list.setAttribute('aria-labelledby', label.id || (label.id = `${uid}-label`));
+    list.tabIndex = -1;
+    list.hidden = true;
+
+    const options = [...select.options].map((o, i) => {
+      const li = document.createElement('li');
+      li.id = `${uid}-opt-${i}`;
+      li.className = 'glass-opt';
+      li.setAttribute('role', 'option');
+      li.dataset.index = String(i);
+      li.innerHTML = `<span>${o.text}</span>${CHECK}`;
+      list.append(li);
+      return li;
+    });
+
+    select.classList.add('sr-only');
+    select.tabIndex = -1;
+    select.setAttribute('aria-hidden', 'true');
+    field.append(trigger, list);
+
+    let active = select.selectedIndex;
+    let typed = '';
+    let typedTimer = 0;
+
+    const paint = () => {
+      trigger.textContent = select.options[select.selectedIndex]?.text ?? '';
+      options.forEach((li, i) => {
+        li.setAttribute('aria-selected', String(i === select.selectedIndex));
+        li.toggleAttribute('data-active', i === active);
+      });
+      list.setAttribute('aria-activedescendant', options[active]?.id ?? '');
+    };
+    const setActive = (i: number) => {
+      active = (i + options.length) % options.length;
+      paint();
+      options[active].scrollIntoView({ block: 'nearest' });
+    };
+    const open = () => {
+      if (!list.hidden) return;
+      document.querySelectorAll<HTMLElement>('.glass-list').forEach((l) => (l.hidden = true));
+      active = select.selectedIndex;
+      list.hidden = false;
+      trigger.setAttribute('aria-expanded', 'true');
+      paint();
+      list.focus({ preventScroll: true });
+      options[active].scrollIntoView({ block: 'nearest' });
+    };
+    const close = (refocus = true) => {
+      if (list.hidden) return;
+      list.hidden = true;
+      trigger.setAttribute('aria-expanded', 'false');
+      if (refocus) trigger.focus({ preventScroll: true });
+    };
+    const choose = (i: number) => {
+      select.selectedIndex = i;
+      select.dispatchEvent(new Event('change', { bubbles: true }));
+      paint();
+      close();
+    };
+
+    trigger.addEventListener('click', () => (list.hidden ? open() : close()));
+    trigger.addEventListener('keydown', (e) => {
+      if (['ArrowDown', 'ArrowUp', 'Enter', ' '].includes(e.key)) {
+        e.preventDefault();
+        open();
+      }
+    });
+    list.addEventListener('keydown', (e) => {
+      switch (e.key) {
+        case 'ArrowDown':
+          e.preventDefault();
+          setActive(active + 1);
+          break;
+        case 'ArrowUp':
+          e.preventDefault();
+          setActive(active - 1);
+          break;
+        case 'Home':
+          e.preventDefault();
+          setActive(0);
+          break;
+        case 'End':
+          e.preventDefault();
+          setActive(options.length - 1);
+          break;
+        case 'Enter':
+        case ' ':
+          e.preventDefault();
+          choose(active);
+          break;
+        case 'Escape':
+          e.preventDefault();
+          close();
+          break;
+        case 'Tab':
+          close(false);
+          break;
+        default:
+          if (e.key.length === 1) {
+            typed += e.key.toLowerCase();
+            clearTimeout(typedTimer);
+            typedTimer = window.setTimeout(() => (typed = ''), 600);
+            const hit = options.findIndex((li) => li.textContent!.toLowerCase().startsWith(typed));
+            if (hit >= 0) setActive(hit);
+          }
+      }
+    });
+    list.addEventListener('pointermove', (e) => {
+      const li = (e.target as HTMLElement).closest<HTMLElement>('.glass-opt');
+      if (li && Number(li.dataset.index) !== active) {
+        active = Number(li.dataset.index);
+        paint();
+      }
+    });
+    list.addEventListener('click', (e) => {
+      const li = (e.target as HTMLElement).closest<HTMLElement>('.glass-opt');
+      if (li) choose(Number(li.dataset.index));
+    });
+    document.addEventListener('pointerdown', (e) => {
+      if (!field.contains(e.target as Node)) close(false);
+    });
+    select.form?.addEventListener('reset', () => setTimeout(paint));
+    paint();
+  };
+
+  if (window.matchMedia('(hover: hover) and (pointer: fine)').matches) {
+    document.querySelectorAll<HTMLSelectElement>('.glass-field select').forEach(enhance);
+  }
+</script>
