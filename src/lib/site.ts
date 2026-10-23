@@ -13,16 +13,6 @@ export const offices = [
       { label: '+351 289 380 135', tel: '+351289380135', note: 'Chamada para rede fixa nacional' },
     ],
   },
-  {
-    id: 'quarteira',
-    name: 'Quarteira',
-    address: ['Av.ª Dr. Carlos Mota Pinto, Edif. Coluna, Loja n.º 4', '8125-215 Quarteira'],
-    phones: [
-      { label: '+351 962 913 977', tel: '+351962913977', note: 'Chamada para rede móvel nacional' },
-      { label: '+351 916 935 583', tel: '+351916935583', note: 'Chamada para rede móvel nacional' },
-      { label: '+351 916 937 244', tel: '+351916937244', note: 'Chamada para rede móvel nacional' },
-    ],
-  },
 ] as const;
 
 export const email = 'geral@jppproperties.com';

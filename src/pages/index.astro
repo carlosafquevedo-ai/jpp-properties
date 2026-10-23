@@ -287,7 +287,7 @@ const zoneTiles = (Object.keys(zones) as ZoneId[]).map((id) => ({ id, image: zon
     </div>
   </section>
 
-  <!-- About: text + CTA, tall photo and pillars (home page "about us"), then the two offices -->
+  <!-- About: text + CTA, tall photo and pillars (home page "about us"), then the offices -->
   <section id="sobre" class="container-x mt-28" aria-labelledby="sobre-titulo">
     <div class="grid items-center gap-10 lg:grid-cols-[1fr_0.95fr_1fr] lg:gap-14">
       <div>
@@ -353,9 +353,14 @@ const zoneTiles = (Object.keys(zones) as ZoneId[]).map((id) => ({ id, image: zon
       </ul>
     </div>
 
-    <div class="mt-14 grid gap-4 md:grid-cols-2">
+    <div class:list={['mt-14 grid gap-4', offices.length > 1 && 'md:grid-cols-2']}>
       {offices.map((o) => (
-        <article class="flex min-h-64 flex-col justify-between rounded-3xl bg-paper-2 p-7">
+        <article
+          class:list={[
+            'flex min-h-64 flex-col justify-between rounded-3xl bg-paper-2 p-7',
+            offices.length === 1 && 'md:min-h-0 md:flex-row md:items-end',
+          ]}
+        >
           <div>
             <span class="grid size-11 place-items-center rounded-xl bg-white text-olive">
               <Icon name="pin" class="size-5" />
@@ -367,7 +372,7 @@ const zoneTiles = (Object.keys(zones) as ZoneId[]).map((id) => ({ id, image: zon
               ))}
             </address>
           </div>
-          <div class="mt-8 flex flex-wrap gap-3">
+          <div class:list={['mt-8 flex flex-wrap gap-3', offices.length === 1 && 'md:mt-0']}>
             <a href={`tel:${o.phones[0].tel}`} class="btn btn-dark">
               <Icon name="phone" class="size-4" /> Ligar
             </a>
@@ -428,8 +433,7 @@ const zoneTiles = (Object.keys(zones) as ZoneId[]).map((id) => ({ id, image: zon
         Fale connosco
       </h2>
       <p class="mt-4 max-w-md text-ink/80">
-        Ligue, escreva ou visite um dos nossos dois escritórios. Respondemos o mais depressa
-        possível.
+        Ligue, escreva ou visite o nosso escritório. Respondemos o mais depressa possível.
       </p>
       <div class="mt-10 grid gap-8 sm:grid-cols-2">
         {offices.map((o) => (
