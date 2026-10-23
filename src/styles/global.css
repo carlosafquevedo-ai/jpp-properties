@@ -245,6 +245,56 @@
     background: var(--color-lime);
   }
 
+  /* Corner arrow on the card photo: a small cue that the card opens the listing. */
+  .card-go {
+    position: absolute;
+    right: 0.75rem;
+    bottom: 0.75rem;
+    z-index: 5;
+    display: grid;
+    place-items: center;
+    width: 2.25rem;
+    height: 2.25rem;
+    border-radius: 0.375rem;
+    background: var(--color-forest);
+    color: #fff;
+    pointer-events: none;
+    transition:
+      background-color 0.25s,
+      color 0.25s,
+      transform 0.35s var(--ease-out);
+  }
+  .property-card:hover .card-go {
+    background: var(--color-lime);
+    color: var(--color-forest);
+    transform: translate(-2px, -2px);
+  }
+  .property-card {
+    transition:
+      box-shadow 0.25s,
+      transform 0.35s var(--ease-out);
+  }
+  @media (hover: hover) and (prefers-reduced-motion: no-preference) {
+    .property-card:hover {
+      transform: translateY(-4px);
+    }
+  }
+  /* Sequenced entrance. Only hides cards when scripting is on, so nothing is lost without JS. */
+  @media (prefers-reduced-motion: no-preference) and (scripting: enabled) {
+    .reveal {
+      opacity: 0;
+      transform: translateY(26px);
+      transition:
+        opacity 0.7s var(--ease-out),
+        transform 0.7s var(--ease-out);
+      transition-delay: calc(var(--i, 0) * 90ms);
+    }
+    .reveal.is-in {
+      opacity: 1;
+      transform: none;
+    }
+  }
+
   /* Hero slideshow (crossfade + slow zoom), listing card and controls. */
   .hero-slide {
     position: absolute;

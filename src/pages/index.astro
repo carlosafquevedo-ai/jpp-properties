@@ -171,10 +171,12 @@ const tiles: { id: ZoneId; span: string; image?: string }[] = [
         Ver todos <Icon name="arrowRight" class="size-5" />
       </a>
     </div>
-    <!-- Aligned grid: equal-height cards, same photo proportion, rows and footers line up -->
-    <div class="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+    <!-- Aligned grid: equal-height cards; they rise in one after another along each row -->
+    <div class="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4" data-reveal-group>
       {featured.map((p, i) => (
-        <PropertyCard property={p} eager={i < 4} />
+        <div class="reveal h-full" style={`--i: ${i % 4}`}>
+          <PropertyCard property={p} eager={i < 4} />
+        </div>
       ))}
     </div>
   </section>
@@ -453,5 +455,24 @@ const tiles: { id: ZoneId; span: string; image?: string }[] = [
     document.addEventListener('visibilitychange', restart);
     setPaused(userPaused);
     show(0);
+  }
+</script>
+
+<script>
+  // Cards rise in one after another (left to right) the first time they scroll into view.
+  const items = document.querySelectorAll<HTMLElement>('[data-reveal-group] .reveal');
+  if (items.length && 'IntersectionObserver' in window) {
+    const io = new IntersectionObserver(
+      (entries) =>
+        entries.forEach((e) => {
+          if (!e.isIntersecting) return;
+          e.target.classList.add('is-in');
+          io.unobserve(e.target);
+        }),
+      { threshold: 0.12, rootMargin: '0px 0px -6% 0px' },
+    );
+    items.forEach((el) => io.observe(el));
+  } else {
+    items.forEach((el) => el.classList.add('is-in'));
   }
 </script>
