@@ -177,8 +177,8 @@
     gap: 0.4rem;
     padding: 0.35rem 0.7rem;
     border-radius: 9999px;
-    background: var(--color-forest);
-    color: #fff;
+    background: #fff;
+    color: var(--color-forest);
     font-size: 0.875rem;
     font-weight: 600;
     pointer-events: none;
