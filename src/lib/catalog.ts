@@ -1,4 +1,4 @@
-import { heroImage, properties, visibleProperties, zones, type Property } from '../data/properties';
+import { heroImage, properties, zones, type Property } from '../data/properties';
 import { homePage, MAX_FEATURED, MAX_HERO_LISTINGS } from '../data/home';
 
 /** Listings that can be shown on the site (sold ones drop out). */
