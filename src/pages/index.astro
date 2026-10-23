@@ -77,25 +77,25 @@ const zoneTiles = (Object.keys(zones) as ZoneId[]).map((id) => ({ id, image: zon
             {slides.map((slide, i) =>
               slide.property ? (
                 <article class="hero-card" data-slide={i} inert={i !== 0} aria-hidden={i !== 0}>
-                  <h2 class="font-display text-xl leading-tight">{slide.property.title}</h2>
-                  <p class="mt-1 flex items-center gap-1.5 text-sm text-white/80">
-                    <Icon name="pin" class="size-4" />
+                  <h2 class="font-display text-base leading-tight">{slide.property.title}</h2>
+                  <p class="mt-1 flex items-center gap-1.5 text-xs text-white/80">
+                    <Icon name="pin" class="size-3.5" />
                     {[slide.property.locality, zones[slide.property.zone].name]
                       .filter(Boolean)
                       .join(', ')}
                   </p>
-                  <p class="mt-3 font-display text-3xl leading-none">
+                  <p class="mt-2.5 font-display text-2xl leading-none">
                     {formatPrice(slide.property.price)}
                   </p>
-                  <ul class="mt-3 flex gap-4 text-sm text-white/85">
+                  <ul class="mt-2.5 flex gap-3.5 text-xs text-white/85">
                     <li class="flex items-center gap-1.5">
-                      <Icon name="bed" class="size-4" /> {slide.property.bedrooms}
+                      <Icon name="bed" class="size-3.5" /> {slide.property.bedrooms}
                     </li>
                     <li class="flex items-center gap-1.5">
-                      <Icon name="bath" class="size-4" /> {slide.property.bathrooms}
+                      <Icon name="bath" class="size-3.5" /> {slide.property.bathrooms}
                     </li>
                     <li class="flex items-center gap-1.5">
-                      <Icon name="area" class="size-4" /> {slide.property.usableArea} m²
+                      <Icon name="area" class="size-3.5" /> {slide.property.usableArea} m²
                     </li>
                   </ul>
                   <a
