@@ -1,6 +1,6 @@
 ---
 import Icon from './Icon.astro';
-import { logoWhiteImage } from '../data/properties';
+import { logoImage } from '../data/properties';
 import { locales, localizedPath } from '../i18n/routes';
 import { useTranslations } from '../i18n/ui';
 import { instagramUrl, mainPhone, offices, whatsappUrl } from '../lib/site';
@@ -22,13 +22,13 @@ const langLinks = locales.map((l) => ({
   name: t(`lang.${l}` as 'lang.pt' | 'lang.en' | 'lang.fr'),
 }));
 const linkClass =
-  'rounded-full px-4 py-2 whitespace-nowrap text-[0.95rem] font-medium text-white/80 transition-colors hover:bg-white/10 hover:text-white aria-[current=page]:bg-white/10 aria-[current=page]:text-white';
+  'rounded-full px-4 py-2 whitespace-nowrap text-[0.95rem] font-medium text-ink/80 transition-colors hover:bg-forest/8 hover:text-ink aria-[current=page]:bg-forest/8 aria-[current=page]:text-ink';
 ---
 
 <header class="site-header" id="site-header">
   <div class="hdr-bar">
     <a href="/" aria-label="JPP Properties, página inicial" class="shrink-0">
-      <img src={logoWhiteImage} alt="JPP Properties" class="h-10 w-auto" width="133" height="40" />
+      <img src={logoImage} alt="JPP Properties" class="h-10 w-auto" width="133" height="40" />
     </a>
 
     <nav class="hidden items-center lg:flex" aria-label="Principal">
