@@ -5,7 +5,7 @@ import PropertyCard from '../components/PropertyCard.astro';
 import ContactForm from '../components/ContactForm.astro';
 import Icon from '../components/Icon.astro';
 import { formatPrice, properties, zones, type ZoneId } from '../data/properties';
-import { heroSlides, zonesWithListings } from '../lib/catalog';
+import { heroSlides } from '../lib/catalog';
 import { AMI, offices, email } from '../lib/site';
 
 const countByZone = (id: ZoneId) => properties.filter((p) => p.zone === id).length;
@@ -16,7 +16,6 @@ const countLabel = (id: ZoneId) => {
 };
 const featured = properties.filter((p) => p.featured);
 const slides = heroSlides();
-const quickZones = zonesWithListings();
 const photo = (slug: string) => properties.find((p) => p.slug === slug)!.images[0];
 
 const tiles: { id: ZoneId; span: string; image?: string }[] = [
@@ -73,16 +72,6 @@ const tiles: { id: ZoneId; span: string; image?: string }[] = [
               Quero vender
             </a>
           </div>
-          {quickZones.length > 0 && (
-            <nav class="mt-5 flex flex-wrap items-center gap-2" aria-label="Zonas com imóveis">
-              {quickZones.map((z) => (
-                <a href={`/imoveis/?zona=${z.id}`} class="hero-chip">
-                  {z.name}
-                  <span class="hero-chip-count">{z.count}</span>
-                </a>
-              ))}
-            </nav>
-          )}
         </div>
 
         <div class="mt-8 lg:mt-0 lg:w-[21rem] lg:shrink-0">
