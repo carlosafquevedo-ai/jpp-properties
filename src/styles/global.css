@@ -211,9 +211,11 @@
   }
   .property-card {
     overflow: hidden;
+    border: 1px solid var(--color-line);
     border-radius: 0.5rem;
-    background: #2a2d2b; /* opaque charcoal grey, slightly warm */
-    color: #fff;
+    /* Same light surface as the search panel. */
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0.97), rgba(250, 251, 247, 0.94));
+    color: var(--color-ink);
   }
   .property-card :focus-visible {
     outline-color: var(--color-lime);
