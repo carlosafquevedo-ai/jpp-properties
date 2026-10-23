@@ -319,8 +319,8 @@ const tiles: { id: ZoneId; span: string; image?: string }[] = [
 
 <script>
   // Hero slideshow: crossfade between photos, with the matching listing card.
-  // Pauses on hover/focus, when the tab is hidden, on request, and never autoplays
-  // for people who prefer reduced motion.
+  // Keeps rotating while people use the hero or the search box. It only pauses when the tab is
+  // hidden or on request (pause button), and never autoplays for people who prefer reduced motion.
   const media = document.querySelector<HTMLElement>('[data-hero-media]');
   const slides = [...document.querySelectorAll<HTMLElement>('.hero-slide')];
   const cards = [...document.querySelectorAll<HTMLElement>('.hero-card')];
@@ -334,7 +334,6 @@ const tiles: { id: ZoneId; span: string; image?: string }[] = [
     let index = 0;
     let timer = 0;
     let userPaused = reduce;
-    let hoverPaused = false;
     document.documentElement.style.setProperty('--hero-interval', `${INTERVAL}ms`);
 
     const show = (n: number) => {
@@ -352,7 +351,7 @@ const tiles: { id: ZoneId; span: string; image?: string }[] = [
     const restart = () => {
       clearTimeout(timer);
       dots.forEach((d) => d.classList.remove('is-run'));
-      const running = !userPaused && !hoverPaused && !document.hidden;
+      const running = !userPaused && !document.hidden;
       if (!running) return;
       void dots[index]?.offsetWidth; // restart the progress bar animation
       dots[index]?.classList.add('is-run');
@@ -370,10 +369,6 @@ const tiles: { id: ZoneId; span: string; image?: string }[] = [
 
     dots.forEach((d, k) => d.addEventListener('click', () => show(k)));
     pauseBtn?.addEventListener('click', () => setPaused(!userPaused));
-    hero.addEventListener('pointerenter', () => ((hoverPaused = true), restart()));
-    hero.addEventListener('pointerleave', () => ((hoverPaused = false), restart()));
-    hero.addEventListener('focusin', () => ((hoverPaused = true), restart()));
-    hero.addEventListener('focusout', () => ((hoverPaused = false), restart()));
     document.addEventListener('visibilitychange', restart);
     setPaused(userPaused);
     show(0);
