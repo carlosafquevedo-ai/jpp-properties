@@ -153,13 +153,17 @@
   /* Listing card (white card, photo carousel, agency footer) */
   .property-card {
     overflow: hidden;
-    border: 1px solid var(--color-line);
+    border: 1px solid #3a3e3b;
     border-radius: 0.5rem;
-    background: #fff;
+    background: #2a2d2b; /* opaque charcoal grey, slightly warm */
+    color: #fff;
     transition: border-color 0.25s;
   }
   .property-card:hover {
-    border-color: var(--color-olive);
+    border-color: var(--color-lime);
+  }
+  .property-card :focus-visible {
+    outline-color: var(--color-lime);
   }
   .card-scroller {
     scrollbar-width: none;
