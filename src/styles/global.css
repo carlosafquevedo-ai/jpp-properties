@@ -431,6 +431,16 @@
   .zones-intro .zone-go-text {
     display: none;
   }
+  /* Highlight photo: same page column as everything else (right edge lines up with the page). */
+  .zones-photo {
+    margin-inline: var(--gutter);
+  }
+  @media (min-width: 64rem) {
+    .zones-photo {
+      margin-left: 0;
+      margin-right: max(var(--gutter), calc((100vw - var(--page-w)) / 2 + var(--gutter)));
+    }
+  }
   .zone-row-name {
     transition:
       transform 0.35s var(--ease-out),
