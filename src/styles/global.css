@@ -79,7 +79,7 @@
     @apply w-full rounded-xl border border-line bg-white px-4 py-3 text-base text-ink placeholder:text-muted/70;
   }
   .btn {
-    @apply inline-flex min-h-12 cursor-pointer items-center justify-center gap-2 rounded-full px-6 text-[0.95rem] font-semibold transition-colors duration-200;
+    @apply inline-flex min-h-12 cursor-pointer items-center justify-center gap-2 rounded-md px-6 text-[0.95rem] font-semibold transition-colors duration-200;
   }
   .btn-lime {
     @apply bg-lime text-forest hover:bg-[#b0cd4d];
