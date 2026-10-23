@@ -84,6 +84,20 @@
   .btn-lime {
     @apply bg-lime text-forest hover:bg-[#b0cd4d];
   }
+  /* Header CTA: white with header-charcoal text; lime on hover, focus and press. */
+  .hdr-cta {
+    background: #fff;
+    color: #2a2d2b;
+    transition:
+      background-color 0.2s,
+      color 0.2s;
+  }
+  .hdr-cta:hover,
+  .hdr-cta:focus-visible,
+  .hdr-cta:active {
+    background: var(--color-lime);
+    color: var(--color-forest);
+  }
   .btn-dark {
     @apply bg-forest text-white hover:bg-forest-2;
   }
