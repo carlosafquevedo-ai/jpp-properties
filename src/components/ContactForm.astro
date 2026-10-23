@@ -1,0 +1,109 @@
+---
+interface Props {
+  /** Property reference shown and sent with the request (property pages only). */
+  reference?: string;
+  propertyTitle?: string;
+  idPrefix?: string;
+  submitLabel?: string;
+}
+
+const {
+  reference,
+  propertyTitle,
+  idPrefix = 'contact',
+  submitLabel = 'Enviar mensagem',
+} = Astro.props;
+const defaultMessage = propertyTitle
+  ? `Olá, tenho interesse neste imóvel: ${propertyTitle}${reference ? ` (ref. ${reference})` : ''}. Gostaria de mais informações.`
+  : '';
+---
+
+<!-- PROTOTYPE: submission is simulated. Real flow = Pages Function + Turnstile + Resend (phase 5). -->
+<form data-proto-form class="space-y-4" novalidate>
+  {reference && <input type="hidden" name="reference" value={reference} />}
+  <div>
+    <label for={`${idPrefix}-name`} class="mb-1.5 block text-sm font-medium">
+      Nome
+    </label>
+    <input
+      id={`${idPrefix}-name`}
+      name="name"
+      type="text"
+      autocomplete="name"
+      required
+      class="field"
+    />
+  </div>
+  <div class="grid gap-4 sm:grid-cols-2">
+    <div>
+      <label for={`${idPrefix}-phone`} class="mb-1.5 block text-sm font-medium">
+        Telefone
+      </label>
+      <input id={`${idPrefix}-phone`} name="phone" type="tel" autocomplete="tel" class="field" />
+    </div>
+    <div>
+      <label for={`${idPrefix}-email`} class="mb-1.5 block text-sm font-medium">
+        Email
+      </label>
+      <input
+        id={`${idPrefix}-email`}
+        name="email"
+        type="email"
+        autocomplete="email"
+        required
+        class="field"
+      />
+    </div>
+  </div>
+  <div>
+    <label for={`${idPrefix}-msg`} class="mb-1.5 block text-sm font-medium">
+      Mensagem
+    </label>
+    <textarea
+      id={`${idPrefix}-msg`}
+      name="message"
+      rows="4"
+      class="field resize-y"
+    >{defaultMessage}</textarea>
+  </div>
+  <label class="flex items-start gap-3 text-sm text-muted">
+    <input
+      type="checkbox"
+      name="consent"
+      required
+      class="mt-0.5 size-5 shrink-0 accent-[#55662b]"
+    />
+    <span>
+      Aceito que a JPP Properties trate os meus dados para responder a este pedido, conforme a
+      <a href="/politica-de-privacidade/" class="underline underline-offset-2 hover:text-ink">
+        Política de Privacidade
+      </a>
+      .
+    </span>
+  </label>
+  <button type="submit" class="btn btn-dark w-full">
+    {submitLabel}
+  </button>
+  <p
+    class="hidden rounded-xl bg-paper-2 p-4 text-sm text-forest"
+    role="status"
+    data-form-status
+  ></p>
+</form>
+
+<script>
+  document.querySelectorAll<HTMLFormElement>('form[data-proto-form]').forEach((form) => {
+    form.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const status = form.querySelector<HTMLElement>('[data-form-status]')!;
+      status.classList.remove('hidden');
+      if (!form.checkValidity()) {
+        form.reportValidity();
+        status.classList.add('hidden');
+        return;
+      }
+      status.textContent =
+        'Protótipo: o envio ainda não está ligado. Os seus dados não foram enviados.';
+    });
+  });
+</script>

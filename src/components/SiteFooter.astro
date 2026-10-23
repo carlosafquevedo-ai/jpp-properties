@@ -1,0 +1,109 @@
+---
+import Icon from './Icon.astro';
+import { logoImage } from '../data/properties';
+import { AMI, offices, email, facebookUrl, complaintsBookUrl } from '../lib/site';
+
+const year = new Date().getFullYear();
+---
+
+<footer class="on-dark mt-24 bg-forest text-white/80">
+  <div class="container-x grid gap-12 py-16 lg:grid-cols-[1.1fr_2fr_1fr]">
+    <div>
+      <span class="inline-block rounded-2xl bg-paper px-4 py-3">
+        <img
+          src={logoImage}
+          alt="JPP Properties"
+          class="h-11 w-auto"
+          height="44"
+          referrerpolicy="no-referrer"
+        />
+      </span>
+      <p class="mt-5 max-w-xs text-sm leading-relaxed">
+        Mediação imobiliária no Algarve. Vilamoura, Quarteira, Vilasol, Vale do Lobo e Quinta do
+        Lago.
+      </p>
+      <p class="mt-4 text-sm font-semibold text-white">AMI {AMI}</p>
+    </div>
+
+    <div class="grid gap-8 sm:grid-cols-2">
+      {offices.map((o) => (
+        <div>
+          <h3 class="font-serif text-2xl text-white">{o.name}</h3>
+          <address class="mt-3 text-sm not-italic leading-relaxed">
+            {o.address.map((line) => (
+              <div>{line}</div>
+            ))}
+          </address>
+          <ul class="mt-3 space-y-2 text-sm">
+            {o.phones.map((p) => (
+              <li>
+                <a href={`tel:${p.tel}`} class="font-medium text-white hover:text-lime">
+                  {p.label}
+                </a>
+                <span class="block text-xs text-white/55">({p.note})</span>
+              </li>
+            ))}
+          </ul>
+        </div>
+      ))}
+      <a
+        href={`mailto:${email}`}
+        class="inline-flex items-center gap-2 text-sm font-medium text-white hover:text-lime sm:col-span-2"
+      >
+        <Icon name="mail" class="size-4" />
+        {email}
+      </a>
+    </div>
+
+    <nav aria-label="Ligações úteis">
+      <h3 class="font-serif text-2xl text-white">Ligações úteis</h3>
+      <ul class="mt-3 space-y-2 text-sm">
+        <li>
+          <a href="/imoveis/" class="hover:text-lime">
+            Imóveis
+          </a>
+        </li>
+        <li>
+          <a href="/#zonas" class="hover:text-lime">
+            Zonas
+          </a>
+        </li>
+        <li>
+          <a href="/#vender" class="hover:text-lime">
+            Vender o seu imóvel
+          </a>
+        </li>
+        <li>
+          <a href="/#contacto" class="hover:text-lime">
+            Contactos
+          </a>
+        </li>
+        <li>
+          <a href={complaintsBookUrl} class="hover:text-lime" rel="noopener" target="_blank">
+            Livro de Reclamações
+          </a>
+        </li>
+        <li>
+          <a href="/politica-de-privacidade/" class="hover:text-lime">
+            Política de Privacidade
+          </a>
+        </li>
+        <li>
+          <a href="/resolucao-de-litigios/" class="hover:text-lime">
+            Resolução de Litígios
+          </a>
+        </li>
+        <li>
+          <a href={facebookUrl} class="hover:text-lime" rel="noopener" target="_blank">
+            Facebook
+          </a>
+        </li>
+      </ul>
+    </nav>
+  </div>
+  <div class="border-t border-white/10">
+    <p class="container-x py-5 text-xs text-white/55">
+      © {year} JPP Properties · AMI {AMI}
+    </p>
+  </div>
+</footer>

@@ -1,0 +1,101 @@
+---
+import Icon from './Icon.astro';
+import { logoImage } from '../data/properties';
+import { mainPhone } from '../lib/site';
+
+const path = Astro.url.pathname;
+const links = [
+  { href: '/imoveis/', label: 'Imóveis', match: '/imoveis' },
+  { href: '/#zonas', label: 'Zonas' },
+  { href: '/#vender', label: 'Vender' },
+  { href: '/#sobre', label: 'Sobre nós' },
+  { href: '/#contacto', label: 'Contactos' },
+];
+---
+
+<header class="fixed inset-x-0 top-3 z-50 px-3 sm:px-5">
+  <div class="mx-auto flex max-w-7xl items-center justify-between gap-4 rounded-full border border-line/80 bg-paper/90 py-2 pl-5 pr-2 shadow-[0_10px_30px_-14px_rgba(24,35,26,0.35)] backdrop-blur-md">
+    <a href="/" aria-label="JPP Properties, página inicial" class="shrink-0">
+      <img
+        src={logoImage}
+        alt="JPP Properties"
+        class="h-11 w-auto mix-blend-multiply"
+        height="44"
+        referrerpolicy="no-referrer"
+      />
+    </a>
+
+    <nav class="hidden items-center gap-1 lg:flex" aria-label="Principal">
+      {links.map((l) => (
+        <a
+          href={l.href}
+          aria-current={l.match && path.startsWith(l.match) ? 'page' : undefined}
+          class="rounded-full px-4 py-2 text-[0.95rem] font-medium text-ink/80 transition-colors hover:bg-paper-2 hover:text-ink aria-[current=page]:bg-paper-2 aria-[current=page]:text-ink"
+        >
+          {l.label}
+        </a>
+      ))}
+    </nav>
+
+    <div class="flex items-center gap-2">
+      <a
+        href={`tel:${mainPhone.tel}`}
+        class="hidden items-center gap-2 rounded-full px-4 py-2 text-[0.95rem] font-semibold text-ink hover:bg-paper-2 md:inline-flex"
+      >
+        <Icon name="phone" class="size-4 text-olive" />
+        {mainPhone.label}
+      </a>
+      <a href="/#contacto" class="btn btn-dark hidden min-h-11 sm:inline-flex">
+        Falar connosco
+      </a>
+      <button
+        type="button"
+        id="menu-btn"
+        class="grid size-11 cursor-pointer place-items-center rounded-full bg-forest text-white lg:hidden"
+        aria-expanded="false"
+        aria-controls="mobile-menu"
+        aria-label="Abrir menu"
+      >
+        <Icon name="menu" class="size-6" />
+      </button>
+    </div>
+  </div>
+
+  <div
+    id="mobile-menu"
+    hidden
+    class="mx-auto mt-2 max-w-7xl rounded-3xl border border-line bg-paper p-6 shadow-xl lg:hidden"
+  >
+    <nav aria-label="Menu móvel">
+      <ul class="space-y-1">
+        {links.map((l) => (
+          <li>
+            <a href={l.href} class="block rounded-xl px-2 py-3 font-serif text-3xl text-forest">
+              {l.label}
+            </a>
+          </li>
+        ))}
+      </ul>
+    </nav>
+    <a href={`tel:${mainPhone.tel}`} class="btn btn-lime mt-4 w-full">
+      <Icon name="phone" class="size-5" />
+      {mainPhone.label}
+    </a>
+  </div>
+</header>
+
+<script>
+  const btn = document.getElementById('menu-btn');
+  const panel = document.getElementById('mobile-menu');
+  const setOpen = (open: boolean) => {
+    if (!btn || !panel) return;
+    btn.setAttribute('aria-expanded', String(open));
+    btn.setAttribute('aria-label', open ? 'Fechar menu' : 'Abrir menu');
+    panel.hidden = !open;
+  };
+  btn?.addEventListener('click', () => setOpen(btn.getAttribute('aria-expanded') !== 'true'));
+  panel?.addEventListener('click', (e) => {
+    if ((e.target as HTMLElement).closest('a')) setOpen(false);
+  });
+  document.addEventListener('keydown', (e) => e.key === 'Escape' && setOpen(false));
+</script>

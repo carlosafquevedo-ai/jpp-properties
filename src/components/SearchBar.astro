@@ -1,0 +1,79 @@
+---
+import Icon from './Icon.astro';
+import { zones, propertyTypeLabels } from '../data/properties';
+---
+
+<form
+  action="/imoveis/"
+  method="get"
+  class="rounded-[1.75rem] border border-line bg-white p-3 shadow-[0_30px_60px_-30px_rgba(24,35,26,0.45)] sm:p-4"
+>
+  <fieldset class="mb-3 inline-flex rounded-full bg-paper-2 p-1">
+    <legend class="sr-only">Tipo de negócio</legend>
+    <label class="cursor-pointer">
+      <input type="radio" name="tipo" value="comprar" class="peer sr-only" checked />
+      <span class="block rounded-full px-5 py-2 text-sm font-semibold text-muted transition-colors peer-checked:bg-forest peer-checked:text-white peer-focus-visible:outline peer-focus-visible:outline-2 peer-focus-visible:outline-olive">
+        Comprar
+      </span>
+    </label>
+    <label class="cursor-pointer">
+      <input type="radio" name="tipo" value="arrendar" class="peer sr-only" />
+      <span class="block rounded-full px-5 py-2 text-sm font-semibold text-muted transition-colors peer-checked:bg-forest peer-checked:text-white peer-focus-visible:outline peer-focus-visible:outline-2 peer-focus-visible:outline-olive">
+        Arrendar
+      </span>
+    </label>
+  </fieldset>
+
+  <div class="grid gap-3 sm:grid-cols-2 lg:grid-cols-[1.2fr_1.2fr_1fr_1fr_auto]">
+    <div>
+      <label for="s-zona" class="mb-1 block px-1 text-xs font-medium text-muted">
+        Zona
+      </label>
+      <select id="s-zona" name="zona" class="field">
+        <option value="">Todas as zonas</option>
+        {Object.entries(zones).map(([id, z]) => (
+          <option value={id}>{z.name}</option>
+        ))}
+      </select>
+    </div>
+    <div>
+      <label for="s-imovel" class="mb-1 block px-1 text-xs font-medium text-muted">
+        Tipo de imóvel
+      </label>
+      <select id="s-imovel" name="imovel" class="field">
+        <option value="">Todos os tipos</option>
+        {Object.entries(propertyTypeLabels).map(([id, label]) => (
+          <option value={id}>{label}</option>
+        ))}
+      </select>
+    </div>
+    <div>
+      <label for="s-quartos" class="mb-1 block px-1 text-xs font-medium text-muted">
+        Quartos
+      </label>
+      <select id="s-quartos" name="quartos" class="field">
+        <option value="">Qualquer</option>
+        <option value="1">1 ou mais</option>
+        <option value="2">2 ou mais</option>
+        <option value="3">3 ou mais</option>
+        <option value="4">4 ou mais</option>
+      </select>
+    </div>
+    <div>
+      <label for="s-preco" class="mb-1 block px-1 text-xs font-medium text-muted">
+        Preço máximo
+      </label>
+      <select id="s-preco" name="precoMax" class="field">
+        <option value="">Sem limite</option>
+        <option value="400000">400 000 €</option>
+        <option value="600000">600 000 €</option>
+        <option value="1000000">1 000 000 €</option>
+        <option value="1500000">1 500 000 €</option>
+      </select>
+    </div>
+    <button type="submit" class="btn btn-lime self-end sm:col-span-2 lg:col-span-1">
+      <Icon name="search" class="size-5" />
+      Ver imóveis
+    </button>
+  </div>
+</form>
