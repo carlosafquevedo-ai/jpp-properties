@@ -8,13 +8,6 @@ import {
   type ZoneId,
 } from '../data/properties';
 
-/** Zones that have at least one listing, with their counts (so menus never lead to empty pages). */
-export function zonesWithListings(list: Property[] = properties) {
-  return (Object.keys(zones) as ZoneId[])
-    .map((id) => ({ id, name: zones[id].name, count: list.filter((p) => p.zone === id).length }))
-    .filter((z) => z.count > 0);
-}
-
 /** Property types that have at least one listing, with their counts. */
 export function typesWithListings(list: Property[] = properties) {
   return (Object.keys(propertyTypeLabels) as PropertyType[])
@@ -25,10 +18,6 @@ export function typesWithListings(list: Property[] = properties) {
     }))
     .filter((t) => t.count > 0);
 }
-
-/** The most recently added listing. */
-export const latestProperty = (list: Property[] = properties) =>
-  [...list].sort((a, b) => b.addedAt.localeCompare(a.addedAt))[0];
 
 /**
  * Slides of the home hero: the original photo first (no listing attached), then listings.

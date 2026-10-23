@@ -1,7 +1,7 @@
 ---
 import Icon from './Icon.astro';
-import { formatPrice, logoImage, zones } from '../data/properties';
-import { latestProperty, typesWithListings, zonesWithListings } from '../lib/catalog';
+import { logoImage } from '../data/properties';
+import { typesWithListings } from '../lib/catalog';
 import { locales, localizedPath } from '../i18n/routes';
 import { useTranslations } from '../i18n/ui';
 import { mainPhone } from '../lib/site';
@@ -15,11 +15,8 @@ const links = [
   { href: '/#contacto', label: 'Contactos' },
 ];
 
-// Mega menu content comes from the catalogue, so it grows with the listings.
-const megaZones = zonesWithListings();
-const megaTypes = typesWithListings();
-const newest = latestProperty();
-const newestPlace = [newest.locality, zones[newest.zone].name].filter(Boolean).join(', ');
+// The Imóveis dropdown lists the property types that exist, straight from the catalogue.
+const types = typesWithListings();
 
 // TODO: EN/FR pages are placeholders for now, so the switcher points to their home pages.
 const currentLocale = 'pt';
@@ -43,7 +40,7 @@ const linkClass =
       <ul class="flex items-center gap-1">
         {links.map((l) =>
           l.mega ? (
-            <li data-mega-item class="flex items-center">
+            <li data-mega-item class="relative flex items-center">
               <a
                 href={l.href}
                 aria-current={path.startsWith(l.match) ? 'page' : undefined}
@@ -60,6 +57,15 @@ const linkClass =
               >
                 <Icon name="chevronDown" class="size-4" />
               </button>
+              <ul id="mega-menu" class="lang-menu drop-left" hidden>
+                {types.map((t) => (
+                  <li>
+                    <a href={`/imoveis/?imovel=${t.id}`} class="mega-link lang-item">
+                      <span>{t.name}</span>
+                    </a>
+                  </li>
+                ))}
+              </ul>
             </li>
           ) : (
             <li>
@@ -121,71 +127,6 @@ const linkClass =
       >
         <Icon name="menu" class="size-6" />
       </button>
-    </div>
-  </div>
-
-  <!-- Mega menu (desktop): zones, property types and the newest listing -->
-  <div id="mega-menu" class="hdr-mega" hidden>
-    <div class="grid gap-8 lg:grid-cols-[1fr_1fr_1.2fr]">
-      <section aria-labelledby="mega-zonas">
-        <h2 id="mega-zonas" class="mega-title">
-          Zonas
-        </h2>
-        <ul class="mt-2">
-          {megaZones.map((z) => (
-            <li>
-              <a href={`/imoveis/?zona=${z.id}`} class="mega-link">
-                <span>{z.name}</span>
-                <span class="mega-count">{z.count}</span>
-              </a>
-            </li>
-          ))}
-        </ul>
-      </section>
-
-      <section aria-labelledby="mega-tipos">
-        <h2 id="mega-tipos" class="mega-title">
-          Tipo de imóvel
-        </h2>
-        <ul class="mt-2">
-          {megaTypes.map((t) => (
-            <li>
-              <a href={`/imoveis/?imovel=${t.id}`} class="mega-link">
-                <span>{t.name}</span>
-                <span class="mega-count">{t.count}</span>
-              </a>
-            </li>
-          ))}
-        </ul>
-        <div class="mt-4 flex flex-wrap gap-2">
-          <a href="/imoveis/" class="btn btn-dark min-h-11 px-4">
-            Ver todos os imóveis
-          </a>
-          <a href="/#contacto" class="btn btn-ghost min-h-11 px-4">
-            Pedir um imóvel
-          </a>
-        </div>
-      </section>
-
-      <a href={`/imoveis/${newest.slug}/`} class="mega-card group">
-        <span class="block overflow-hidden rounded-xl">
-          <img
-            src={newest.images[0]}
-            alt=""
-            class="aspect-[16/10] w-full object-cover transition-transform duration-500 group-hover:scale-[1.03]"
-            loading="lazy"
-            referrerpolicy="no-referrer"
-          />
-        </span>
-        <span class="mt-3 block text-xs font-medium text-muted">Último imóvel adicionado</span>
-        <span class="mt-1 block font-display text-lg leading-tight text-forest">
-          {newest.title}
-        </span>
-        <span class="mt-1 flex items-baseline justify-between gap-3 text-sm text-muted">
-          <span>{newestPlace}</span>
-          <span class="font-semibold text-forest">{formatPrice(newest.price)}</span>
-        </span>
-      </a>
     </div>
   </div>
 
