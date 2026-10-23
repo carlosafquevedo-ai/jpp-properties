@@ -3,6 +3,7 @@ import Icon from './Icon.astro';
 import { formatPrice, logoImage, zones } from '../data/properties';
 import { latestProperty, typesWithListings, zonesWithListings } from '../lib/catalog';
 import { locales, localizedPath } from '../i18n/routes';
+import { useTranslations } from '../i18n/ui';
 import { mainPhone } from '../lib/site';
 
 const path = Astro.url.pathname;
@@ -22,7 +23,12 @@ const newestPlace = [newest.locality, zones[newest.zone].name].filter(Boolean).j
 
 // TODO: EN/FR pages are placeholders for now, so the switcher points to their home pages.
 const currentLocale = 'pt';
-const langLinks = locales.map((l) => ({ l, href: localizedPath('home', l) }));
+const t = useTranslations(currentLocale);
+const langLinks = locales.map((l) => ({
+  l,
+  href: localizedPath('home', l),
+  name: t(`lang.${l}` as 'lang.pt' | 'lang.en' | 'lang.fr'),
+}));
 const linkClass =
   'rounded-full px-4 py-2 whitespace-nowrap text-[0.95rem] font-medium text-ink/80 transition-colors hover:bg-paper-2 hover:text-ink aria-[current=page]:bg-paper-2 aria-[current=page]:text-ink';
 ---
@@ -67,19 +73,34 @@ const linkClass =
     </nav>
 
     <div class="flex items-center gap-2">
-      <nav class="hidden items-center gap-0.5 text-sm font-semibold lg:flex" aria-label="Idioma">
-        {langLinks.map(({ l, href }) => (
-          <a
-            href={href}
-            hreflang={l}
-            lang={l}
-            aria-current={l === currentLocale ? 'true' : undefined}
-            class="rounded-md px-2 py-1 uppercase tracking-wide text-ink/55 transition-colors hover:text-ink aria-[current=true]:text-ink"
-          >
-            {l}
-          </a>
-        ))}
-      </nav>
+      <div class="relative hidden lg:block" data-lang>
+        <button
+          type="button"
+          class="lang-btn"
+          aria-expanded="false"
+          aria-controls="lang-menu"
+          aria-label={`Idioma: ${langLinks.find((x) => x.l === currentLocale)?.name}`}
+        >
+          {currentLocale}
+          <Icon name="chevronDown" class="lang-caret size-4" />
+        </button>
+        <ul id="lang-menu" class="lang-menu" hidden>
+          {langLinks.map(({ l, href, name }) => (
+            <li>
+              <a
+                href={href}
+                hreflang={l}
+                lang={l}
+                aria-current={l === currentLocale ? 'true' : undefined}
+                class="mega-link lang-item"
+              >
+                <span>{name}</span>
+                <Icon name="check" class="lang-check size-4" />
+              </a>
+            </li>
+          ))}
+        </ul>
+      </div>
       <a
         href={`tel:${mainPhone.tel}`}
         class="hidden items-center gap-2 rounded-full px-4 py-2 whitespace-nowrap text-[0.95rem] font-semibold text-ink hover:bg-paper-2 xl:inline-flex"
@@ -224,47 +245,60 @@ const linkClass =
     if ((e.target as HTMLElement).closest('a')) setOpen(false);
   });
 
-  // Mega menu: opens on hover (mouse), on the caret button (keyboard/touch), closes on Esc,
-  // outside click or when focus leaves the header.
-  const mega = document.getElementById('mega-menu');
-  const item = document.querySelector<HTMLElement>('[data-mega-item]');
-  const caret = item?.querySelector<HTMLButtonElement>('.mega-caret');
+  // Dropdowns (mega menu, language list): open on hover (mouse) and on the button
+  // (keyboard/touch); close on Esc, outside click or when focus leaves. Only one is open at a time.
   const fine = window.matchMedia('(hover: hover) and (pointer: fine)');
-  let closeTimer = 0;
-  const openMega = () => {
-    clearTimeout(closeTimer);
-    if (!mega || !mega.hidden) return;
-    mega.hidden = false;
-    caret?.setAttribute('aria-expanded', 'true');
+  type Drop = { root: HTMLElement; button: HTMLButtonElement; panel: HTMLElement; timer: number };
+  const drops: Drop[] = [];
+  const isOpen = (d: Drop) => !d.panel.hidden;
+  const open = (d: Drop) => {
+    clearTimeout(d.timer);
+    drops.filter((o) => o !== d).forEach(close);
+    d.panel.hidden = false;
+    d.button.setAttribute('aria-expanded', 'true');
   };
-  const closeMega = () => {
-    if (!mega || mega.hidden) return;
-    mega.hidden = true;
-    caret?.setAttribute('aria-expanded', 'false');
+  const close = (d: Drop) => {
+    clearTimeout(d.timer);
+    d.panel.hidden = true;
+    d.button.setAttribute('aria-expanded', 'false');
   };
-  const closeSoon = () => {
-    clearTimeout(closeTimer);
-    closeTimer = window.setTimeout(closeMega, 180);
+  const closeSoon = (d: Drop) => {
+    clearTimeout(d.timer);
+    d.timer = window.setTimeout(() => close(d), 180);
   };
-  if (mega && item && caret) {
-    item.addEventListener('pointerenter', () => fine.matches && openMega());
-    item.addEventListener('pointerleave', () => fine.matches && closeSoon());
-    mega.addEventListener('pointerenter', () => clearTimeout(closeTimer));
-    mega.addEventListener('pointerleave', () => fine.matches && closeSoon());
-    caret.addEventListener('click', () => (mega.hidden ? openMega() : closeMega()));
-  }
+  const register = (root: HTMLElement | null, panel: HTMLElement | null) => {
+    const button = root?.querySelector<HTMLButtonElement>('button[aria-controls]');
+    if (!root || !panel || !button) return;
+    const d: Drop = { root, button, panel, timer: 0 };
+    drops.push(d);
+    root.addEventListener('pointerenter', () => fine.matches && open(d));
+    root.addEventListener('pointerleave', () => fine.matches && closeSoon(d));
+    panel.addEventListener('pointerenter', () => clearTimeout(d.timer));
+    panel.addEventListener('pointerleave', () => fine.matches && closeSoon(d));
+    button.addEventListener('click', () => (isOpen(d) ? close(d) : open(d)));
+  };
+  register(
+    document.querySelector<HTMLElement>('[data-mega-item]'),
+    document.getElementById('mega-menu'),
+  );
+  register(
+    document.querySelector<HTMLElement>('[data-lang]'),
+    document.getElementById('lang-menu'),
+  );
+
   document.addEventListener('keydown', (e) => {
     if (e.key !== 'Escape') return;
     setOpen(false);
-    if (mega && !mega.hidden) {
-      closeMega();
-      caret?.focus();
+    const d = drops.find(isOpen);
+    if (d) {
+      close(d);
+      d.button.focus();
     }
   });
   header?.addEventListener('focusout', (e) => {
-    if (!header.contains((e as FocusEvent).relatedTarget as Node | null)) closeMega();
+    if (!header.contains((e as FocusEvent).relatedTarget as Node | null)) drops.forEach(close);
   });
   document.addEventListener('pointerdown', (e) => {
-    if (header && !header.contains(e.target as Node)) closeMega();
+    if (header && !header.contains(e.target as Node)) drops.forEach(close);
   });
 </script>
