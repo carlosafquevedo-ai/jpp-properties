@@ -1,22 +1,18 @@
 ---
 import Icon from './Icon.astro';
 import { logoImage } from '../data/properties';
-import { typesWithListings } from '../lib/catalog';
 import { locales, localizedPath } from '../i18n/routes';
 import { useTranslations } from '../i18n/ui';
 import { mainPhone } from '../lib/site';
 
 const path = Astro.url.pathname;
 const links = [
-  { href: '/imoveis/', label: 'Imóveis', match: '/imoveis', mega: true },
+  { href: '/imoveis/', label: 'Imóveis', match: '/imoveis' },
   { href: '/#zonas', label: 'Zonas' },
   { href: '/#vender', label: 'Vender' },
   { href: '/#sobre', label: 'Sobre nós' },
   { href: '/#contacto', label: 'Contactos' },
 ];
-
-// The Imóveis dropdown lists the property types that exist, straight from the catalogue.
-const types = typesWithListings();
 
 // TODO: EN/FR pages are placeholders for now, so the switcher points to their home pages.
 const currentLocale = 'pt';
@@ -38,43 +34,17 @@ const linkClass =
 
     <nav class="hidden items-center lg:flex" aria-label="Principal">
       <ul class="flex items-center gap-1">
-        {links.map((l) =>
-          l.mega ? (
-            <li data-mega-item class="relative flex items-center">
-              <a
-                href={l.href}
-                aria-current={path.startsWith(l.match) ? 'page' : undefined}
-                class:list={[linkClass, '!pr-1']}
-              >
-                {l.label}
-              </a>
-              <button
-                type="button"
-                class="mega-caret"
-                aria-expanded="false"
-                aria-controls="mega-menu"
-                aria-label="Mostrar o menu de imóveis"
-              >
-                <Icon name="chevronDown" class="size-4" />
-              </button>
-              <ul id="mega-menu" class="lang-menu drop-left" hidden>
-                {types.map((t) => (
-                  <li>
-                    <a href={`/imoveis/?imovel=${t.id}`} class="mega-link lang-item">
-                      <span>{t.name}</span>
-                    </a>
-                  </li>
-                ))}
-              </ul>
-            </li>
-          ) : (
-            <li>
-              <a href={l.href} class={linkClass}>
-                {l.label}
-              </a>
-            </li>
-          ),
-        )}
+        {links.map((l) => (
+          <li>
+            <a
+              href={l.href}
+              aria-current={l.match && path.startsWith(l.match) ? 'page' : undefined}
+              class={linkClass}
+            >
+              {l.label}
+            </a>
+          </li>
+        ))}
       </ul>
     </nav>
 
@@ -186,7 +156,7 @@ const linkClass =
     if ((e.target as HTMLElement).closest('a')) setOpen(false);
   });
 
-  // Dropdowns (mega menu, language list): open on hover (mouse) and on the button
+  // Dropdown (language list): open on hover (mouse) and on the button
   // (keyboard/touch); close on Esc, outside click or when focus leaves. Only one is open at a time.
   const fine = window.matchMedia('(hover: hover) and (pointer: fine)');
   type Drop = { root: HTMLElement; button: HTMLButtonElement; panel: HTMLElement; timer: number };
@@ -218,10 +188,6 @@ const linkClass =
     panel.addEventListener('pointerleave', () => fine.matches && closeSoon(d));
     button.addEventListener('click', () => (isOpen(d) ? close(d) : open(d)));
   };
-  register(
-    document.querySelector<HTMLElement>('[data-mega-item]'),
-    document.getElementById('mega-menu'),
-  );
   register(
     document.querySelector<HTMLElement>('[data-lang]'),
     document.getElementById('lang-menu'),

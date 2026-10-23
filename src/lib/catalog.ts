@@ -1,23 +1,4 @@
-import {
-  heroImage,
-  properties,
-  propertyTypeLabels,
-  zones,
-  type Property,
-  type PropertyType,
-  type ZoneId,
-} from '../data/properties';
-
-/** Property types that have at least one listing, with their counts. */
-export function typesWithListings(list: Property[] = properties) {
-  return (Object.keys(propertyTypeLabels) as PropertyType[])
-    .map((id) => ({
-      id,
-      name: propertyTypeLabels[id],
-      count: list.filter((p) => p.propertyType === id).length,
-    }))
-    .filter((t) => t.count > 0);
-}
+import { heroImage, properties, zones, type Property } from '../data/properties';
 
 /**
  * Slides of the home hero: the original photo first (no listing attached), then listings.

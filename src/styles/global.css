@@ -624,26 +624,6 @@
     }
   }
 
-  /* Header mega menu */
-  .mega-caret {
-    display: grid;
-    place-items: center;
-    width: 1.75rem;
-    height: 1.75rem;
-    margin-left: -0.125rem;
-    border-radius: 9999px;
-    color: rgba(27, 36, 25, 0.7);
-    cursor: pointer;
-    transition:
-      background-color 0.2s,
-      transform 0.25s;
-  }
-  .mega-caret:hover {
-    background: var(--color-paper-2);
-  }
-  .mega-caret[aria-expanded='true'] {
-    transform: rotate(180deg);
-  }
   .mega-link {
     display: flex;
     align-items: center;
@@ -707,10 +687,6 @@
   }
   .lang-item {
     margin-inline: 0;
-  }
-  .drop-left {
-    right: auto;
-    left: 0;
   }
   .lang-check {
     opacity: 0;
