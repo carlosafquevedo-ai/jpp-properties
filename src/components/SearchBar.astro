@@ -1,8 +1,9 @@
 ---
 import Icon from './Icon.astro';
-import { getSearchOptions } from '../lib/search-options';
+import { getSearchOptions, getPriceRange } from '../lib/search-options';
 
-const { zoneOptions, typeOptions, bedroomOptions, priceOptions } = getSearchOptions();
+const { zoneOptions, typeOptions, bedroomOptions } = getSearchOptions();
+const price = getPriceRange();
 ---
 
 <form action="/imoveis/" method="get">
@@ -18,7 +19,7 @@ const { zoneOptions, typeOptions, bedroomOptions, priceOptions } = getSearchOpti
     </label>
   </fieldset>
 
-  <div class="grid grid-cols-2 gap-x-3 gap-y-1 sm:grid-cols-4 lg:grid-cols-[1.2fr_1.2fr_1fr_1fr_auto] lg:gap-x-3 lg:items-center">
+  <div class="grid grid-cols-2 gap-x-3 gap-y-1 sm:grid-cols-4 lg:grid-cols-[1.1fr_1.1fr_0.9fr_1.4fr_auto] lg:gap-x-3 lg:items-center">
     <div class="glass-field">
       <label for="s-zona">Zona</label>
       <select id="s-zona" name="zona" class="glass-select">
@@ -46,14 +47,30 @@ const { zoneOptions, typeOptions, bedroomOptions, priceOptions } = getSearchOpti
         ))}
       </select>
     </div>
-    <div class="glass-field">
-      <label for="s-preco">Preço máximo</label>
-      <select id="s-preco" name="precoMax" class="glass-select">
-        <option value="">Sem limite</option>
-        {priceOptions.map((o) => (
-          <option value={o.value}>{o.label}</option>
-        ))}
-      </select>
+    <div
+      class="glass-field glass-range"
+      data-range
+      data-min={price.min}
+      data-max={price.max}
+      data-step={price.step}
+    >
+      <div class="glass-range-head">
+        <label for="s-preco">Preço máximo</label>
+        <output for="s-preco" class="glass-range-value">
+          Sem limite
+        </output>
+      </div>
+      <input
+        id="s-preco"
+        class="glass-slider"
+        type="range"
+        min="0"
+        max="1000"
+        step="1"
+        value="1000"
+        autocomplete="off"
+      />
+      <input type="hidden" name="precoMax" value="" disabled />
     </div>
     <button
       type="submit"
@@ -221,4 +238,39 @@ const { zoneOptions, typeOptions, bedroomOptions, priceOptions } = getSearchOpti
   if (window.matchMedia('(hover: hover) and (pointer: fine)').matches) {
     document.querySelectorAll<HTMLSelectElement>('.glass-field select').forEach(enhance);
   }
+</script>
+
+<script>
+  // Price slider: the right end is the dearest listing on the site ("sem limite"),
+  // so the filter is only sent when the handle is moved left.
+  const money = new Intl.NumberFormat('pt-PT', {
+    style: 'currency',
+    currency: 'EUR',
+    maximumFractionDigits: 0,
+  });
+  document.querySelectorAll<HTMLElement>('[data-range]').forEach((box) => {
+    const min = Number(box.dataset.min);
+    const max = Number(box.dataset.max);
+    const step = Number(box.dataset.step);
+    const slider = box.querySelector<HTMLInputElement>('input[type=range]')!;
+    const out = box.querySelector<HTMLOutputElement>('output')!;
+    const hidden = box.querySelector<HTMLInputElement>('input[type=hidden]')!;
+
+    const update = () => {
+      const v = Number(slider.value);
+      const atEnd = v >= 1000;
+      const value = atEnd ? max : Math.round((min + ((max - min) * v) / 1000) / step) * step;
+      const text = atEnd ? 'Sem limite' : `Até ${money.format(value).replace(/\u00a0/g, ' ')}`;
+      out.textContent = text;
+      slider.setAttribute('aria-valuetext', text);
+      slider.style.setProperty('--pct', `${v / 10}%`);
+      hidden.disabled = atEnd;
+      hidden.value = atEnd ? '' : String(value);
+    };
+    slider.addEventListener('input', update);
+    slider.form?.addEventListener('reset', () => setTimeout(update));
+    // Browsers may restore a previous slider position after load / on back navigation.
+    window.addEventListener('pageshow', update);
+    update();
+  });
 </script>

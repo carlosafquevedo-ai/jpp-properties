@@ -42,6 +42,17 @@ Website da JPP Properties (AMI 9361), agência imobiliária no Algarve. Esta é 
 - Uma única largura de página: `--page-w` e `--gutter` em `global.css`; usar sempre `.container-x`.
 - `TODO`: confirmar cores com o cliente quando chegarem os logótipos.
 
+## Pesquisa e painel Sanity: requisitos a não esquecer
+
+A pesquisa (hero e listagem) é dirigida por dados. Ao construir o Sanity (fase 3), cumprir:
+
+- **Zona e Tipo de imóvel**: documentos próprios (`zone`, `propertyType`) editáveis pela equipa, com nome em PT/EN/FR e ordem. Nos imóveis escolhem-se por **referência** (lista), nunca por texto livre. Um item novo aparece em todas as listas na publicação seguinte.
+- **Zona sem imóveis**: campo "Mostrar na pesquisa" para a equipa decidir se aparece.
+- **Apagar zona/tipo em uso**: bloqueado enquanto houver imóveis associados.
+- **Quartos**: opções geradas a partir do máximo de quartos dos imóveis publicados (`getSearchOptions`).
+- **Preço máximo (barra)**: o topo da barra é **sempre o imóvel publicado mais caro** (`getPriceRange`). Ignorar imóveis "preço sob consulta" e os vendidos/arrendados. O campo `price` leva texto de ajuda a dizer que o preço mais alto define o limite da barra, e um aviso de validação para valores muito altos (erro de zeros).
+- Cada campo do Studio com uma frase de ajuda em português; menu: Imóveis, Zonas, Tipos de imóvel, Páginas, Testemunhos, Equipa, Definições do site.
+
 ## Fases
 
 1. Setup · 2. Protótipo de design (aprovação do cliente) · 3. Sanity · 4. Integração · 5. Formulários · 6. Migração · 7. SEO · 8. Segurança e QA · 9. Lançamento · 10. Entrega.

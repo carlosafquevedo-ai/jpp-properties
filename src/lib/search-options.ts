@@ -1,20 +1,29 @@
-import { formatPrice, properties, propertyTypeLabels, zones } from '../data/properties';
+import { properties, propertyTypeLabels, zones } from '../data/properties';
 
 /**
  * Options for the search fields. Nothing here is typed by hand per option:
  * - zones and property types come from the editable lists (Sanity documents in production),
  *   so a new zone or type appears in every dropdown after the next publish;
- * - bedrooms and price steps are derived from the published listings.
+ * - bedrooms and the price slider are derived from the published listings.
  */
 export interface Option {
   value: string;
   label: string;
 }
 
-const PRICE_STEPS = [
-  100_000, 150_000, 200_000, 250_000, 300_000, 400_000, 500_000, 600_000, 750_000, 1_000_000,
-  1_500_000, 2_000_000, 3_000_000, 5_000_000, 7_500_000, 10_000_000,
-];
+/**
+ * Price slider range, always taken from the listings that are on the site:
+ * the top of the slider is the dearest listing, the bottom the cheapest (rounded down).
+ * Listings without a price ("preço sob consulta") are ignored.
+ */
+export function getPriceRange(list = properties) {
+  const prices = list.map((p) => p.price).filter((n) => n > 0);
+  const max = Math.max(...prices);
+  const min = Math.min(...prices);
+  const step =
+    max >= 3_000_000 ? 100_000 : max >= 1_000_000 ? 50_000 : max >= 300_000 ? 10_000 : 5_000;
+  return { min: Math.floor(min / step) * step, max, step };
+}
 
 export function getSearchOptions(list = properties) {
   const zoneOptions: Option[] = Object.entries(zones).map(([value, z]) => ({
@@ -32,11 +41,5 @@ export function getSearchOptions(list = properties) {
     label: `${i + 1} ou mais`,
   }));
 
-  // Price steps up to the first step that covers the dearest listing.
-  const maxPrice = Math.max(0, ...list.map((p) => p.price));
-  const cover = PRICE_STEPS.findIndex((s) => s >= maxPrice);
-  const steps = PRICE_STEPS.slice(0, (cover === -1 ? PRICE_STEPS.length - 1 : cover) + 1);
-  const priceOptions: Option[] = steps.map((s) => ({ value: String(s), label: formatPrice(s) }));
-
-  return { zoneOptions, typeOptions, bedroomOptions, priceOptions };
+  return { zoneOptions, typeOptions, bedroomOptions };
 }
