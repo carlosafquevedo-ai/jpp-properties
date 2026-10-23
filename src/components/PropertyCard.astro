@@ -26,7 +26,6 @@ const href = `/imoveis/${p.slug}/`;
 const place = [p.locality, zones[p.zone].name].filter(Boolean).join(', ');
 const slides = p.images.slice(0, MAX_SLIDES);
 const perSqm = p.usableArea > 0 ? Math.round(p.price / p.usableArea) : 0;
-const beds = `${p.bedrooms} ${p.bedrooms === 1 ? 'quarto' : 'quartos'}`;
 const filterAttrs = filterable
   ? {
       'data-card': '',
@@ -96,9 +95,15 @@ const filterAttrs = filterable
     )}
   </div>
 
-  <div class="flex flex-1 flex-col px-5 pb-5 pt-4">
-    <div class="flex items-baseline gap-x-3">
-      <p class="whitespace-nowrap font-display text-2xl font-semibold leading-none text-ink">
+  <div class="card-info flex flex-1 flex-col px-5 pb-4 pt-4">
+    <p class="flex items-center justify-between gap-3 text-xs font-semibold uppercase tracking-wider text-olive">
+      <span>{propertyTypeLabels[p.propertyType]}</span>
+      {p.reference && (
+        <span class="font-medium normal-case tracking-normal text-muted">Ref. {p.reference}</span>
+      )}
+    </p>
+    <div class="mt-2 flex items-baseline gap-x-3">
+      <p class="whitespace-nowrap font-display text-2xl font-semibold leading-none text-forest">
         {formatPrice(p.price)}
       </p>
       {perSqm > 0 && <p class="whitespace-nowrap text-sm text-muted">{formatPerSqm(perSqm)}</p>}
@@ -111,14 +116,25 @@ const filterAttrs = filterable
         {p.title}
       </a>
     </h3>
-    <p class="mt-1 flex items-baseline justify-between gap-3 text-sm text-muted">
+    <p class="mt-1 flex items-center gap-1.5 text-sm text-muted">
+      <Icon name="pin" class="size-4 shrink-0 text-olive" />
       <span class="truncate">{place}</span>
-      {p.reference && <span class="shrink-0 text-xs">Ref. {p.reference}</span>}
     </p>
-    <p class="mt-2 truncate text-sm text-ink/85">
-      {propertyTypeLabels[p.propertyType]} - {beds} - {p.usableArea} m²
-    </p>
-    <div class="mt-5 flex items-center gap-3 border-t border-line pt-4 [margin-top:auto]">
+    <ul class="mt-4 flex flex-wrap gap-2 text-sm font-medium text-ink">
+      <li class="card-spec">
+        <Icon name="bed" class="size-4 text-olive" />
+        {p.bedrooms}
+      </li>
+      <li class="card-spec">
+        <Icon name="bath" class="size-4 text-olive" />
+        {p.bathrooms}
+      </li>
+      <li class="card-spec">
+        <Icon name="area" class="size-4 text-olive" />
+        {p.usableArea} m²
+      </li>
+    </ul>
+    <div class="mt-4 flex items-center gap-3 border-t border-forest/10 pt-3 [margin-top:auto]">
       <img src={logoImage} alt="" class="h-6 w-auto" width="72" height="24" loading="lazy" />
       <p class="text-xs leading-tight text-muted">
         JPP Properties

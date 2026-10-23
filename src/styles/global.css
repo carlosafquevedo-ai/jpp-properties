@@ -211,11 +211,36 @@
   }
   .property-card {
     overflow: hidden;
-    border: 1px solid var(--color-line);
     border-radius: 0.5rem;
-    /* Same light surface as the search panel. */
-    background: linear-gradient(180deg, rgba(255, 255, 255, 0.97), rgba(250, 251, 247, 0.94));
+    background: var(--color-paper-2);
     color: var(--color-ink);
+  }
+  /* Info area: soft sage wash with a lime accent that grows on hover. */
+  .card-info {
+    position: relative;
+    background: linear-gradient(180deg, #f6f8f0 0%, #e9eed9 100%);
+  }
+  .card-info::before {
+    content: '';
+    position: absolute;
+    left: 1.25rem;
+    top: 0;
+    width: 2.5rem;
+    height: 3px;
+    background: var(--color-lime);
+    transition: width 0.4s var(--ease-out);
+  }
+  .property-card:hover .card-info::before {
+    width: 5rem;
+  }
+  .card-spec {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    padding: 0.3rem 0.65rem;
+    border-radius: 0.375rem;
+    background: #fff;
+    box-shadow: 0 1px 0 rgba(24, 35, 26, 0.06);
   }
   .property-card :focus-visible {
     outline-color: var(--color-lime);
