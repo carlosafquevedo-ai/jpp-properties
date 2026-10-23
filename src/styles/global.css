@@ -3,20 +3,27 @@
 @import '@fontsource/instrument-serif';
 @import '@fontsource/instrument-serif/400-italic.css';
 
-/* Design tokens. TODO: confirm brand colours with the client's logo files. */
+/* Colour palette. White is the base background of every section.
+   Greens come from the brand green on the current site (#9EBC3A).
+   TODO: confirm with the client once the logo files arrive. */
 @theme {
   --font-sans: 'Hanken Grotesk Variable', ui-sans-serif, system-ui, sans-serif;
   --font-serif: 'Instrument Serif', ui-serif, Georgia, serif;
 
-  --color-paper: #f5f6f1;
-  --color-paper-2: #eceee3;
-  --color-forest: #18231a;
-  --color-forest-2: #233226;
-  --color-olive: #55662b;
-  --color-lime: #9ebc3a; /* brand green from the current site */
-  --color-line: #dcdfd2;
-  --color-ink: #1b2419;
-  --color-muted: #5b6556;
+  /* Surfaces */
+  --color-paper: #ffffff; /* default background */
+  --color-paper-2: #f4f6ee; /* alternate section tint, used sparingly */
+  --color-line: #e1e5d6; /* borders and dividers */
+
+  /* Text */
+  --color-ink: #1b2419; /* body and headings */
+  --color-muted: #556050; /* secondary text */
+
+  /* Brand greens */
+  --color-forest: #18231a; /* dark sections, primary buttons */
+  --color-forest-2: #233226; /* hover on dark */
+  --color-olive: #55662b; /* accent text, links, olive sections */
+  --color-lime: #9ebc3a; /* brand green: fills and highlights, always with dark text */
 }
 
 /* One page width for the whole site: every section, the hero, the footer and the header
