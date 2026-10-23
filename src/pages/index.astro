@@ -288,109 +288,107 @@ const zoneTiles = (Object.keys(zones) as ZoneId[]).map((id) => ({ id, image: zon
   </section>
 
   <!-- About: text + CTA, tall photo and pillars (home page "about us"), then the offices -->
-  <section id="sobre" class="about-band mt-20 py-20" aria-labelledby="sobre-titulo">
-    <div class="container-x">
-      <div class="grid items-center gap-10 lg:grid-cols-[1fr_0.95fr_1fr] lg:gap-14">
-        <div>
-          <h2 id="sobre-titulo" class="font-display text-3xl text-forest sm:text-4xl">
-            Somos daqui. Sentimos o mercado como poucos.
-          </h2>
-          <p class="mt-5 text-lg leading-relaxed text-ink/80">
-            A JPP Properties é uma agência imobiliária que trabalha sobretudo em Vilamoura,
-            Quarteira, Vilasol, Vale do Lobo, Quinta do Lago e em toda a zona central do Algarve.
-          </p>
-          <p class="mt-4 leading-relaxed text-muted">
-            Com muitos anos de experiência, apresentamos as melhores opções de negócio, dando
-            prioridade ao que cada cliente quer e precisa.
-          </p>
-          <div class="mt-7 flex flex-wrap items-center gap-3">
-            <a href="#contacto" class="btn btn-dark">
-              Falar com a equipa
-            </a>
-            <span class="rounded-md bg-white px-3 py-2 text-sm font-semibold text-forest">
-              Licença AMI {AMI}
+  <section id="sobre" class="container-x mt-28" aria-labelledby="sobre-titulo">
+    <div class="grid items-center gap-10 lg:grid-cols-[1fr_0.95fr_1fr] lg:gap-14">
+      <div>
+        <h2 id="sobre-titulo" class="font-display text-3xl text-forest sm:text-4xl">
+          Somos daqui. Sentimos o mercado como poucos.
+        </h2>
+        <p class="mt-5 text-lg leading-relaxed text-ink/80">
+          A JPP Properties é uma agência imobiliária que trabalha sobretudo em Vilamoura, Quarteira,
+          Vilasol, Vale do Lobo, Quinta do Lago e em toda a zona central do Algarve.
+        </p>
+        <p class="mt-4 leading-relaxed text-muted">
+          Com muitos anos de experiência, apresentamos as melhores opções de negócio, dando
+          prioridade ao que cada cliente quer e precisa.
+        </p>
+        <div class="mt-7 flex flex-wrap items-center gap-3">
+          <a href="#contacto" class="btn btn-dark">
+            Falar com a equipa
+          </a>
+          <span class="rounded-md bg-paper-2 px-3 py-2 text-sm font-semibold text-forest">
+            Licença AMI {AMI}
+          </span>
+        </div>
+      </div>
+
+      <div class="mx-auto w-full max-w-sm lg:max-w-none">
+        <img
+          src={heroImage}
+          alt="Piscina rodeada de palmeiras, com o campo de golfe ao fundo"
+          class="aspect-[4/5] w-full rounded-3xl object-cover"
+          loading="lazy"
+          referrerpolicy="no-referrer"
+        />
+      </div>
+
+      <ul class="divide-y divide-line border-y border-line">
+        {[
+          {
+            icon: 'pin',
+            title: 'Conhecimento local',
+            text: 'Somos daqui. Trabalhamos todos os dias nas zonas onde vive quem compra e quem vende.',
+          },
+          {
+            icon: 'user',
+            title: 'Atenção a cada cliente',
+            text: 'Damos prioridade ao que cada pessoa quer e precisa, da primeira visita à decisão.',
+          },
+          {
+            icon: 'home',
+            title: 'As melhores opções',
+            text: 'Apresentamos as melhores opções de negócio para viver, arrendar ou investir.',
+          },
+        ].map((p) => (
+          <li class="flex gap-4 py-6">
+            <span class="grid size-11 shrink-0 place-items-center rounded-xl bg-paper-2 text-olive">
+              <Icon name={p.icon as 'pin' | 'user' | 'home'} class="size-5" />
             </span>
-          </div>
-        </div>
-
-        <div class="mx-auto w-full max-w-sm lg:max-w-none">
-          <img
-            src={heroImage}
-            alt="Piscina rodeada de palmeiras, com o campo de golfe ao fundo"
-            class="aspect-[4/5] w-full rounded-3xl object-cover"
-            loading="lazy"
-            referrerpolicy="no-referrer"
-          />
-        </div>
-
-        <ul class="divide-y divide-line border-y border-line">
-          {[
-            {
-              icon: 'pin',
-              title: 'Conhecimento local',
-              text: 'Somos daqui. Trabalhamos todos os dias nas zonas onde vive quem compra e quem vende.',
-            },
-            {
-              icon: 'user',
-              title: 'Atenção a cada cliente',
-              text: 'Damos prioridade ao que cada pessoa quer e precisa, da primeira visita à decisão.',
-            },
-            {
-              icon: 'home',
-              title: 'As melhores opções',
-              text: 'Apresentamos as melhores opções de negócio para viver, arrendar ou investir.',
-            },
-          ].map((p) => (
-            <li class="flex gap-4 py-6">
-              <span class="grid size-11 shrink-0 place-items-center rounded-xl bg-white text-olive">
-                <Icon name={p.icon as 'pin' | 'user' | 'home'} class="size-5" />
-              </span>
-              <div>
-                <h3 class="font-display text-xl text-forest">{p.title}</h3>
-                <p class="mt-1 text-sm leading-relaxed text-muted">{p.text}</p>
-              </div>
-            </li>
-          ))}
-        </ul>
-      </div>
-
-      <div class="mt-14 grid gap-4">
-        {offices.map((o) => (
-          <div class="grid gap-4 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.7fr)]">
-            <article class="flex min-h-64 flex-col justify-between rounded-3xl bg-white p-7">
-              <div>
-                <span class="grid size-11 place-items-center rounded-xl bg-paper-2 text-olive">
-                  <Icon name="pin" class="size-5" />
-                </span>
-                <h3 class="mt-5 font-display text-2xl text-forest">Escritório de {o.name}</h3>
-                <address class="mt-2 text-sm not-italic leading-relaxed text-muted">
-                  {o.address.map((line) => (
-                    <div>{line}</div>
-                  ))}
-                </address>
-              </div>
-              <div class="mt-8 flex flex-wrap gap-3">
-                <a href={`tel:${o.phones[0].tel}`} class="btn btn-dark">
-                  <Icon name="phone" class="size-4" /> Ligar
-                </a>
-                <a href={o.mapUrl} class="btn btn-ghost" target="_blank" rel="noopener">
-                  Ver no mapa
-                </a>
-              </div>
-            </article>
-            <div class="min-h-72 overflow-hidden rounded-3xl bg-white">
-              <iframe
-                title={`Mapa: Escritório de ${o.name}`}
-                src={`https://www.google.com/maps?q=${encodeURIComponent(`JPP Properties, ${o.address.join(', ')}`)}&hl=pt-PT&t=h&z=16&output=embed`}
-                class="size-full min-h-72 border-0"
-                loading="lazy"
-                referrerpolicy="no-referrer-when-downgrade"
-                allowfullscreen
-              ></iframe>
+            <div>
+              <h3 class="font-display text-xl text-forest">{p.title}</h3>
+              <p class="mt-1 text-sm leading-relaxed text-muted">{p.text}</p>
             </div>
-          </div>
+          </li>
         ))}
-      </div>
+      </ul>
+    </div>
+
+    <div class="mt-14 grid gap-4">
+      {offices.map((o) => (
+        <div class="grid gap-4 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.7fr)]">
+          <article class="flex min-h-64 flex-col justify-between rounded-3xl bg-paper-2 p-7">
+            <div>
+              <span class="grid size-11 place-items-center rounded-xl bg-white text-olive">
+                <Icon name="pin" class="size-5" />
+              </span>
+              <h3 class="mt-5 font-display text-2xl text-forest">Escritório de {o.name}</h3>
+              <address class="mt-2 text-sm not-italic leading-relaxed text-muted">
+                {o.address.map((line) => (
+                  <div>{line}</div>
+                ))}
+              </address>
+            </div>
+            <div class="mt-8 flex flex-wrap gap-3">
+              <a href={`tel:${o.phones[0].tel}`} class="btn btn-dark">
+                <Icon name="phone" class="size-4" /> Ligar
+              </a>
+              <a href={o.mapUrl} class="btn btn-ghost" target="_blank" rel="noopener">
+                Ver no mapa
+              </a>
+            </div>
+          </article>
+          <div class="min-h-72 overflow-hidden rounded-3xl bg-paper-2">
+            <iframe
+              title={`Mapa: Escritório de ${o.name}`}
+              src={`https://www.google.com/maps?q=${encodeURIComponent(`JPP Properties, ${o.address.join(', ')}`)}&hl=pt-PT&t=h&z=16&output=embed`}
+              class="size-full min-h-72 border-0"
+              loading="lazy"
+              referrerpolicy="no-referrer-when-downgrade"
+              allowfullscreen
+            ></iframe>
+          </div>
+        </div>
+      ))}
     </div>
   </section>
 

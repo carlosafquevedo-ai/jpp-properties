@@ -417,11 +417,6 @@
     }
   }
 
-  /* About band: same sage wash as the listing cards, so the page reads as one family. */
-  .about-band {
-    background: linear-gradient(180deg, #f6f8f0 0%, #ebf0dd 100%);
-  }
-
   /* Zones band: left text lines up with the page column; the photo side runs to the screen edge. */
   .zones-intro {
     padding-inline: var(--gutter);
