@@ -30,7 +30,7 @@ const links = [
         <a
           href={l.href}
           aria-current={l.match && path.startsWith(l.match) ? 'page' : undefined}
-          class="rounded-full px-4 py-2 text-[0.95rem] font-medium text-ink/80 transition-colors hover:bg-paper-2 hover:text-ink aria-[current=page]:bg-paper-2 aria-[current=page]:text-ink"
+          class="rounded-full px-4 py-2 whitespace-nowrap text-[0.95rem] font-medium text-ink/80 transition-colors hover:bg-paper-2 hover:text-ink aria-[current=page]:bg-paper-2 aria-[current=page]:text-ink"
         >
           {l.label}
         </a>
@@ -40,7 +40,7 @@ const links = [
     <div class="flex items-center gap-2">
       <a
         href={`tel:${mainPhone.tel}`}
-        class="hidden items-center gap-2 rounded-full px-4 py-2 text-[0.95rem] font-semibold text-ink hover:bg-paper-2 md:inline-flex"
+        class="hidden items-center gap-2 rounded-full px-4 py-2 whitespace-nowrap text-[0.95rem] font-semibold text-ink hover:bg-paper-2 md:inline-flex"
       >
         <Icon name="phone" class="size-4 text-olive" />
         {mainPhone.label}
@@ -70,7 +70,7 @@ const links = [
       <ul class="space-y-1">
         {links.map((l) => (
           <li>
-            <a href={l.href} class="block rounded-xl px-2 py-3 font-serif text-3xl text-forest">
+            <a href={l.href} class="block rounded-xl px-2 py-3 font-display text-3xl text-forest">
               {l.label}
             </a>
           </li>
