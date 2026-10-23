@@ -160,23 +160,32 @@ const zoneTiles = (Object.keys(zones) as ZoneId[]).map((id) => ({ id, image: zon
     </div>
   </section>
 
-  <!-- Featured -->
-  <section class="container-x pt-24" aria-labelledby="destaques">
-    <div class="flex flex-wrap items-end justify-between gap-4">
+  <!-- Featured: carousel that starts on the page column and bleeds off the right edge -->
+  <section class="pt-24" aria-labelledby="destaques">
+    <div class="container-x flex flex-wrap items-end justify-between gap-4">
       <h2 id="destaques" class="font-display text-3xl text-forest sm:text-4xl">
         Imóveis em destaque
       </h2>
-      <a
-        href="/imoveis/"
-        class="inline-flex items-center gap-2 font-semibold text-olive hover:text-forest"
-      >
-        Ver todos <Icon name="arrowRight" class="size-5" />
-      </a>
+      <div class="flex items-center gap-5">
+        <a
+          href="/imoveis/"
+          class="inline-flex items-center gap-2 font-semibold text-olive hover:text-forest"
+        >
+          Ver todos <Icon name="arrowRight" class="size-5" />
+        </a>
+        <div class="hidden gap-2 sm:flex">
+          <button type="button" class="feat-nav" data-feat-prev aria-label="Imóveis anteriores">
+            <Icon name="chevronLeft" class="size-5" />
+          </button>
+          <button type="button" class="feat-nav" data-feat-next aria-label="Imóveis seguintes">
+            <Icon name="chevronRight" class="size-5" />
+          </button>
+        </div>
+      </div>
     </div>
-    <!-- Aligned grid: equal-height cards; they rise in one after another along each row -->
-    <div class="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4" data-reveal-group>
+    <div class="feat-track mt-10" data-feat-track data-reveal-group>
       {featured.map((p, i) => (
-        <div class="reveal h-full" style={`--i: ${i % 4}`}>
+        <div class="feat-item reveal" style={`--i: ${i % 4}`}>
           <PropertyCard property={p} eager={i < 4} />
         </div>
       ))}
@@ -516,6 +525,23 @@ const zoneTiles = (Object.keys(zones) as ZoneId[]).map((id) => ({ id, image: zon
     document.addEventListener('visibilitychange', restart);
     setPaused(userPaused);
     show(0);
+  }
+</script>
+
+<script>
+  // Featured carousel: the arrows move it one card at a time.
+  const featTrack = document.querySelector<HTMLElement>('[data-feat-track]');
+  if (featTrack) {
+    const step = () => {
+      const item = featTrack.querySelector<HTMLElement>('.feat-item');
+      return item ? item.offsetWidth + 24 : featTrack.clientWidth;
+    };
+    document
+      .querySelector('[data-feat-prev]')
+      ?.addEventListener('click', () => featTrack.scrollBy({ left: -step(), behavior: 'smooth' }));
+    document
+      .querySelector('[data-feat-next]')
+      ?.addEventListener('click', () => featTrack.scrollBy({ left: step(), behavior: 'smooth' }));
   }
 </script>
 

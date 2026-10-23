@@ -155,6 +155,49 @@
     }
   }
   /* Listing card (white card, photo carousel, agency footer) */
+  /* Featured carousel: first card lines up with the page column, the right side runs off-screen. */
+  .feat-track {
+    --edge: max(var(--gutter), calc((100vw - var(--page-w)) / 2 + var(--gutter)));
+    display: flex;
+    gap: 1.5rem;
+    overflow-x: auto;
+    padding-inline: var(--edge);
+    scroll-padding-inline: var(--edge);
+    scroll-snap-type: x mandatory;
+    scrollbar-width: none;
+  }
+  .feat-track::-webkit-scrollbar {
+    display: none;
+  }
+  .feat-item {
+    flex: none;
+    scroll-snap-align: start;
+    width: 82%;
+  }
+  @media (min-width: 40rem) {
+    .feat-item {
+      width: calc((100vw - 2 * var(--edge) - 1.5rem) / 2);
+    }
+  }
+  @media (min-width: 64rem) {
+    .feat-item {
+      width: calc((min(100vw, var(--page-w)) - 2 * var(--gutter) - 4.5rem) / 4);
+    }
+  }
+  .feat-nav {
+    display: grid;
+    width: 2.5rem;
+    height: 2.5rem;
+    place-items: center;
+    border: 1px solid var(--color-line);
+    border-radius: 0.5rem;
+    color: var(--color-forest);
+    transition: background-color 0.2s;
+  }
+  .feat-nav:hover {
+    background: var(--color-lime);
+    border-color: var(--color-lime);
+  }
   .property-card {
     overflow: hidden;
     border-radius: 0.5rem;
