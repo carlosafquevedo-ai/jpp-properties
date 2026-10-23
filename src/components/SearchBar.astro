@@ -4,50 +4,40 @@ import { zones, propertyTypeLabels } from '../data/properties';
 ---
 
 <form action="/imoveis/" method="get">
-  <fieldset class="mb-3 inline-flex rounded-full bg-paper-2 p-1">
+  <fieldset class="glass-seg mb-3">
     <legend class="sr-only">Tipo de negócio</legend>
     <label class="cursor-pointer">
       <input type="radio" name="tipo" value="comprar" class="peer sr-only" checked />
-      <span class="block rounded-full px-5 py-2 text-sm font-semibold text-muted transition-colors peer-checked:bg-forest peer-checked:text-white peer-focus-visible:outline peer-focus-visible:outline-2 peer-focus-visible:outline-olive">
-        Comprar
-      </span>
+      <span class="glass-seg-opt">Comprar</span>
     </label>
     <label class="cursor-pointer">
       <input type="radio" name="tipo" value="arrendar" class="peer sr-only" />
-      <span class="block rounded-full px-5 py-2 text-sm font-semibold text-muted transition-colors peer-checked:bg-forest peer-checked:text-white peer-focus-visible:outline peer-focus-visible:outline-2 peer-focus-visible:outline-olive">
-        Arrendar
-      </span>
+      <span class="glass-seg-opt">Arrendar</span>
     </label>
   </fieldset>
 
   <div class="grid grid-cols-2 gap-3 sm:grid-cols-4 lg:grid-cols-[1.2fr_1.2fr_1fr_1fr_auto]">
-    <div>
-      <label for="s-zona" class="mb-1 block px-1 text-xs font-medium text-muted">
-        Zona
-      </label>
-      <select id="s-zona" name="zona" class="field">
+    <div class="glass-field">
+      <label for="s-zona">Zona</label>
+      <select id="s-zona" name="zona" class="glass-select">
         <option value="">Todas as zonas</option>
         {Object.entries(zones).map(([id, z]) => (
           <option value={id}>{z.name}</option>
         ))}
       </select>
     </div>
-    <div>
-      <label for="s-imovel" class="mb-1 block px-1 text-xs font-medium text-muted">
-        Tipo de imóvel
-      </label>
-      <select id="s-imovel" name="imovel" class="field">
+    <div class="glass-field">
+      <label for="s-imovel">Tipo de imóvel</label>
+      <select id="s-imovel" name="imovel" class="glass-select">
         <option value="">Todos os tipos</option>
         {Object.entries(propertyTypeLabels).map(([id, label]) => (
           <option value={id}>{label}</option>
         ))}
       </select>
     </div>
-    <div>
-      <label for="s-quartos" class="mb-1 block px-1 text-xs font-medium text-muted">
-        Quartos
-      </label>
-      <select id="s-quartos" name="quartos" class="field">
+    <div class="glass-field">
+      <label for="s-quartos">Quartos</label>
+      <select id="s-quartos" name="quartos" class="glass-select">
         <option value="">Qualquer</option>
         <option value="1">1 ou mais</option>
         <option value="2">2 ou mais</option>
@@ -55,11 +45,9 @@ import { zones, propertyTypeLabels } from '../data/properties';
         <option value="4">4 ou mais</option>
       </select>
     </div>
-    <div>
-      <label for="s-preco" class="mb-1 block px-1 text-xs font-medium text-muted">
-        Preço máximo
-      </label>
-      <select id="s-preco" name="precoMax" class="field">
+    <div class="glass-field">
+      <label for="s-preco">Preço máximo</label>
+      <select id="s-preco" name="precoMax" class="glass-select">
         <option value="">Sem limite</option>
         <option value="400000">400 000 €</option>
         <option value="600000">600 000 €</option>
@@ -67,7 +55,10 @@ import { zones, propertyTypeLabels } from '../data/properties';
         <option value="1500000">1 500 000 €</option>
       </select>
     </div>
-    <button type="submit" class="btn btn-lime self-end col-span-2 sm:col-span-4 lg:col-span-1">
+    <button
+      type="submit"
+      class="btn btn-lime self-stretch lg:min-h-0 col-span-2 sm:col-span-4 lg:col-span-1"
+    >
       <Icon name="search" class="size-5" />
       Ver imóveis
     </button>
