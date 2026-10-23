@@ -1,0 +1,35 @@
+@import 'tailwindcss';
+@import '@fontsource-variable/inter';
+@import '@fontsource-variable/fraunces';
+
+/* Design tokens. TODO: replace the olive scale with the exact brand green from the logo. */
+@theme {
+  --font-sans: 'Inter Variable', ui-sans-serif, system-ui, sans-serif;
+  --font-serif: 'Fraunces Variable', ui-serif, Georgia, serif;
+
+  --color-olive-50: #f6f7ee;
+  --color-olive-100: #eaeed8;
+  --color-olive-200: #d6ddb3;
+  --color-olive-300: #bcc785;
+  --color-olive-400: #a1b05d;
+  --color-olive-500: #84963f;
+  --color-olive-600: #667730;
+  --color-olive-700: #505c28;
+  --color-olive-800: #424b24;
+  --color-olive-900: #393f21;
+
+  --color-ink: #1f2420;
+  --color-paper: #fbfbf8;
+}
+
+@layer base {
+  html {
+    font-family: var(--font-sans);
+    color: var(--color-ink);
+    background-color: var(--color-paper);
+  }
+  :focus-visible {
+    outline: 2px solid var(--color-olive-600);
+    outline-offset: 2px;
+  }
+}
