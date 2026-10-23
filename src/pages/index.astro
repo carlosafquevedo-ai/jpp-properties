@@ -204,17 +204,17 @@ const zoneTiles = (Object.keys(zones) as ZoneId[]).map((id) => ({ id, image: zon
       <h2 id="zonas-titulo" class="font-display text-3xl text-white sm:text-4xl">
         Explore por zona
       </h2>
-      <div class:list={['mt-6 grid gap-6', mainHighlight && 'lg:grid-cols-[1fr_24.5rem]']}>
+      <div class:list={['mt-6 grid gap-6', mainHighlight && 'lg:grid-cols-2']}>
         <div
           class:list={[
-            'grid gap-4 sm:grid-cols-2 lg:grid-cols-3',
+            'grid gap-4 sm:grid-cols-2 lg:grid-cols-3 lg:grid-rows-2',
             mainHighlight && 'zone-grid-overlap',
           ]}
         >
           {zoneTiles.map((t) => (
             <a
               href={`/imoveis/?zona=${t.id}`}
-              class="group relative isolate flex aspect-[4/3] flex-col justify-end lg:aspect-[16/9] overflow-hidden p-5 text-white"
+              class="group relative isolate flex aspect-[4/3] flex-col justify-end lg:aspect-auto lg:min-h-36 overflow-hidden p-5 text-white"
             >
               {t.image ? (
                 <>
@@ -277,7 +277,7 @@ const zoneTiles = (Object.keys(zones) as ZoneId[]).map((id) => ({ id, image: zon
                         <img
                           src={h.image}
                           alt={h.imageAlt}
-                          class="aspect-[2/1] w-full object-cover transition-transform duration-500 group-hover:scale-[1.04]"
+                          class="aspect-[3/1] w-full object-cover transition-transform duration-500 group-hover:scale-[1.04]"
                           loading="lazy"
                           referrerpolicy="no-referrer"
                         />
