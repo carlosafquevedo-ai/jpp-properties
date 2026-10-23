@@ -21,7 +21,7 @@ interface Props {
 
 const MAX_SLIDES = 6;
 
-const { property: p, filterable = false, eager = false, aspect = 'aspect-[4/3]' } = Astro.props;
+const { property: p, filterable = false, eager = false, aspect = 'aspect-[16/10]' } = Astro.props;
 const href = `/imoveis/${p.slug}/`;
 const place = [p.locality, zones[p.zone].name].filter(Boolean).join(', ');
 const slides = p.images.slice(0, MAX_SLIDES);
