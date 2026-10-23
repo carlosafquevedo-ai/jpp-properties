@@ -37,7 +37,7 @@ const tiles: { id: ZoneId; span: string; image?: string }[] = [
 >
   <!-- Hero: full-bleed image, rounded bottom corners and a hanging tab that holds the search box -->
   <section>
-    <div class="hero-shape relative isolate flex min-h-[calc(100svh-1rem)] flex-col justify-end overflow-hidden">
+    <div class="hero-shape relative isolate flex min-h-[clamp(600px,76svh,800px)] flex-col justify-end overflow-hidden">
       <img
         src={heroImage}
         alt="Piscina rodeada de palmeiras, com o campo de golfe ao fundo"
@@ -47,7 +47,7 @@ const tiles: { id: ZoneId; span: string; image?: string }[] = [
       />
       <div class="absolute inset-0 -z-10 bg-gradient-to-t from-forest/85 via-forest/35 to-forest/10"></div>
 
-      <div class="hero-copy container-x pb-10 pt-36 text-white">
+      <div class="hero-copy container-x pb-8 pt-32 text-white">
         <h1 class="max-w-4xl font-serif text-[clamp(2.75rem,6.2vw,5.5rem)] leading-[0.95]">
           Encontre a sua casa no Algarve.
         </h1>
