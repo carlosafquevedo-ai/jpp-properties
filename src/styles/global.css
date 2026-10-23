@@ -338,6 +338,32 @@
     transform: none;
     pointer-events: auto;
   }
+  /* Photo inside the hero listing card, with an arrow that opens the listing. */
+  .hero-card-photo {
+    position: relative;
+    display: block;
+    overflow: hidden;
+  }
+  .hero-card-go {
+    position: absolute;
+    right: 0.75rem;
+    bottom: 0.75rem;
+    display: grid;
+    place-items: center;
+    width: 2.5rem;
+    height: 2.5rem;
+    background: #fff;
+    color: var(--color-forest);
+    transition:
+      background-color 0.25s,
+      transform 0.35s var(--ease-out);
+  }
+  .hero-card-photo:hover .hero-card-go,
+  .hero-card-photo:focus-visible .hero-card-go {
+    background: var(--color-lime);
+    transform: translate(-2px, -2px);
+  }
+
   .hero-controls {
     display: flex;
     align-items: center;

@@ -100,9 +100,19 @@ const zoneTiles = (Object.keys(zones) as ZoneId[]).map((id) => ({ id, image: zon
                   </ul>
                   <a
                     href={`/imoveis/${slide.property.slug}/`}
-                    class="btn mt-4 w-full rounded-none bg-white text-forest hover:bg-paper-2"
+                    class="hero-card-photo group mt-4 [@media(max-height:760px)]:hidden"
+                    aria-label={`Ver imóvel: ${slide.property.title}`}
                   >
-                    Ver imóvel
+                    <img
+                      src={slide.property.images[1] ?? slide.property.images[0]}
+                      alt=""
+                      class="aspect-video w-full object-cover transition-transform duration-500 group-hover:scale-[1.04]"
+                      loading="lazy"
+                      referrerpolicy="no-referrer"
+                    />
+                    <span class="hero-card-go">
+                      <Icon name="arrowUpRight" class="size-5" />
+                    </span>
                   </a>
                 </article>
               ) : null,
