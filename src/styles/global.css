@@ -591,7 +591,7 @@
     transform: translateY(-3px);
   }
 
-  /* About photos: a zigzag column of wide diamonds that run off the top and bottom edges (the
+  /* About photos: a zigzag column of square diamonds that run off the top and bottom edges (the
      "Art Director" slide reference). Diamonds share their edges, a small inset leaves a fine gap, and one
      is a dark brand tile. The active one (hover, focus or tap) grows and comes forward. */
   .about-stack {
@@ -601,33 +601,33 @@
   }
   .about-photo {
     position: absolute;
-    width: 66.667%;
-    height: 40%;
+    width: 50%;
+    height: 50%;
     cursor: pointer;
-    clip-path: polygon(50% 3%, 98% 50%, 50% 97%, 2% 50%);
+    clip-path: polygon(50% 2.5%, 97.5% 50%, 50% 97.5%, 2.5% 50%);
     transition:
       transform 0.5s var(--ease-out),
       filter 0.4s;
   }
   .about-photo:nth-child(1) {
-    left: 0;
-    top: -10%;
+    left: 12.5%;
+    top: -25%;
   }
   .about-photo:nth-child(2) {
-    left: 33.333%;
-    top: 10%;
+    left: 37.5%;
+    top: 0;
   }
   .about-photo:nth-child(3) {
-    left: 0;
-    top: 30%;
+    left: 12.5%;
+    top: 25%;
   }
   .about-photo:nth-child(4) {
-    left: 33.333%;
+    left: 37.5%;
     top: 50%;
   }
   .about-photo:nth-child(5) {
-    left: 0;
-    top: 70%;
+    left: 12.5%;
+    top: 75%;
   }
   .about-brand {
     display: grid;
