@@ -581,14 +581,14 @@
      The active one (hover, focus or tap) comes forward and straightens; the others step back. */
   .about-stack {
     position: relative;
-    aspect-ratio: 5 / 6;
+    aspect-ratio: 10 / 13;
   }
   .about-photo {
     --r: 0deg;
     --dx: 0px;
     --dy: 0px;
     position: absolute;
-    width: 52%;
+    width: 54%;
     aspect-ratio: 4 / 5;
     overflow: hidden;
     border: 4px solid #fff;
@@ -614,19 +614,27 @@
   }
   .about-photo:nth-child(2) {
     right: 0;
-    top: 23%;
+    top: 8%;
     --r: 3deg;
     --dx: 10px;
-    --dy: 0px;
+    --dy: -4px;
     z-index: 2;
   }
   .about-photo:nth-child(3) {
-    left: 24%;
-    top: 46%;
-    --r: -2deg;
-    --dx: -8px;
-    --dy: 10px;
+    left: 0;
+    top: 48%;
+    --r: 2deg;
+    --dx: -10px;
+    --dy: 8px;
     z-index: 3;
+  }
+  .about-photo:nth-child(4) {
+    right: 0;
+    top: 44%;
+    --r: -3deg;
+    --dx: 10px;
+    --dy: 8px;
+    z-index: 4;
   }
   .about-stack[data-has-active] .about-photo:not(.is-active) {
     transform: translate(var(--dx), var(--dy)) rotate(var(--r));
