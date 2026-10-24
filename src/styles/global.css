@@ -15,12 +15,12 @@
   --color-line: #e1e5d6; /* borders and dividers */
 
   /* Text */
-  --color-ink: #1c1f1d; /* body and headings (same opaque black as forest) */
+  --color-ink: #1b2419; /* body and headings */
   --color-muted: #556050; /* secondary text */
 
   /* Brand greens */
-  --color-forest: #1c1f1d; /* the one opaque black: dark sections, buttons, bars */
-  --color-forest-2: #2c302d; /* hover on dark */
+  --color-forest: #18231a; /* dark sections, primary buttons */
+  --color-forest-2: #233226; /* hover on dark */
   --color-olive: #55662b; /* accent text, links, olive sections */
   --color-lime: #9ebc3a; /* brand green: fills and highlights, always with dark text */
 }
@@ -84,10 +84,10 @@
   .btn-lime {
     @apply bg-lime text-forest hover:bg-[#b0cd4d];
   }
-  /* Header CTA: brand green with dark text; the opaque black on hover, focus and press. */
+  /* Header CTA: dark with white text; lime on hover, focus and press. */
   .hdr-cta {
-    background: var(--color-lime);
-    color: var(--color-forest);
+    background: var(--color-forest);
+    color: #fff;
     transition:
       background-color 0.2s,
       color 0.2s;
@@ -95,8 +95,8 @@
   .hdr-cta:hover,
   .hdr-cta:focus-visible,
   .hdr-cta:active {
-    background: var(--color-forest);
-    color: #fff;
+    background: var(--color-lime);
+    color: var(--color-forest);
   }
   .btn-dark {
     @apply bg-forest text-white hover:bg-forest-2;
@@ -905,7 +905,7 @@
     padding: 0.125rem 1.5rem 0.375rem 0;
     border: 0;
     background: transparent
-      url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 12' fill='none' stroke='%231c1f1d' stroke-width='1.6' stroke-linecap='round'%3E%3Cpath d='M2.5 4.5 6 8l3.5-3.5'/%3E%3C/svg%3E")
+      url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 12' fill='none' stroke='%2318231a' stroke-width='1.6' stroke-linecap='round'%3E%3Cpath d='M2.5 4.5 6 8l3.5-3.5'/%3E%3C/svg%3E")
       right 0 center / 0.85rem no-repeat;
     -webkit-appearance: none;
     appearance: none;

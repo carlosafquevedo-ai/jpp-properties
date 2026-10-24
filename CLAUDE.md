@@ -37,7 +37,7 @@ Website da JPP Properties (AMI 9361), agência imobiliária no Algarve. Esta é 
 
 - Imobiliária premium, limpa e luminosa, mobile-first, fotografia em destaque.
 - **O fundo base de todas as secções é branco** (`paper`). `paper-2` (névoa) só para apoio: filtros, etiquetas, campos.
-- Paleta em `src/styles/global.css` (ver `/paleta/`): branco, névoa, linha, tinta, musgo, preto opaco (token `forest`, `#1c1f1d`: o único preto do site), oliva e lima (verde da marca `#9EBC3A`).
+- Paleta em `src/styles/global.css` (ver `/paleta/`): branco, névoa, linha, tinta, musgo, floresta, oliva e lima (verde da marca `#9EBC3A`).
 - Lima só em fundos (botões, etiquetas) com texto escuro; nunca como texto sobre branco (contraste 2,2:1).
 - Uma única largura de página: `--page-w` e `--gutter` em `global.css`; usar sempre `.container-x`.
 - `TODO`: confirmar cores com o cliente quando chegarem os logótipos.
