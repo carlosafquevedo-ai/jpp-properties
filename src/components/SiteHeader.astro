@@ -1,10 +1,15 @@
 ---
 import Icon from './Icon.astro';
-import { logoImage } from '../data/properties';
+import { logoImage, logoWhiteImage } from '../data/properties';
 import { locales, localizedPath } from '../i18n/routes';
 import { useTranslations } from '../i18n/ui';
 import { instagramUrl, mainPhone, offices, whatsappUrl } from '../lib/site';
 
+interface Props {
+  /** Home page: the header is transparent over the hero until the page is scrolled. */
+  overHero?: boolean;
+}
+const { overHero = false } = Astro.props;
 const path = Astro.url.pathname;
 const links = [
   { href: '/imoveis/', label: 'Imóveis', match: '/imoveis' },
@@ -25,10 +30,17 @@ const linkClass =
   'rounded-full px-4 py-2 whitespace-nowrap text-[0.95rem] font-medium text-ink/80 transition-colors hover:bg-forest/8 hover:text-ink aria-[current=page]:bg-forest/8 aria-[current=page]:text-ink';
 ---
 
-<header class="site-header" id="site-header">
+<header class="site-header" id="site-header" data-over-hero={overHero ? '' : undefined}>
   <div class="hdr-bar">
     <a href="/" aria-label="JPP Properties, página inicial" class="shrink-0">
-      <img src={logoImage} alt="JPP Properties" class="h-10 w-auto" width="133" height="40" />
+      <img
+        src={logoImage}
+        alt="JPP Properties"
+        class="logo-on-light h-10 w-auto"
+        width="133"
+        height="40"
+      />
+      <img src={logoWhiteImage} alt="" class="logo-on-dark h-10 w-auto" width="133" height="40" />
     </a>
 
     <nav class="hidden items-center lg:flex" aria-label="Principal">

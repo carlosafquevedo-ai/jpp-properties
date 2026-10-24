@@ -1416,3 +1416,50 @@
     }
   }
 }
+
+/* Header over the hero (home page, before scrolling): transparent, white logo and text.
+   Unlayered so these win over the utility classes on the links. Once scrolled (data-stuck) the header
+   returns to the light glass capsule. */
+.logo-on-dark {
+  display: none;
+}
+.site-header[data-over-hero]:not([data-stuck]) .logo-on-light {
+  display: none;
+}
+.site-header[data-over-hero]:not([data-stuck]) .logo-on-dark {
+  display: block;
+}
+.site-header[data-over-hero]:not([data-stuck]) .hdr-bar {
+  border-color: transparent;
+  background: transparent;
+  box-shadow: none;
+  -webkit-backdrop-filter: none;
+  backdrop-filter: none;
+}
+.site-header[data-over-hero]:not([data-stuck]) .hdr-bar nav a {
+  color: rgba(255, 255, 255, 0.88);
+}
+.site-header[data-over-hero]:not([data-stuck]) .hdr-bar nav a:hover {
+  background: rgba(255, 255, 255, 0.14);
+  color: #fff;
+}
+.site-header[data-over-hero]:not([data-stuck]) .hdr-icon,
+.site-header[data-over-hero]:not([data-stuck]) .lang-btn {
+  color: #fff;
+}
+.site-header[data-over-hero]:not([data-stuck]) .hdr-icon:hover,
+.site-header[data-over-hero]:not([data-stuck]) .hdr-icon[aria-expanded='true'],
+.site-header[data-over-hero]:not([data-stuck]) .lang-btn:hover,
+.site-header[data-over-hero]:not([data-stuck]) .lang-btn[aria-expanded='true'] {
+  background: rgba(255, 255, 255, 0.16);
+  color: #fff;
+}
+.site-header[data-over-hero]:not([data-stuck]) .hdr-cta {
+  background-color: #dccfae;
+  color: var(--color-forest);
+}
+.site-header[data-over-hero]:not([data-stuck]) .hdr-cta:hover,
+.site-header[data-over-hero]:not([data-stuck]) .hdr-cta:focus-visible {
+  background-color: #fff;
+  color: var(--color-forest);
+}
