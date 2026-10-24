@@ -323,10 +323,10 @@ const zoneTiles = (Object.keys(zones) as ZoneId[]).map((id) => ({ id, image: zon
   </section>
 
   <!-- About: text + CTA, tall photo and pillars (home page "about us"), then the offices -->
-  <section id="sobre" class="container-x mt-28" aria-labelledby="sobre-titulo">
-    <div class="grid items-stretch gap-12 lg:grid-cols-[1fr_0.9fr] lg:gap-20">
+  <section id="sobre" class="container-x mt-36 lg:mt-44" aria-labelledby="sobre-titulo">
+    <div class="grid items-stretch gap-12 lg:grid-cols-[minmax(0,1fr)_minmax(0,0.9fr)] lg:gap-20">
       <!-- Text: heading at the top edge of the mosaic, button on its bottom edge, both paragraphs alike. -->
-      <div class="flex max-w-[40.5rem] flex-col justify-between gap-10">
+      <div class="flex min-w-0 max-w-[40.5rem] flex-col justify-between gap-10">
         <div>
           <h2
             id="sobre-titulo"
