@@ -366,8 +366,8 @@ const zoneTiles = (Object.keys(zones) as ZoneId[]).map((id) => ({ id, image: zon
         </div>
       </div>
 
-      <!-- Two overlapping photos (MeewVision "about" stack): vertical, slightly rotated. -->
-      <div class="about-stack mx-auto w-full max-w-md lg:max-w-none">
+      <!-- Photo mosaic: its size depends only on its width (self-start), never on how long the text is. -->
+      <div class="about-stack mx-auto w-full max-w-md self-start lg:max-w-none">
         {aboutPhotos.map((c) => (
           <figure class="about-photo" tabindex="0">
             <img
