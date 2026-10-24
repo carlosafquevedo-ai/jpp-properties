@@ -329,7 +329,7 @@ const zoneTiles = (Object.keys(zones) as ZoneId[]).map((id) => ({ id, image: zon
       <!-- Two overlapping photos (MeewVision "about" stack): vertical, slightly rotated. -->
       <div class="about-stack mx-auto w-full max-w-sm lg:max-w-none">
         {aboutPhotos.map((c) => (
-          <figure class="about-photo">
+          <figure class="about-photo" tabindex="0">
             <img
               src={c.image}
               alt={c.alt}
@@ -546,6 +546,32 @@ const zoneTiles = (Object.keys(zones) as ZoneId[]).map((id) => ({ id, image: zon
     document.addEventListener('visibilitychange', restart);
     setPaused(userPaused);
     show(0);
+  }
+</script>
+
+<script>
+  // About photos: the one under the pointer (or focused, or tapped) comes to the front, straightens and
+  // grows while the others step back. Tap again or tap outside to put them back.
+  const aboutStack = document.querySelector<HTMLElement>('.about-stack');
+  if (aboutStack) {
+    const photos = [...aboutStack.querySelectorAll<HTMLElement>('.about-photo')];
+    const setActive = (el: HTMLElement | null) => {
+      photos.forEach((p) => p.classList.toggle('is-active', p === el));
+      aboutStack.toggleAttribute('data-has-active', Boolean(el));
+    };
+    photos.forEach((p) => {
+      p.addEventListener('pointerenter', (e) => e.pointerType === 'mouse' && setActive(p));
+      p.addEventListener('focus', () => setActive(p));
+      p.addEventListener('click', () => setActive(p.classList.contains('is-active') ? null : p));
+      p.addEventListener('keydown', (e) => e.key === 'Escape' && (setActive(null), p.blur()));
+    });
+    aboutStack.addEventListener(
+      'pointerleave',
+      (e) => e.pointerType === 'mouse' && setActive(null),
+    );
+    document.addEventListener('pointerdown', (e) => {
+      if (!aboutStack.contains(e.target as Node)) setActive(null);
+    });
   }
 </script>
 

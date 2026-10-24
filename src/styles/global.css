@@ -537,50 +537,72 @@
     }
   }
 
-  /* About photos: three vertical photos that overlap, slightly rotated (MeewVision "about" stack). */
+  /* About photos: three vertical photos that overlap, slightly rotated (MeewVision "about" stack).
+     The active one (hover, focus or tap) comes forward and straightens; the others step back. */
   .about-stack {
     position: relative;
     aspect-ratio: 5 / 6;
   }
   .about-photo {
+    --r: 0deg;
+    --dx: 0px;
+    --dy: 0px;
     position: absolute;
     width: 58%;
     aspect-ratio: 4 / 5;
     overflow: hidden;
     border: 4px solid #fff;
     box-shadow: 0 24px 46px -26px rgba(24, 35, 26, 0.5);
-    transition: transform 0.5s var(--ease-out);
+    cursor: pointer;
+    transform: rotate(var(--r));
+    transition:
+      transform 0.55s cubic-bezier(0.34, 1.4, 0.64, 1),
+      box-shadow 0.4s var(--ease-out),
+      filter 0.4s;
+  }
+  .about-photo:focus-visible {
+    outline: 3px solid var(--color-lime);
+    outline-offset: 3px;
   }
   .about-photo:nth-child(1) {
     left: 0;
     top: 0;
-    transform: rotate(-3deg);
+    --r: -3deg;
+    --dx: -10px;
+    --dy: -8px;
     z-index: 1;
   }
   .about-photo:nth-child(2) {
     right: 0;
     top: 20%;
-    transform: rotate(3deg);
+    --r: 3deg;
+    --dx: 10px;
+    --dy: 0px;
     z-index: 2;
   }
   .about-photo:nth-child(3) {
     left: 6%;
     top: 40%;
-    transform: rotate(-2deg);
+    --r: -2deg;
+    --dx: -8px;
+    --dy: 10px;
     z-index: 3;
   }
-  .about-stack:hover .about-photo:nth-child(1) {
-    transform: rotate(-4deg) translate(-4px, -4px);
+  .about-stack[data-has-active] .about-photo:not(.is-active) {
+    transform: translate(var(--dx), var(--dy)) rotate(var(--r));
+    filter: brightness(0.82) saturate(0.85);
   }
-  .about-stack:hover .about-photo:nth-child(2) {
-    transform: rotate(4deg) translate(4px, 0);
-  }
-  .about-stack:hover .about-photo:nth-child(3) {
-    transform: rotate(-3deg) translate(-4px, 4px);
+  .about-photo.is-active {
+    z-index: 10;
+    transform: rotate(0deg) scale(1.07);
+    box-shadow: 0 34px 60px -26px rgba(24, 35, 26, 0.65);
   }
   @media (prefers-reduced-motion: reduce) {
-    .about-stack:hover .about-photo:nth-child(n) {
-      transform: none;
+    .about-photo,
+    .about-stack[data-has-active] .about-photo:not(.is-active),
+    .about-photo.is-active {
+      transition: none;
+      transform: rotate(var(--r));
     }
   }
 
