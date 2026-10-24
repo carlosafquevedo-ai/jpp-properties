@@ -7,6 +7,7 @@ import Icon from '../components/Icon.astro';
 import {
   formatPrice,
   heroImage,
+  logoWhiteImage,
   visibleProperties as properties,
   zones,
   type ZoneId,
@@ -29,6 +30,7 @@ const zoneImages: Partial<Record<ZoneId, string>> = {
   vilasol: '/zones/vilasol.jpg', // TODO: confirm the photo's licence/credit with the client
   quarteira: '/zones/quarteira.jpg', // TODO: confirm the photo's licence/credit with the client
 };
+// Zigzag column of diamonds (reference: "Art Director" slide). The fourth slot is the brand mark.
 const aboutPhotos = [
   {
     image: heroImage,
@@ -42,15 +44,12 @@ const aboutPhotos = [
     image: photo('oliveiras-residence-quarteira'),
     alt: 'Oliveiras Residence, Quarteira',
   },
+  { brand: true },
   {
     image: photo('casuarinas-residences-vilamoura'),
     alt: 'Casuarinas Residences, Vilamoura',
   },
-  {
-    image: photo('t2-perto-da-praia-quarteira'),
-    alt: 'Apartamento T2 perto da praia, Quarteira',
-  },
-];
+] as { image?: string; alt?: string; brand?: boolean }[];
 const aboutZones = (
   ['vilamoura', 'quarteira', 'vilasol', 'vale-do-lobo', 'quinta-do-lago', 'loule'] as ZoneId[]
 ).map((id) => ({ id, name: zones[id].name }));
@@ -365,19 +364,25 @@ const zoneTiles = (Object.keys(zones) as ZoneId[]).map((id) => ({ id, image: zon
         </div>
       </div>
 
-      <!-- Photo mosaic: its size depends only on its width (self-start), never on how long the text is. -->
+      <!-- Diamond column: its size depends only on its width, never on how long the text is. -->
       <div class="about-stack mx-auto w-full max-w-md self-center lg:max-w-[32rem] lg:justify-self-end">
-        {aboutPhotos.map((c) => (
-          <figure class="about-photo" tabindex="0">
-            <img
-              src={c.image}
-              alt={c.alt}
-              class="size-full object-cover"
-              loading="lazy"
-              referrerpolicy="no-referrer"
-            />
-          </figure>
-        ))}
+        {aboutPhotos.map((c) =>
+          c.brand ? (
+            <figure class="about-photo about-brand" tabindex="0">
+              <img src={logoWhiteImage} alt="JPP Properties" class="w-[34%]" loading="lazy" />
+            </figure>
+          ) : (
+            <figure class="about-photo" tabindex="0">
+              <img
+                src={c.image}
+                alt={c.alt}
+                class="size-full object-cover"
+                loading="lazy"
+                referrerpolicy="no-referrer"
+              />
+            </figure>
+          ),
+        )}
       </div>
     </div>
 
