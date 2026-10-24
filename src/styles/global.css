@@ -648,10 +648,12 @@
      around the tiles) and runs to the screen edge on the right. */
   .zones-band {
     padding-block: 3.5rem;
-    /* Opaque black with a soft champagne glow in one corner: deep, quiet luxury. */
+    /* Deep warm charcoal, lit softly from the top left, with a fine champagne hairline. */
     background:
-      radial-gradient(120% 100% at 100% 0%, rgba(220, 207, 174, 0.14) 0%, transparent 55%),
-      linear-gradient(135deg, #0c0e0d 0%, #181a19 48%, #262928 100%);
+      radial-gradient(90% 120% at 0% 0%, rgba(255, 255, 255, 0.07) 0%, transparent 60%),
+      radial-gradient(70% 90% at 100% 100%, rgba(220, 207, 174, 0.08) 0%, transparent 65%),
+      linear-gradient(160deg, #1d201e 0%, #121413 100%);
+    box-shadow: inset 0 0 0 1px rgba(220, 207, 174, 0.14);
   }
   @media (min-width: 64rem) {
     .zones-band {
@@ -670,6 +672,27 @@
       padding-left: 0;
       padding-right: 2.5rem;
     }
+  }
+  .zone-eyebrow {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    font-size: 0.75rem;
+    font-weight: 500;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: #dccfae;
+  }
+  .zone-eyebrow::before {
+    content: '';
+    width: 2rem;
+    height: 1px;
+    background: #dccfae;
+  }
+  /* Zones without a photo yet: dark glass with a champagne hairline instead of a flat green. */
+  .zone-plain {
+    background: linear-gradient(145deg, #2c2f2d 0%, #1a1c1b 100%);
+    box-shadow: inset 0 0 0 1px rgba(220, 207, 174, 0.2);
   }
   /* Tiles here are small: the arrow box alone is the call to action. */
   .zones-intro .zone-go-text {
