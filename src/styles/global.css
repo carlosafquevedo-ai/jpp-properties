@@ -508,12 +508,10 @@
     width: 3rem;
     height: 3rem;
     place-items: center;
-    border: 1px solid rgba(255, 255, 255, 0.75);
+    border: 0;
     border-radius: 0.75rem;
-    background: linear-gradient(180deg, rgba(255, 255, 255, 0.97), rgba(250, 251, 247, 0.94));
-    -webkit-backdrop-filter: blur(14px);
-    backdrop-filter: blur(14px);
-    color: var(--color-forest);
+    background: var(--color-forest);
+    color: #fff;
     box-shadow: 0 14px 30px -14px rgba(24, 35, 26, 0.55);
     cursor: pointer;
     opacity: 0;
@@ -531,7 +529,7 @@
     transform: none;
   }
   .fab-top:hover {
-    background: var(--color-lime);
+    background: var(--color-forest-2);
   }
   @media (min-width: 64rem) {
     .fab-top {
