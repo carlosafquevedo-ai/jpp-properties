@@ -366,7 +366,7 @@ const zoneTiles = (Object.keys(zones) as ZoneId[]).map((id) => ({ id, image: zon
       </div>
 
       <!-- Photo mosaic: its size depends only on its width (self-start), never on how long the text is. -->
-      <div class="about-stack mx-auto w-full max-w-md self-start lg:max-w-none">
+      <div class="about-stack mx-auto w-full max-w-md self-center lg:max-w-[32rem] lg:justify-self-end">
         {aboutPhotos.map((c) => (
           <figure class="about-photo" tabindex="0">
             <img
