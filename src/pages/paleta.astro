@@ -5,16 +5,27 @@ import SiteLayout from '../layouts/SiteLayout.astro';
 const colors = [
   { name: 'Branco', token: 'paper', hex: '#ffffff', use: 'Fundo base de todas as secções' },
   {
-    name: 'Névoa',
+    name: 'Marfim',
     token: 'paper-2',
-    hex: '#f4f6ee',
+    hex: '#f5f2ea',
     use: 'Apoio discreto: filtros, etiquetas, campos',
   },
-  { name: 'Linha', token: 'line', hex: '#e1e5d6', use: 'Contornos e divisórias' },
-  { name: 'Tinta', token: 'ink', hex: '#1b2419', use: 'Texto e títulos' },
-  { name: 'Musgo claro', token: 'muted', hex: '#556050', use: 'Texto secundário' },
-  { name: 'Floresta', token: 'forest', hex: '#18231a', use: 'Secções escuras e botão principal' },
-  { name: 'Floresta 2', token: 'forest-2', hex: '#233226', use: 'Realce sobre fundos escuros' },
+  { name: 'Linha', token: 'line', hex: '#e7e1d3', use: 'Contornos e divisórias' },
+  { name: 'Tinta', token: 'ink', hex: '#1b1e1c', use: 'Texto e títulos' },
+  { name: 'Cinza quente', token: 'muted', hex: '#5b5e57', use: 'Texto secundário' },
+  {
+    name: 'Carvão',
+    token: 'forest',
+    hex: '#1b1e1c',
+    use: 'O único escuro: cabeçalho, botões, secções escuras',
+  },
+  {
+    name: 'Champanhe',
+    token: 'champagne',
+    hex: '#dccfae',
+    use: 'Acento premium: linhas finas, botão principal sobre escuro, pesquisa',
+  },
+  { name: 'Carvão 2', token: 'forest-2', hex: '#2b2f2c', use: 'Realce sobre fundos escuros' },
   { name: 'Oliva', token: 'olive', hex: '#55662b', use: 'Ligações, destaques e secção secundária' },
   {
     name: 'Lima (marca)',
@@ -34,13 +45,15 @@ const ratio = (a: string, b: string) => {
   return (hi + 0.05) / (lo + 0.05);
 };
 const pairs = [
-  { label: 'Texto sobre branco', fg: '#1b2419', bg: '#ffffff' },
-  { label: 'Texto secundário sobre branco', fg: '#556050', bg: '#ffffff' },
+  { label: 'Texto sobre branco', fg: '#1b1e1c', bg: '#ffffff' },
+  { label: 'Texto secundário sobre branco', fg: '#5b5e57', bg: '#ffffff' },
   { label: 'Oliva sobre branco', fg: '#55662b', bg: '#ffffff' },
-  { label: 'Branco sobre floresta', fg: '#ffffff', bg: '#18231a' },
+  { label: 'Branco sobre carvão', fg: '#ffffff', bg: '#1b1e1c' },
   { label: 'Branco sobre oliva', fg: '#ffffff', bg: '#55662b' },
-  { label: 'Floresta sobre lima (botões)', fg: '#18231a', bg: '#9ebc3a' },
-  { label: 'Lima sobre floresta', fg: '#9ebc3a', bg: '#18231a' },
+  { label: 'Carvão sobre lima (botões)', fg: '#1b1e1c', bg: '#9ebc3a' },
+  { label: 'Lima sobre carvão', fg: '#9ebc3a', bg: '#1b1e1c' },
+  { label: 'Carvão sobre champanhe (botões)', fg: '#1b1e1c', bg: '#dccfae' },
+  { label: 'Champanhe sobre carvão', fg: '#dccfae', bg: '#1b1e1c' },
   { label: 'Lima sobre branco (não usar para texto)', fg: '#9ebc3a', bg: '#ffffff' },
 ];
 ---
@@ -52,8 +65,9 @@ const pairs = [
   <div class="container-x pb-8">
     <h1 class="font-display text-3xl text-forest sm:text-4xl">Paleta de cores</h1>
     <p class="mt-4 max-w-2xl text-lg text-ink/80">
-      O fundo base é sempre branco. O verde da marca (lima) aparece em botões e destaques, nunca
-      como texto sobre branco.
+      O fundo base é sempre branco. O escuro é um só (carvão) e o acento premium é o champanhe. O
+      verde da marca (lima) fica para pequenos destaques: botões de ação sobre claro, etiquetas,
+      pontos e linhas. Nunca como texto sobre branco.
     </p>
   </div>
 

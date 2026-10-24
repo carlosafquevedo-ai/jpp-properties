@@ -9,19 +9,25 @@
   --font-sans: 'Outfit Variable', ui-sans-serif, system-ui, sans-serif;
   --font-display: 'Outfit Variable', ui-sans-serif, system-ui, sans-serif;
 
-  /* Surfaces */
+  /* Surfaces: white base, warm ivory for support */
   --color-paper: #ffffff; /* default background */
-  --color-paper-2: #f4f6ee; /* alternate section tint, used sparingly */
-  --color-line: #e1e5d6; /* borders and dividers */
+  --color-paper-2: #f5f2ea; /* ivory: alternate tint, fields, tags */
+  --color-line: #e7e1d3; /* borders and dividers */
 
   /* Text */
-  --color-ink: #1b2419; /* body and headings */
-  --color-muted: #556050; /* secondary text */
+  --color-ink: #1b1e1c; /* body and headings */
+  --color-muted: #5b5e57; /* secondary text */
 
-  /* Brand greens */
-  --color-forest: #18231a; /* dark sections, primary buttons */
-  --color-forest-2: #233226; /* hover on dark */
-  --color-olive: #55662b; /* accent text, links, olive sections */
+  /* Carbon: the one dark of the site (header CTA, dark sections, search panel, zones band) */
+  --color-forest: #1b1e1c;
+  --color-forest-2: #2b2f2c; /* hover on dark */
+
+  /* Champagne: the premium accent (hairlines, eyebrows, primary button on dark, search controls) */
+  --color-champagne: #dccfae;
+  --color-champagne-2: #e8dec3;
+
+  /* Brand greens: the JPP signature, used as small bright accents */
+  --color-olive: #55662b; /* accent text and links on light */
   --color-lime: #9ebc3a; /* brand green: fills and highlights, always with dark text */
 }
 
@@ -131,11 +137,11 @@
   }
   /* Hero primary button: warm champagne. */
   .btn-champagne {
-    background-color: #dccfae;
+    background-color: var(--color-champagne);
     color: var(--color-forest);
   }
   .btn-champagne:hover {
-    background-color: #e6dabb;
+    background-color: var(--color-champagne-2);
   }
   .btn-dark {
     @apply bg-forest text-white hover:bg-forest-2;
@@ -257,7 +263,7 @@
   /* Info area: soft sage wash with a lime accent that grows on hover. */
   .card-info {
     position: relative;
-    background: linear-gradient(180deg, #f6f8f0 0%, #e9eed9 100%);
+    background: linear-gradient(180deg, #faf8f3 0%, #eee8d9 100%);
   }
   .card-info::before {
     content: '';
@@ -681,13 +687,13 @@
     font-weight: 500;
     letter-spacing: 0.22em;
     text-transform: uppercase;
-    color: #dccfae;
+    color: var(--color-champagne);
   }
   .zone-eyebrow::before {
     content: '';
     width: 2rem;
     height: 1px;
-    background: #dccfae;
+    background: var(--color-champagne);
   }
   /* Zones without a photo yet: dark glass with a champagne hairline instead of a flat green. */
   .zone-plain {
@@ -1036,11 +1042,11 @@
     color: #fff;
   }
   input:checked + .glass-seg-opt {
-    background: #dccfae;
+    background: var(--color-champagne);
     color: var(--color-forest);
   }
   input:focus-visible + .glass-seg-opt {
-    outline: 2px solid #dccfae;
+    outline: 2px solid var(--color-champagne);
     outline-offset: 2px;
   }
   .glass-field {
@@ -1060,7 +1066,7 @@
     inset: auto 0.875rem 0.25rem;
     height: 2px;
     border-radius: 2px;
-    background: #dccfae;
+    background: var(--color-champagne);
     opacity: 0.6;
     transition: opacity 0.25s;
   }
@@ -1142,7 +1148,7 @@
     border-radius: 2px;
     background: linear-gradient(
       to right,
-      #dccfae var(--pct, 100%),
+      var(--color-champagne) var(--pct, 100%),
       rgba(255, 255, 255, 0.2) var(--pct, 100%)
     );
   }
@@ -1151,7 +1157,7 @@
     width: 18px;
     height: 18px;
     margin-top: -7px;
-    border: 3px solid #dccfae;
+    border: 3px solid var(--color-champagne);
     border-radius: 50%;
     background: #fff;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
@@ -1174,12 +1180,12 @@
   .glass-slider::-moz-range-progress {
     height: 4px;
     border-radius: 2px;
-    background: #dccfae;
+    background: var(--color-champagne);
   }
   .glass-slider::-moz-range-thumb {
     width: 12px;
     height: 12px;
-    border: 3px solid #dccfae;
+    border: 3px solid var(--color-champagne);
     border-radius: 50%;
     background: #fff;
   }
@@ -1234,7 +1240,7 @@
   }
   .glass-opt[aria-selected='true'] {
     font-weight: 600;
-    color: #dccfae;
+    color: var(--color-champagne);
   }
   .glass-check {
     width: 1.125rem;
@@ -1455,7 +1461,7 @@
   color: #fff;
 }
 .site-header[data-over-hero]:not([data-stuck]) .hdr-cta {
-  background-color: #dccfae;
+  background-color: var(--color-champagne);
   color: var(--color-forest);
 }
 .site-header[data-over-hero]:not([data-stuck]) .hdr-cta:hover,
