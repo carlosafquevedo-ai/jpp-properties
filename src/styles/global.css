@@ -1059,15 +1059,15 @@
       background-color 0.25s,
       border-color 0.25s;
   }
-  /* The champagne underline is always visible; it brightens on focus. */
+  /* The brand-green underline is always visible; it brightens on focus. */
   .glass-field::after {
     content: '';
     position: absolute;
     inset: auto 0.875rem 0.25rem;
     height: 2px;
     border-radius: 2px;
-    background: var(--color-champagne);
-    opacity: 0.6;
+    background: var(--color-lime);
+    opacity: 0.75;
     transition: opacity 0.25s;
   }
   .glass-field:hover {
@@ -1148,7 +1148,7 @@
     border-radius: 2px;
     background: linear-gradient(
       to right,
-      var(--color-champagne) var(--pct, 100%),
+      var(--color-lime) var(--pct, 100%),
       rgba(255, 255, 255, 0.2) var(--pct, 100%)
     );
   }
@@ -1157,7 +1157,7 @@
     width: 18px;
     height: 18px;
     margin-top: -7px;
-    border: 3px solid var(--color-champagne);
+    border: 3px solid var(--color-lime);
     border-radius: 50%;
     background: #fff;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
@@ -1170,7 +1170,7 @@
     outline: none;
   }
   .glass-slider:focus-visible::-webkit-slider-thumb {
-    box-shadow: 0 0 0 4px rgba(220, 207, 174, 0.45);
+    box-shadow: 0 0 0 4px rgba(158, 188, 58, 0.5);
   }
   .glass-slider::-moz-range-track {
     height: 4px;
@@ -1180,12 +1180,12 @@
   .glass-slider::-moz-range-progress {
     height: 4px;
     border-radius: 2px;
-    background: var(--color-champagne);
+    background: var(--color-lime);
   }
   .glass-slider::-moz-range-thumb {
     width: 12px;
     height: 12px;
-    border: 3px solid var(--color-champagne);
+    border: 3px solid var(--color-lime);
     border-radius: 50%;
     background: #fff;
   }
