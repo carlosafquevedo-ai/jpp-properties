@@ -25,20 +25,12 @@ const zoneImages: Partial<Record<ZoneId, string>> = {
   vilamoura: photo('casuarinas-residences-vilamoura'),
   quarteira: photo('t2-perto-da-praia-quarteira'),
 };
-const aboutCards = [
+const aboutPhotos = [
   {
-    title: 'Quero comprar',
-    text: 'Apartamentos e moradias nas melhores zonas do Algarve, com acompanhamento até à escritura.',
-    cta: 'Ver imóveis',
-    href: '/imoveis/',
     image: heroImage,
     alt: 'Piscina rodeada de palmeiras, com o campo de golfe ao fundo',
   },
   {
-    title: 'Quero vender',
-    text: 'Avaliamos o seu imóvel e apresentamo-lo a quem procura, com a atenção que merece.',
-    cta: 'Pedir avaliação',
-    href: '#vender',
     image: photo('t1-novo-rua-da-azinheira-quarteira'),
     alt: 'Edifício novo na Rua da Azinheira, Quarteira',
   },
@@ -330,28 +322,18 @@ const zoneTiles = (Object.keys(zones) as ZoneId[]).map((id) => ({ id, image: zon
         </div>
       </div>
 
-      <!-- Two glass cards (MeewVision "about" pattern): photo on top, short text and a link below.
-           TODO: provisional copy, to be confirmed with the client. -->
-      <div class="mx-auto grid w-full max-w-sm gap-4 lg:max-w-none">
-        {aboutCards.map((c) => (
-          <a href={c.href} class="about-card group">
-            <span class="block overflow-hidden">
-              <img
-                src={c.image}
-                alt={c.alt}
-                class="aspect-[16/9] w-full object-cover transition-transform duration-700 group-hover:scale-105"
-                loading="lazy"
-                referrerpolicy="no-referrer"
-              />
-            </span>
-            <span class="block p-5">
-              <span class="block font-display text-xl text-forest">{c.title}</span>
-              <span class="mt-1.5 block text-sm leading-relaxed text-muted">{c.text}</span>
-              <span class="mt-3 inline-flex items-center gap-2 text-sm font-semibold text-olive group-hover:text-forest">
-                {c.cta} <Icon name="arrowRight" class="size-4" />
-              </span>
-            </span>
-          </a>
+      <!-- Two overlapping photos (MeewVision "about" stack): vertical, slightly rotated. -->
+      <div class="about-stack mx-auto w-full max-w-sm lg:max-w-none">
+        {aboutPhotos.map((c) => (
+          <figure class="about-photo">
+            <img
+              src={c.image}
+              alt={c.alt}
+              class="size-full object-cover"
+              loading="lazy"
+              referrerpolicy="no-referrer"
+            />
+          </figure>
         ))}
       </div>
 
