@@ -216,7 +216,7 @@ const zoneTiles = (Object.keys(zones) as ZoneId[]).map((id) => ({ id, image: zon
       </div>
     </div>
     <div class="container-x">
-      <div class="feat-track mt-10" data-feat-track data-reveal-group>
+      <div class="feat-track mt-7" data-feat-track data-reveal-group>
         {featured.map((p, i) => (
           <div class="feat-item reveal" style={`--i: ${i % 4}`}>
             <PropertyCard property={p} eager={i < 4} />

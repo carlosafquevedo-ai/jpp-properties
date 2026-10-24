@@ -216,6 +216,8 @@
   /* Listing card (white card, photo carousel, agency footer) */
   /* Featured carousel: stays inside the page column on both sides (clipped at its edges). */
   .feat-track {
+    padding-block: 0.75rem;
+    margin-bottom: -0.75rem;
     display: flex;
     gap: 1.5rem;
     overflow-x: auto;
@@ -254,29 +256,86 @@
     background: var(--color-lime);
     border-color: var(--color-lime);
   }
+  /* Floating card: a rounded photo with the info panel lifted over its lower edge. Hover raises the card with
+     a light tilt (see the script in PropertyCard.astro); the panel rises a little more than the photo. */
   .property-card {
-    overflow: hidden;
-    border-radius: 0.5rem;
-    background: var(--color-paper-2);
+    --rx: 0deg;
+    --ry: 0deg;
+    --lift: 0px;
     color: var(--color-ink);
+    transform: perspective(1100px) rotateX(var(--rx)) rotateY(var(--ry)) translateY(var(--lift));
+    transition: transform 0.45s var(--ease-out);
   }
-  /* Info area: soft sage wash with a lime accent that grows on hover. */
+  .property-card .card-photo {
+    border-radius: 0.875rem;
+  }
+  .property-card .card-photo img {
+    transition: transform 0.9s var(--ease-out);
+  }
+  .card-photo::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: 4;
+    pointer-events: none;
+    opacity: 0;
+    background: radial-gradient(
+      60% 60% at var(--gx, 50%) var(--gy, 30%),
+      rgba(255, 255, 255, 0.28),
+      transparent 70%
+    );
+    transition: opacity 0.4s;
+  }
   .card-info {
     position: relative;
-    background: linear-gradient(180deg, #faf8f3 0%, #eee8d9 100%);
+    z-index: 20;
+    margin: -3rem 0.75rem 0;
+    border: 1px solid rgba(255, 255, 255, 0.9);
+    border-radius: 0.875rem;
+    background: linear-gradient(
+      180deg,
+      rgba(253, 252, 249, 0.96) 0%,
+      rgba(243, 238, 226, 0.96) 100%
+    );
+    -webkit-backdrop-filter: blur(14px);
+    backdrop-filter: blur(14px);
+    box-shadow:
+      0 18px 30px -24px rgba(24, 35, 26, 0.5),
+      0 1px 0 rgba(24, 35, 26, 0.04);
+    transition:
+      transform 0.45s var(--ease-out),
+      box-shadow 0.45s var(--ease-out);
   }
   .card-info::before {
     content: '';
     position: absolute;
     left: 1.25rem;
-    top: 0;
+    top: -1px;
     width: 2.5rem;
     height: 3px;
+    border-radius: 0 0 3px 3px;
     background: var(--color-lime);
     transition: width 0.4s var(--ease-out);
   }
-  .property-card:hover .card-info::before {
-    width: 5rem;
+  @media (hover: hover) and (prefers-reduced-motion: no-preference) {
+    .property-card:hover {
+      --lift: -6px;
+    }
+    .property-card:hover .card-photo img {
+      transform: scale(1.05);
+    }
+    .property-card:hover .card-photo::after {
+      opacity: 1;
+    }
+    .property-card:hover .card-info {
+      transform: translateY(-6px);
+      box-shadow:
+        0 24px 34px -24px rgba(24, 35, 26, 0.55),
+        0 1px 0 rgba(24, 35, 26, 0.04);
+    }
+    .property-card:hover .card-info::before {
+      width: 5rem;
+    }
   }
   .card-spec {
     display: inline-flex;
@@ -347,7 +406,7 @@
   }
   .card-dots {
     position: absolute;
-    bottom: 0.75rem;
+    bottom: 4.1rem;
     left: 50%;
     z-index: 5;
     display: flex;
@@ -377,7 +436,7 @@
   .card-go {
     position: absolute;
     right: 0.75rem;
-    bottom: 0.75rem;
+    bottom: 4.1rem;
     z-index: 5;
     display: grid;
     place-items: center;
@@ -396,14 +455,6 @@
     background: var(--color-lime);
     color: var(--color-forest);
     transform: translate(-2px, -2px);
-  }
-  .property-card {
-    transition: transform 0.35s var(--ease-out);
-  }
-  @media (hover: hover) and (prefers-reduced-motion: no-preference) {
-    .property-card:hover {
-      transform: translateY(-4px);
-    }
   }
   /* Sequenced entrance. Only hides cards when scripting is on, so nothing is lost without JS. */
   @media (prefers-reduced-motion: no-preference) and (scripting: enabled) {
