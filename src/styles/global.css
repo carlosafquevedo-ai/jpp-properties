@@ -644,11 +644,14 @@
   .zones-section {
     container-type: inline-size;
   }
-  /* Zones band background: starts at the page column on the left (with an inner margin around the tiles)
-     and runs to the screen edge on the right. */
+  /* Zones band background: black gradient, starts at the page column on the left (with an inner margin
+     around the tiles) and runs to the screen edge on the right. */
   .zones-band {
     padding-block: 3.5rem;
-    background: linear-gradient(180deg, #f6f8f0 0%, #ebf0dd 100%);
+    /* Opaque black with a soft champagne glow in one corner: deep, quiet luxury. */
+    background:
+      radial-gradient(120% 100% at 100% 0%, rgba(220, 207, 174, 0.14) 0%, transparent 55%),
+      linear-gradient(135deg, #0c0e0d 0%, #181a19 48%, #262928 100%);
   }
   @media (min-width: 64rem) {
     .zones-band {
