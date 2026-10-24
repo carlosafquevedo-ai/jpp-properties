@@ -11,9 +11,14 @@ const colors = [
     use: 'Apoio discreto: filtros, etiquetas, campos',
   },
   { name: 'Linha', token: 'line', hex: '#e1e5d6', use: 'Contornos e divisórias' },
-  { name: 'Tinta', token: 'ink', hex: '#1b2419', use: 'Texto e títulos' },
+  { name: 'Tinta', token: 'ink', hex: '#1c1f1d', use: 'Texto e títulos' },
   { name: 'Musgo claro', token: 'muted', hex: '#556050', use: 'Texto secundário' },
-  { name: 'Floresta', token: 'forest', hex: '#18231a', use: 'Secções escuras e botão principal' },
+  {
+    name: 'Preto opaco',
+    token: 'forest',
+    hex: '#1c1f1d',
+    use: 'Secções escuras e botão principal',
+  },
   { name: 'Floresta 2', token: 'forest-2', hex: '#233226', use: 'Realce sobre fundos escuros' },
   { name: 'Oliva', token: 'olive', hex: '#55662b', use: 'Ligações, destaques e secção secundária' },
   {
@@ -34,13 +39,13 @@ const ratio = (a: string, b: string) => {
   return (hi + 0.05) / (lo + 0.05);
 };
 const pairs = [
-  { label: 'Texto sobre branco', fg: '#1b2419', bg: '#ffffff' },
+  { label: 'Texto sobre branco', fg: '#1c1f1d', bg: '#ffffff' },
   { label: 'Texto secundário sobre branco', fg: '#556050', bg: '#ffffff' },
   { label: 'Oliva sobre branco', fg: '#55662b', bg: '#ffffff' },
-  { label: 'Branco sobre floresta', fg: '#ffffff', bg: '#18231a' },
+  { label: 'Branco sobre floresta', fg: '#ffffff', bg: '#1c1f1d' },
   { label: 'Branco sobre oliva', fg: '#ffffff', bg: '#55662b' },
-  { label: 'Floresta sobre lima (botões)', fg: '#18231a', bg: '#9ebc3a' },
-  { label: 'Lima sobre floresta', fg: '#9ebc3a', bg: '#18231a' },
+  { label: 'Floresta sobre lima (botões)', fg: '#1c1f1d', bg: '#9ebc3a' },
+  { label: 'Lima sobre floresta', fg: '#9ebc3a', bg: '#1c1f1d' },
   { label: 'Lima sobre branco (não usar para texto)', fg: '#9ebc3a', bg: '#ffffff' },
 ];
 ---
