@@ -640,6 +640,10 @@
     }
   }
 
+  /* The zones section is a size container so 100cqw is the width without the scrollbar (100vw is not). */
+  .zones-section {
+    container-type: inline-size;
+  }
   /* Zones band background: starts at the page column on the left (with an inner margin around the tiles)
      and runs to the screen edge on the right. */
   .zones-band {
@@ -648,7 +652,7 @@
   }
   @media (min-width: 64rem) {
     .zones-band {
-      --edge: max(var(--gutter), calc((100vw - var(--page-w)) / 2 + var(--gutter)));
+      --edge: max(var(--gutter), calc((100cqw - var(--page-w)) / 2 + var(--gutter)));
       margin-left: var(--edge);
       padding: 2.5rem 0 2.5rem 2.5rem;
     }
@@ -675,7 +679,7 @@
   @media (min-width: 64rem) {
     .zones-photo {
       margin-left: 0;
-      margin-right: max(var(--gutter), calc((100vw - var(--page-w)) / 2 + var(--gutter)));
+      margin-right: max(var(--gutter), calc((100cqw - var(--page-w)) / 2 + var(--gutter)));
     }
   }
   .zone-row-name {
