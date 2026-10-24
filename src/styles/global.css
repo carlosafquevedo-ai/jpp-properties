@@ -537,6 +537,40 @@
     }
   }
 
+  /* About pillars: a horizontal row with fine dividers; the icon chip turns lime on hover. */
+  .about-pillar {
+    transition: background-color 0.3s;
+  }
+  @media (min-width: 48rem) {
+    .about-pillar + .about-pillar {
+      border-left: 1px solid var(--color-line);
+    }
+  }
+  @media (max-width: 47.99rem) {
+    .about-pillar + .about-pillar {
+      border-top: 1px solid var(--color-line);
+    }
+  }
+  .about-pillar-icon {
+    display: grid;
+    flex: none;
+    width: 3rem;
+    height: 3rem;
+    place-items: center;
+    border-radius: 0.75rem;
+    background: var(--color-paper-2);
+    color: var(--color-olive);
+    transition:
+      background-color 0.3s,
+      color 0.3s,
+      transform 0.4s var(--ease-out);
+  }
+  .about-pillar:hover .about-pillar-icon {
+    background: var(--color-lime);
+    color: var(--color-forest);
+    transform: translateY(-3px);
+  }
+
   /* About photos: three vertical photos that overlap, slightly rotated (MeewVision "about" stack).
      The active one (hover, focus or tap) comes forward and straightens; the others step back. */
   .about-stack {
