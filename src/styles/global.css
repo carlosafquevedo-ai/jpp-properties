@@ -537,14 +537,14 @@
     }
   }
 
-  /* About photos: two vertical photos that overlap, slightly rotated (MeewVision "about" stack). */
+  /* About photos: three vertical photos that overlap, slightly rotated (MeewVision "about" stack). */
   .about-stack {
     position: relative;
-    aspect-ratio: 4 / 5;
+    aspect-ratio: 5 / 6;
   }
   .about-photo {
     position: absolute;
-    width: 66%;
+    width: 58%;
     aspect-ratio: 4 / 5;
     overflow: hidden;
     border: 4px solid #fff;
@@ -559,15 +559,24 @@
   }
   .about-photo:nth-child(2) {
     right: 0;
-    bottom: 0;
+    top: 20%;
     transform: rotate(3deg);
     z-index: 2;
+  }
+  .about-photo:nth-child(3) {
+    left: 6%;
+    top: 40%;
+    transform: rotate(-2deg);
+    z-index: 3;
   }
   .about-stack:hover .about-photo:nth-child(1) {
     transform: rotate(-4deg) translate(-4px, -4px);
   }
   .about-stack:hover .about-photo:nth-child(2) {
-    transform: rotate(4deg) translate(4px, 4px);
+    transform: rotate(4deg) translate(4px, 0);
+  }
+  .about-stack:hover .about-photo:nth-child(3) {
+    transform: rotate(-3deg) translate(-4px, 4px);
   }
   @media (prefers-reduced-motion: reduce) {
     .about-stack:hover .about-photo:nth-child(n) {
