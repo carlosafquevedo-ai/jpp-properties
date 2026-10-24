@@ -581,7 +581,7 @@
      The active one (hover, focus or tap) comes forward and straightens; the others step back. */
   .about-stack {
     position: relative;
-    aspect-ratio: 20 / 23;
+    aspect-ratio: 20 / 27;
   }
   .about-photo {
     --r: 0deg;
@@ -603,41 +603,41 @@
     outline: 3px solid var(--color-lime);
     outline-offset: 3px;
   }
-  /* One large photo with three smaller ones overlapping its edges (a collage with a clear lead image). */
+  /* Four equal photos in two columns; the right column sits slightly lower and every photo overlaps its
+     neighbours a little, with mirrored tilts so the whole stays balanced. */
+  .about-photo {
+    width: 52%;
+  }
   .about-photo:nth-child(1) {
     left: 0;
-    top: 4%;
-    width: 66%;
-    --r: -2deg;
-    --dx: -10px;
-    --dy: 0px;
+    top: 0;
+    --r: -1.5deg;
+    --dx: -8px;
+    --dy: -6px;
     z-index: 1;
   }
   .about-photo:nth-child(2) {
     right: 0;
-    top: 0;
-    width: 36%;
-    --r: 4deg;
-    --dx: 10px;
-    --dy: -8px;
+    top: 6.7%;
+    --r: 1.5deg;
+    --dx: 8px;
+    --dy: -6px;
     z-index: 2;
   }
   .about-photo:nth-child(3) {
-    right: 6%;
-    top: 36%;
-    width: 36%;
-    --r: -3deg;
-    --dx: 12px;
-    --dy: 4px;
+    left: 0;
+    top: 45.2%;
+    --r: 1.5deg;
+    --dx: -8px;
+    --dy: 6px;
     z-index: 3;
   }
   .about-photo:nth-child(4) {
-    left: 18%;
-    top: 56.5%;
-    width: 40%;
-    --r: 3deg;
-    --dx: -6px;
-    --dy: 10px;
+    right: 0;
+    top: 51.9%;
+    --r: -1.5deg;
+    --dx: 8px;
+    --dy: 6px;
     z-index: 4;
   }
   .about-stack[data-has-active] .about-photo:not(.is-active) {
