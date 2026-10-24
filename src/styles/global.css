@@ -704,14 +704,14 @@
   .zones-intro .zone-go-text {
     display: none;
   }
-  /* Highlight photo: same page column as everything else (right edge lines up with the page). */
+  /* Highlight photo: runs wide to the right; the band's inner margin (2.5rem) is kept on the right edge. */
   .zones-photo {
     margin-inline: var(--gutter);
   }
   @media (min-width: 64rem) {
     .zones-photo {
       margin-left: 0;
-      margin-right: max(var(--gutter), calc((100cqw - var(--page-w)) / 2 + var(--gutter)));
+      margin-right: 2.5rem;
     }
   }
   .zone-row-name {
