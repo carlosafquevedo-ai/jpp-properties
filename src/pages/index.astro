@@ -46,6 +46,10 @@ const aboutPhotos = [
     image: photo('casuarinas-residences-vilamoura'),
     alt: 'Casuarinas Residences, Vilamoura',
   },
+  {
+    image: photo('t2-perto-da-praia-quarteira'),
+    alt: 'Apartamento T2 perto da praia, Quarteira',
+  },
 ];
 const zoneTiles = (Object.keys(zones) as ZoneId[]).map((id) => ({ id, image: zoneImages[id] }));
 ---
@@ -341,7 +345,7 @@ const zoneTiles = (Object.keys(zones) as ZoneId[]).map((id) => ({ id, image: zon
       </div>
 
       <!-- Two overlapping photos (MeewVision "about" stack): vertical, slightly rotated. -->
-      <div class="about-stack mx-auto w-full max-w-sm lg:ml-auto lg:mr-0 lg:max-w-[26rem]">
+      <div class="about-stack mx-auto w-full max-w-sm lg:ml-auto lg:mr-0 lg:max-w-[32rem]">
         {aboutPhotos.map((c) => (
           <figure class="about-photo" tabindex="0">
             <img
