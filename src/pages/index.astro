@@ -13,7 +13,7 @@ import {
 } from '../data/properties';
 import { featuredProperties, heroSlides } from '../lib/catalog';
 import { sideHighlights } from '../data/home';
-import { AMI, offices, email } from '../lib/site';
+import { offices, email } from '../lib/site';
 
 const featured = featuredProperties();
 const slides = heroSlides();
@@ -338,9 +338,6 @@ const zoneTiles = (Object.keys(zones) as ZoneId[]).map((id) => ({ id, image: zon
           <a href="#contacto" class="btn btn-dark">
             Falar com a equipa
           </a>
-          <span class="rounded-md bg-paper-2 px-3 py-2 text-sm font-semibold text-forest">
-            Licença AMI {AMI}
-          </span>
         </div>
       </div>
 
