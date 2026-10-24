@@ -391,30 +391,37 @@ const zoneTiles = (Object.keys(zones) as ZoneId[]).map((id) => ({ id, image: zon
     </div>
 
     <ul class="about-pillars mt-16 grid border-y border-line md:grid-cols-3">
-      {[
-        {
-          icon: 'pin',
-          title: 'Conhecimento local',
-          text: 'Somos daqui. Trabalhamos todos os dias nas zonas onde vive quem compra e quem vende.',
-        },
-        {
-          icon: 'user',
-          title: 'Atenção a cada cliente',
-          text: 'Damos prioridade ao que cada pessoa quer e precisa, da primeira visita à decisão.',
-        },
-        {
-          icon: 'home',
-          title: 'As melhores opções',
-          text: 'Apresentamos as melhores opções de negócio para viver, arrendar ou investir.',
-        },
-      ].map((p) => (
-        <li class="about-pillar flex gap-4 px-0 py-7 md:px-8 md:first:pl-0 md:last:pr-0">
+      {(
+        [
+          {
+            icon: 'pinMap',
+            title: 'Conhecimento local',
+            text: 'Somos daqui. Trabalhamos todos os dias nas zonas onde vive quem compra e quem vende.',
+          },
+          {
+            icon: 'clientCare',
+            title: 'Atenção a cada cliente',
+            text: 'Damos prioridade ao que cada pessoa quer e precisa, da primeira visita à decisão.',
+          },
+          {
+            icon: 'houseKey',
+            title: 'As melhores opções',
+            text: 'Apresentamos as melhores opções de negócio para viver, arrendar ou investir.',
+          },
+        ] as const
+      ).map((p, i) => (
+        <li class="about-pillar group relative flex gap-5 px-0 py-8 md:px-8 md:first:pl-0 md:last:pr-0">
           <span class="about-pillar-icon">
-            <Icon name={p.icon as 'pin' | 'user' | 'home'} class="size-5" />
+            <Icon name={p.icon} class="size-7" />
           </span>
-          <div>
-            <h3 class="font-display text-xl text-forest">{p.title}</h3>
-            <p class="mt-1 text-sm leading-relaxed text-muted">{p.text}</p>
+          <div class="min-w-0 flex-1">
+            <div class="flex items-baseline justify-between gap-3">
+              <h3 class="font-display text-xl text-forest">{p.title}</h3>
+              <span class="about-pillar-num" aria-hidden="true">
+                {String(i + 1).padStart(2, '0')}
+              </span>
+            </div>
+            <p class="mt-2 text-sm leading-relaxed text-muted">{p.text}</p>
           </div>
         </li>
       ))}

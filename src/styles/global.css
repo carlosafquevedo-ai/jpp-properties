@@ -574,21 +574,53 @@
   .about-pillar-icon {
     display: grid;
     flex: none;
-    width: 3rem;
-    height: 3rem;
+    width: 3.5rem;
+    height: 3.5rem;
     place-items: center;
-    border-radius: 0.75rem;
-    background: var(--color-paper-2);
-    color: var(--color-olive);
+    border-radius: 0.875rem;
+    /* Carbon tile with a champagne icon: the same premium pairing as the search and zones bands. */
+    background: linear-gradient(145deg, #2b2f2c 0%, #151716 100%);
+    color: var(--color-champagne);
+    box-shadow:
+      inset 0 0 0 1px rgba(220, 207, 174, 0.22),
+      0 12px 22px -14px rgba(24, 35, 26, 0.6);
     transition:
-      background-color 0.3s,
       color 0.3s,
-      transform 0.4s var(--ease-out);
+      transform 0.4s var(--ease-out),
+      box-shadow 0.3s;
   }
   .about-pillar:hover .about-pillar-icon {
-    background: var(--color-lime);
-    color: var(--color-forest);
+    color: var(--color-lime);
     transform: translateY(-3px);
+    box-shadow:
+      inset 0 0 0 1px rgba(158, 188, 58, 0.5),
+      0 18px 26px -14px rgba(24, 35, 26, 0.65);
+  }
+  .about-pillar-num {
+    font-size: 0.8125rem;
+    font-weight: 500;
+    letter-spacing: 0.12em;
+    color: #b3a37a;
+    font-variant-numeric: tabular-nums;
+  }
+  /* A fine brand-green line draws across the top of a pillar on hover. */
+  .about-pillar::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: -1px;
+    width: 0;
+    height: 2px;
+    background: var(--color-lime);
+    transition: width 0.5s var(--ease-out);
+  }
+  @media (min-width: 48rem) {
+    .about-pillar:not(:first-child)::before {
+      left: 2rem;
+    }
+  }
+  .about-pillar:hover::before {
+    width: 4rem;
   }
 
   /* About photos: a zigzag column of square diamonds that run off the top and bottom edges (the
