@@ -23,7 +23,7 @@ const photo = (slug: string) => properties.find((p) => p.slug === slug)!.images[
 // Zone photos used on the tiles. TODO: in production each zone document has its own photo (Sanity).
 const zoneImages: Partial<Record<ZoneId, string>> = {
   vilamoura: photo('casuarinas-residences-vilamoura'),
-  quarteira: photo('t2-perto-da-praia-quarteira'),
+  quarteira: '/zones/quarteira.jpg', // TODO: confirm the photo's licence/credit with the client
 };
 const aboutPhotos = [
   {
