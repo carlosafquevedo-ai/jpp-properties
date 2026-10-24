@@ -326,7 +326,7 @@ const zoneTiles = (Object.keys(zones) as ZoneId[]).map((id) => ({ id, image: zon
   <section id="sobre" class="container-x mt-36 lg:mt-44" aria-labelledby="sobre-titulo">
     <div class="grid items-stretch gap-12 lg:grid-cols-[minmax(0,1fr)_minmax(0,0.9fr)] lg:gap-20">
       <!-- Text: heading at the top edge of the mosaic, button on its bottom edge, both paragraphs alike. -->
-      <div class="flex min-w-0 max-w-[40.5rem] flex-col justify-between gap-10">
+      <div class="flex min-w-0 max-w-[40.5rem] flex-col justify-between gap-6">
         <div>
           <h2
             id="sobre-titulo"
@@ -345,6 +345,11 @@ const zoneTiles = (Object.keys(zones) as ZoneId[]).map((id) => ({ id, image: zon
                   {i < aboutZones.length - 2 ? ', ' : i === aboutZones.length - 2 ? ' e ' : '.'}
                 </>
               ))}
+            </p>
+            <p>
+              Dos condomínios e campos de golfe às marinas e praias, ajudamos quem quer viver,
+              investir ou ter uma casa de férias no Algarve a encontrar o imóvel certo, com
+              informação clara e atualizada sobre cada zona.
             </p>
             <p>
               Conhecemos cada zona por dentro e acompanhamos cada passo, da primeira visita à
