@@ -3,6 +3,7 @@ import SiteLayout from '../layouts/SiteLayout.astro';
 import SearchBar from '../components/SearchBar.astro';
 import PropertyCard from '../components/PropertyCard.astro';
 import ContactForm from '../components/ContactForm.astro';
+import LeadForm from '../components/LeadForm.astro';
 import Icon from '../components/Icon.astro';
 import {
   formatPrice,
@@ -466,37 +467,8 @@ const zoneTiles = (Object.keys(zones) as ZoneId[]).map((id) => ({ id, image: zon
     </div>
   </section>
 
-  <!-- Sell / request a property -->
-  <section id="vender" class="on-dark container-x mt-24" aria-label="Vender ou pedir um imóvel">
-    <div class="grid gap-4 lg:grid-cols-2">
-      <div class="flex flex-col justify-between rounded-[2rem] bg-forest p-8 text-white sm:p-12">
-        <div>
-          <h2 class="font-display text-3xl leading-tight sm:text-4xl">Quer vender o seu imóvel?</h2>
-          <p class="mt-5 max-w-md text-white/80">
-            Diga-nos onde fica e o que tem. Avaliamos o imóvel e propomos a melhor forma de o
-            apresentar a quem procura.
-          </p>
-        </div>
-        <a href="#contacto" class="btn btn-lime mt-10 self-start">
-          Pedir avaliação
-        </a>
-      </div>
-      <div class="flex flex-col justify-between rounded-[2rem] bg-champagne p-8 text-forest sm:p-12">
-        <div>
-          <h2 class="font-display text-3xl leading-tight sm:text-4xl">
-            Não encontra o que procura?
-          </h2>
-          <p class="mt-5 max-w-md text-forest/80">
-            Descreva o imóvel ideal e procuramos por si, incluindo propriedades que ainda não estão
-            no site.
-          </p>
-        </div>
-        <a href="#contacto" class="btn btn-dark mt-10 self-start">
-          Pedir um imóvel
-        </a>
-      </div>
-    </div>
-  </section>
+  <!-- Sell / buy request form (e-mailed to the team) -->
+  <LeadForm />
 
   <!-- Contact -->
   <section

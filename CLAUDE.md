@@ -80,6 +80,13 @@ Não são imóveis: são campos livres com **imagem + texto + ligação**, para 
 - Se a lista estiver vazia, o painel desaparece e os mosaicos das zonas ocupam a largura toda (já tratado em `src/pages/index.astro`).
 - Dados de protótipo em `src/data/home.ts` (`sideHighlights`), com a mesma forma do documento Sanity.
 
+## Formulário de pedido (vender / comprar)
+
+- Componente `src/components/LeadForm.astro` (secção `#vender` da página inicial): dois separadores, **vender** (concelho, morada, nº da porta, tipo, quartos, casas de banho, áreas, ano, estado, características, preço) e **comprar** (zonas, tipos, quartos mínimos, orçamento, financiamento).
+- Envio para o email da equipa: Pages Function `functions/api/lead.ts` (Resend). Nada é guardado (nem no Sanity nem no Git).
+- Variáveis de ambiente (só nomes em `.env.example`): `RESEND_API_KEY`, `LEAD_TO_EMAIL`, `LEAD_FROM_EMAIL` (domínio verificado no Resend), `TURNSTILE_SECRET_KEY` e `PUBLIC_TURNSTILE_SITE_KEY`.
+- `TODO`: textos provisórios em PT; versões EN/FR; página de Política de Privacidade (o consentimento aponta para `/politica-de-privacidade/`).
+
 ## Fases
 
 1. Setup · 2. Protótipo de design (aprovação do cliente) · 3. Sanity · 4. Integração · 5. Formulários · 6. Migração · 7. SEO · 8. Segurança e QA · 9. Lançamento · 10. Entrega.
