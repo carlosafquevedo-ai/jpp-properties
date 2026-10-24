@@ -98,6 +98,15 @@
     background: var(--color-lime);
     color: var(--color-forest);
   }
+  /* Hero primary button: warm champagne, reads as upscale on the dark photo. */
+  .btn-champagne {
+    background: #dccfae;
+    color: var(--color-forest);
+    transition: background-color 0.2s;
+  }
+  .btn-champagne:hover {
+    background: #e8dec3;
+  }
   .btn-dark {
     @apply bg-forest text-white hover:bg-forest-2;
   }
