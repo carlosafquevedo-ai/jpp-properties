@@ -582,7 +582,7 @@
     --dx: 0px;
     --dy: 0px;
     position: absolute;
-    width: 58%;
+    width: 52%;
     aspect-ratio: 4 / 5;
     overflow: hidden;
     border: 4px solid #fff;
@@ -608,15 +608,15 @@
   }
   .about-photo:nth-child(2) {
     right: 0;
-    top: 20%;
+    top: 23%;
     --r: 3deg;
     --dx: 10px;
     --dy: 0px;
     z-index: 2;
   }
   .about-photo:nth-child(3) {
-    left: 6%;
-    top: 40%;
+    left: 24%;
+    top: 46%;
     --r: -2deg;
     --dx: -8px;
     --dy: 10px;
