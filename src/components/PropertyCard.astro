@@ -59,22 +59,11 @@ const filterAttrs = filterable
       ))}
     </div>
 
-    <span class="card-go" aria-hidden="true">
-      <Icon name="arrowUpRight" class="size-4" />
-    </span>
-
     <span class="card-count">
       <Icon name="images" class="size-4" />
       {p.images.length}
       <span class="sr-only">fotografias</span>
     </span>
-
-    {(p.condition === 'new' || p.listingType === 'rent') && (
-      <span class="pointer-events-none absolute bottom-[4.1rem] left-3 z-10 flex gap-1.5">
-        {p.listingType === 'rent' && <span class="card-tag bg-white">Arrendar</span>}
-        {p.condition === 'new' && <span class="card-tag bg-white">Novo</span>}
-      </span>
-    )}
 
     {slides.length > 1 && (
       <>
@@ -95,7 +84,11 @@ const filterAttrs = filterable
 
   <div class="card-info flex flex-1 flex-col px-5 pb-5 pt-5">
     <p class="flex items-center justify-between gap-3 text-xs font-semibold uppercase tracking-wider text-olive">
-      <span>{propertyTypeLabels[p.propertyType]}</span>
+      <span class="flex items-center gap-2">
+        {propertyTypeLabels[p.propertyType]}
+        {p.listingType === 'rent' && <span class="card-flag">Arrendar</span>}
+        {p.condition === 'new' && <span class="card-flag">Novo</span>}
+      </span>
       {p.reference && (
         <span class="font-medium normal-case tracking-normal text-muted">Ref. {p.reference}</span>
       )}
