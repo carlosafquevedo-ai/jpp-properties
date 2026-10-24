@@ -543,6 +543,20 @@
     }
   }
 
+  /* Zone links inside the about copy: quiet by default, brand green underline on hover. */
+  .about-copy a {
+    color: var(--color-ink);
+    font-weight: 500;
+    text-decoration: underline;
+    text-decoration-color: var(--color-lime);
+    text-decoration-thickness: 2px;
+    text-underline-offset: 4px;
+    transition: color 0.2s;
+  }
+  .about-copy a:hover {
+    color: var(--color-olive);
+  }
+
   /* About pillars: a horizontal row with fine dividers; the icon chip turns lime on hover. */
   .about-pillar {
     transition: background-color 0.3s;
