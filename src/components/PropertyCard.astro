@@ -90,10 +90,12 @@ const filterAttrs = filterable
         {p.condition === 'new' && <span class="card-flag">Novo</span>}
       </span>
       {p.reference && (
-        <span class="font-medium normal-case tracking-normal text-muted">Ref. {p.reference}</span>
+        <span class="shrink-0 whitespace-nowrap font-medium normal-case tracking-normal text-muted">
+          Ref. {p.reference}
+        </span>
       )}
     </p>
-    <div class="mt-2 flex items-baseline gap-x-3">
+    <div class="mt-2 flex flex-wrap items-baseline gap-x-3 gap-y-1">
       <p class="whitespace-nowrap font-display text-2xl font-semibold leading-none text-forest">
         {formatPrice(p.price)}
       </p>
