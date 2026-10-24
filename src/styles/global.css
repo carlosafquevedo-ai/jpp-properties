@@ -98,14 +98,64 @@
     background: var(--color-lime);
     color: var(--color-forest);
   }
-  /* Hero primary button: warm champagne, reads as upscale on the dark photo. */
+  /* Hero primary button: warm champagne with a raised, tactile 3D look. */
   .btn-champagne {
-    background: #dccfae;
+    position: relative;
+    overflow: hidden;
+    border: 1px solid rgba(255, 255, 255, 0.45);
+    background: linear-gradient(180deg, #f1e8cf 0%, #dccfae 52%, #c9ba93 100%);
     color: var(--color-forest);
-    transition: background-color 0.2s;
+    box-shadow:
+      inset 0 1px 0 rgba(255, 255, 255, 0.85),
+      inset 0 -3px 0 rgba(120, 100, 55, 0.28),
+      0 10px 22px -8px rgba(0, 0, 0, 0.55),
+      0 2px 4px rgba(0, 0, 0, 0.25);
+    transition:
+      transform 0.25s var(--ease-out),
+      box-shadow 0.25s var(--ease-out),
+      filter 0.25s;
+  }
+  /* A soft light sweep crosses the button on hover. */
+  .btn-champagne::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      105deg,
+      transparent 35%,
+      rgba(255, 255, 255, 0.55) 50%,
+      transparent 65%
+    );
+    transform: translateX(-120%);
+    pointer-events: none;
   }
   .btn-champagne:hover {
-    background: #e8dec3;
+    transform: translateY(-2px);
+    filter: brightness(1.04);
+    box-shadow:
+      inset 0 1px 0 rgba(255, 255, 255, 0.9),
+      inset 0 -3px 0 rgba(120, 100, 55, 0.28),
+      0 16px 28px -10px rgba(0, 0, 0, 0.6),
+      0 3px 6px rgba(0, 0, 0, 0.25);
+  }
+  .btn-champagne:hover::after {
+    transform: translateX(120%);
+    transition: transform 0.7s var(--ease-out);
+  }
+  .btn-champagne:active {
+    transform: translateY(1px);
+    box-shadow:
+      inset 0 2px 4px rgba(120, 100, 55, 0.4),
+      0 3px 8px -4px rgba(0, 0, 0, 0.5);
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .btn-champagne,
+    .btn-champagne:hover {
+      transform: none;
+    }
+    .btn-champagne::after {
+      display: none;
+    }
   }
   .btn-dark {
     @apply bg-forest text-white hover:bg-forest-2;
