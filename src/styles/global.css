@@ -921,7 +921,8 @@
     display: none;
   }
   .team-card {
-    flex: 0 0 min(13rem, 64%);
+    /* Exactly two whole cards per view: nothing is ever cut at the edge. */
+    flex: 0 0 calc((100% - 1rem) / 2);
     scroll-snap-align: start;
   }
   .team-nav {
@@ -950,9 +951,6 @@
   }
   .team-card {
     transition: transform 0.45s var(--ease-out);
-  }
-  .team-card:nth-child(even) {
-    margin-top: 2.5rem;
   }
   @media (hover: hover) and (prefers-reduced-motion: no-preference) {
     .team-card:hover {
