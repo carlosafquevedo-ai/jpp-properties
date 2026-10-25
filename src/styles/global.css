@@ -295,18 +295,22 @@
     background: var(--color-forest);
     transition: transform 0.15s linear;
   }
-  /* Floating card: a rounded photo with the info panel lifted over its lower edge. Hover raises the card with
-     a light tilt (see the script in PropertyCard.astro); the panel rises a little more than the photo. */
+  /* Card: ONE framed object (photo above, ivory panel below, no overlap). It floats by lifting as a whole
+     with a soft shadow, and tilts a little with the mouse (script in PropertyCard.astro). */
   .property-card {
     --rx: 0deg;
     --ry: 0deg;
     --lift: 0px;
+    overflow: hidden;
+    border: 1px solid rgba(24, 35, 26, 0.1);
+    border-radius: 1.125rem;
+    background: #faf8f3;
     color: var(--color-ink);
     transform: perspective(1100px) rotateX(var(--rx)) rotateY(var(--ry)) translateY(var(--lift));
-    transition: transform 0.45s var(--ease-out);
-  }
-  .property-card .card-photo {
-    border-radius: 0.875rem;
+    transition:
+      transform 0.45s var(--ease-out),
+      box-shadow 0.45s var(--ease-out),
+      border-color 0.3s;
   }
   .property-card .card-photo img {
     transition: transform 0.9s var(--ease-out);
@@ -327,50 +331,30 @@
   }
   .card-info {
     position: relative;
-    z-index: 20;
-    margin: -2.25rem 0 0;
-    border: 1px solid rgba(255, 255, 255, 0.9);
-    border-radius: 0.875rem;
-    background: linear-gradient(
-      180deg,
-      rgba(253, 252, 249, 0.96) 0%,
-      rgba(243, 238, 226, 0.96) 100%
-    );
-    -webkit-backdrop-filter: blur(14px);
-    backdrop-filter: blur(14px);
-    box-shadow:
-      0 10px 18px -16px rgba(24, 35, 26, 0.3),
-      0 1px 0 rgba(24, 35, 26, 0.04);
-    transition:
-      transform 0.45s var(--ease-out),
-      box-shadow 0.45s var(--ease-out);
+    background: linear-gradient(180deg, #faf8f3 0%, #f1ece0 100%);
   }
+  /* The lime accent sits exactly on the join between photo and panel. */
   .card-info::before {
     content: '';
     position: absolute;
     left: 1.25rem;
-    top: -1px;
+    top: 0;
     width: 2.5rem;
     height: 3px;
-    border-radius: 0 0 3px 3px;
     background: var(--color-lime);
     transition: width 0.4s var(--ease-out);
   }
   @media (hover: hover) and (prefers-reduced-motion: no-preference) {
     .property-card:hover {
       --lift: -6px;
+      border-color: rgba(24, 35, 26, 0.18);
+      box-shadow: 0 18px 28px -22px rgba(24, 35, 26, 0.4);
     }
     .property-card:hover .card-photo img {
       transform: scale(1.05);
     }
     .property-card:hover .card-photo::after {
       opacity: 1;
-    }
-    .property-card:hover .card-info {
-      transform: translateY(-6px);
-      box-shadow:
-        0 14px 22px -18px rgba(24, 35, 26, 0.36),
-        0 1px 0 rgba(24, 35, 26, 0.04);
     }
     .property-card:hover .card-info::before {
       width: 5rem;
@@ -487,7 +471,7 @@
   }
   .card-dots {
     position: absolute;
-    bottom: 3.35rem;
+    bottom: 0.75rem;
     left: 50%;
     z-index: 5;
     display: flex;
