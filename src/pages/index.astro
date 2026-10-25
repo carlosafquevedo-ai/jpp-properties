@@ -317,77 +317,93 @@ const zoneTiles = (Object.keys(zones) as ZoneId[]).map((id) => ({ id, image: zon
 
   <!-- About: text + CTA, tall photo and pillars (home page "about us"), then the offices -->
   <section id="sobre" class="mt-20 lg:mt-24" aria-labelledby="sobre-titulo">
-    <!-- Bento: heading + short note on top, then a big photo, a text card and a photo card with a small overlay. -->
+    <!-- One calm composition: the statement on the left (extra text behind "Saber mais"), one visual panel
+         on the right that switches between the shop window, the entrance and the map. -->
     <div class="container-x">
-      <div class="rise grid items-start gap-6 lg:grid-cols-[minmax(0,1.4fr)_minmax(0,1fr)] lg:gap-16">
-        <h2 id="sobre-titulo" class="font-display text-3xl text-forest sm:text-4xl">
-          Somos daqui. Sentimos o mercado como poucos.
-        </h2>
-        <!-- TODO: provisional SEO copy (PT). To be reviewed with the client; EN/FR versions pending. -->
-        <p class="about-note about-copy">
-          <i aria-hidden="true"></i>
-          <span>
-            A JPP Properties é uma imobiliária no Algarve (licença AMI {AMI}), especializada na
-            compra, venda e arrendamento de apartamentos, moradias e terrenos em{' '}
-            {aboutZones.map((z, i) => (
-              <>
-                <a href={`/imoveis/?zona=${z.id}`}>{z.name}</a>
-                {i < aboutZones.length - 2 ? ', ' : i === aboutZones.length - 2 ? ' e ' : '.'}
-              </>
-            ))}
-          </span>
-        </p>
-      </div>
-
-      <div class="about-bento rise">
-        <figure class="bento-photo bento-a">
-          <img src={officePhotos[0]!.src} alt={officePhotos[0]!.alt} loading="lazy" />
-        </figure>
-
-        <div class="bento-card about-copy">
-          <p>
-            Dos condomínios e campos de golfe às marinas e praias, ajudamos quem quer viver,
-            investir ou ter uma casa de férias no Algarve a encontrar o imóvel certo, com informação
-            clara e atualizada sobre cada zona.
-          </p>
-          <p>
-            Conhecemos cada zona por dentro e acompanhamos cada passo, da primeira visita à
-            escritura, para que decida com segurança, seja para comprar casa no Algarve, vender o
-            seu imóvel ou encontrar um arrendamento.
-          </p>
-          <a href="#contacto" class="btn btn-dark mt-auto self-start">
+      <div class="about-grid">
+        <div class="rise about-left">
+          <h2 id="sobre-titulo" class="font-display text-3xl text-forest sm:text-4xl">
+            Somos daqui. Sentimos o mercado como poucos.
+          </h2>
+          <!-- TODO: provisional SEO copy (PT). To be reviewed with the client; EN/FR versions pending. -->
+          <div class="about-copy mt-5 grid gap-4 text-base leading-relaxed text-ink/80 sm:text-[1.0625rem]">
+            <p>
+              A JPP Properties é uma imobiliária no Algarve (licença AMI {AMI}), especializada na
+              compra, venda e arrendamento de apartamentos, moradias e terrenos em{' '}
+              {aboutZones.map((z, i) => (
+                <>
+                  <a href={`/imoveis/?zona=${z.id}`}>{z.name}</a>
+                  {i < aboutZones.length - 2 ? ', ' : i === aboutZones.length - 2 ? ' e ' : '.'}
+                </>
+              ))}
+            </p>
+            <details class="about-more">
+              <summary>Saber mais</summary>
+              <div class="mt-4 grid gap-4">
+                <p>
+                  Dos condomínios e campos de golfe às marinas e praias, ajudamos quem quer viver,
+                  investir ou ter uma casa de férias no Algarve a encontrar o imóvel certo, com
+                  informação clara e atualizada sobre cada zona.
+                </p>
+                <p>
+                  Conhecemos cada zona por dentro e acompanhamos cada passo, da primeira visita à
+                  escritura, para que decida com segurança, seja para comprar casa no Algarve,
+                  vender o seu imóvel ou encontrar um arrendamento.
+                </p>
+              </div>
+            </details>
+          </div>
+          <a href="#contacto" class="btn btn-dark mt-8">
             Falar com a equipa
           </a>
         </div>
 
-        <div class="bento-map">
-          <iframe
-            title={`Mapa: Escritório de ${offices[0]!.name}`}
-            src={`https://www.google.com/maps?q=${encodeURIComponent(`JPP Properties, ${offices[0]!.address.join(', ')}`)}&hl=pt-PT&t=h&z=16&output=embed`}
-            loading="lazy"
-            referrerpolicy="no-referrer-when-downgrade"
-            allowfullscreen
-          ></iframe>
-          <div class="bento-loc">
-            <p class="bento-loc-name">Escritório de {offices[0]!.name}</p>
-            <address class="bento-loc-addr">
-              {offices[0]!.address.map((l) => (
-                <span>{l}</span>
-              ))}
-            </address>
-            <div class="mt-3 flex flex-wrap gap-2">
-              <a href={`tel:${offices[0]!.phones[0].tel}`} class="btn btn-dark bento-loc-btn">
-                <Icon name="phone" class="size-4" /> Ligar
-              </a>
-              <a
-                href={offices[0]!.mapUrl}
-                target="_blank"
-                rel="noopener"
-                class="btn btn-lime bento-loc-btn"
-              >
-                Como chegar <Icon name="arrowUpRight" class="size-4" />
-              </a>
+        <div class="rise about-panel" data-panel>
+          <div class="panel-stage">
+            <img
+              class="panel-slide is-active"
+              data-slide="0"
+              src={officePhotos[0]!.src}
+              alt={officePhotos[0]!.alt}
+              loading="lazy"
+            />
+            <img
+              class="panel-slide"
+              data-slide="1"
+              src={officePhotos[1]!.src}
+              alt={officePhotos[1]!.alt}
+              loading="lazy"
+            />
+            <iframe
+              class="panel-slide"
+              data-slide="2"
+              data-src={`https://www.google.com/maps?q=${encodeURIComponent(`JPP Properties, ${offices[0]!.address.join(', ')}`)}&hl=pt-PT&t=h&z=16&output=embed`}
+              title={`Mapa: Escritório de ${offices[0]!.name}`}
+              referrerpolicy="no-referrer-when-downgrade"
+              allowfullscreen
+            ></iframe>
+            <div class="panel-tabs" role="tablist" aria-label="Escritório">
+              <button type="button" role="tab" class="panel-tab" data-tab="0" aria-selected="true">
+                Montra
+              </button>
+              <button type="button" role="tab" class="panel-tab" data-tab="1" aria-selected="false">
+                Entrada
+              </button>
+              <button type="button" role="tab" class="panel-tab" data-tab="2" aria-selected="false">
+                Mapa
+              </button>
             </div>
+          </div>
+          <div class="panel-cap">
+            <p>
+              <Icon name="pin" class="size-4 text-olive" />
+              <span>
+                <strong>Escritório de {offices[0]!.name}</strong>, {offices[0]!.address[0]}
+              </span>
+            </p>
+            <a href={offices[0]!.mapUrl} target="_blank" rel="noopener" class="panel-go">
+              Como chegar <Icon name="arrowUpRight" class="size-4" />
+            </a>
           </div>
         </div>
       </div>
@@ -621,6 +637,32 @@ const zoneTiles = (Object.keys(zones) as ZoneId[]).map((id) => ({ id, image: zon
     document.addEventListener('visibilitychange', restart);
     setPaused(userPaused);
     show(0);
+  }
+</script>
+
+<script>
+  // Office panel: tabs switch between the shop window, the entrance and the map (the map loads only when opened).
+  const panel = document.querySelector<HTMLElement>('[data-panel]');
+  if (panel) {
+    const tabs = [...panel.querySelectorAll<HTMLButtonElement>('[data-tab]')];
+    const slides = [...panel.querySelectorAll<HTMLElement>('[data-slide]')];
+    const show = (n: number) => {
+      tabs.forEach((t, k) => t.setAttribute('aria-selected', String(k === n)));
+      slides.forEach((sl, k) => {
+        sl.classList.toggle('is-active', k === n);
+        if (k === n && sl instanceof HTMLIFrameElement && !sl.src && sl.dataset.src) {
+          sl.src = sl.dataset.src;
+        }
+      });
+    };
+    tabs.forEach((t, k) => {
+      t.addEventListener('click', () => show(k));
+      t.addEventListener('keydown', (e) => {
+        if (e.key === 'ArrowRight') (tabs[(k + 1) % tabs.length] as HTMLElement).focus();
+        if (e.key === 'ArrowLeft')
+          (tabs[(k - 1 + tabs.length) % tabs.length] as HTMLElement).focus();
+      });
+    });
   }
 </script>
 
