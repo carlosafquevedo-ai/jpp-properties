@@ -923,6 +923,7 @@
   .team-card {
     /* Exactly two whole cards per view: nothing is ever cut at the edge. */
     flex: 0 0 calc((100% - 1rem) / 2);
+    min-width: 0;
     scroll-snap-align: start;
   }
   .team-nav {
@@ -2027,4 +2028,34 @@ textarea {
     font-size: 0.9375rem;
     padding-right: 1.25rem;
   }
+}
+
+/* Team: up to 2 cards per view on phones, 3 on tablets, 4 on desktop. Always whole cards, never a cut one;
+   with fewer people than slots the cards simply share the full width. */
+.team-card {
+  flex-basis: calc((100% - (var(--n-sm, 2) - 1) * 1rem) / var(--n-sm, 2));
+}
+@media (min-width: 40rem) {
+  .team-card {
+    flex-basis: calc((100% - (var(--n-md, 3) - 1) * 1rem) / var(--n-md, 3));
+  }
+}
+@media (min-width: 64rem) {
+  .team-card {
+    flex-basis: calc((100% - (var(--n-lg, 4) - 1) * 1rem) / var(--n-lg, 4));
+  }
+}
+.team-nav {
+  margin-top: 0;
+}
+.team-bar {
+  display: none;
+}
+
+/* Cards never grow beyond a comfortable portrait size; with few people they align to the left, like the heading. */
+.team-card {
+  max-width: 20rem;
+}
+.team-grid {
+  justify-content: flex-start;
 }
