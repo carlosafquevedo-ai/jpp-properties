@@ -2059,3 +2059,59 @@ textarea {
 .team-grid {
   justify-content: flex-start;
 }
+
+/* Office photos in the "about" heading column: one wide, one narrower, same family as the other cards. */
+.office-photos {
+  display: grid;
+  grid-template-columns: 1.55fr 1fr;
+  gap: 1rem;
+  width: 100%;
+  flex: 1;
+  min-height: 11rem;
+}
+.office-photos[data-count='1'] {
+  grid-template-columns: 1fr;
+}
+.office-photo {
+  position: relative;
+  overflow: hidden;
+  margin: 0;
+  border-radius: 1.125rem;
+  background: linear-gradient(160deg, #2b2f2c 0%, #121413 100%);
+}
+.office-photo > img,
+.office-ph {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.9s var(--ease-out);
+}
+@media (hover: hover) and (prefers-reduced-motion: no-preference) {
+  .office-photo:hover > img {
+    transform: scale(1.04);
+  }
+}
+.office-ph {
+  position: relative;
+  display: grid;
+  place-items: center;
+}
+.office-ph i {
+  position: absolute;
+  height: 78%;
+  aspect-ratio: 1;
+  rotate: 45deg;
+  border: 1px solid rgba(220, 207, 174, 0.3);
+}
+.office-ph img {
+  position: relative;
+  width: min(42%, 9rem);
+  height: auto;
+}
+@media (max-width: 63.99rem) {
+  .office-photos {
+    min-height: 0;
+    height: 11rem;
+    flex: none;
+  }
+}

@@ -30,6 +30,11 @@ const zoneImages: Partial<Record<ZoneId, string>> = {
   vilasol: '/zones/vilasol.jpg', // TODO: confirm the photo's licence/credit with the client
   quarteira: '/zones/quarteira.jpg', // TODO: confirm the photo's licence/credit with the client
 };
+// Office photos (one or two). TODO: placeholders; set `src` when the client provides real photos.
+const officePhotos: { src?: string; alt: string }[] = [
+  { alt: 'Escritório da JPP Properties em Vilamoura' },
+  { alt: 'Interior do escritório da JPP Properties' },
+];
 const aboutZones = (
   ['vilamoura', 'quarteira', 'vilasol', 'vale-do-lobo', 'quinta-do-lago', 'loule'] as ZoneId[]
 ).map((id) => ({ id, name: zones[id].name }));
@@ -317,11 +322,26 @@ const zoneTiles = (Object.keys(zones) as ZoneId[]).map((id) => ({ id, image: zon
         <h2 id="sobre-titulo" class="font-display text-4xl leading-[1.05] text-forest sm:text-5xl">
           Somos daqui. Sentimos o mercado como poucos.
         </h2>
+        <!-- Office photos. TODO: placeholders until the client sends photos of the offices. -->
+        <div class="office-photos" data-count={officePhotos.length}>
+          {officePhotos.map((ph) => (
+            <figure class="office-photo">
+              {ph.src ? (
+                <img src={ph.src} alt={ph.alt} loading="lazy" />
+              ) : (
+                <div class="office-ph" role="img" aria-label={ph.alt}>
+                  <i aria-hidden="true"></i>
+                  <img src={logoWhiteImage} alt="" loading="lazy" />
+                </div>
+              )}
+            </figure>
+          ))}
+        </div>
         <a href="#contacto" class="btn btn-dark">
           Falar com a equipa
         </a>
       </div>
-      <div class="rise about-copy grid max-w-[40.5rem] gap-4 text-left text-base leading-relaxed text-ink/80 md:text-justify sm:text-[1.0625rem]">
+      <div class="rise about-copy grid max-w-[40.5rem] content-start gap-4 text-left text-base leading-relaxed text-ink/80 md:text-justify sm:text-[1.0625rem]">
         <!-- TODO: provisional SEO copy (PT). To be reviewed with the client; EN/FR versions pending. -->
         <p>
           A JPP Properties é uma imobiliária no Algarve (licença AMI {AMI}), especializada na
