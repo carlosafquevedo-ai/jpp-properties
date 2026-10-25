@@ -27,11 +27,12 @@ const langLinks = locales.map((l) => ({
   name: t(`lang.${l}` as 'lang.pt' | 'lang.en' | 'lang.fr'),
 }));
 const linkClass =
-  'rounded-full px-4 py-2 whitespace-nowrap text-[0.95rem] font-medium text-ink/80 transition-colors hover:bg-forest/8 hover:text-ink aria-[current=page]:bg-forest/8 aria-[current=page]:text-ink';
+  'rounded-full px-4 py-2 whitespace-nowrap text-[0.95rem] font-medium text-ink/80 transition-colors hover:bg-forest/8 hover:text-ink aria-[current=page]:bg-forest/8 aria-[current=page]:text-ink aria-[current=location]:bg-forest/8 aria-[current=location]:text-ink';
 ---
 
 <header class="site-header" id="site-header" data-over-hero={overHero ? '' : undefined}>
   <div class="hdr-bar">
+    <span class="hdr-progress" aria-hidden="true"></span>
     <a href="/" aria-label="JPP Properties, página inicial" class="shrink-0">
       <img
         src={logoImage}
@@ -208,6 +209,40 @@ const linkClass =
   const syncHeader = () => header?.toggleAttribute('data-stuck', window.scrollY > 24);
   syncHeader();
   window.addEventListener('scroll', syncHeader, { passive: true });
+
+  // Reading progress: a thin brand-green line along the bottom edge of the header capsule.
+  const setProgress = () => {
+    const max = document.documentElement.scrollHeight - window.innerHeight;
+    header?.style.setProperty(
+      '--progress',
+      max > 0 ? String(Math.min(window.scrollY / max, 1)) : '0',
+    );
+  };
+  setProgress();
+  window.addEventListener('scroll', setProgress, { passive: true });
+  window.addEventListener('resize', setProgress);
+
+  // Scrollspy (home page): highlight the nav link of the section that is on screen.
+  const spyLinks = [
+    ...document.querySelectorAll<HTMLAnchorElement>('nav[aria-label="Principal"] a[href^="/#"]'),
+  ];
+  const spyTargets = spyLinks
+    .map((a) => ({ a, el: document.getElementById(a.getAttribute('href')!.slice(2)) }))
+    .filter((t): t is { a: HTMLAnchorElement; el: HTMLElement } => Boolean(t.el));
+  if (spyTargets.length && 'IntersectionObserver' in window) {
+    const io = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((e) => {
+          const hit = spyTargets.find((t) => t.el === e.target);
+          if (!hit) return;
+          if (e.isIntersecting) hit.a.setAttribute('aria-current', 'location');
+          else hit.a.removeAttribute('aria-current');
+        });
+      },
+      { rootMargin: '-40% 0px -50% 0px' },
+    );
+    spyTargets.forEach((t) => io.observe(t.el));
+  }
 
   // Mobile menu
   const btn = document.getElementById('menu-btn');
