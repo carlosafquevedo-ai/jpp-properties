@@ -2115,3 +2115,13 @@ textarea {
     flex: none;
   }
 }
+
+/* Team header on the left: the arrows and the position bar sit under the text, level with the card row's bottom. */
+.team-nav {
+  gap: 0.5rem;
+}
+.team-bar {
+  display: block;
+  flex: 1;
+  margin: 0 0 0 0.75rem;
+}
