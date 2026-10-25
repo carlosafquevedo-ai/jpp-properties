@@ -2062,12 +2062,30 @@ textarea {
 
 /* Office photos in the "about" heading column: one wide, one narrower, same family as the other cards. */
 .office-photos {
+  position: relative;
   display: grid;
   grid-template-columns: 1.55fr 1fr;
-  gap: 1rem;
+  gap: 0.75rem;
+  box-sizing: border-box;
   width: 100%;
   flex: none;
-  height: 12rem;
+  height: 13.5rem;
+  padding: 0.75rem;
+  /* Backing box in the site's carbon, with a fine champagne hairline and a small lime diamond on the corner. */
+  background:
+    radial-gradient(90% 140% at 0% 0%, rgba(255, 255, 255, 0.07) 0%, transparent 60%),
+    linear-gradient(160deg, #1d201e 0%, #121413 100%);
+  box-shadow: inset 0 0 0 1px rgba(220, 207, 174, 0.2);
+}
+.office-photos::after {
+  content: '';
+  position: absolute;
+  top: -0.4rem;
+  right: -0.4rem;
+  width: 0.8rem;
+  height: 0.8rem;
+  rotate: 45deg;
+  background: var(--color-lime);
 }
 .office-photos[data-count='1'] {
   grid-template-columns: 1fr;
@@ -2112,7 +2130,7 @@ textarea {
 @media (max-width: 63.99rem) {
   .office-photos {
     min-height: 0;
-    height: 11rem;
+    height: 12.5rem;
     flex: none;
   }
 }
