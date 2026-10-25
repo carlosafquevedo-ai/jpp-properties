@@ -30,15 +30,17 @@ const zoneImages: Partial<Record<ZoneId, string>> = {
   vilasol: '/zones/vilasol.jpg', // TODO: confirm the photo's licence/credit with the client
   quarteira: '/zones/quarteira.jpg', // TODO: confirm the photo's licence/credit with the client
 };
-// Office photos (one or two): wide one first, narrow one second. TODO: confirm rights to publish these with the client.
-const officePhotos: { src?: string; alt: string }[] = [
+// Office photos shown as a small interactive stage. TODO: confirm rights to publish these with the client.
+const officePhotos = [
   {
     src: '/office/escritorio-vilamoura.webp',
     alt: 'Montra do escritório da JPP Properties em Vilamoura',
+    w: 1.55, // wide photo
   },
   {
     src: '/office/escritorio-entrada.webp',
     alt: 'Entrada do escritório da JPP Properties, com a porta número 3',
+    w: 1, // portrait photo
   },
 ];
 const aboutZones = (
@@ -328,20 +330,22 @@ const zoneTiles = (Object.keys(zones) as ZoneId[]).map((id) => ({ id, image: zon
         <h2 id="sobre-titulo" class="font-display text-3xl text-forest sm:text-4xl">
           Somos daqui. Sentimos o mercado como poucos.
         </h2>
-        <!-- Office photos. TODO: placeholders until the client sends photos of the offices. -->
-        <div class="office-photos" data-count={officePhotos.length}>
-          {officePhotos.map((ph) => (
-            <figure class="office-photo">
-              {ph.src ? (
+        <!-- Office stage: the photo under the pointer (or clicked / focused) grows and lifts, the other steps back. -->
+        <div class="office-wrap" data-office>
+          <div class="office-stage">
+            {officePhotos.map((ph, i) => (
+              <button
+                type="button"
+                class:list={['office-card', i === 0 && 'is-active']}
+                data-office-card={i}
+                style={`--w: ${ph.w}`}
+                aria-label={ph.alt}
+                aria-pressed={i === 0 ? 'true' : 'false'}
+              >
                 <img src={ph.src} alt={ph.alt} loading="lazy" />
-              ) : (
-                <div class="office-ph" role="img" aria-label={ph.alt}>
-                  <i aria-hidden="true"></i>
-                  <img src={logoWhiteImage} alt="" loading="lazy" />
-                </div>
-              )}
-            </figure>
-          ))}
+              </button>
+            ))}
+          </div>
         </div>
         <a href="#contacto" class="btn btn-dark">
           Falar com a equipa
@@ -638,6 +642,24 @@ const zoneTiles = (Object.keys(zones) as ZoneId[]).map((id) => ({ id, image: zon
     show(0);
   }
 </script>
+<script>
+  // Office stage: the photo under the pointer (or clicked / focused) becomes the active one: bigger and lifted.
+  const office = document.querySelector<HTMLElement>('[data-office]');
+  if (office) {
+    const cards = [...office.querySelectorAll<HTMLButtonElement>('[data-office-card]')];
+    const show = (n: number) =>
+      cards.forEach((c, k) => {
+        c.classList.toggle('is-active', k === n);
+        c.setAttribute('aria-pressed', String(k === n));
+      });
+    cards.forEach((c, k) => {
+      c.addEventListener('click', () => show(k));
+      c.addEventListener('focus', () => show(k));
+      c.addEventListener('pointerenter', (e) => e.pointerType === 'mouse' && show(k));
+    });
+  }
+</script>
+
 <script>
   // Team carousel: cards keep their size and the row scrolls, so the section never grows when the team does.
   // Controls only appear when there is more than fits.
