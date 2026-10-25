@@ -32,19 +32,21 @@ const steps = [
 <section id="vender" class="on-dark container-x mt-24" aria-labelledby="lead-title">
   <div class="lead-shell">
     <div class="lead-intro">
-      <p class="zone-eyebrow">Vender ou comprar</p>
-      <h2
-        id="lead-title"
-        class="mt-4 font-display text-3xl leading-tight text-white sm:text-4xl"
-        data-lead-title
-      >
-        Quer vender o seu imóvel?
-      </h2>
-      <p class="mt-5 max-w-md text-white/75" data-lead-text>
-        Diga-nos onde fica e o que tem. Avaliamos o imóvel e propomos a melhor forma de o apresentar
-        a quem procura.
-      </p>
-      <ol class="lead-steps mt-8">
+      <div>
+        <p class="zone-eyebrow">Vender ou comprar</p>
+        <h2
+          id="lead-title"
+          class="mt-4 font-display text-3xl leading-tight text-white sm:text-4xl"
+          data-lead-title
+        >
+          Quer vender o seu imóvel?
+        </h2>
+        <p class="mt-5 max-w-md text-white/75" data-lead-text>
+          Diga-nos onde fica e o que tem. Avaliamos o imóvel e propomos a melhor forma de o
+          apresentar a quem procura.
+        </p>
+      </div>
+      <ol class="lead-steps mt-8 lg:mt-0">
         {steps.map((s, i) => (
           <li>
             <span class="lead-step-num">{String(i + 1).padStart(2, '0')}</span>
@@ -64,7 +66,7 @@ const steps = [
         </button>
       </div>
 
-      <form data-lead-form action="/api/lead" method="post" novalidate class="mt-6 space-y-6">
+      <form data-lead-form action="/api/lead" method="post" novalidate class="lead-form mt-6">
         <input type="hidden" name="intent" value="vender" data-intent />
         <!-- Honeypot: humans never see it; bots fill it. -->
         <div class="absolute -left-[9999px]" aria-hidden="true">
@@ -74,7 +76,7 @@ const steps = [
         </div>
 
         <!-- Contact (both intents) -->
-        <fieldset class="lead-group">
+        <fieldset class="lead-group lead-contact">
           <legend>Os seus dados</legend>
           <div class="grid gap-4 sm:grid-cols-2">
             <div>
@@ -119,250 +121,252 @@ const steps = [
           </div>
         </fieldset>
 
-        <!-- SELL -->
-        <fieldset class="lead-group" data-panel="vender">
-          <legend>O imóvel</legend>
-          <div class="grid gap-4 sm:grid-cols-6">
-            <div class="sm:col-span-3">
-              <label for="lead-concelho" class="lead-label">
-                Concelho *
-              </label>
-              <select id="lead-concelho" name="concelho" required class="field field-select">
-                <option value="">Escolha o concelho</option>
-                {concelhos.map((c) => (
-                  <option value={c}>{c}</option>
-                ))}
-              </select>
-            </div>
-            <div class="sm:col-span-3">
-              <label for="lead-cp" class="lead-label">
-                Código postal
-              </label>
-              <input
-                id="lead-cp"
-                name="codigo_postal"
-                type="text"
-                inputmode="numeric"
-                autocomplete="postal-code"
-                placeholder="0000-000"
-                pattern="\d{4}-\d{3}"
-                class="field"
-              />
-            </div>
-            <div class="sm:col-span-4">
-              <label for="lead-morada" class="lead-label">
-                Morada *
-              </label>
-              <input
-                id="lead-morada"
-                name="morada"
-                type="text"
-                autocomplete="street-address"
-                required
-                class="field"
-              />
-            </div>
-            <div class="sm:col-span-2">
-              <label for="lead-porta" class="lead-label">
-                Nº da porta *
-              </label>
-              <input id="lead-porta" name="porta" type="text" required class="field" />
-            </div>
-            <div class="sm:col-span-3">
-              <label for="lead-tipologia" class="lead-label">
-                Tipo de imóvel *
-              </label>
-              <select
-                id="lead-tipologia"
-                name="tipologia"
-                required
-                class="field field-select"
-                data-tipologia
-              >
-                <option value="">Escolha o tipo</option>
-                {tipologias.map(([v, l]) => (
-                  <option value={v}>{l}</option>
-                ))}
-              </select>
-            </div>
-            <div class="sm:col-span-3" data-outro hidden>
-              <label for="lead-outro" class="lead-label">
-                Qual? *
-              </label>
-              <input id="lead-outro" name="tipologia_outro" type="text" class="field" />
-            </div>
-            <div class="sm:col-span-2">
-              <label for="lead-quartos" class="lead-label">
-                Quartos
-              </label>
-              <select id="lead-quartos" name="quartos" class="field field-select">
-                <option value="">—</option>
-                {quartos.map(([v, l]) => (
-                  <option value={v}>{l}</option>
-                ))}
-              </select>
-            </div>
-            <div class="sm:col-span-2">
-              <label for="lead-wc" class="lead-label">
-                Casas de banho
-              </label>
-              <select id="lead-wc" name="casas_de_banho" class="field field-select">
-                <option value="">—</option>
-                {casasDeBanho.map(([v, l]) => (
-                  <option value={v}>{l}</option>
-                ))}
-              </select>
-            </div>
-            <div class="sm:col-span-2">
-              <label for="lead-area" class="lead-label">
-                Área útil (m²) *
-              </label>
-              <input
-                id="lead-area"
-                name="area_util"
-                type="number"
-                min="1"
-                step="1"
-                inputmode="numeric"
-                required
-                class="field"
-              />
-            </div>
-            <div class="sm:col-span-2">
-              <label for="lead-terreno" class="lead-label">
-                Área do terreno (m²)
-              </label>
-              <input
-                id="lead-terreno"
-                name="area_terreno"
-                type="number"
-                min="0"
-                step="1"
-                inputmode="numeric"
-                class="field"
-              />
-            </div>
-            <div class="sm:col-span-2">
-              <label for="lead-ano" class="lead-label">
-                Ano de construção
-              </label>
-              <input
-                id="lead-ano"
-                name="ano"
-                type="number"
-                min="1800"
-                max="2100"
-                step="1"
-                inputmode="numeric"
-                class="field"
-              />
-            </div>
-            <div class="sm:col-span-2">
-              <label for="lead-estado" class="lead-label">
-                Estado
-              </label>
-              <select id="lead-estado" name="estado" class="field field-select">
-                <option value="">—</option>
-                {estados.map(([v, l]) => (
-                  <option value={v}>{l}</option>
-                ))}
-              </select>
-            </div>
-            <div class="sm:col-span-6">
-              <span class="lead-label">Características</span>
-              <div class="mt-2 flex flex-wrap gap-2">
-                {extras.map(([, l]) => (
-                  <label class="lead-chip">
-                    <input type="checkbox" name="extras" value={l} class="peer sr-only" />
-                    <span>{l}</span>
-                  </label>
-                ))}
+        <div class="lead-panels">
+          <!-- SELL -->
+          <fieldset class="lead-group" data-panel="vender">
+            <legend>O imóvel</legend>
+            <div class="grid gap-4 sm:grid-cols-6 lg:grid-cols-8">
+              <div class="sm:col-span-3 lg:col-span-4">
+                <label for="lead-concelho" class="lead-label">
+                  Concelho *
+                </label>
+                <select id="lead-concelho" name="concelho" required class="field field-select">
+                  <option value="">Escolha o concelho</option>
+                  {concelhos.map((c) => (
+                    <option value={c}>{c}</option>
+                  ))}
+                </select>
+              </div>
+              <div class="sm:col-span-3 lg:col-span-4">
+                <label for="lead-cp" class="lead-label">
+                  Código postal
+                </label>
+                <input
+                  id="lead-cp"
+                  name="codigo_postal"
+                  type="text"
+                  inputmode="numeric"
+                  autocomplete="postal-code"
+                  placeholder="0000-000"
+                  pattern="\d{4}-\d{3}"
+                  class="field"
+                />
+              </div>
+              <div class="sm:col-span-4 lg:col-span-6">
+                <label for="lead-morada" class="lead-label">
+                  Morada *
+                </label>
+                <input
+                  id="lead-morada"
+                  name="morada"
+                  type="text"
+                  autocomplete="street-address"
+                  required
+                  class="field"
+                />
+              </div>
+              <div class="sm:col-span-2">
+                <label for="lead-porta" class="lead-label">
+                  Nº da porta *
+                </label>
+                <input id="lead-porta" name="porta" type="text" required class="field" />
+              </div>
+              <div class="sm:col-span-3 lg:col-span-4">
+                <label for="lead-tipologia" class="lead-label">
+                  Tipo de imóvel *
+                </label>
+                <select
+                  id="lead-tipologia"
+                  name="tipologia"
+                  required
+                  class="field field-select"
+                  data-tipologia
+                >
+                  <option value="">Escolha o tipo</option>
+                  {tipologias.map(([v, l]) => (
+                    <option value={v}>{l}</option>
+                  ))}
+                </select>
+              </div>
+              <div class="sm:col-span-3 lg:col-span-4" data-outro hidden>
+                <label for="lead-outro" class="lead-label">
+                  Qual? *
+                </label>
+                <input id="lead-outro" name="tipologia_outro" type="text" class="field" />
+              </div>
+              <div class="sm:col-span-2">
+                <label for="lead-quartos" class="lead-label">
+                  Quartos
+                </label>
+                <select id="lead-quartos" name="quartos" class="field field-select">
+                  <option value="">—</option>
+                  {quartos.map(([v, l]) => (
+                    <option value={v}>{l}</option>
+                  ))}
+                </select>
+              </div>
+              <div class="sm:col-span-2">
+                <label for="lead-wc" class="lead-label">
+                  Casas de banho
+                </label>
+                <select id="lead-wc" name="casas_de_banho" class="field field-select">
+                  <option value="">—</option>
+                  {casasDeBanho.map(([v, l]) => (
+                    <option value={v}>{l}</option>
+                  ))}
+                </select>
+              </div>
+              <div class="sm:col-span-2">
+                <label for="lead-area" class="lead-label">
+                  Área útil (m²) *
+                </label>
+                <input
+                  id="lead-area"
+                  name="area_util"
+                  type="number"
+                  min="1"
+                  step="1"
+                  inputmode="numeric"
+                  required
+                  class="field"
+                />
+              </div>
+              <div class="sm:col-span-2">
+                <label for="lead-terreno" class="lead-label">
+                  Área do terreno (m²)
+                </label>
+                <input
+                  id="lead-terreno"
+                  name="area_terreno"
+                  type="number"
+                  min="0"
+                  step="1"
+                  inputmode="numeric"
+                  class="field"
+                />
+              </div>
+              <div class="sm:col-span-2">
+                <label for="lead-ano" class="lead-label">
+                  Ano de construção
+                </label>
+                <input
+                  id="lead-ano"
+                  name="ano"
+                  type="number"
+                  min="1800"
+                  max="2100"
+                  step="1"
+                  inputmode="numeric"
+                  class="field"
+                />
+              </div>
+              <div class="sm:col-span-2">
+                <label for="lead-estado" class="lead-label">
+                  Estado
+                </label>
+                <select id="lead-estado" name="estado" class="field field-select">
+                  <option value="">—</option>
+                  {estados.map(([v, l]) => (
+                    <option value={v}>{l}</option>
+                  ))}
+                </select>
+              </div>
+              <div class="sm:col-span-6 lg:col-span-8">
+                <span class="lead-label">Características</span>
+                <div class="mt-2 flex flex-wrap gap-2">
+                  {extras.map(([, l]) => (
+                    <label class="lead-chip">
+                      <input type="checkbox" name="extras" value={l} class="peer sr-only" />
+                      <span>{l}</span>
+                    </label>
+                  ))}
+                </div>
+              </div>
+              <div class="sm:col-span-3 lg:col-span-4">
+                <label for="lead-preco" class="lead-label">
+                  Preço pretendido (€)
+                </label>
+                <input
+                  id="lead-preco"
+                  name="preco"
+                  type="number"
+                  min="0"
+                  step="1000"
+                  inputmode="numeric"
+                  class="field"
+                />
               </div>
             </div>
-            <div class="sm:col-span-3">
-              <label for="lead-preco" class="lead-label">
-                Preço pretendido (€)
-              </label>
-              <input
-                id="lead-preco"
-                name="preco"
-                type="number"
-                min="0"
-                step="1000"
-                inputmode="numeric"
-                class="field"
-              />
-            </div>
-          </div>
-        </fieldset>
+          </fieldset>
 
-        <!-- BUY -->
-        <fieldset class="lead-group" data-panel="comprar" hidden disabled>
-          <legend>O que procura</legend>
-          <div class="grid gap-4 sm:grid-cols-6">
-            <div class="sm:col-span-6">
-              <span class="lead-label">Zonas de interesse</span>
-              <div class="mt-2 flex flex-wrap gap-2">
-                {zoneList.map((z) => (
-                  <label class="lead-chip">
-                    <input type="checkbox" name="zonas" value={z} class="peer sr-only" />
-                    <span>{z}</span>
-                  </label>
-                ))}
+          <!-- BUY -->
+          <fieldset class="lead-group" data-panel="comprar" hidden disabled>
+            <legend>O que procura</legend>
+            <div class="grid gap-4 sm:grid-cols-6 lg:grid-cols-8">
+              <div class="sm:col-span-6 lg:col-span-8">
+                <span class="lead-label">Zonas de interesse</span>
+                <div class="mt-2 flex flex-wrap gap-2">
+                  {zoneList.map((z) => (
+                    <label class="lead-chip">
+                      <input type="checkbox" name="zonas" value={z} class="peer sr-only" />
+                      <span>{z}</span>
+                    </label>
+                  ))}
+                </div>
+              </div>
+              <div class="sm:col-span-6 lg:col-span-8">
+                <span class="lead-label">Tipo de imóvel</span>
+                <div class="mt-2 flex flex-wrap gap-2">
+                  {buyTypes.map(([, l]) => (
+                    <label class="lead-chip">
+                      <input type="checkbox" name="tipos" value={l} class="peer sr-only" />
+                      <span>{l}</span>
+                    </label>
+                  ))}
+                </div>
+              </div>
+              <div class="sm:col-span-2">
+                <label for="lead-quartos-min" class="lead-label">
+                  Quartos (mínimo)
+                </label>
+                <select id="lead-quartos-min" name="quartos_min" class="field field-select">
+                  <option value="">—</option>
+                  {quartos.map(([v, l]) => (
+                    <option value={v}>{l}</option>
+                  ))}
+                </select>
+              </div>
+              <div class="sm:col-span-2">
+                <label for="lead-orcamento" class="lead-label">
+                  Orçamento máximo (€) *
+                </label>
+                <input
+                  id="lead-orcamento"
+                  name="orcamento"
+                  type="number"
+                  min="0"
+                  step="1000"
+                  inputmode="numeric"
+                  required
+                  class="field"
+                />
+              </div>
+              <div class="sm:col-span-2">
+                <label for="lead-fin" class="lead-label">
+                  Financiamento
+                </label>
+                <select id="lead-fin" name="financiamento" class="field field-select">
+                  <option value="">—</option>
+                  {financiamento.map(([, l]) => (
+                    <option value={l}>{l}</option>
+                  ))}
+                </select>
               </div>
             </div>
-            <div class="sm:col-span-6">
-              <span class="lead-label">Tipo de imóvel</span>
-              <div class="mt-2 flex flex-wrap gap-2">
-                {buyTypes.map(([, l]) => (
-                  <label class="lead-chip">
-                    <input type="checkbox" name="tipos" value={l} class="peer sr-only" />
-                    <span>{l}</span>
-                  </label>
-                ))}
-              </div>
-            </div>
-            <div class="sm:col-span-2">
-              <label for="lead-quartos-min" class="lead-label">
-                Quartos (mínimo)
-              </label>
-              <select id="lead-quartos-min" name="quartos_min" class="field field-select">
-                <option value="">—</option>
-                {quartos.map(([v, l]) => (
-                  <option value={v}>{l}</option>
-                ))}
-              </select>
-            </div>
-            <div class="sm:col-span-2">
-              <label for="lead-orcamento" class="lead-label">
-                Orçamento máximo (€) *
-              </label>
-              <input
-                id="lead-orcamento"
-                name="orcamento"
-                type="number"
-                min="0"
-                step="1000"
-                inputmode="numeric"
-                required
-                class="field"
-              />
-            </div>
-            <div class="sm:col-span-2">
-              <label for="lead-fin" class="lead-label">
-                Financiamento
-              </label>
-              <select id="lead-fin" name="financiamento" class="field field-select">
-                <option value="">—</option>
-                {financiamento.map(([, l]) => (
-                  <option value={l}>{l}</option>
-                ))}
-              </select>
-            </div>
-          </div>
-        </fieldset>
+          </fieldset>
+        </div>
 
-        <div>
+        <div class="lead-msg">
           <label for="lead-msg" class="lead-label">
             Mensagem
           </label>
@@ -376,38 +380,44 @@ const steps = [
           ></textarea>
         </div>
 
-        <label class="flex items-start gap-3 text-sm text-muted">
-          <input
-            type="checkbox"
-            name="consent"
-            required
-            class="mt-0.5 size-5 shrink-0 accent-[#55662b]"
-          />
-          <span>
-            Aceito que a JPP Properties trate os meus dados para responder a este pedido, conforme a
-            <a href="/politica-de-privacidade/" class="underline underline-offset-2 hover:text-ink">
-              Política de Privacidade
-            </a>
-            .
-          </span>
-        </label>
+        <div class="lead-bottom">
+          <label class="flex items-start gap-3 text-sm text-muted">
+            <input
+              type="checkbox"
+              name="consent"
+              required
+              class="mt-0.5 size-5 shrink-0 accent-[#55662b]"
+            />
+            <span>
+              Aceito que a JPP Properties trate os meus dados para responder a este pedido, conforme
+              a
+              <a
+                href="/politica-de-privacidade/"
+                class="underline underline-offset-2 hover:text-ink"
+              >
+                Política de Privacidade
+              </a>
+              .
+            </span>
+          </label>
 
-        {siteKey && <div class="cf-turnstile" data-sitekey={siteKey} data-theme="light"></div>}
+          {siteKey && <div class="cf-turnstile" data-sitekey={siteKey} data-theme="light"></div>}
 
-        <div class="flex flex-wrap items-center gap-4">
-          <button type="submit" class="btn btn-dark" data-submit>
-            <span data-submit-label>Pedir avaliação</span>
-            <Icon name="arrowRight" class="size-4" />
-          </button>
-          <p class="text-xs text-muted">* Campos obrigatórios</p>
+          <div class="flex flex-wrap items-center gap-4">
+            <button type="submit" class="btn btn-dark" data-submit>
+              <span data-submit-label>Pedir avaliação</span>
+              <Icon name="arrowRight" class="size-4" />
+            </button>
+            <p class="text-xs text-muted">* Campos obrigatórios</p>
+          </div>
+
+          <p
+            class="hidden rounded-xl p-4 text-sm"
+            role="status"
+            aria-live="polite"
+            data-lead-status
+          ></p>
         </div>
-
-        <p
-          class="hidden rounded-xl p-4 text-sm"
-          role="status"
-          aria-live="polite"
-          data-lead-status
-        ></p>
       </form>
     </div>
   </div>

@@ -621,9 +621,25 @@
   }
   @media (min-width: 64rem) {
     .lead-shell {
-      grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.2fr);
-      gap: 3.5rem;
+      gap: 2.5rem;
       padding: 3rem;
+    }
+    /* Horizontal layout: heading + text on the left, the three steps in a row on the right. */
+    .lead-intro {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) minmax(0, 1.15fr);
+      gap: 3rem;
+      align-items: end;
+    }
+    .lead-steps {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 1.5rem;
+    }
+    .lead-steps li {
+      flex-direction: column;
+      gap: 0.5rem;
+      padding-top: 1rem;
+      border-top: 1px solid rgba(220, 207, 174, 0.28);
     }
   }
   .lead-steps {
@@ -646,6 +662,32 @@
     letter-spacing: 0.12em;
     color: var(--color-champagne);
     font-variant-numeric: tabular-nums;
+  }
+  /* Form: contact data on the left, the (wide) property or search fields on the right. */
+  .lead-form {
+    display: grid;
+    gap: 1.5rem;
+  }
+  @media (min-width: 64rem) {
+    .lead-form {
+      grid-template-columns: minmax(0, 0.42fr) minmax(0, 1fr);
+      grid-template-rows: auto auto 1fr;
+      gap: 1.5rem 3rem;
+      align-items: start;
+    }
+    .lead-form > .lead-contact,
+    .lead-form > .lead-msg,
+    .lead-form > .lead-bottom {
+      grid-column: 1;
+    }
+    .lead-form > .lead-panels {
+      grid-column: 2;
+      grid-row: 1 / span 3;
+    }
+  }
+  .lead-bottom {
+    display: grid;
+    gap: 1.25rem;
   }
   .lead-card {
     min-width: 0;
