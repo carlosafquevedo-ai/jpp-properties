@@ -14,6 +14,7 @@ import {
 } from '../data/properties';
 import { featuredProperties, heroSlides } from '../lib/catalog';
 import { sideHighlights } from '../data/home';
+import { team } from '../data/team';
 import { AMI, offices, email } from '../lib/site';
 
 const featured = featuredProperties();
@@ -29,10 +30,6 @@ const zoneImages: Partial<Record<ZoneId, string>> = {
   vilasol: '/zones/vilasol.jpg', // TODO: confirm the photo's licence/credit with the client
   quarteira: '/zones/quarteira.jpg', // TODO: confirm the photo's licence/credit with the client
 };
-// One photograph sliced into a diamond cluster; it changes every few seconds.
-// TODO: placeholders (zone photos). Final content: the offices, the team and the agency's day to day.
-const aboutSlides = ['/zones/vilamoura.jpg', '/zones/quinta-do-lago.jpg', '/zones/quarteira.jpg'];
-const aboutTiles = ['n', 'w', 'e', 's'] as const;
 const aboutZones = (
   ['vilamoura', 'quarteira', 'vilasol', 'vale-do-lobo', 'quinta-do-lago', 'loule'] as ZoneId[]
 ).map((id) => ({ id, name: zones[id].name }));
@@ -356,28 +353,50 @@ const zoneTiles = (Object.keys(zones) as ZoneId[]).map((id) => ({ id, image: zon
         </div>
       </div>
 
-      <!-- One photograph cut into four diamonds, with the brand mark on the join. Its size depends only on
-           its width, never on the text. -->
-      <div class="about-visual rise rise-stack mx-auto w-full max-w-md self-center lg:max-w-[30rem] lg:justify-self-end">
-        <div class="about-stack" data-about role="img" aria-label="Fotografias da JPP Properties">
-          {aboutTiles.map((t) => (
-            <figure class={`about-tile about-${t}`} aria-hidden="true">
-              {aboutSlides.map((src, i) => (
-                <img
-                  src={src}
-                  alt=""
-                  class:list={['about-slide', i === 0 && 'is-active']}
-                  loading="lazy"
-                />
-              ))}
-            </figure>
+      <!-- Team: framed cards (same family as the property cards). Photos and contacts come from the team list. -->
+      <div class="about-visual rise mx-auto w-full max-w-md self-start lg:max-w-[32rem] lg:justify-self-end">
+        <ul class="team-grid" aria-label="A nossa equipa">
+          {team.map((a) => (
+            <li class="team-card">
+              <div class="team-photo">
+                {a.photo ? (
+                  <img src={a.photo} alt={a.name} loading="lazy" />
+                ) : (
+                  <div class="team-ph" aria-hidden="true">
+                    <i></i>
+                    <img src={logoWhiteImage} alt="" loading="lazy" />
+                  </div>
+                )}
+              </div>
+              <div class="team-info">
+                <h3 class="font-display text-lg leading-tight text-forest">{a.name}</h3>
+                <p class="mt-1 text-sm text-muted">{a.role}</p>
+                <div class="team-contacts">
+                  {a.phone && (
+                    <a href={`tel:${a.phone.tel}`} aria-label={`Ligar a ${a.name}`}>
+                      <Icon name="phone" class="size-4" />
+                    </a>
+                  )}
+                  {a.whatsapp && (
+                    <a
+                      href={`https://wa.me/${a.whatsapp}`}
+                      target="_blank"
+                      rel="noopener"
+                      aria-label={`WhatsApp de ${a.name}`}
+                    >
+                      <Icon name="whatsapp" class="size-4" />
+                    </a>
+                  )}
+                  {a.email && (
+                    <a href={`mailto:${a.email}`} aria-label={`Enviar email a ${a.name}`}>
+                      <Icon name="mail" class="size-4" />
+                    </a>
+                  )}
+                </div>
+              </div>
+            </li>
           ))}
-          <span class="about-mark" aria-hidden="true">
-            <img src={logoWhiteImage} alt="" loading="lazy" />
-          </span>
-          <i class="about-dot-lime" aria-hidden="true"></i>
-          <i class="about-dot-line" aria-hidden="true"></i>
-        </div>
+        </ul>
       </div>
     </div>
 
@@ -565,39 +584,6 @@ const zoneTiles = (Object.keys(zones) as ZoneId[]).map((id) => ({ id, image: zon
     show(0);
   }
 </script>
-
-<script>
-  // About diamonds: the photograph changes every few seconds. It pauses on hover/focus and never
-  // autoplays with reduced motion.
-  const about = document.querySelector<HTMLElement>('[data-about]');
-  if (about) {
-    const count = about.querySelector('.about-tile')?.querySelectorAll('.about-slide').length ?? 0;
-    let idx = 0;
-    let timer = 0;
-    const show = (n: number) => {
-      idx = (n + count) % count;
-      about
-        .querySelectorAll('.about-tile')
-        .forEach((tile) =>
-          tile
-            .querySelectorAll('.about-slide')
-            .forEach((im, k) => im.classList.toggle('is-active', k === idx)),
-        );
-    };
-    const stop = () => window.clearInterval(timer);
-    const play = () => {
-      stop();
-      if (count < 2 || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-      timer = window.setInterval(() => show(idx + 1), 5500);
-    };
-    const box = about.closest<HTMLElement>('.about-visual')!;
-    box.addEventListener('pointerenter', stop);
-    box.addEventListener('pointerleave', play);
-    document.addEventListener('visibilitychange', () => (document.hidden ? stop() : play()));
-    play();
-  }
-</script>
-
 <script>
   // Hero deck: a gentle tilt that follows the mouse (fine pointers only, never with reduced motion).
   const deck = document.querySelector<HTMLElement>('[data-deck]');
@@ -669,9 +655,6 @@ const zoneTiles = (Object.keys(zones) as ZoneId[]).map((id) => ({ id, image: zon
         entries.forEach((e) => {
           if (!e.isIntersecting) return;
           e.target.classList.add('is-in');
-          // After the entrance, drop the stagger delays so hover follows the pointer instantly.
-          if (e.target.classList.contains('rise-stack'))
-            window.setTimeout(() => e.target.classList.add('is-settled'), 1600);
           io.unobserve(e.target);
         }),
       { threshold: 0.12, rootMargin: '0px 0px -6% 0px' },
