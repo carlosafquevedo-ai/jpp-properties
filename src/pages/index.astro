@@ -198,24 +198,6 @@ const zoneTiles = (Object.keys(zones) as ZoneId[]).map((id) => ({ id, image: zon
     </div>
   </section>
 
-  <!-- Zone ticker: a slow line of zone names that leads into the sections below -->
-  <nav class="zone-ticker" aria-label="Zonas">
-    <div class="zone-ticker-track">
-      {[0, 1].map((copy) => (
-        <ul aria-hidden={copy === 1 ? 'true' : undefined}>
-          {aboutZones.map((z) => (
-            <li>
-              <a href={`/imoveis/?zona=${z.id}`} tabindex={copy === 1 ? -1 : undefined}>
-                {z.name}
-              </a>
-              <i aria-hidden="true"></i>
-            </li>
-          ))}
-        </ul>
-      ))}
-    </div>
-  </nav>
-
   <!-- Featured: carousel that starts on the page column and bleeds off the right edge -->
   <section class="pt-14" aria-labelledby="destaques">
     <div class="container-x flex flex-wrap items-end justify-between gap-4">
