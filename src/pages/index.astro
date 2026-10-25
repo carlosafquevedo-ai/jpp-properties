@@ -367,32 +367,32 @@ const zoneTiles = (Object.keys(zones) as ZoneId[]).map((id) => ({ id, image: zon
                     <img src={logoWhiteImage} alt="" loading="lazy" />
                   </div>
                 )}
-              </div>
-              <div class="team-info">
-                <h3 class="font-display text-lg leading-tight text-forest">{a.name}</h3>
-                <p class="mt-1 text-sm text-muted">{a.role}</p>
-                <div class="team-contacts">
-                  {a.phone && (
-                    <a href={`tel:${a.phone.tel}`} aria-label={`Ligar a ${a.name}`}>
-                      <Icon name="phone" class="size-4" />
-                    </a>
-                  )}
-                  {a.whatsapp && (
-                    <a
-                      href={`https://wa.me/${a.whatsapp}`}
-                      target="_blank"
-                      rel="noopener"
-                      aria-label={`WhatsApp de ${a.name}`}
-                    >
-                      <Icon name="whatsapp" class="size-4" />
-                    </a>
-                  )}
-                  {a.email && (
-                    <a href={`mailto:${a.email}`} aria-label={`Enviar email a ${a.name}`}>
-                      <Icon name="mail" class="size-4" />
-                    </a>
-                  )}
+                <div class="team-name">
+                  <h3 class="font-display text-xl leading-tight">{a.name}</h3>
+                  <p class="mt-1 text-sm text-white/75">{a.role}</p>
                 </div>
+              </div>
+              <div class="team-contacts">
+                {a.phone && (
+                  <a href={`tel:${a.phone.tel}`} aria-label={`Ligar a ${a.name}`}>
+                    <Icon name="phone" class="size-4" />
+                  </a>
+                )}
+                {a.whatsapp && (
+                  <a
+                    href={`https://wa.me/${a.whatsapp}`}
+                    target="_blank"
+                    rel="noopener"
+                    aria-label={`WhatsApp de ${a.name}`}
+                  >
+                    <Icon name="whatsapp" class="size-4" />
+                  </a>
+                )}
+                {a.email && (
+                  <a href={`mailto:${a.email}`} aria-label={`Enviar email a ${a.name}`}>
+                    <Icon name="mail" class="size-4" />
+                  </a>
+                )}
               </div>
             </li>
           ))}
