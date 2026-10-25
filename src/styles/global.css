@@ -2054,7 +2054,7 @@ textarea {
 
 /* Cards never grow beyond a comfortable portrait size; with few people they align to the left, like the heading. */
 .team-card {
-  max-width: 20rem;
+  max-width: 34rem;
 }
 .team-grid {
   justify-content: flex-start;
@@ -2124,4 +2124,14 @@ textarea {
   display: block;
   flex: 1;
   margin: 0 0 0 0.75rem;
+}
+
+/* From tablet up the team cards are wider and shorter (landscape-leaning 5:4), two per view. */
+@media (min-width: 40rem) {
+  .team-photo {
+    aspect-ratio: 5 / 4;
+  }
+  .team-ph {
+    padding-bottom: 2rem;
+  }
 }
