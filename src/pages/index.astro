@@ -355,7 +355,7 @@ const zoneTiles = (Object.keys(zones) as ZoneId[]).map((id) => ({ id, image: zon
 
       <!-- Team: framed cards (same family as the property cards). Photos and contacts come from the team list. -->
       <div class="about-visual rise mx-auto w-full max-w-md self-start lg:max-w-[32rem] lg:justify-self-end">
-        <ul class="team-grid" aria-label="A nossa equipa">
+        <ul class="team-grid" aria-label="A nossa equipa" data-team-track>
           {team.map((a) => (
             <li class="team-card">
               <div class="team-photo">
@@ -397,6 +397,17 @@ const zoneTiles = (Object.keys(zones) as ZoneId[]).map((id) => ({ id, image: zon
             </li>
           ))}
         </ul>
+        <div class="team-nav" data-team-nav hidden>
+          <div class="team-bar" aria-hidden="true">
+            <span data-team-bar></span>
+          </div>
+          <button type="button" class="feat-nav" data-team-prev aria-label="Agentes anteriores">
+            <Icon name="chevronLeft" class="size-5" />
+          </button>
+          <button type="button" class="feat-nav" data-team-next aria-label="Agentes seguintes">
+            <Icon name="chevronRight" class="size-5" />
+          </button>
+        </div>
       </div>
     </div>
 
@@ -584,6 +595,41 @@ const zoneTiles = (Object.keys(zones) as ZoneId[]).map((id) => ({ id, image: zon
     show(0);
   }
 </script>
+<script>
+  // Team carousel: cards keep their size and the row scrolls, so the section never grows when the team does.
+  // Controls only appear when there is more than fits.
+  const teamTrack = document.querySelector<HTMLElement>('[data-team-track]');
+  if (teamTrack) {
+    const nav = document.querySelector<HTMLElement>('[data-team-nav]');
+    const prev = document.querySelector<HTMLButtonElement>('[data-team-prev]');
+    const next = document.querySelector<HTMLButtonElement>('[data-team-next]');
+    const bar = document.querySelector<HTMLElement>('[data-team-bar]');
+    const step = () => {
+      const card = teamTrack.querySelector<HTMLElement>('.team-card');
+      return card ? card.offsetWidth + 16 : teamTrack.clientWidth;
+    };
+    const sync = () => {
+      const max = teamTrack.scrollWidth - teamTrack.clientWidth;
+      if (nav) nav.hidden = max <= 4;
+      const share = Math.min(teamTrack.clientWidth / teamTrack.scrollWidth, 1);
+      const pos = max > 0 ? teamTrack.scrollLeft / max : 0;
+      if (bar) {
+        bar.style.width = `${share * 100}%`;
+        bar.style.transform = `translateX(${pos * (1 / share - 1) * 100}%)`;
+      }
+      if (prev) prev.disabled = pos <= 0.01;
+      if (next) next.disabled = pos >= 0.99;
+    };
+    prev?.addEventListener('click', () =>
+      teamTrack.scrollBy({ left: -step(), behavior: 'smooth' }),
+    );
+    next?.addEventListener('click', () => teamTrack.scrollBy({ left: step(), behavior: 'smooth' }));
+    teamTrack.addEventListener('scroll', sync, { passive: true });
+    window.addEventListener('resize', sync);
+    sync();
+  }
+</script>
+
 <script>
   // Hero deck: a gentle tilt that follows the mouse (fine pointers only, never with reduced motion).
   const deck = document.querySelector<HTMLElement>('[data-deck]');

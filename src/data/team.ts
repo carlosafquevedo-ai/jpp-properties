@@ -4,7 +4,7 @@ import { email, mainPhone } from '../lib/site';
  * Team members shown in the "about" section. In production this is a Sanity list ("Equipa": photo, name,
  * role, phone, email, WhatsApp); the team can add, remove and reorder people.
  * TODO: PLACEHOLDERS. No real names, photos or personal contacts exist yet (the client will provide them).
- * Until then each card uses the agency's own general contacts so the buttons can be tested.
+ * The row is a carousel, so any number of people fits without making the section taller. Until then each card uses the agency's own general contacts so the buttons can be tested.
  */
 export interface Agent {
   name: string;
@@ -18,6 +18,13 @@ export interface Agent {
 }
 
 export const team: Agent[] = [
+  {
+    name: 'Nome do agente',
+    role: 'Agente imobiliário',
+    phone: mainPhone,
+    email,
+    whatsapp: mainPhone.tel.replace(/\D/g, ''),
+  },
   {
     name: 'Nome do agente',
     role: 'Agente imobiliário',
