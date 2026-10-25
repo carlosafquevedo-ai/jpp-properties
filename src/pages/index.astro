@@ -30,17 +30,15 @@ const zoneImages: Partial<Record<ZoneId, string>> = {
   vilasol: '/zones/vilasol.jpg', // TODO: confirm the photo's licence/credit with the client
   quarteira: '/zones/quarteira.jpg', // TODO: confirm the photo's licence/credit with the client
 };
-// Office photos shown as a small interactive stage. TODO: confirm rights to publish these with the client.
+// Office photos shown on both sides of the statement. TODO: confirm rights to publish these with the client.
 const officePhotos = [
   {
     src: '/office/escritorio-vilamoura.webp',
     alt: 'Montra do escritório da JPP Properties em Vilamoura',
-    w: 1.55, // wide photo
   },
   {
     src: '/office/escritorio-entrada.webp',
     alt: 'Entrada do escritório da JPP Properties, com a porta número 3',
-    w: 1, // portrait photo
   },
 ];
 const aboutZones = (
@@ -318,213 +316,211 @@ const zoneTiles = (Object.keys(zones) as ZoneId[]).map((id) => ({ id, image: zon
   </section>
 
   <!-- About: text + CTA, tall photo and pillars (home page "about us"), then the offices -->
-  <section id="sobre" class="container-x mt-20 lg:mt-24" aria-labelledby="sobre-titulo">
-    <div class="grid gap-8 lg:grid-cols-[minmax(0,0.95fr)_minmax(0,1.05fr)] lg:gap-20">
-      <div class="rise flex flex-col items-start gap-8">
-        <h2 id="sobre-titulo" class="font-display text-3xl text-forest sm:text-4xl">
+  <section id="sobre" class="mt-20 lg:mt-24" aria-labelledby="sobre-titulo">
+    <!-- Centred statement with an office photo on each side that runs off the screen edge (MeewVision style). -->
+    <div class="about-row">
+      <figure class="about-side about-side-l">
+        <img src={officePhotos[0]!.src} alt={officePhotos[0]!.alt} loading="lazy" />
+      </figure>
+
+      <div class="about-center rise">
+        <i class="about-star" aria-hidden="true"></i>
+        <h2
+          id="sobre-titulo"
+          class="font-display text-3xl text-forest sm:text-4xl lg:text-[2.5rem]"
+        >
           Somos daqui. Sentimos o mercado como poucos.
         </h2>
-        <!-- Office stage: the photo under the pointer (or clicked / focused) grows and lifts, the other steps back. -->
-        <div class="office-wrap" data-office>
-          <div class="office-stage">
-            {officePhotos.map((ph, i) => (
-              <button
-                type="button"
-                class:list={['office-card', i === 0 && 'is-active']}
-                data-office-card={i}
-                style={`--w: ${ph.w}`}
-                aria-label={ph.alt}
-                aria-pressed={i === 0 ? 'true' : 'false'}
-              >
-                <img src={ph.src} alt={ph.alt} loading="lazy" />
-              </button>
+        <div class="about-copy mt-6 grid gap-4 text-base leading-relaxed text-ink/80 sm:text-[1.0625rem]">
+          <!-- TODO: provisional SEO copy (PT). To be reviewed with the client; EN/FR versions pending. -->
+          <p>
+            A JPP Properties é uma imobiliária no Algarve (licença AMI {AMI}), especializada na
+            compra, venda e arrendamento de apartamentos, moradias e terrenos em{' '}
+            {aboutZones.map((z, i) => (
+              <>
+                <a href={`/imoveis/?zona=${z.id}`}>{z.name}</a>
+                {i < aboutZones.length - 2 ? ', ' : i === aboutZones.length - 2 ? ' e ' : '.'}
+              </>
             ))}
-          </div>
+          </p>
+          <p>
+            Dos condomínios e campos de golfe às marinas e praias, ajudamos quem quer viver,
+            investir ou ter uma casa de férias no Algarve a encontrar o imóvel certo, com informação
+            clara e atualizada sobre cada zona.
+          </p>
+          <p>
+            Conhecemos cada zona por dentro e acompanhamos cada passo, da primeira visita à
+            escritura, para que decida com segurança, seja para comprar casa no Algarve, vender o
+            seu imóvel ou encontrar um arrendamento.
+          </p>
         </div>
-        <a href="#contacto" class="btn btn-dark">
+        <a href="#contacto" class="btn btn-dark mt-8">
           Falar com a equipa
         </a>
       </div>
-      <div class="rise about-copy grid max-w-[40.5rem] content-start gap-4 text-left text-base leading-relaxed text-ink/80 md:text-justify sm:text-[1.0625rem]">
-        <!-- TODO: provisional SEO copy (PT). To be reviewed with the client; EN/FR versions pending. -->
-        <p>
-          A JPP Properties é uma imobiliária no Algarve (licença AMI {AMI}), especializada na
-          compra, venda e arrendamento de apartamentos, moradias e terrenos em{' '}
-          {aboutZones.map((z, i) => (
-            <>
-              <a href={`/imoveis/?zona=${z.id}`}>{z.name}</a>
-              {i < aboutZones.length - 2 ? ', ' : i === aboutZones.length - 2 ? ' e ' : '.'}
-            </>
-          ))}
-        </p>
-        <p>
-          Dos condomínios e campos de golfe às marinas e praias, ajudamos quem quer viver, investir
-          ou ter uma casa de férias no Algarve a encontrar o imóvel certo, com informação clara e
-          atualizada sobre cada zona.
-        </p>
-        <p>
-          Conhecemos cada zona por dentro e acompanhamos cada passo, da primeira visita à escritura,
-          para que decida com segurança, seja para comprar casa no Algarve, vender o seu imóvel ou
-          encontrar um arrendamento.
-        </p>
-      </div>
+
+      <figure class="about-side about-side-r">
+        <img src={officePhotos[1]!.src} alt={officePhotos[1]!.alt} loading="lazy" />
+      </figure>
     </div>
 
-    <ul class="about-pillars rise mt-16 grid border-y border-line md:grid-cols-3">
-      {(
-        [
-          {
-            icon: 'pinMap',
-            title: 'Conhecimento local',
-            text: 'Somos daqui. Trabalhamos todos os dias nas zonas onde vive quem compra e quem vende.',
-          },
-          {
-            icon: 'clientCare',
-            title: 'Atenção a cada cliente',
-            text: 'Damos prioridade ao que cada pessoa quer e precisa, da primeira visita à decisão.',
-          },
-          {
-            icon: 'houseKey',
-            title: 'As melhores opções',
-            text: 'Apresentamos as melhores opções de negócio para viver, arrendar ou investir.',
-          },
-        ] as const
-      ).map((p, i) => (
-        <li class="about-pillar group relative flex gap-5 px-0 py-8 md:px-8 md:first:pl-0 md:last:pr-0">
-          <span class="about-pillar-icon">
-            <Icon name={p.icon} class="size-7" />
-          </span>
-          <div class="min-w-0 flex-1">
-            <div class="flex items-baseline justify-between gap-3">
-              <h3 class="font-display text-xl text-forest">{p.title}</h3>
-              <span class="about-pillar-num" aria-hidden="true">
-                {String(i + 1).padStart(2, '0')}
-              </span>
+    <div class="container-x">
+      <ul class="about-pillars rise mt-16 grid border-y border-line md:grid-cols-3">
+        {(
+          [
+            {
+              icon: 'pinMap',
+              title: 'Conhecimento local',
+              text: 'Somos daqui. Trabalhamos todos os dias nas zonas onde vive quem compra e quem vende.',
+            },
+            {
+              icon: 'clientCare',
+              title: 'Atenção a cada cliente',
+              text: 'Damos prioridade ao que cada pessoa quer e precisa, da primeira visita à decisão.',
+            },
+            {
+              icon: 'houseKey',
+              title: 'As melhores opções',
+              text: 'Apresentamos as melhores opções de negócio para viver, arrendar ou investir.',
+            },
+          ] as const
+        ).map((p, i) => (
+          <li class="about-pillar group relative flex gap-5 px-0 py-8 md:px-8 md:first:pl-0 md:last:pr-0">
+            <span class="about-pillar-icon">
+              <Icon name={p.icon} class="size-7" />
+            </span>
+            <div class="min-w-0 flex-1">
+              <div class="flex items-baseline justify-between gap-3">
+                <h3 class="font-display text-xl text-forest">{p.title}</h3>
+                <span class="about-pillar-num" aria-hidden="true">
+                  {String(i + 1).padStart(2, '0')}
+                </span>
+              </div>
+              <p class="mt-2 text-sm leading-relaxed text-muted">{p.text}</p>
             </div>
-            <p class="mt-2 text-sm leading-relaxed text-muted">{p.text}</p>
-          </div>
-        </li>
-      ))}
-    </ul>
+          </li>
+        ))}
+      </ul>
 
-    <!-- Team: full width, four per view, carousel when the team grows (the section keeps its height). -->
-    <div
-      id="equipa"
-      class="mt-20 grid gap-8 lg:mt-24 lg:grid-cols-[minmax(0,21rem)_minmax(0,1fr)] lg:gap-14"
-    >
-      <div class="rise flex flex-col justify-between gap-8 lg:gap-0">
-        <div>
-          <h2
-            id="equipa-titulo"
-            class="font-display text-[clamp(2.25rem,4.4vw,3.75rem)] uppercase leading-[1.02] tracking-[-0.01em] text-forest"
+      <!-- Team: full width, four per view, carousel when the team grows (the section keeps its height). -->
+      <div
+        id="equipa"
+        class="mt-20 grid gap-8 lg:mt-24 lg:grid-cols-[minmax(0,21rem)_minmax(0,1fr)] lg:gap-14"
+      >
+        <div class="rise flex flex-col justify-between gap-8 lg:gap-0">
+          <div>
+            <h2
+              id="equipa-titulo"
+              class="font-display text-[clamp(2.25rem,4.4vw,3.75rem)] uppercase leading-[1.02] tracking-[-0.01em] text-forest"
+            >
+              A nossa
+              <br />
+              equipa
+            </h2>
+            <p class="mt-5 max-w-xs text-ink/70">
+              Fale diretamente com quem o vai acompanhar, da primeira visita à escritura.
+            </p>
+          </div>
+          <div class="team-nav" data-team-nav hidden>
+            <button type="button" class="feat-nav" data-team-prev aria-label="Agentes anteriores">
+              <Icon name="chevronLeft" class="size-5" />
+            </button>
+            <button type="button" class="feat-nav" data-team-next aria-label="Agentes seguintes">
+              <Icon name="chevronRight" class="size-5" />
+            </button>
+            <div class="team-bar" aria-hidden="true">
+              <span data-team-bar></span>
+            </div>
+          </div>
+        </div>
+        <div class="rise min-w-0">
+          <ul
+            class="team-grid"
+            aria-label="A nossa equipa"
+            data-team-track
+            style={`--n-sm: ${Math.min(team.length, 2)}; --n-md: ${Math.min(team.length, 2)}; --n-lg: ${Math.min(team.length, 2)}`}
           >
-            A nossa
-            <br />
-            equipa
-          </h2>
-          <p class="mt-5 max-w-xs text-ink/70">
-            Fale diretamente com quem o vai acompanhar, da primeira visita à escritura.
-          </p>
-        </div>
-        <div class="team-nav" data-team-nav hidden>
-          <button type="button" class="feat-nav" data-team-prev aria-label="Agentes anteriores">
-            <Icon name="chevronLeft" class="size-5" />
-          </button>
-          <button type="button" class="feat-nav" data-team-next aria-label="Agentes seguintes">
-            <Icon name="chevronRight" class="size-5" />
-          </button>
-          <div class="team-bar" aria-hidden="true">
-            <span data-team-bar></span>
-          </div>
-        </div>
-      </div>
-      <div class="rise min-w-0">
-        <ul
-          class="team-grid"
-          aria-label="A nossa equipa"
-          data-team-track
-          style={`--n-sm: ${Math.min(team.length, 2)}; --n-md: ${Math.min(team.length, 2)}; --n-lg: ${Math.min(team.length, 2)}`}
-        >
-          {team.map((a) => (
-            <li class="team-card">
-              <div class="team-photo">
-                {a.photo ? (
-                  <img src={a.photo} alt={a.name} loading="lazy" />
-                ) : (
-                  <div class="team-ph" aria-hidden="true">
-                    <i></i>
-                    <img src={logoWhiteImage} alt="" loading="lazy" />
+            {team.map((a) => (
+              <li class="team-card">
+                <div class="team-photo">
+                  {a.photo ? (
+                    <img src={a.photo} alt={a.name} loading="lazy" />
+                  ) : (
+                    <div class="team-ph" aria-hidden="true">
+                      <i></i>
+                      <img src={logoWhiteImage} alt="" loading="lazy" />
+                    </div>
+                  )}
+                  <div class="team-name">
+                    <h3 class="font-display text-xl leading-tight">{a.name}</h3>
+                    <p class="mt-1 text-sm text-white/75">{a.role}</p>
                   </div>
-                )}
-                <div class="team-name">
-                  <h3 class="font-display text-xl leading-tight">{a.name}</h3>
-                  <p class="mt-1 text-sm text-white/75">{a.role}</p>
                 </div>
-              </div>
-              <div class="team-contacts">
-                {a.phone && (
-                  <a href={`tel:${a.phone.tel}`} aria-label={`Ligar a ${a.name}`}>
-                    <Icon name="phone" class="size-4" />
-                  </a>
-                )}
-                {a.whatsapp && (
-                  <a
-                    href={`https://wa.me/${a.whatsapp}`}
-                    target="_blank"
-                    rel="noopener"
-                    aria-label={`WhatsApp de ${a.name}`}
-                  >
-                    <Icon name="whatsapp" class="size-4" />
-                  </a>
-                )}
-                {a.email && (
-                  <a href={`mailto:${a.email}`} aria-label={`Enviar email a ${a.name}`}>
-                    <Icon name="mail" class="size-4" />
-                  </a>
-                )}
-              </div>
-            </li>
-          ))}
-        </ul>
-      </div>
-    </div>
-
-    <div class="mt-10 grid gap-4">
-      {offices.map((o) => (
-        <div class="grid gap-4 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.7fr)]">
-          <article class="flex min-h-64 flex-col justify-between rounded-3xl bg-paper-2 p-7">
-            <div>
-              <span class="grid size-11 place-items-center rounded-xl bg-white text-olive">
-                <Icon name="pin" class="size-5" />
-              </span>
-              <h3 class="mt-5 font-display text-2xl text-forest">Escritório de {o.name}</h3>
-              <address class="mt-2 text-sm not-italic leading-relaxed text-muted">
-                {o.address.map((line) => (
-                  <div>{line}</div>
-                ))}
-              </address>
-            </div>
-            <div class="mt-8 flex flex-wrap gap-3">
-              <a href={`tel:${o.phones[0].tel}`} class="btn btn-dark">
-                <Icon name="phone" class="size-4" /> Ligar
-              </a>
-              <a href={o.mapUrl} class="btn btn-ghost" target="_blank" rel="noopener">
-                Ver no mapa
-              </a>
-            </div>
-          </article>
-          <div class="min-h-72 overflow-hidden rounded-3xl bg-paper-2">
-            <iframe
-              title={`Mapa: Escritório de ${o.name}`}
-              src={`https://www.google.com/maps?q=${encodeURIComponent(`JPP Properties, ${o.address.join(', ')}`)}&hl=pt-PT&t=h&z=16&output=embed`}
-              class="size-full min-h-72 border-0"
-              loading="lazy"
-              referrerpolicy="no-referrer-when-downgrade"
-              allowfullscreen
-            ></iframe>
-          </div>
+                <div class="team-contacts">
+                  {a.phone && (
+                    <a href={`tel:${a.phone.tel}`} aria-label={`Ligar a ${a.name}`}>
+                      <Icon name="phone" class="size-4" />
+                    </a>
+                  )}
+                  {a.whatsapp && (
+                    <a
+                      href={`https://wa.me/${a.whatsapp}`}
+                      target="_blank"
+                      rel="noopener"
+                      aria-label={`WhatsApp de ${a.name}`}
+                    >
+                      <Icon name="whatsapp" class="size-4" />
+                    </a>
+                  )}
+                  {a.email && (
+                    <a href={`mailto:${a.email}`} aria-label={`Enviar email a ${a.name}`}>
+                      <Icon name="mail" class="size-4" />
+                    </a>
+                  )}
+                </div>
+              </li>
+            ))}
+          </ul>
         </div>
-      ))}
+      </div>
+
+      <div class="mt-10 grid gap-4">
+        {offices.map((o) => (
+          <div class="grid gap-4 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.7fr)]">
+            <article class="flex min-h-64 flex-col justify-between rounded-3xl bg-paper-2 p-7">
+              <div>
+                <span class="grid size-11 place-items-center rounded-xl bg-white text-olive">
+                  <Icon name="pin" class="size-5" />
+                </span>
+                <h3 class="mt-5 font-display text-2xl text-forest">Escritório de {o.name}</h3>
+                <address class="mt-2 text-sm not-italic leading-relaxed text-muted">
+                  {o.address.map((line) => (
+                    <div>{line}</div>
+                  ))}
+                </address>
+              </div>
+              <div class="mt-8 flex flex-wrap gap-3">
+                <a href={`tel:${o.phones[0].tel}`} class="btn btn-dark">
+                  <Icon name="phone" class="size-4" /> Ligar
+                </a>
+                <a href={o.mapUrl} class="btn btn-ghost" target="_blank" rel="noopener">
+                  Ver no mapa
+                </a>
+              </div>
+            </article>
+            <div class="min-h-72 overflow-hidden rounded-3xl bg-paper-2">
+              <iframe
+                title={`Mapa: Escritório de ${o.name}`}
+                src={`https://www.google.com/maps?q=${encodeURIComponent(`JPP Properties, ${o.address.join(', ')}`)}&hl=pt-PT&t=h&z=16&output=embed`}
+                class="size-full min-h-72 border-0"
+                loading="lazy"
+                referrerpolicy="no-referrer-when-downgrade"
+                allowfullscreen
+              ></iframe>
+            </div>
+          </div>
+        ))}
+      </div>
     </div>
   </section>
 
@@ -634,23 +630,6 @@ const zoneTiles = (Object.keys(zones) as ZoneId[]).map((id) => ({ id, image: zon
     document.addEventListener('visibilitychange', restart);
     setPaused(userPaused);
     show(0);
-  }
-</script>
-<script>
-  // Office stage: the photo under the pointer (or clicked / focused) becomes the active one: bigger and lifted.
-  const office = document.querySelector<HTMLElement>('[data-office]');
-  if (office) {
-    const cards = [...office.querySelectorAll<HTMLButtonElement>('[data-office-card]')];
-    const show = (n: number) =>
-      cards.forEach((c, k) => {
-        c.classList.toggle('is-active', k === n);
-        c.setAttribute('aria-pressed', String(k === n));
-      });
-    cards.forEach((c, k) => {
-      c.addEventListener('click', () => show(k));
-      c.addEventListener('focus', () => show(k));
-      c.addEventListener('pointerenter', (e) => e.pointerType === 'mouse' && show(k));
-    });
   }
 </script>
 

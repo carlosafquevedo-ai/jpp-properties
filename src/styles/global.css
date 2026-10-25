@@ -2002,54 +2002,78 @@ textarea {
   justify-content: flex-start;
 }
 
-/* Office stage (in the "about" heading column): the active photo grows and lifts with its caption, the other
-   steps back (hover, focus or click). */
-.office-wrap {
-  width: 100%;
+/* About: a centred statement with an office photo on each side, running off the screen edge. The inner corners
+   (facing the text) are rounded; the outer edge is flush with the screen. */
+.about-row {
+  display: grid;
+  gap: 1.5rem;
+  padding-inline: var(--gutter);
 }
-.office-stage {
+.about-center {
   display: flex;
+  flex-direction: column;
   align-items: center;
-  gap: 0.75rem;
-  height: 14rem;
+  text-align: center;
+  max-width: 41rem;
+  margin-inline: auto;
 }
-.office-card {
-  position: relative;
-  flex: var(--w, 1) 1 0;
-  height: 76%;
+.about-star {
+  display: block;
+  width: 0.9rem;
+  height: 0.9rem;
+  margin-bottom: 1.25rem;
+  rotate: 45deg;
+  background: var(--color-lime);
+}
+.about-side {
+  margin: 0;
   overflow: hidden;
-  padding: 0;
-  cursor: pointer;
-  text-align: left;
-  background: linear-gradient(160deg, #2b2f2c 0%, #121413 100%);
-  filter: brightness(0.82) saturate(0.9);
-  transition:
-    flex-grow 0.7s var(--ease-out),
-    height 0.7s var(--ease-out),
-    filter 0.5s,
-    box-shadow 0.7s var(--ease-out);
+  border-radius: 1.5rem;
+  aspect-ratio: 16 / 10;
 }
-.office-card:hover {
-  filter: brightness(0.95) saturate(1);
-}
-.office-card.is-active {
-  flex-grow: calc(var(--w, 1) * 1.2);
-  height: 100%;
-  filter: none;
-  box-shadow: 0 22px 26px -22px rgba(24, 35, 26, 0.55);
-}
-.office-card img {
-  position: absolute;
-  inset: 0;
+.about-side img {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  /* Show the top of the photo (the shop sign). */
   object-position: 50% 0%;
+  transition: transform 0.9s var(--ease-out);
 }
-@media (prefers-reduced-motion: reduce) {
-  .office-card {
-    transition: none;
+@media (hover: hover) and (prefers-reduced-motion: no-preference) {
+  .about-side:hover img {
+    transform: scale(1.04);
+  }
+}
+@media (max-width: 63.99rem) {
+  .about-side-l {
+    order: 2;
+  }
+  .about-side-r {
+    order: 3;
+  }
+}
+@media (min-width: 64rem) {
+  .about-row {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 41rem) minmax(0, 1fr);
+    align-items: center;
+    gap: 2.5rem;
+    padding-inline: 0;
+  }
+  .about-center {
+    padding-inline: 0;
+  }
+  .about-side {
+    aspect-ratio: auto;
+    height: min(26rem, 52vh);
+  }
+  .about-side-l {
+    border-radius: 0 1.75rem 1.75rem 0;
+  }
+  .about-side-r {
+    border-radius: 1.75rem 0 0 1.75rem;
+    margin-top: 5rem;
+  }
+  .about-side-l {
+    margin-bottom: 5rem;
   }
 }
 
