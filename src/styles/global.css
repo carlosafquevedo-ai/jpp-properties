@@ -2064,32 +2064,42 @@ textarea {
 .bento-card p {
   margin: 0;
 }
-.bento-tag {
-  position: absolute;
-  left: 0.75rem;
-  right: 0.75rem;
-  bottom: 0.75rem;
-  display: grid;
-  gap: 0.15rem;
-  padding: 0.9rem 1rem 1rem;
-  border-radius: 1rem;
-  background: rgba(255, 255, 255, 0.92);
-  -webkit-backdrop-filter: blur(12px);
-  backdrop-filter: blur(12px);
-  color: var(--color-ink);
+/* Third tile: the map on top, the office location below, in one rounded card. */
+.bento-map {
+  display: flex;
+  flex-direction: column;
+  min-height: 22rem;
+  overflow: hidden;
+  border-radius: 1.5rem;
+  background: linear-gradient(180deg, #faf8f3 0%, #f1ece0 100%);
+  border: 1px solid rgba(24, 35, 26, 0.08);
 }
-.bento-tag-name {
+.bento-map iframe {
+  flex: 1 1 0;
+  min-height: 11rem;
+  width: 100%;
+  border: 0;
+}
+.bento-loc {
+  padding: 1rem 1.25rem 1.25rem;
+}
+.bento-loc-name {
+  margin: 0;
   font-family: var(--font-display);
-  font-size: 1.0625rem;
+  font-size: 1.125rem;
   line-height: 1.2;
+  color: var(--color-forest);
 }
-.bento-tag-addr {
+.bento-loc-addr {
+  display: grid;
+  margin-top: 0.3rem;
   font-size: 0.8125rem;
+  font-style: normal;
+  line-height: 1.5;
   color: var(--color-muted);
 }
-.bento-tag-btn {
+.bento-loc-btn {
   min-height: 2.5rem;
-  margin-top: 0.7rem;
   padding-inline: 1rem;
   font-size: 0.875rem;
 }
