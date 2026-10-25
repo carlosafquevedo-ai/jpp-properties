@@ -7,9 +7,7 @@ import LeadForm from '../components/LeadForm.astro';
 import Icon from '../components/Icon.astro';
 import {
   formatPrice,
-  heroImage,
   logoWhiteImage,
-  visibleProperties as properties,
   zones,
   propertyTypeLabels,
   type ZoneId,
@@ -21,7 +19,6 @@ import { AMI, offices, email } from '../lib/site';
 const featured = featuredProperties();
 const slides = heroSlides();
 const [mainHighlight, ...otherHighlights] = sideHighlights;
-const photo = (slug: string) => properties.find((p) => p.slug === slug)!.images[0];
 
 // Zone photos used on the tiles. TODO: in production each zone document has its own photo (Sanity).
 const zoneImages: Partial<Record<ZoneId, string>> = {
@@ -32,30 +29,21 @@ const zoneImages: Partial<Record<ZoneId, string>> = {
   vilasol: '/zones/vilasol.jpg', // TODO: confirm the photo's licence/credit with the client
   quarteira: '/zones/quarteira.jpg', // TODO: confirm the photo's licence/credit with the client
 };
-// Zigzag column of diamonds (reference: "Art Director" slide). The fourth slot is the brand mark.
-const aboutPhotos = [
+// One upright photograph sliced into a diamond cluster; it changes every few seconds (zone photos).
+const aboutSlides = [
+  { image: '/zones/vilamoura.jpg', zone: 'vilamoura' as ZoneId, alt: 'Marina de Vilamoura' },
   {
-    image: heroImage,
-    alt: 'Piscina rodeada de palmeiras, com o campo de golfe ao fundo',
+    image: '/zones/quinta-do-lago.jpg',
+    zone: 'quinta-do-lago' as ZoneId,
+    alt: 'Campo de golfe junto à lagoa, Quinta do Lago',
   },
   {
-    image: photo('t1-novo-rua-da-azinheira-quarteira'),
-    alt: 'Edifício novo na Rua da Azinheira, Quarteira',
+    image: '/zones/quarteira.jpg',
+    zone: 'quarteira' as ZoneId,
+    alt: 'Passeio marítimo de Quarteira ao pôr do sol',
   },
-  {
-    image: photo('oliveiras-residence-quarteira'),
-    alt: 'Oliveiras Residence, Quarteira',
-  },
-  { brand: true },
-  {
-    image: photo('casuarinas-residences-vilamoura'),
-    alt: 'Casuarinas Residences, Vilamoura',
-  },
-  // Third column (right): zone photos.
-  { image: '/zones/quinta-do-lago.jpg', alt: 'Campo de golfe junto à lagoa, Quinta do Lago' },
-  { image: '/zones/vilamoura.jpg', alt: 'Marina de Vilamoura' },
-  { image: '/zones/quarteira.jpg', alt: 'Passeio marítimo de Quarteira ao pôr do sol' },
-] as { image?: string; alt?: string; brand?: boolean }[];
+];
+const aboutTiles = ['n', 'w', 'e', 's'] as const;
 const aboutZones = (
   ['vilamoura', 'quarteira', 'vilasol', 'vale-do-lobo', 'quinta-do-lago', 'loule'] as ZoneId[]
 ).map((id) => ({ id, name: zones[id].name }));
@@ -379,25 +367,45 @@ const zoneTiles = (Object.keys(zones) as ZoneId[]).map((id) => ({ id, image: zon
         </div>
       </div>
 
-      <!-- Diamond column: its size depends only on its width, never on how long the text is. -->
-      <div class="about-stack rise rise-stack mx-auto w-full max-w-md self-center lg:max-w-[32rem] lg:justify-self-end">
-        {aboutPhotos.map((c) =>
-          c.brand ? (
-            <figure class="about-photo about-brand" tabindex="0">
-              <img src={logoWhiteImage} alt="JPP Properties" class="w-[34%]" loading="lazy" />
+      <!-- One photograph cut into four diamonds, with the brand mark on the join. Its size depends only on
+           its width, never on the text. -->
+      <div class="about-visual rise rise-stack mx-auto w-full max-w-md self-center lg:max-w-[30rem] lg:justify-self-end">
+        <div class="about-stack" data-about>
+          {aboutTiles.map((t) => (
+            <figure class={`about-tile about-${t}`}>
+              {aboutSlides.map((sl, i) => (
+                <img
+                  src={sl.image}
+                  alt={t === 'n' ? sl.alt : ''}
+                  class:list={['about-slide', i === 0 && 'is-active']}
+                  loading="lazy"
+                />
+              ))}
             </figure>
-          ) : (
-            <figure class="about-photo" tabindex="0">
-              <img
-                src={c.image}
-                alt={c.alt}
-                class="size-full object-cover"
-                loading="lazy"
-                referrerpolicy="no-referrer"
-              />
-            </figure>
-          ),
-        )}
+          ))}
+          <span class="about-mark" aria-hidden="true">
+            <img src={logoWhiteImage} alt="" loading="lazy" />
+          </span>
+          <i class="about-dot-lime" aria-hidden="true"></i>
+          <i class="about-dot-line" aria-hidden="true"></i>
+        </div>
+        <div class="about-cap">
+          <a class="about-cap-link" href={`/imoveis/?zona=${aboutSlides[0].zone}`} data-about-link>
+            <span data-about-name>{zones[aboutSlides[0].zone].name}</span>
+            <Icon name="arrowUpRight" class="size-4" />
+          </a>
+          <div class="about-cap-dots" role="group" aria-label="Fotografias">
+            {aboutSlides.map((sl, i) => (
+              <button
+                type="button"
+                class="about-cap-dot"
+                data-about-dot={i}
+                aria-label={`Ver ${zones[sl.zone].name}`}
+                aria-current={i === 0 ? 'true' : 'false'}
+              ></button>
+            ))}
+          </div>
+        </div>
       </div>
     </div>
 
@@ -587,28 +595,49 @@ const zoneTiles = (Object.keys(zones) as ZoneId[]).map((id) => ({ id, image: zon
 </script>
 
 <script>
-  // About photos: the one under the pointer (or focused, or tapped) comes to the front, straightens and
-  // grows while the others step back. Tap again or tap outside to put them back.
-  const aboutStack = document.querySelector<HTMLElement>('.about-stack');
-  if (aboutStack) {
-    const photos = [...aboutStack.querySelectorAll<HTMLElement>('.about-photo')];
-    const setActive = (el: HTMLElement | null) => {
-      photos.forEach((p) => p.classList.toggle('is-active', p === el));
-      aboutStack.toggleAttribute('data-has-active', Boolean(el));
+  // About diamonds: the photograph changes every few seconds (zone photos), with dots to choose one.
+  // It pauses on hover/focus and never autoplays with reduced motion.
+  const about = document.querySelector<HTMLElement>('[data-about]');
+  if (about) {
+    const slidesData = [...document.querySelectorAll<HTMLElement>('[data-about-dot]')];
+    const names = ['Vilamoura', 'Quinta do Lago', 'Quarteira'];
+    const zones = ['vilamoura', 'quinta-do-lago', 'quarteira'];
+    const nameEl = document.querySelector<HTMLElement>('[data-about-name]');
+    const linkEl = document.querySelector<HTMLAnchorElement>('[data-about-link]');
+    let idx = 0;
+    let timer = 0;
+    const show = (n: number) => {
+      idx = (n + zones.length) % zones.length;
+      about
+        .querySelectorAll('.about-tile')
+        .forEach((tile) =>
+          tile
+            .querySelectorAll('.about-slide')
+            .forEach((im, k) => im.classList.toggle('is-active', k === idx)),
+        );
+      slidesData.forEach((d, k) => d.setAttribute('aria-current', String(k === idx)));
+      if (nameEl) nameEl.textContent = names[idx]!;
+      if (linkEl) linkEl.href = `/imoveis/?zona=${zones[idx]}`;
     };
-    photos.forEach((p) => {
-      p.addEventListener('pointerenter', (e) => e.pointerType === 'mouse' && setActive(p));
-      p.addEventListener('focus', () => setActive(p));
-      p.addEventListener('click', () => setActive(p.classList.contains('is-active') ? null : p));
-      p.addEventListener('keydown', (e) => e.key === 'Escape' && (setActive(null), p.blur()));
-    });
-    aboutStack.addEventListener(
-      'pointerleave',
-      (e) => e.pointerType === 'mouse' && setActive(null),
+    const stop = () => window.clearInterval(timer);
+    const play = () => {
+      stop();
+      if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+      timer = window.setInterval(() => show(idx + 1), 5500);
+    };
+    slidesData.forEach((d, k) =>
+      d.addEventListener('click', () => {
+        show(k);
+        play();
+      }),
     );
-    document.addEventListener('pointerdown', (e) => {
-      if (!aboutStack.contains(e.target as Node)) setActive(null);
-    });
+    const box = about.closest<HTMLElement>('.about-visual')!;
+    box.addEventListener('pointerenter', stop);
+    box.addEventListener('pointerleave', play);
+    box.addEventListener('focusin', stop);
+    box.addEventListener('focusout', play);
+    document.addEventListener('visibilitychange', () => (document.hidden ? stop() : play()));
+    play();
   }
 </script>
 
