@@ -2126,12 +2126,20 @@ textarea {
   margin: 0 0 0 0.75rem;
 }
 
-/* From tablet up the team cards are wider and shorter (landscape-leaning 5:4), two per view. */
+/* From tablet up the team cards are wider and shorter (landscape 16:10), two per view. */
 @media (min-width: 40rem) {
   .team-photo {
-    aspect-ratio: 5 / 4;
+    aspect-ratio: 16 / 10;
   }
   .team-ph {
     padding-bottom: 2rem;
+  }
+  .team-ph i {
+    width: auto;
+    height: 84%;
+    margin-bottom: 2rem;
+  }
+  .team-ph img {
+    width: min(30%, 9rem);
   }
 }
