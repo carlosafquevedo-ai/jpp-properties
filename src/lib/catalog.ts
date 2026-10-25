@@ -21,17 +21,22 @@ function pick(slugs: string[], max: number, list: Property[] = properties): Prop
 
 export const featuredProperties = () => pick(homePage.featuredSlugs, MAX_FEATURED);
 
-/** Slides of the home hero: the original photo first (no listing attached), then the chosen listings. */
+/**
+ * Slides of the home hero: only the chosen listings, each with its card. The generic photo (no listing) is
+ * used only as a safety net when none of the chosen listings is available, so the hero is never empty.
+ */
 export function heroSlides() {
-  const intro = {
-    image: heroImage,
-    alt: 'Piscina rodeada de palmeiras, com o campo de golfe ao fundo',
-    property: undefined as Property | undefined,
-  };
   const withListing = pick(homePage.heroSlugs, MAX_HERO_LISTINGS).map((p) => ({
     image: p.images[0],
     alt: `${p.title}, ${zones[p.zone].name}`,
     property: p as Property | undefined,
   }));
-  return [intro, ...withListing];
+  if (withListing.length) return withListing;
+  return [
+    {
+      image: heroImage,
+      alt: 'Piscina rodeada de palmeiras, com o campo de golfe ao fundo',
+      property: undefined as Property | undefined,
+    },
+  ];
 }
