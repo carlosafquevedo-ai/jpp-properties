@@ -317,55 +317,64 @@ const zoneTiles = (Object.keys(zones) as ZoneId[]).map((id) => ({ id, image: zon
 
   <!-- About: text + CTA, tall photo and pillars (home page "about us"), then the offices -->
   <section id="sobre" class="mt-20 lg:mt-24" aria-labelledby="sobre-titulo">
-    <!-- Statement on the left; two rounded office photos on the right (one wide, one narrow). -->
+    <!-- Bento: heading + short note on top, then a big photo, a text card and a photo card with a small overlay. -->
     <div class="container-x">
-      <div class="about-row">
-        <div class="about-text rise">
-          <p class="about-kicker">
-            <i aria-hidden="true"></i>Sobre a JPP Properties
+      <div class="rise grid items-start gap-6 lg:grid-cols-[minmax(0,1.4fr)_minmax(0,1fr)] lg:gap-16">
+        <h2 id="sobre-titulo" class="font-display text-3xl text-forest sm:text-4xl">
+          Somos daqui. Sentimos o mercado como poucos.
+        </h2>
+        <!-- TODO: provisional SEO copy (PT). To be reviewed with the client; EN/FR versions pending. -->
+        <p class="about-note about-copy">
+          <i aria-hidden="true"></i>
+          <span>
+            A JPP Properties é uma imobiliária no Algarve (licença AMI {AMI}), especializada na
+            compra, venda e arrendamento de apartamentos, moradias e terrenos em{' '}
+            {aboutZones.map((z, i) => (
+              <>
+                <a href={`/imoveis/?zona=${z.id}`}>{z.name}</a>
+                {i < aboutZones.length - 2 ? ', ' : i === aboutZones.length - 2 ? ' e ' : '.'}
+              </>
+            ))}
+          </span>
+        </p>
+      </div>
+
+      <div class="about-bento rise">
+        <figure class="bento-photo bento-a">
+          <img src={officePhotos[0]!.src} alt={officePhotos[0]!.alt} loading="lazy" />
+        </figure>
+
+        <div class="bento-card about-copy">
+          <p>
+            Dos condomínios e campos de golfe às marinas e praias, ajudamos quem quer viver,
+            investir ou ter uma casa de férias no Algarve a encontrar o imóvel certo, com informação
+            clara e atualizada sobre cada zona.
           </p>
-          <h2
-            id="sobre-titulo"
-            class="font-display text-3xl text-forest sm:text-4xl lg:text-[2.5rem]"
-          >
-            Somos daqui. Sentimos o mercado como poucos.
-          </h2>
-          <div class="about-copy mt-6 grid gap-4 text-base leading-relaxed text-ink/80 sm:text-[1.0625rem]">
-            <!-- TODO: provisional SEO copy (PT). To be reviewed with the client; EN/FR versions pending. -->
-            <p>
-              A JPP Properties é uma imobiliária no Algarve (licença AMI {AMI}), especializada na
-              compra, venda e arrendamento de apartamentos, moradias e terrenos em{' '}
-              {aboutZones.map((z, i) => (
-                <>
-                  <a href={`/imoveis/?zona=${z.id}`}>{z.name}</a>
-                  {i < aboutZones.length - 2 ? ', ' : i === aboutZones.length - 2 ? ' e ' : '.'}
-                </>
-              ))}
-            </p>
-            <p>
-              Dos condomínios e campos de golfe às marinas e praias, ajudamos quem quer viver,
-              investir ou ter uma casa de férias no Algarve a encontrar o imóvel certo, com
-              informação clara e atualizada sobre cada zona.
-            </p>
-            <p>
-              Conhecemos cada zona por dentro e acompanhamos cada passo, da primeira visita à
-              escritura, para que decida com segurança, seja para comprar casa no Algarve, vender o
-              seu imóvel ou encontrar um arrendamento.
-            </p>
-          </div>
-          <a href="#contacto" class="about-link">
-            Falar com a equipa <Icon name="arrowUpRight" class="size-4" />
+          <p>
+            Conhecemos cada zona por dentro e acompanhamos cada passo, da primeira visita à
+            escritura, para que decida com segurança, seja para comprar casa no Algarve, vender o
+            seu imóvel ou encontrar um arrendamento.
+          </p>
+          <a href="#contacto" class="btn btn-dark mt-auto self-start">
+            Falar com a equipa
           </a>
         </div>
 
-        <div class="about-photos rise">
-          <figure class="about-photo-wide">
-            <img src={officePhotos[0]!.src} alt={officePhotos[0]!.alt} loading="lazy" />
-          </figure>
-          <figure class="about-photo-narrow">
-            <img src={officePhotos[1]!.src} alt={officePhotos[1]!.alt} loading="lazy" />
-          </figure>
-        </div>
+        <figure class="bento-photo bento-c">
+          <img src={officePhotos[1]!.src} alt={officePhotos[1]!.alt} loading="lazy" />
+          <figcaption class="bento-tag">
+            <span class="bento-tag-name">Escritório de {offices[0]!.name}</span>
+            <span class="bento-tag-addr">{offices[0]!.address[0]}</span>
+            <a
+              href={offices[0]!.mapUrl}
+              target="_blank"
+              rel="noopener"
+              class="btn btn-lime bento-tag-btn"
+            >
+              Como chegar <Icon name="arrowUpRight" class="size-4" />
+            </a>
+          </figcaption>
+        </figure>
       </div>
     </div>
 
