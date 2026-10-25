@@ -2007,30 +2007,32 @@ textarea {
   justify-content: flex-start;
 }
 
-/* About bento, calm version: a short intro, then three equal tiles (photo, text, map + location) with the same
-   radius, padding and height; one paragraph, one button per tile at most. */
-.about-intro {
-  max-width: 44rem;
-}
-.about-bento {
+/* About: text and one large photo on the left, three stacked dark cards (photo + title + text) on the right. */
+.about-grid {
   display: grid;
-  gap: 1rem;
-  margin-top: 2rem;
+  gap: 2rem;
 }
 @media (min-width: 64rem) {
-  .about-bento {
-    grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr) minmax(0, 1.1fr);
-    height: 26rem;
+  .about-grid {
+    grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.9fr);
+    gap: 3.5rem;
+    align-items: start;
   }
 }
-.bento-photo {
-  position: relative;
-  margin: 0;
-  min-height: 18rem;
+.about-left {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  min-width: 0;
+}
+.about-hero-photo {
+  width: 100%;
+  margin: 2rem 0 0;
+  height: 15rem;
   overflow: hidden;
   border-radius: 1.5rem;
 }
-.bento-photo > img {
+.about-hero-photo img {
   width: 100%;
   height: 100%;
   object-fit: cover;
@@ -2038,65 +2040,76 @@ textarea {
   transition: transform 0.9s var(--ease-out);
 }
 @media (hover: hover) and (prefers-reduced-motion: no-preference) {
-  .bento-photo:hover > img {
+  .about-hero-photo:hover img {
     transform: scale(1.04);
   }
 }
-.bento-card {
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  gap: 1.5rem;
-  padding: 1.75rem;
-  border-radius: 1.5rem;
-  background: #f4f0e6;
-  font-size: 1.0625rem;
-  line-height: 1.65;
-  color: var(--color-ink);
-}
-.bento-card p {
+.about-cards {
+  display: grid;
+  gap: 1rem;
   margin: 0;
+  padding: 0;
+  list-style: none;
 }
-.bento-map {
+.about-card {
   display: flex;
-  flex-direction: column;
-  min-height: 22rem;
+  align-items: center;
+  gap: 1.5rem;
+  padding: 1.5rem;
+  border-radius: 1.5rem;
+  background:
+    radial-gradient(90% 140% at 0% 0%, rgba(255, 255, 255, 0.07) 0%, transparent 60%),
+    linear-gradient(160deg, #1d201e 0%, #121413 100%);
+  box-shadow: inset 0 0 0 1px rgba(220, 207, 174, 0.14);
+  transition: transform 0.45s var(--ease-out);
+}
+.about-card img {
+  flex: none;
+  width: 7rem;
+  height: 7rem;
+  border-radius: 1rem;
+  object-fit: cover;
+}
+@media (min-width: 40rem) {
+  .about-card img {
+    width: 9rem;
+    height: 9rem;
+  }
+}
+@media (hover: hover) and (prefers-reduced-motion: no-preference) {
+  .about-card:hover {
+    transform: translateX(6px);
+  }
+}
+/* Map in the contact section. */
+.contact-map {
+  position: relative;
+  margin-top: 2rem;
+  height: 15rem;
   overflow: hidden;
   border-radius: 1.5rem;
-  background: #f4f0e6;
 }
-.bento-map iframe {
-  flex: 1 1 0;
-  min-height: 11rem;
+.contact-map iframe {
   width: 100%;
+  height: 100%;
   border: 0;
 }
-.bento-loc {
-  display: flex;
-  flex-wrap: wrap;
+.contact-map-go {
+  position: absolute;
+  right: 0.75rem;
+  bottom: 0.75rem;
+  display: inline-flex;
   align-items: center;
-  justify-content: space-between;
-  gap: 0.75rem 1rem;
-  padding: 1rem 1.25rem;
-}
-.bento-loc-name {
-  margin: 0;
-  font-family: var(--font-display);
-  font-size: 1.0625rem;
-  line-height: 1.2;
+  gap: 0.4rem;
+  padding: 0.55rem 0.95rem;
+  border-radius: 9999px;
+  background: rgba(255, 255, 255, 0.92);
+  font-size: 0.875rem;
+  font-weight: 600;
   color: var(--color-forest);
 }
-.bento-loc-addr {
-  display: block;
-  margin-top: 0.15rem;
-  font-size: 0.8125rem;
-  font-style: normal;
-  color: var(--color-muted);
-}
-.bento-loc-btn {
-  min-height: 2.5rem;
-  padding-inline: 1rem;
-  font-size: 0.875rem;
+.contact-map-go:hover {
+  background: var(--color-lime);
 }
 
 /* Team header on the left: the arrows and the position bar sit under the text, level with the card row's bottom. */

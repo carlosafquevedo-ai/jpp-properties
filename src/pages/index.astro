@@ -317,104 +317,68 @@ const zoneTiles = (Object.keys(zones) as ZoneId[]).map((id) => ({ id, image: zon
 
   <!-- About: text + CTA, tall photo and pillars (home page "about us"), then the offices -->
   <section id="sobre" class="mt-20 lg:mt-24" aria-labelledby="sobre-titulo">
-    <!-- Calm bento: heading + one lead sentence, then three equal tiles (photo, text, map + location). -->
+    <!-- Left: heading, text and one large photo. Right: three stacked dark cards, each with a photo, title and text. -->
     <div class="container-x">
-      <div class="rise about-intro">
-        <h2 id="sobre-titulo" class="font-display text-3xl text-forest sm:text-4xl">
-          Somos daqui. Sentimos o mercado como poucos.
-        </h2>
-        <!-- TODO: provisional SEO copy (PT). To be reviewed with the client; EN/FR versions pending. -->
-        <p class="about-copy mt-4 text-base leading-relaxed text-ink/70 sm:text-[1.0625rem]">
-          A JPP Properties é uma imobiliária no Algarve (licença AMI {AMI}), especializada na
-          compra, venda e arrendamento de apartamentos, moradias e terrenos em{' '}
-          {aboutZones.map((z, i) => (
-            <>
-              <a href={`/imoveis/?zona=${z.id}`}>{z.name}</a>
-              {i < aboutZones.length - 2 ? ', ' : i === aboutZones.length - 2 ? ' e ' : '.'}
-            </>
-          ))}
-        </p>
-      </div>
-
-      <div class="about-bento rise">
-        <figure class="bento-photo">
-          <img src={officePhotos[0]!.src} alt={officePhotos[0]!.alt} loading="lazy" />
-        </figure>
-
-        <div class="bento-card">
-          <p>
-            Dos condomínios e campos de golfe às marinas e praias, acompanhamos cada passo, da
-            primeira visita à escritura, para que decida com segurança, seja para comprar casa no
-            Algarve, vender o seu imóvel ou encontrar um arrendamento.
-          </p>
-          <a href="#contacto" class="btn btn-dark self-start">
+      <div class="about-grid">
+        <div class="rise about-left">
+          <h2 id="sobre-titulo" class="font-display text-3xl text-forest sm:text-4xl">
+            Somos daqui. Sentimos o mercado como poucos.
+          </h2>
+          <!-- TODO: provisional SEO copy (PT). To be reviewed with the client; EN/FR versions pending. -->
+          <div class="about-copy mt-4 grid max-w-xl gap-3 text-base leading-relaxed text-ink/70 sm:text-[1.0625rem]">
+            <p>
+              A JPP Properties é uma imobiliária no Algarve (licença AMI {AMI}), especializada na
+              compra, venda e arrendamento de apartamentos, moradias e terrenos em{' '}
+              {aboutZones.map((z, i) => (
+                <>
+                  <a href={`/imoveis/?zona=${z.id}`}>{z.name}</a>
+                  {i < aboutZones.length - 2 ? ', ' : i === aboutZones.length - 2 ? ' e ' : '.'}
+                </>
+              ))}
+            </p>
+            <p>
+              Dos condomínios e campos de golfe às marinas e praias, acompanhamos cada passo, da
+              primeira visita à escritura, para que decida com segurança, seja para comprar casa no
+              Algarve, vender o seu imóvel ou encontrar um arrendamento.
+            </p>
+          </div>
+          <a href="#contacto" class="btn btn-dark mt-6">
             Falar com a equipa
           </a>
+          <figure class="about-hero-photo">
+            <img src={officePhotos[0]!.src} alt={officePhotos[0]!.alt} loading="lazy" />
+          </figure>
         </div>
 
-        <div class="bento-map">
-          <iframe
-            title={`Mapa: Escritório de ${offices[0]!.name}`}
-            src={`https://www.google.com/maps?q=${encodeURIComponent(`JPP Properties, ${offices[0]!.address.join(', ')}`)}&hl=pt-PT&t=h&z=16&output=embed`}
-            loading="lazy"
-            referrerpolicy="no-referrer-when-downgrade"
-            allowfullscreen
-          ></iframe>
-          <div class="bento-loc">
-            <div>
-              <p class="bento-loc-name">Escritório de {offices[0]!.name}</p>
-              <address class="bento-loc-addr">{offices[0]!.address[0]}</address>
-            </div>
-            <a
-              href={offices[0]!.mapUrl}
-              target="_blank"
-              rel="noopener"
-              class="btn btn-lime bento-loc-btn"
-            >
-              Como chegar <Icon name="arrowUpRight" class="size-4" />
-            </a>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <div class="container-x">
-      <ul class="about-pillars rise mt-16 grid border-y border-line md:grid-cols-3">
-        {(
-          [
+        <!-- TODO: the three photos are placeholders (zone / office photos) until the client sends final ones. -->
+        <ul class="rise about-cards">
+          {[
             {
-              icon: 'pinMap',
+              img: '/zones/vilamoura.jpg',
               title: 'Conhecimento local',
               text: 'Somos daqui. Trabalhamos todos os dias nas zonas onde vive quem compra e quem vende.',
             },
             {
-              icon: 'clientCare',
+              img: officePhotos[1]!.src,
               title: 'Atenção a cada cliente',
               text: 'Damos prioridade ao que cada pessoa quer e precisa, da primeira visita à decisão.',
             },
             {
-              icon: 'houseKey',
+              img: '/zones/quinta-do-lago.jpg',
               title: 'As melhores opções',
               text: 'Apresentamos as melhores opções de negócio para viver, arrendar ou investir.',
             },
-          ] as const
-        ).map((p, i) => (
-          <li class="about-pillar group relative flex gap-5 px-0 py-8 md:px-8 md:first:pl-0 md:last:pr-0">
-            <span class="about-pillar-icon">
-              <Icon name={p.icon} class="size-7" />
-            </span>
-            <div class="min-w-0 flex-1">
-              <div class="flex items-baseline justify-between gap-3">
-                <h3 class="font-display text-xl text-forest">{p.title}</h3>
-                <span class="about-pillar-num" aria-hidden="true">
-                  {String(i + 1).padStart(2, '0')}
-                </span>
+          ].map((c) => (
+            <li class="about-card">
+              <img src={c.img} alt="" loading="lazy" />
+              <div>
+                <h3 class="font-display text-xl text-white">{c.title}</h3>
+                <p class="mt-2 text-sm leading-relaxed text-white/70">{c.text}</p>
               </div>
-              <p class="mt-2 text-sm leading-relaxed text-muted">{p.text}</p>
-            </div>
-          </li>
-        ))}
-      </ul>
+            </li>
+          ))}
+        </ul>
+      </div>
 
       <!-- Team: full width, four per view, carousel when the team grows (the section keeps its height). -->
       <div
@@ -544,6 +508,18 @@ const zoneTiles = (Object.keys(zones) as ZoneId[]).map((id) => ({ id, image: zon
       >
         <Icon name="mail" class="size-5" /> {email}
       </a>
+      <div class="contact-map">
+        <iframe
+          title={`Mapa: Escritório de ${offices[0]!.name}`}
+          src={`https://www.google.com/maps?q=${encodeURIComponent(`JPP Properties, ${offices[0]!.address.join(', ')}`)}&hl=pt-PT&t=h&z=16&output=embed`}
+          loading="lazy"
+          referrerpolicy="no-referrer-when-downgrade"
+          allowfullscreen
+        ></iframe>
+        <a href={offices[0]!.mapUrl} target="_blank" rel="noopener" class="contact-map-go">
+          Como chegar <Icon name="arrowUpRight" class="size-4" />
+        </a>
+      </div>
     </div>
     <div class="rounded-[2rem] border border-line bg-white p-6 sm:p-8">
       <ContactForm idPrefix="home" />
