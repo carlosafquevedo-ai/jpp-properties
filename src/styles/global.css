@@ -2066,8 +2066,8 @@ textarea {
   grid-template-columns: 1.55fr 1fr;
   gap: 1rem;
   width: 100%;
-  flex: 1;
-  min-height: 11rem;
+  flex: none;
+  height: 12rem;
 }
 .office-photos[data-count='1'] {
   grid-template-columns: 1fr;
