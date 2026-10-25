@@ -2126,3 +2126,26 @@ textarea {
     width: min(30%, 9rem);
   }
 }
+
+/* Zones band: soft radius. The band bleeds off the right edge, so only its left corners are rounded; tiles and the
+   highlight card use matching, smaller radii. */
+.zones-band {
+  border-radius: 1.75rem 0 0 1.75rem;
+}
+@media (max-width: 63.99rem) {
+  .zones-band {
+    border-radius: 0;
+  }
+}
+.zones-photo {
+  border-radius: 1.25rem;
+}
+.zone-mini {
+  border-radius: 0.875rem;
+}
+.zone-mini img {
+  border-radius: 0.5rem;
+}
+.zone-go-arrow {
+  border-radius: 0.5rem;
+}

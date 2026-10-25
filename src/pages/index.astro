@@ -233,7 +233,7 @@ const zoneTiles = (Object.keys(zones) as ZoneId[]).map((id) => ({ id, image: zon
             {zoneTiles.map((t) => (
               <a
                 href={`/imoveis/?zona=${t.id}`}
-                class="group relative isolate flex aspect-square flex-col justify-end overflow-hidden p-4 lg:aspect-auto text-white"
+                class="group relative isolate flex aspect-square flex-col justify-end overflow-hidden rounded-2xl p-4 lg:aspect-auto text-white"
               >
                 {t.image ? (
                   <>
