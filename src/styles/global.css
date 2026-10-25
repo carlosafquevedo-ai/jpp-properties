@@ -328,7 +328,7 @@
   .card-info {
     position: relative;
     z-index: 20;
-    margin: -3rem 0.75rem 0;
+    margin: -2.25rem 0 0;
     border: 1px solid rgba(255, 255, 255, 0.9);
     border-radius: 0.875rem;
     background: linear-gradient(
@@ -402,8 +402,9 @@
     display: flex;
     align-items: center;
     gap: 0.4rem;
-    padding-right: 0.9rem;
-    margin-right: 0.9rem;
+    white-space: nowrap;
+    padding-right: 0.7rem;
+    margin-right: 0.7rem;
     border-right: 1px solid rgba(24, 35, 26, 0.12);
   }
   .card-specs li:last-child {
@@ -486,7 +487,7 @@
   }
   .card-dots {
     position: absolute;
-    bottom: 4.1rem;
+    bottom: 3.35rem;
     left: 50%;
     z-index: 5;
     display: flex;
