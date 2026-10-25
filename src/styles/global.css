@@ -2076,7 +2076,6 @@ textarea {
   position: relative;
   overflow: hidden;
   margin: 0;
-  border-radius: 1.125rem;
   background: linear-gradient(160deg, #2b2f2c 0%, #121413 100%);
 }
 .office-photo > img,
