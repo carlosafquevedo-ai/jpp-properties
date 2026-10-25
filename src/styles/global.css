@@ -2002,36 +2002,69 @@ textarea {
   justify-content: flex-start;
 }
 
-/* About: a centred statement with an office photo on each side, running off the screen edge. The inner corners
-   (facing the text) are rounded; the outer edge is flush with the screen. */
+/* About: text on the left, two rounded office photos on the right (one wide, one narrow, same height). */
 .about-row {
   display: grid;
-  gap: 1.5rem;
-  padding-inline: var(--gutter);
+  gap: 2rem;
 }
-.about-center {
+@media (min-width: 64rem) {
+  .about-row {
+    grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
+    align-items: center;
+    gap: 4rem;
+  }
+}
+.about-kicker {
   display: flex;
-  flex-direction: column;
   align-items: center;
-  text-align: center;
-  max-width: 41rem;
-  margin-inline: auto;
+  gap: 0.6rem;
+  margin-bottom: 1rem;
+  font-size: 0.9375rem;
+  color: var(--color-muted);
 }
-.about-star {
-  display: block;
-  width: 0.9rem;
-  height: 0.9rem;
-  margin-bottom: 1.25rem;
+.about-kicker i {
+  width: 0.5rem;
+  height: 0.5rem;
+  flex: none;
   rotate: 45deg;
   background: var(--color-lime);
 }
-.about-side {
+.about-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: 1.75rem;
+  padding-bottom: 0.2rem;
+  font-weight: 600;
+  color: var(--color-forest);
+  background: linear-gradient(var(--color-lime), var(--color-lime)) 0 100% / 2.25rem 2px no-repeat;
+  transition: background-size 0.4s var(--ease-out);
+}
+.about-link:hover {
+  background-size: 100% 2px;
+}
+.about-photos {
+  display: grid;
+  grid-template-columns: 1.7fr 1fr;
+  gap: 1rem;
+  height: 17rem;
+}
+@media (min-width: 40rem) {
+  .about-photos {
+    height: 24rem;
+  }
+}
+@media (min-width: 64rem) {
+  .about-photos {
+    height: 30rem;
+  }
+}
+.about-photos figure {
   margin: 0;
   overflow: hidden;
   border-radius: 1.5rem;
-  aspect-ratio: 16 / 10;
 }
-.about-side img {
+.about-photos img {
   width: 100%;
   height: 100%;
   object-fit: cover;
@@ -2039,41 +2072,8 @@ textarea {
   transition: transform 0.9s var(--ease-out);
 }
 @media (hover: hover) and (prefers-reduced-motion: no-preference) {
-  .about-side:hover img {
+  .about-photos figure:hover img {
     transform: scale(1.04);
-  }
-}
-@media (max-width: 63.99rem) {
-  .about-side-l {
-    order: 2;
-  }
-  .about-side-r {
-    order: 3;
-  }
-}
-@media (min-width: 64rem) {
-  .about-row {
-    grid-template-columns: minmax(0, 1fr) minmax(0, 41rem) minmax(0, 1fr);
-    align-items: center;
-    gap: 2.5rem;
-    padding-inline: 0;
-  }
-  .about-center {
-    padding-inline: 0;
-  }
-  .about-side {
-    aspect-ratio: auto;
-    height: min(26rem, 52vh);
-  }
-  .about-side-l {
-    border-radius: 0 1.75rem 1.75rem 0;
-  }
-  .about-side-r {
-    border-radius: 1.75rem 0 0 1.75rem;
-    margin-top: 5rem;
-  }
-  .about-side-l {
-    margin-bottom: 5rem;
   }
 }
 
