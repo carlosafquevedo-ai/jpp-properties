@@ -11,6 +11,7 @@ import {
   logoWhiteImage,
   visibleProperties as properties,
   zones,
+  propertyTypeLabels,
   type ZoneId,
 } from '../data/properties';
 import { featuredProperties, heroSlides } from '../lib/catalog';
@@ -105,19 +106,23 @@ const zoneTiles = (Object.keys(zones) as ZoneId[]).map((id) => ({ id, image: zon
           </div>
         </div>
 
-        <div class="mt-8 lg:mt-0 lg:w-[21rem] lg:shrink-0">
+        <div class="hero-deck mt-8 lg:mt-0 lg:w-[22rem] lg:shrink-0" data-deck>
           <div class="hero-cards hidden lg:grid">
             {slides.map((slide, i) =>
               slide.property ? (
                 <article class="hero-card" data-slide={i} inert={i !== 0} aria-hidden={i !== 0}>
-                  <h2 class="font-display text-base leading-tight">{slide.property.title}</h2>
+                  <p class="hero-card-kicker">
+                    {propertyTypeLabels[slide.property.propertyType]}
+                    {slide.property.condition === 'new' && <span class="card-flag">Novo</span>}
+                  </p>
+                  <h2 class="mt-2 font-display text-lg leading-tight">{slide.property.title}</h2>
                   <p class="mt-1 flex items-center gap-1.5 text-xs text-white/80">
                     <Icon name="pin" class="size-3.5" />
                     {[slide.property.locality, zones[slide.property.zone].name]
                       .filter(Boolean)
                       .join(', ')}
                   </p>
-                  <p class="mt-2.5 font-display text-2xl leading-none">
+                  <p class="mt-3 font-display text-[1.75rem] leading-none">
                     {formatPrice(slide.property.price)}
                   </p>
                   <ul class="mt-2.5 flex gap-3.5 text-xs text-white/85">
@@ -192,6 +197,24 @@ const zoneTiles = (Object.keys(zones) as ZoneId[]).map((id) => ({ id, image: zon
       </div>
     </div>
   </section>
+
+  <!-- Zone ticker: a slow line of zone names that leads into the sections below -->
+  <nav class="zone-ticker" aria-label="Zonas">
+    <div class="zone-ticker-track">
+      {[0, 1].map((copy) => (
+        <ul aria-hidden={copy === 1 ? 'true' : undefined}>
+          {aboutZones.map((z) => (
+            <li>
+              <a href={`/imoveis/?zona=${z.id}`} tabindex={copy === 1 ? -1 : undefined}>
+                {z.name}
+              </a>
+              <i aria-hidden="true"></i>
+            </li>
+          ))}
+        </ul>
+      ))}
+    </div>
+  </nav>
 
   <!-- Featured: carousel that starts on the page column and bleeds off the right edge -->
   <section class="pt-14" aria-labelledby="destaques">
@@ -598,6 +621,32 @@ const zoneTiles = (Object.keys(zones) as ZoneId[]).map((id) => ({ id, image: zon
     );
     document.addEventListener('pointerdown', (e) => {
       if (!aboutStack.contains(e.target as Node)) setActive(null);
+    });
+  }
+</script>
+
+<script>
+  // Hero deck: a gentle tilt that follows the mouse (fine pointers only, never with reduced motion).
+  const deck = document.querySelector<HTMLElement>('[data-deck]');
+  if (
+    deck &&
+    window.matchMedia('(hover: hover) and (pointer: fine)').matches &&
+    !window.matchMedia('(prefers-reduced-motion: reduce)').matches
+  ) {
+    deck.addEventListener('pointermove', (e) => {
+      const r = deck.getBoundingClientRect();
+      deck.style.setProperty(
+        '--ry',
+        `${(((e.clientX - r.left) / r.width - 0.5) * 5).toFixed(2)}deg`,
+      );
+      deck.style.setProperty(
+        '--rx',
+        `${((0.5 - (e.clientY - r.top) / r.height) * 4).toFixed(2)}deg`,
+      );
+    });
+    deck.addEventListener('pointerleave', () => {
+      deck.style.removeProperty('--rx');
+      deck.style.removeProperty('--ry');
     });
   }
 </script>
