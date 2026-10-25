@@ -30,10 +30,16 @@ const zoneImages: Partial<Record<ZoneId, string>> = {
   vilasol: '/zones/vilasol.jpg', // TODO: confirm the photo's licence/credit with the client
   quarteira: '/zones/quarteira.jpg', // TODO: confirm the photo's licence/credit with the client
 };
-// Office photos (one or two). TODO: placeholders; set `src` when the client provides real photos.
+// Office photos (one or two): wide one first, narrow one second. TODO: confirm rights to publish these with the client.
 const officePhotos: { src?: string; alt: string }[] = [
-  { alt: 'Escritório da JPP Properties em Vilamoura' },
-  { alt: 'Interior do escritório da JPP Properties' },
+  {
+    src: '/office/escritorio-vilamoura.webp',
+    alt: 'Montra do escritório da JPP Properties em Vilamoura',
+  },
+  {
+    src: '/office/escritorio-entrada.webp',
+    alt: 'Entrada do escritório da JPP Properties, com a porta número 3',
+  },
 ];
 const aboutZones = (
   ['vilamoura', 'quarteira', 'vilasol', 'vale-do-lobo', 'quinta-do-lago', 'loule'] as ZoneId[]
