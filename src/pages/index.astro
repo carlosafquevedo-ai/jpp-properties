@@ -200,16 +200,18 @@ const zoneTiles = (Object.keys(zones) as ZoneId[]).map((id) => ({ id, image: zon
 
   <!-- Featured: carousel that starts on the page column and bleeds off the right edge -->
   <section class="pt-14" aria-labelledby="destaques">
-    <div class="container-x flex flex-wrap items-end justify-between gap-4">
-      <h2 id="destaques" class="font-display text-3xl text-forest sm:text-4xl">
-        Imóveis em destaque
-      </h2>
+    <div class="container-x flex flex-wrap items-end justify-between gap-x-10 gap-y-5">
+      <div class="max-w-xl">
+        <h2 id="destaques" class="font-display text-3xl text-forest sm:text-4xl">
+          Imóveis em destaque
+        </h2>
+        <p class="mt-3 text-ink/70">
+          Uma seleção dos imóveis que a nossa equipa recomenda neste momento.
+        </p>
+      </div>
       <div class="flex items-center gap-5">
-        <a
-          href="/imoveis/"
-          class="inline-flex items-center gap-2 font-semibold text-olive hover:text-forest"
-        >
-          Ver todos <Icon name="arrowRight" class="size-5" />
+        <a href="/imoveis/" class="feat-all">
+          Ver todos os imóveis <Icon name="arrowRight" class="size-4" />
         </a>
         <div class="hidden gap-2 sm:flex">
           <button type="button" class="feat-nav" data-feat-prev aria-label="Imóveis anteriores">
@@ -228,6 +230,9 @@ const zoneTiles = (Object.keys(zones) as ZoneId[]).map((id) => ({ id, image: zon
             <PropertyCard property={p} eager={i < 4} />
           </div>
         ))}
+      </div>
+      <div class="feat-bar" aria-hidden="true">
+        <span data-feat-bar></span>
       </div>
     </div>
   </section>
@@ -647,6 +652,25 @@ const zoneTiles = (Object.keys(zones) as ZoneId[]).map((id) => ({ id, image: zon
     document
       .querySelector('[data-feat-next]')
       ?.addEventListener('click', () => featTrack.scrollBy({ left: step(), behavior: 'smooth' }));
+
+    // Position bar: its length is the visible share of the row, its offset follows the scroll.
+    const bar = document.querySelector<HTMLElement>('[data-feat-bar]');
+    const prev = document.querySelector<HTMLButtonElement>('[data-feat-prev]');
+    const next = document.querySelector<HTMLButtonElement>('[data-feat-next]');
+    const syncBar = () => {
+      const max = featTrack.scrollWidth - featTrack.clientWidth;
+      const share = featTrack.clientWidth / featTrack.scrollWidth;
+      const pos = max > 0 ? featTrack.scrollLeft / max : 0;
+      if (bar) {
+        bar.style.width = `${Math.min(share, 1) * 100}%`;
+        bar.style.transform = `translateX(${pos * (1 / Math.min(share, 1) - 1) * 100}%)`;
+      }
+      if (prev) prev.disabled = pos <= 0.01;
+      if (next) next.disabled = max <= 0 || pos >= 0.99;
+    };
+    featTrack.addEventListener('scroll', syncBar, { passive: true });
+    window.addEventListener('resize', syncBar);
+    syncBar();
   }
 </script>
 
