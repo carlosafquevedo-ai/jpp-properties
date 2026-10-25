@@ -29,20 +29,9 @@ const zoneImages: Partial<Record<ZoneId, string>> = {
   vilasol: '/zones/vilasol.jpg', // TODO: confirm the photo's licence/credit with the client
   quarteira: '/zones/quarteira.jpg', // TODO: confirm the photo's licence/credit with the client
 };
-// One upright photograph sliced into a diamond cluster; it changes every few seconds (zone photos).
-const aboutSlides = [
-  { image: '/zones/vilamoura.jpg', zone: 'vilamoura' as ZoneId, alt: 'Marina de Vilamoura' },
-  {
-    image: '/zones/quinta-do-lago.jpg',
-    zone: 'quinta-do-lago' as ZoneId,
-    alt: 'Campo de golfe junto à lagoa, Quinta do Lago',
-  },
-  {
-    image: '/zones/quarteira.jpg',
-    zone: 'quarteira' as ZoneId,
-    alt: 'Passeio marítimo de Quarteira ao pôr do sol',
-  },
-];
+// One photograph sliced into a diamond cluster; it changes every few seconds.
+// TODO: placeholders (zone photos). Final content: the offices, the team and the agency's day to day.
+const aboutSlides = ['/zones/vilamoura.jpg', '/zones/quinta-do-lago.jpg', '/zones/quarteira.jpg'];
 const aboutTiles = ['n', 'w', 'e', 's'] as const;
 const aboutZones = (
   ['vilamoura', 'quarteira', 'vilasol', 'vale-do-lobo', 'quinta-do-lago', 'loule'] as ZoneId[]
@@ -370,13 +359,13 @@ const zoneTiles = (Object.keys(zones) as ZoneId[]).map((id) => ({ id, image: zon
       <!-- One photograph cut into four diamonds, with the brand mark on the join. Its size depends only on
            its width, never on the text. -->
       <div class="about-visual rise rise-stack mx-auto w-full max-w-md self-center lg:max-w-[30rem] lg:justify-self-end">
-        <div class="about-stack" data-about>
+        <div class="about-stack" data-about role="img" aria-label="Fotografias da JPP Properties">
           {aboutTiles.map((t) => (
-            <figure class={`about-tile about-${t}`}>
-              {aboutSlides.map((sl, i) => (
+            <figure class={`about-tile about-${t}`} aria-hidden="true">
+              {aboutSlides.map((src, i) => (
                 <img
-                  src={sl.image}
-                  alt={t === 'n' ? sl.alt : ''}
+                  src={src}
+                  alt=""
                   class:list={['about-slide', i === 0 && 'is-active']}
                   loading="lazy"
                 />
@@ -388,23 +377,6 @@ const zoneTiles = (Object.keys(zones) as ZoneId[]).map((id) => ({ id, image: zon
           </span>
           <i class="about-dot-lime" aria-hidden="true"></i>
           <i class="about-dot-line" aria-hidden="true"></i>
-        </div>
-        <div class="about-cap">
-          <a class="about-cap-link" href={`/imoveis/?zona=${aboutSlides[0].zone}`} data-about-link>
-            <span data-about-name>{zones[aboutSlides[0].zone].name}</span>
-            <Icon name="arrowUpRight" class="size-4" />
-          </a>
-          <div class="about-cap-dots" role="group" aria-label="Fotografias">
-            {aboutSlides.map((sl, i) => (
-              <button
-                type="button"
-                class="about-cap-dot"
-                data-about-dot={i}
-                aria-label={`Ver ${zones[sl.zone].name}`}
-                aria-current={i === 0 ? 'true' : 'false'}
-              ></button>
-            ))}
-          </div>
         </div>
       </div>
     </div>
@@ -595,19 +567,15 @@ const zoneTiles = (Object.keys(zones) as ZoneId[]).map((id) => ({ id, image: zon
 </script>
 
 <script>
-  // About diamonds: the photograph changes every few seconds (zone photos), with dots to choose one.
-  // It pauses on hover/focus and never autoplays with reduced motion.
+  // About diamonds: the photograph changes every few seconds. It pauses on hover/focus and never
+  // autoplays with reduced motion.
   const about = document.querySelector<HTMLElement>('[data-about]');
   if (about) {
-    const slidesData = [...document.querySelectorAll<HTMLElement>('[data-about-dot]')];
-    const names = ['Vilamoura', 'Quinta do Lago', 'Quarteira'];
-    const zones = ['vilamoura', 'quinta-do-lago', 'quarteira'];
-    const nameEl = document.querySelector<HTMLElement>('[data-about-name]');
-    const linkEl = document.querySelector<HTMLAnchorElement>('[data-about-link]');
+    const count = about.querySelector('.about-tile')?.querySelectorAll('.about-slide').length ?? 0;
     let idx = 0;
     let timer = 0;
     const show = (n: number) => {
-      idx = (n + zones.length) % zones.length;
+      idx = (n + count) % count;
       about
         .querySelectorAll('.about-tile')
         .forEach((tile) =>
@@ -615,27 +583,16 @@ const zoneTiles = (Object.keys(zones) as ZoneId[]).map((id) => ({ id, image: zon
             .querySelectorAll('.about-slide')
             .forEach((im, k) => im.classList.toggle('is-active', k === idx)),
         );
-      slidesData.forEach((d, k) => d.setAttribute('aria-current', String(k === idx)));
-      if (nameEl) nameEl.textContent = names[idx]!;
-      if (linkEl) linkEl.href = `/imoveis/?zona=${zones[idx]}`;
     };
     const stop = () => window.clearInterval(timer);
     const play = () => {
       stop();
-      if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+      if (count < 2 || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
       timer = window.setInterval(() => show(idx + 1), 5500);
     };
-    slidesData.forEach((d, k) =>
-      d.addEventListener('click', () => {
-        show(k);
-        play();
-      }),
-    );
     const box = about.closest<HTMLElement>('.about-visual')!;
     box.addEventListener('pointerenter', stop);
     box.addEventListener('pointerleave', play);
-    box.addEventListener('focusin', stop);
-    box.addEventListener('focusout', play);
     document.addEventListener('visibilitychange', () => (document.hidden ? stop() : play()));
     play();
   }
