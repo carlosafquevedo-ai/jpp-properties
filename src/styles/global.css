@@ -3087,3 +3087,37 @@ input:focus-visible + .glass-seg-opt {
   height: 2.3rem;
   background: linear-gradient(to bottom, rgba(27, 30, 28, 0.5), rgba(27, 30, 28, 0.15));
 }
+
+/* Map: the whole image (square, no crop). The pop-up card carries a small photo of the office. */
+.pt-map {
+  max-width: 34rem;
+  aspect-ratio: 1;
+  overflow: visible;
+  align-self: auto;
+}
+.pt-map-inner {
+  inset: 0;
+}
+.pt-map-inner > img {
+  -webkit-mask-image: none;
+  mask-image: none;
+}
+.pt-pin-card {
+  width: 14.5rem;
+  bottom: 2.4rem;
+}
+.pt-pin-photo {
+  display: block;
+  width: 100%;
+  height: 5.5rem;
+  margin-bottom: 0.55rem;
+  object-fit: cover;
+  object-position: 50% 40%;
+  border-radius: 0.5rem;
+}
+.pt-pin-card {
+  padding: 0.5rem 0.5rem 0.85rem;
+}
+.pt-pin-card > :not(.pt-pin-photo) {
+  padding-inline: 0.5rem;
+}

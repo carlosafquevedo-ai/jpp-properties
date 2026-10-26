@@ -301,13 +301,7 @@ const zoneTiles = (Object.keys(zones) as ZoneId[]).map((id) => ({ id, image: zon
   <!-- About: text + CTA, tall photo and pillars (home page "about us"), then the offices -->
   <section id="sobre" class="container-x mt-20 lg:mt-24" aria-labelledby="sobre-titulo">
     <div class="grid gap-8 lg:grid-cols-[minmax(0,0.95fr)_minmax(0,1.05fr)] lg:gap-20">
-      <div class="rise flex flex-col items-start gap-8">
-        <h2 id="sobre-titulo" class="font-display text-3xl text-forest sm:text-4xl">
-          Somos daqui. Sentimos o mercado como poucos.
-        </h2>
-        <a href="#contacto" class="btn btn-dark">
-          Falar com a equipa
-        </a>
+      <div class="rise">
         <!-- Map of Portugal (the Algarve at the foot) with the office as a pin; its pop-up card opens Google Maps. -->
         <div class="pt-map">
           <div class="pt-map-inner">
@@ -328,6 +322,15 @@ const zoneTiles = (Object.keys(zones) as ZoneId[]).map((id) => ({ id, image: zon
             >
               <span class="pt-pin-dot" aria-hidden="true"></span>
               <span class="pt-pin-card">
+                <img
+                  src="/office/escritorio-vilamoura.webp"
+                  alt=""
+                  class="pt-pin-photo"
+                  width="320"
+                  height="180"
+                  loading="lazy"
+                  decoding="async"
+                />
                 <span class="pt-pin-kicker">Escritório</span>
                 <span class="pt-pin-name">{offices[0]!.name}</span>
                 <span class="pt-pin-addr">{offices[0]!.address.join(', ')}</span>
@@ -339,28 +342,36 @@ const zoneTiles = (Object.keys(zones) as ZoneId[]).map((id) => ({ id, image: zon
           </div>
         </div>
       </div>
-      <div class="rise about-copy grid max-w-[40.5rem] content-start gap-4 text-left text-base leading-relaxed text-ink/80 md:text-justify sm:text-[1.0625rem]">
-        <!-- TODO: provisional SEO copy (PT). To be reviewed with the client; EN/FR versions pending. -->
-        <p>
-          A JPP Properties é uma imobiliária no Algarve (licença AMI {AMI}), especializada na
-          compra, venda e arrendamento de apartamentos, moradias e terrenos em{' '}
-          {aboutZones.map((z, i) => (
-            <>
-              <a href={`/imoveis/?zona=${z.id}`}>{z.name}</a>
-              {i < aboutZones.length - 2 ? ', ' : i === aboutZones.length - 2 ? ' e ' : '.'}
-            </>
-          ))}
-        </p>
-        <p>
-          Dos condomínios e campos de golfe às marinas e praias, ajudamos quem quer viver, investir
-          ou ter uma casa de férias no Algarve a encontrar o imóvel certo, com informação clara e
-          atualizada sobre cada zona.
-        </p>
-        <p>
-          Conhecemos cada zona por dentro e acompanhamos cada passo, da primeira visita à escritura,
-          para que decida com segurança, seja para comprar casa no Algarve, vender o seu imóvel ou
-          encontrar um arrendamento.
-        </p>
+      <div class="rise flex flex-col items-start gap-6 lg:self-center">
+        <h2 id="sobre-titulo" class="font-display text-3xl text-forest sm:text-4xl">
+          Somos daqui. Sentimos o mercado como poucos.
+        </h2>
+        <div class="about-copy grid max-w-[40.5rem] content-start gap-4 text-left text-base leading-relaxed text-ink/80 md:text-justify sm:text-[1.0625rem]">
+          <!-- TODO: provisional SEO copy (PT). To be reviewed with the client; EN/FR versions pending. -->
+          <p>
+            A JPP Properties é uma imobiliária no Algarve (licença AMI {AMI}), especializada na
+            compra, venda e arrendamento de apartamentos, moradias e terrenos em{' '}
+            {aboutZones.map((z, i) => (
+              <>
+                <a href={`/imoveis/?zona=${z.id}`}>{z.name}</a>
+                {i < aboutZones.length - 2 ? ', ' : i === aboutZones.length - 2 ? ' e ' : '.'}
+              </>
+            ))}
+          </p>
+          <p>
+            Dos condomínios e campos de golfe às marinas e praias, ajudamos quem quer viver,
+            investir ou ter uma casa de férias no Algarve a encontrar o imóvel certo, com informação
+            clara e atualizada sobre cada zona.
+          </p>
+          <p>
+            Conhecemos cada zona por dentro e acompanhamos cada passo, da primeira visita à
+            escritura, para que decida com segurança, seja para comprar casa no Algarve, vender o
+            seu imóvel ou encontrar um arrendamento.
+          </p>
+        </div>
+        <a href="#contacto" class="btn btn-dark">
+          Falar com a equipa
+        </a>
       </div>
     </div>
 
