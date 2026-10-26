@@ -3256,3 +3256,19 @@ input:focus-visible + .glass-seg-opt {
 .lead-shell .field {
   border-color: rgba(27, 30, 28, 0.14);
 }
+
+/* Less space above the content of the team and sell/buy bands. */
+.team-band {
+  padding-top: 1.25rem;
+}
+.lead-shell {
+  padding-top: 1.75rem;
+}
+@media (min-width: 64rem) {
+  .team-band {
+    padding-top: 1.25rem;
+  }
+  .lead-shell {
+    padding-top: 2rem;
+  }
+}
