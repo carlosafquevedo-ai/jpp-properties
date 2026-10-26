@@ -2832,3 +2832,8 @@ input:focus-visible + .glass-seg-opt {
   color: var(--color-forest);
   transform: scale(1.08);
 }
+
+/* Team cards: slightly taller photos (4:5). */
+.team-band .team-photo {
+  aspect-ratio: 4 / 5;
+}
