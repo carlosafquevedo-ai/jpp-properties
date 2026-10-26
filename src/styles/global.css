@@ -3133,3 +3133,8 @@ input:focus-visible + .glass-seg-opt {
 .pt-pin-photo {
   height: 10.5rem;
 }
+
+/* Map: lighter (the artwork is faded towards the white page). */
+.pt-map-inner > img {
+  opacity: 0.6;
+}
