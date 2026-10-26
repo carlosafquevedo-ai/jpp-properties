@@ -2613,3 +2613,23 @@ input:focus-visible + .glass-seg-opt {
   background: var(--color-lime);
   height: 2px;
 }
+
+/* Property card colour: deep olive for the type, price and figures (readable on white), lime for the accents. */
+.property-card .card-info > div:first-child > p {
+  color: var(--color-olive);
+  font-weight: 500;
+}
+.property-card .card-info .font-display.text-forest {
+  color: var(--color-olive);
+}
+.property-card .card-info::before,
+.property-card .card-new {
+  background: var(--color-lime);
+}
+.property-card .card-specs svg,
+.property-card .card-info .text-olive {
+  color: var(--color-olive);
+}
+.property-card .card-specs {
+  color: var(--color-ink);
+}
