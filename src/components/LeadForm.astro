@@ -3,7 +3,6 @@ import Icon from './Icon.astro';
 import { zones } from '../data/properties';
 import {
   casasDeBanho,
-  concelhos,
   estados,
   extras,
   financiamento,
@@ -128,14 +127,18 @@ const steps = [
             <div class="grid gap-4 sm:grid-cols-6 lg:grid-cols-8">
               <div class="sm:col-span-3 lg:col-span-4">
                 <label for="lead-concelho" class="lead-label">
-                  Concelho *
+                  Localidade / concelho *
                 </label>
-                <select id="lead-concelho" name="concelho" required class="field field-select">
-                  <option value="">Escolha o concelho</option>
-                  {concelhos.map((c) => (
-                    <option value={c}>{c}</option>
-                  ))}
-                </select>
+                <input
+                  id="lead-concelho"
+                  name="concelho"
+                  type="text"
+                  required
+                  autocomplete="address-level2"
+                  placeholder="Ex.: Vilamoura, Lisboa"
+                  maxlength="80"
+                  class="field"
+                />
               </div>
               <div class="sm:col-span-3 lg:col-span-4">
                 <label for="lead-cp" class="lead-label">

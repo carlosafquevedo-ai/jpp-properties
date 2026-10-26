@@ -3,26 +3,6 @@
  * Keep the values (first item of each pair) in sync with the labels used in the e-mail built by the function.
  */
 
-/** The 16 municipalities of the Algarve, plus a free-text escape. */
-export const concelhos = [
-  'Albufeira',
-  'Alcoutim',
-  'Aljezur',
-  'Castro Marim',
-  'Faro',
-  'Lagoa',
-  'Lagos',
-  'Loulé',
-  'Monchique',
-  'Olhão',
-  'Portimão',
-  'São Brás de Alportel',
-  'Silves',
-  'Tavira',
-  'Vila do Bispo',
-  'Vila Real de Santo António',
-] as const;
-
 /** Property types the seller can choose from. */
 export const tipologias: [value: string, label: string][] = [
   ['apartamento', 'Apartamento'],

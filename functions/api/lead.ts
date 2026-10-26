@@ -24,7 +24,7 @@ const MAX_FIELD = 2000;
 /** Human labels for the e-mail, in the order they should appear. */
 const FIELDS: Record<Intent, [key: string, label: string][]> = {
   vender: [
-    ['concelho', 'Concelho'],
+    ['concelho', 'Localidade / concelho'],
     ['morada', 'Morada'],
     ['porta', 'Nº da porta'],
     ['codigo_postal', 'Código postal'],
