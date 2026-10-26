@@ -2556,3 +2556,10 @@ input:focus-visible + .glass-seg-opt {
 .zones-intro a.group {
   border-radius: 0;
 }
+
+/* Featured development card and its mini cards: square corners. */
+.zones-photo,
+.zone-mini,
+.zone-mini img {
+  border-radius: 0;
+}
