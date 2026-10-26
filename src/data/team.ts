@@ -17,7 +17,15 @@ export interface Agent {
   whatsapp?: string;
 }
 
-export const team: Agent[] = [
+/**
+ * DEMO ONLY: portraits dropped in public/team-demo/ (git-ignored, watermarked stock images used to preview the layout
+ * with the client) are picked up by order. Without that folder every card falls back to the placeholder.
+ */
+const demoPhotos = Object.keys(import.meta.glob('/public/team-demo/*.avif'))
+  .sort()
+  .map((path) => path.replace('/public', ''));
+
+const people: Agent[] = [
   {
     name: 'Nome do agente',
     role: 'Agente imobiliário',
@@ -47,3 +55,5 @@ export const team: Agent[] = [
     whatsapp: mainPhone.tel.replace(/\D/g, ''),
   },
 ];
+
+export const team: Agent[] = people.map((a, i) => ({ ...a, photo: demoPhotos[i] ?? a.photo }));
