@@ -72,12 +72,12 @@ Decidido com o cliente: a equipa escolhe os imóveis numa **lista ordenada na P�
 - Studio: frase de ajuda em cada lista ("Escolha até 8 imóveis. Arraste para mudar a ordem."), validação do máximo, e bloquear/avisar ao apagar um imóvel que esteja numa lista.
 - Os dados de protótipo estão em `src/data/home.ts`, com a mesma forma do documento Sanity.
 
-## "Novos empreendimentos" (destaques na secção das zonas)
+## Painel lateral "Destaques" (junto das zonas)
 
 Não são imóveis: são campos livres com **imagem + texto + ligação**, para destacar um novo empreendimento, uma campanha ou um serviço.
 
-- Sanity (Página inicial): lista "Destaques laterais", máximo 3, arrastar para ordenar; aparecem numa fila de cartões por baixo do explorador de zonas, o primeiro um pouco mais largo. Cada item: **etiqueta** (ex.: "Empreendimento"), **título**, **texto curto** (máx. ~140 caracteres, com contador), **imagem** (com texto alternativo obrigatório) e **ligação** (página interna ou endereço externo).
-- Se a lista estiver vazia, a fila desaparece (já tratado em `src/pages/index.astro`).
+- Sanity (Página inicial): lista "Destaques laterais", máximo 3, arrastar para ordenar; o primeiro aparece grande. Cada item: **etiqueta** (ex.: "Empreendimento"), **título**, **texto curto** (máx. ~140 caracteres, com contador), **imagem** (com texto alternativo obrigatório) e **ligação** (página interna ou endereço externo).
+- Se a lista estiver vazia, o painel desaparece e os mosaicos das zonas ocupam a largura toda (já tratado em `src/pages/index.astro`).
 - Dados de protótipo em `src/data/home.ts` (`sideHighlights`), com a mesma forma do documento Sanity.
 
 ## Formulário de pedido (vender / comprar)

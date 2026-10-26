@@ -20,6 +20,7 @@ import { AMI, offices } from '../lib/site';
 
 const featured = featuredProperties();
 const slides = heroSlides();
+const [mainHighlight, ...otherHighlights] = sideHighlights;
 
 // Zone photos used on the tiles. TODO: in production each zone document has its own photo (Sanity).
 const zoneImages: Partial<Record<ZoneId, string>> = {
@@ -209,94 +210,103 @@ const zoneTiles = (Object.keys(zones) as ZoneId[]).map((id) => ({
     </div>
   </section>
 
-  <!-- Zones: an index of zones on the left drives a large photo on the right (hover, focus or tap);
-       the new developments follow in their own row. -->
-  <section id="zonas" class="zones-section mt-20" aria-labelledby="zonas-titulo">
+  <!-- Zones: index list on the left, one large editorial highlight that bleeds to the right edge -->
+  <section
+    id="zonas"
+    class="zones-section on-dark mt-20 overflow-x-clip"
+    aria-labelledby="zonas-titulo"
+  >
     <div class="zones-band">
-      <div class="zx-head">
-        <h2 id="zonas-titulo" class="zones-title">
-          Explore por zona
-        </h2>
-        <p class="zones-sub">Escolha uma zona para ver os imóveis disponíveis.</p>
-      </div>
-
-      <div class="zx" data-zx>
-        <ul class="zx-list" aria-label="Zonas">
-          {zoneTiles.map((t, i) => (
-            <li>
+      <div class:list={['grid', mainHighlight && 'lg:grid-cols-2']}>
+        <div class="zones-intro rise flex flex-col pb-10 lg:py-0">
+          <h2 id="zonas-titulo" class="zones-title">
+            Explore por zona
+          </h2>
+          <p class="zones-sub">Escolha uma zona para ver os imóveis disponíveis.</p>
+          <div class="zone-grid mt-6 grid grid-cols-2 gap-3 sm:grid-cols-3 lg:flex-1 lg:grid-rows-2">
+            {zoneTiles.map((t) => (
               <a
                 href={`/imoveis/?zona=${t.id}`}
-                class="zx-row"
-                data-zx-row={i}
-                data-active={i === 0 ? '' : undefined}
+                class="group relative isolate flex aspect-square flex-col justify-end overflow-hidden rounded-2xl p-4 lg:aspect-auto text-white"
               >
-                {t.image && (
-                  <img
-                    src={t.image}
-                    alt=""
-                    class="zx-thumb"
-                    loading="lazy"
-                    referrerpolicy="no-referrer"
-                  />
+                {t.image ? (
+                  <>
+                    <img
+                      src={t.image}
+                      alt=""
+                      class="absolute inset-0 -z-20 size-full object-cover transition-transform duration-700 group-hover:scale-105"
+                      loading="lazy"
+                      referrerpolicy="no-referrer"
+                    />
+                    <div class="absolute inset-0 -z-10 bg-gradient-to-t from-forest/90 via-forest/35 to-forest/5" />
+                  </>
+                ) : (
+                  <div class="zone-plain absolute inset-0 -z-10 transition-transform duration-700 group-hover:scale-105" />
                 )}
-                <span class="zx-name">{zones[t.id].name}</span>
-                <span class="zx-count">
-                  {t.count > 0 ? `${t.count} ${t.count === 1 ? 'imóvel' : 'imóveis'}` : 'Ver zona'}
-                </span>
-                <Icon name="arrowRight" class="zx-arrow size-5" />
-              </a>
-            </li>
-          ))}
-        </ul>
-
-        <div class="zx-stage" aria-hidden="true">
-          {zoneTiles.map((t, i) => (
-            <a
-              href={`/imoveis/?zona=${t.id}`}
-              class="zx-slide"
-              data-zx-slide={i}
-              data-active={i === 0 ? '' : undefined}
-              tabindex="-1"
-            >
-              {t.image ? (
-                <img src={t.image} alt="" loading="lazy" referrerpolicy="no-referrer" />
-              ) : (
-                <span class="zone-plain absolute inset-0" />
-              )}
-              <span class="zx-caption">
-                <span class="zx-caption-name">{zones[t.id].name}</span>
-                <span class="zx-caption-text">{zones[t.id].blurb}</span>
-                <span class="btn btn-lime zx-caption-btn">
-                  Ver imóveis em {zones[t.id].name} <Icon name="arrowRight" class="size-4" />
-                </span>
-              </span>
-            </a>
-          ))}
-        </div>
-      </div>
-
-      {sideHighlights.length > 0 && (
-        <div class="zx-devs">
-          <h3 class="zx-devs-title">Novos empreendimentos</h3>
-          <div class="zx-devs-grid" data-count={Math.min(sideHighlights.length, 3)}>
-            {sideHighlights.slice(0, 3).map((h) => (
-              <a href={h.href} class="zx-dev">
-                <span class="zx-dev-photo">
-                  <img src={h.image} alt={h.imageAlt} loading="lazy" referrerpolicy="no-referrer" />
-                </span>
-                <span class="zx-dev-body">
-                  <span class="zx-dev-label">{h.label}</span>
-                  <span class="zx-dev-name">{h.title}</span>
-                  <span class="zx-dev-text">{h.text}</span>
-                  <span class="zx-dev-go">
-                    Ver empreendimento <Icon name="arrowRight" class="size-4" />
+                {t.count > 0 && (
+                  <span class="zone-tile-count">
+                    {t.count} {t.count === 1 ? 'imóvel' : 'imóveis'}
                   </span>
+                )}
+                <h3 class="zone-tile-name">{zones[t.id].name}</h3>
+                <span class="zone-tile-cta" aria-hidden="true">
+                  Ver imóveis <Icon name="arrowRight" class="size-4" />
                 </span>
               </a>
             ))}
           </div>
         </div>
-      )}
+
+        {mainHighlight && (
+          <div class="zones-photo relative isolate min-h-[30rem] overflow-hidden rounded-lg">
+            <img
+              src={mainHighlight.image}
+              alt={mainHighlight.imageAlt}
+              class="absolute inset-0 -z-20 size-full object-cover"
+              loading="lazy"
+              referrerpolicy="no-referrer"
+            />
+            <div class="absolute inset-0 -z-10 bg-gradient-to-t from-forest/95 via-forest/55 to-forest/5" />
+
+            <div class="flex h-full min-h-[30rem] flex-col justify-end gap-6 p-6 xl:flex-row xl:items-end xl:justify-between lg:p-10">
+              <a href={mainHighlight.href} class="group max-w-md">
+                <span class="card-tag inline-block bg-white">{mainHighlight.label}</span>
+                <span class="mt-4 block font-display text-3xl leading-tight text-white sm:text-4xl">
+                  {mainHighlight.title}
+                </span>
+                <span class="mt-3 block text-sm leading-relaxed text-white/80">
+                  {mainHighlight.text}
+                </span>
+                <span class="mt-5 inline-flex items-center gap-2 text-sm font-semibold text-white group-hover:text-lime">
+                  Ver empreendimento <Icon name="arrowRight" class="size-4" />
+                </span>
+              </a>
+
+              {otherHighlights.length > 0 && (
+                <div class="flex flex-col gap-3 xl:w-72">
+                  {otherHighlights.slice(0, 2).map((h) => (
+                    <a href={h.href} class="zone-mini group">
+                      <img
+                        src={h.image}
+                        alt={h.imageAlt}
+                        class="size-16 shrink-0 rounded-md object-cover"
+                        loading="lazy"
+                        referrerpolicy="no-referrer"
+                      />
+                      <span class="min-w-0">
+                        <span class="block text-xs text-white/65">{h.label}</span>
+                        <span class="mt-0.5 block font-display text-base leading-snug text-white">
+                          {h.title}
+                        </span>
+                      </span>
+                    </a>
+                  ))}
+                </div>
+              )}
+            </div>
+          </div>
+        )}
+      </div>
     </div>
   </section>
 
@@ -570,19 +580,29 @@ const zoneTiles = (Object.keys(zones) as ZoneId[]).map((id) => ({
 </script>
 
 <script>
-  // Zones index: hovering or focusing a zone shows its photo on the right. On fine pointers a click on the row
-  // opens the zone; on touch screens the stage is hidden and the rows (with thumbnails) are plain links.
-  const zx = document.querySelector<HTMLElement>('[data-zx]');
-  if (zx) {
-    const rows = [...zx.querySelectorAll<HTMLElement>('[data-zx-row]')];
-    const slides = [...zx.querySelectorAll<HTMLElement>('[data-zx-slide]')];
-    const show = (i: number) => {
-      rows.forEach((r, n) => r.toggleAttribute('data-active', n === i));
-      slides.forEach((s, n) => s.toggleAttribute('data-active', n === i));
-    };
-    rows.forEach((row, i) => {
-      row.addEventListener('mouseenter', () => show(i));
-      row.addEventListener('focus', () => show(i));
+  // Zone tiles: a slight tilt towards the pointer (fine pointers only, never with reduced motion).
+  const zoneGrid = document.querySelector<HTMLElement>('.zone-grid');
+  if (
+    zoneGrid &&
+    window.matchMedia('(hover: hover) and (pointer: fine)').matches &&
+    !window.matchMedia('(prefers-reduced-motion: reduce)').matches
+  ) {
+    zoneGrid.querySelectorAll<HTMLElement>('a.group').forEach((tile) => {
+      tile.addEventListener('pointermove', (e) => {
+        const r = tile.getBoundingClientRect();
+        tile.style.setProperty(
+          '--ry',
+          `${(((e.clientX - r.left) / r.width - 0.5) * 8).toFixed(2)}deg`,
+        );
+        tile.style.setProperty(
+          '--rx',
+          `${((0.5 - (e.clientY - r.top) / r.height) * 8).toFixed(2)}deg`,
+        );
+      });
+      tile.addEventListener('pointerleave', () => {
+        tile.style.setProperty('--rx', '0deg');
+        tile.style.setProperty('--ry', '0deg');
+      });
     });
   }
 </script>
