@@ -3130,3 +3130,6 @@ input:focus-visible + .glass-seg-opt {
 .pt-pin-card {
   bottom: 2.2rem;
 }
+.pt-pin-photo {
+  height: 10.5rem;
+}
