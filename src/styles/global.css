@@ -2808,3 +2808,27 @@ input:focus-visible + .glass-seg-opt {
   color: var(--color-forest);
   transform: scale(1.08);
 }
+
+/* Team contacts: separate light round buttons stacked on the photo (no pill behind them). */
+.team-band .team-contacts {
+  top: 0.75rem;
+  right: 0.75rem;
+  gap: 0.5rem;
+  padding: 0;
+  border-radius: 0;
+  background: none;
+  box-shadow: none;
+}
+.team-band .team-contacts a {
+  width: 2.1rem;
+  height: 2.1rem;
+  background: rgba(255, 255, 255, 0.92);
+  color: var(--color-forest);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.18);
+}
+.team-band .team-contacts a:hover,
+.team-band .team-contacts a:focus-visible {
+  background: var(--color-lime);
+  color: var(--color-forest);
+  transform: scale(1.08);
+}
