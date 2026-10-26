@@ -2736,57 +2736,54 @@ input:focus-visible + .glass-seg-opt {
   aspect-ratio: 4 / 5;
 }
 
-/* Team cards: a framed card. Photo (faces kept in frame) with the name over it, then a labelled contact strip that
-   is always visible, so it is obvious how to reach each person. */
+/* Team cards: portrait only (no frame). Name and role over the photo; a frosted-glass contact sheet slides up on
+   hover / focus (always visible on touch screens), lifting the name out of its way. */
 .team-band .team-card {
   position: relative;
-  display: flex;
-  flex-direction: column;
-  background: #fff;
-  border: 1px solid rgba(27, 30, 28, 0.1);
-  box-shadow:
-    0 1px 2px rgba(27, 30, 28, 0.05),
-    0 6px 14px -8px rgba(27, 30, 28, 0.16);
-  transition:
-    transform 0.45s var(--ease-out),
-    box-shadow 0.45s var(--ease-out);
-}
-@media (hover: hover) and (prefers-reduced-motion: no-preference) {
-  .team-band .team-card:hover {
-    transform: translateY(-6px);
-    box-shadow: 0 18px 28px -20px rgba(27, 30, 28, 0.4);
-  }
+  overflow: hidden;
+  background: var(--color-forest);
 }
 .team-band .team-photo > img {
   object-position: 50% 12%;
+  transition: transform 0.9s var(--ease-out);
+}
+.team-band .team-name {
+  padding-bottom: 1.1rem;
+  transition: transform 0.55s var(--ease-out);
 }
 .team-band .team-contacts {
-  position: static;
+  position: absolute;
+  inset: auto 0 0 0;
+  z-index: 3;
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 0;
   margin: 0;
   padding: 0;
-  background: none;
-  box-shadow: none;
+  border: 0;
+  border-top: 1px solid rgba(255, 255, 255, 0.28);
   border-radius: 0;
-  border-top: 1px solid rgba(27, 30, 28, 0.1);
+  background: rgba(20, 22, 21, 0.38);
+  -webkit-backdrop-filter: blur(16px) saturate(1.4);
+  backdrop-filter: blur(16px) saturate(1.4);
+  box-shadow: none;
+  transform: translateY(101%);
+  transition: transform 0.55s var(--ease-out);
 }
 .team-band .team-contacts a {
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 0.2rem;
+  gap: 0.25rem;
   width: auto;
   height: auto;
-  min-height: 3.25rem;
-  padding: 0.5rem 0.25rem;
+  min-height: 3.5rem;
+  padding: 0.55rem 0.25rem;
   border: 0;
   border-radius: 0;
   background: transparent;
   box-shadow: none;
-  color: var(--color-ink);
+  color: #fff;
   font-size: 0.72rem;
   font-weight: 500;
   line-height: 1.1;
@@ -2796,15 +2793,13 @@ input:focus-visible + .glass-seg-opt {
     color 0.25s;
 }
 .team-band .team-contacts a + a {
-  border-left: 1px solid rgba(27, 30, 28, 0.1);
+  border-left: 1px solid rgba(255, 255, 255, 0.2);
 }
 .team-band .team-contacts a svg {
-  width: 1.05rem;
-  height: 1.05rem;
-  color: var(--color-olive);
-  transition:
-    transform 0.3s var(--ease-out),
-    color 0.25s;
+  width: 1.1rem;
+  height: 1.1rem;
+  color: inherit;
+  transition: transform 0.3s var(--ease-out);
 }
 .team-band .team-contacts a:hover,
 .team-band .team-contacts a:focus-visible {
@@ -2814,9 +2809,31 @@ input:focus-visible + .glass-seg-opt {
 }
 .team-band .team-contacts a:hover svg,
 .team-band .team-contacts a:focus-visible svg {
-  color: var(--color-forest);
-  transform: translateY(-2px) scale(1.1);
+  transform: translateY(-2px) scale(1.12);
 }
-.team-band .team-contacts a:active {
-  background: #b0cd4d;
+.team-band .team-card:hover .team-contacts,
+.team-band .team-card:focus-within .team-contacts {
+  transform: none;
+}
+.team-band .team-card:hover .team-name,
+.team-band .team-card:focus-within .team-name {
+  transform: translateY(-3.5rem);
+}
+.team-band .team-card:hover .team-photo > img {
+  transform: scale(1.04);
+}
+@media (hover: none) {
+  .team-band .team-contacts {
+    transform: none;
+  }
+  .team-band .team-name {
+    transform: translateY(-3.5rem);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .team-band .team-contacts,
+  .team-band .team-name,
+  .team-band .team-photo > img {
+    transition: none;
+  }
 }
