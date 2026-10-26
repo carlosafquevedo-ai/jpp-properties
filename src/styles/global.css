@@ -3835,3 +3835,206 @@ a.rv-author:hover {
 .zone-mini .text-white {
   color: var(--color-ink);
 }
+
+/* ---- Sell / buy, redesigned --------------------------------------------------------------------------------
+   Two columns on desktop: a sticky intro (title, text, a vertical timeline of the three steps, a phone shortcut)
+   and the form in one calm column (full-width switch, property, contact, message, send). */
+@media (min-width: 64rem) {
+  .lead-shell {
+    grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+    column-gap: 4.5rem;
+    align-items: start;
+  }
+  .lead-shell .lead-intro {
+    display: block;
+    position: sticky;
+    top: 6.5rem;
+  }
+}
+.lead-shell .lead-title {
+  color: var(--color-ink);
+}
+.lead-shell [data-lead-text] {
+  margin-top: 1rem;
+  max-width: 26rem;
+  color: var(--color-muted);
+}
+
+/* Timeline: numbered circles joined by a fine line; the first step is lit in lime. */
+.lead-shell .lead-steps {
+  position: relative;
+  display: grid;
+  gap: 1.35rem;
+  margin-top: 2.25rem;
+  color: var(--color-ink);
+  font-size: 0.95rem;
+}
+.lead-shell .lead-steps li {
+  position: relative;
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  gap: 1rem;
+  padding: 0;
+  border: 0;
+}
+.lead-shell .lead-steps li:not(:last-child)::after {
+  content: '';
+  position: absolute;
+  left: 1rem;
+  top: 2.25rem;
+  bottom: -1.35rem;
+  width: 1px;
+  background: rgba(27, 30, 28, 0.18);
+}
+.lead-shell .lead-step-num {
+  display: grid;
+  place-items: center;
+  width: 2rem;
+  height: 2rem;
+  flex: none;
+  border: 1px solid rgba(27, 30, 28, 0.2);
+  border-radius: 9999px;
+  background: #fff;
+  font-size: 0.85rem;
+  font-weight: 600;
+  letter-spacing: 0;
+  color: var(--color-ink);
+}
+.lead-shell .lead-steps li:first-child .lead-step-num {
+  border-color: var(--color-lime);
+  background: var(--color-lime);
+  color: var(--color-forest);
+  box-shadow: 0 0 0 5px rgba(158, 188, 58, 0.22);
+}
+.lead-shell .lead-steps li > span:last-child {
+  padding-top: 0.3rem;
+  line-height: 1.5;
+}
+.lead-call {
+  margin-top: 2.25rem;
+  padding-top: 1.25rem;
+  border-top: 1px solid rgba(27, 30, 28, 0.14);
+  font-size: 0.9rem;
+  color: var(--color-muted);
+}
+.lead-call a {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  margin-left: 0.35rem;
+  font-weight: 600;
+  color: var(--color-ink);
+  border-bottom: 2px solid var(--color-lime);
+}
+.lead-call a:hover {
+  color: var(--color-olive);
+}
+
+/* Form: one column. */
+.lead-shell .lead-card {
+  margin-top: 2rem;
+}
+@media (min-width: 64rem) {
+  .lead-shell .lead-card {
+    margin-top: 0;
+  }
+  .lead-shell .lead-form {
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-rows: none;
+    gap: 2rem;
+  }
+  .lead-shell .lead-form > .lead-contact,
+  .lead-shell .lead-form > .lead-msg,
+  .lead-shell .lead-form > .lead-bottom,
+  .lead-shell .lead-form > .lead-panels {
+    grid-column: 1;
+    grid-row: auto;
+  }
+}
+.lead-shell .lead-form > .lead-panels {
+  order: 1;
+}
+.lead-shell .lead-form > .lead-contact {
+  order: 2;
+}
+.lead-shell .lead-form > .lead-msg {
+  order: 3;
+}
+.lead-shell .lead-form > .lead-bottom {
+  order: 4;
+}
+.lead-shell .lead-group > legend {
+  width: 100%;
+  margin-bottom: 1rem;
+  padding-bottom: 0.6rem;
+  border-bottom: 1px solid rgba(27, 30, 28, 0.14);
+  font-size: 1.2rem;
+  color: var(--color-ink);
+}
+
+/* Switch: two equal halves across the full width. */
+.lead-shell .lead-tabs {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  width: 100%;
+  padding: 0.3rem;
+  border: 1px solid rgba(27, 30, 28, 0.1);
+  border-radius: 0.7rem;
+  background: rgba(255, 255, 255, 0.7);
+}
+.lead-shell .lead-tab {
+  justify-content: center;
+  padding: 0.75rem 1rem;
+  border-radius: 0.5rem;
+}
+
+/* Fields: taller, calm hairline, lime focus ring. */
+.lead-shell .field {
+  min-height: 3rem;
+  border: 1px solid rgba(27, 30, 28, 0.14);
+  border-radius: 0.6rem;
+  background-color: #fff;
+  transition:
+    border-color 0.2s,
+    box-shadow 0.2s;
+}
+.lead-shell .field:hover {
+  border-color: rgba(27, 30, 28, 0.28);
+}
+.lead-shell .field:focus,
+.lead-shell .field:focus-visible {
+  outline: none;
+  border-color: var(--color-olive);
+  box-shadow: 0 0 0 3px rgba(158, 188, 58, 0.35);
+}
+.lead-shell .lead-label {
+  color: var(--color-ink);
+  opacity: 0.75;
+}
+
+/* Choices: soft squares; chosen ones turn lime. */
+.lead-shell .lead-chip > span {
+  border-color: rgba(27, 30, 28, 0.14);
+  border-radius: 0.5rem;
+}
+.lead-shell .lead-chip:hover > span {
+  border-color: rgba(27, 30, 28, 0.35);
+}
+.lead-shell .lead-chip > input:checked + span {
+  border-color: var(--color-lime);
+  background: var(--color-lime);
+  color: var(--color-forest);
+}
+@media (min-width: 64rem) {
+  .lead-shell .lead-steps {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 1.35rem;
+  }
+  .lead-shell .lead-steps li {
+    flex-direction: row;
+    gap: 1rem;
+    padding-top: 0;
+    border-top: 0;
+  }
+}
