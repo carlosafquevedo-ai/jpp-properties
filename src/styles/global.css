@@ -3241,3 +3241,18 @@ input:focus-visible + .glass-seg-opt {
 .team-band .team-bar {
   background: rgba(255, 255, 255, 0.2);
 }
+
+/* Sell / buy form: no white box; the fields sit straight on the lime band. */
+.lead-shell .lead-card {
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  background: none;
+  box-shadow: none;
+}
+.lead-shell .lead-tabs {
+  background: rgba(255, 255, 255, 0.6);
+}
+.lead-shell .field {
+  border-color: rgba(27, 30, 28, 0.14);
+}
