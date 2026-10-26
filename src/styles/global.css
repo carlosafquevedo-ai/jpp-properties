@@ -2509,3 +2509,19 @@ input:focus-visible + .glass-seg-opt {
     font-size: 0.72rem;
   }
 }
+
+/* Search bar corners: small radius like the reference (bar, fields, tabs and search button). */
+.glass-panel {
+  border-radius: 0.75rem;
+}
+.glass-panel .glass-field,
+.glass-panel .glass-seg-opt,
+.glass-panel .glass-seg,
+.glass-panel .btn {
+  border-radius: 0.5rem;
+}
+@media (min-width: 64rem) {
+  .glass-panel .glass-field {
+    border-radius: 0.5rem;
+  }
+}
