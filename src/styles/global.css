@@ -3220,3 +3220,24 @@ input:focus-visible + .glass-seg-opt {
     inset 0 1px 0 rgba(158, 188, 58, 0.28),
     inset 0 -1px 0 rgba(158, 188, 58, 0.28);
 }
+
+/* Team band: the carbon black of the dark buttons, with white type. */
+.team-band {
+  background: var(--color-forest);
+  box-shadow: none;
+  color: #fff;
+}
+.team-band #equipa-titulo,
+.team-band h2 {
+  color: #fff;
+}
+.team-band > div:first-child p {
+  color: rgba(255, 255, 255, 0.82);
+}
+.team-band .feat-nav {
+  border-color: rgba(255, 255, 255, 0.32);
+  color: #fff;
+}
+.team-band .team-bar {
+  background: rgba(255, 255, 255, 0.2);
+}
