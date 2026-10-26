@@ -17,7 +17,7 @@ interface PlaceReview {
   relativePublishTimeDescription?: string;
   text?: { text?: string };
   originalText?: { text?: string };
-  authorAttribution?: { displayName?: string; uri?: string };
+  authorAttribution?: { displayName?: string; uri?: string; photoUri?: string };
 }
 
 interface PlaceResponse {
@@ -79,6 +79,7 @@ export const onRequestGet = async ({
       .map((r) => ({
         author: r.authorAttribution?.displayName ?? '',
         authorUrl: r.authorAttribution?.uri ?? null,
+        photo: r.authorAttribution?.photoUri ?? null,
         rating: r.rating ?? 0,
         when: r.relativePublishTimeDescription ?? '',
         text: (r.text?.text ?? r.originalText?.text ?? '').slice(0, MAX_TEXT),
