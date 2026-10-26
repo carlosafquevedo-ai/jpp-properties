@@ -19,9 +19,9 @@ export interface Agent {
 
 /**
  * DEMO ONLY: portraits dropped in public/team-demo/ (git-ignored, watermarked stock images used to preview the layout
- * with the client) are picked up by order. Without that folder every card falls back to the placeholder.
+ * with the client) are picked up by order (the first one is reused if there are fewer photos than people). Without that folder every card falls back to the placeholder.
  */
-const demoPhotos = Object.keys(import.meta.glob('/public/team-demo/*.avif'))
+const demoPhotos = Object.keys(import.meta.glob('/public/team-demo/*.{avif,webp,jpg,jpeg,png}'))
   .sort()
   .map((path) => path.replace('/public', ''));
 
@@ -56,4 +56,7 @@ const people: Agent[] = [
   },
 ];
 
-export const team: Agent[] = people.map((a, i) => ({ ...a, photo: demoPhotos[i] ?? a.photo }));
+export const team: Agent[] = people.map((a, i) => ({
+  ...a,
+  photo: demoPhotos[i] ?? demoPhotos[0] ?? a.photo,
+}));
