@@ -1793,7 +1793,7 @@
 }
 .site-header[data-over-hero]:not([data-stuck]) .hdr-cta:hover,
 .site-header[data-over-hero]:not([data-stuck]) .hdr-cta:focus-visible {
-  background-color: #fff;
+  background-color: var(--color-lime);
   color: var(--color-forest);
 }
 
@@ -2592,4 +2592,8 @@ input:focus-visible + .glass-seg-opt {
 .site-header[data-over-hero]:not([data-stuck]) .hdr-cta.btn-go .btn-go-icon {
   background: #ecebe8;
   box-shadow: none;
+}
+.site-header[data-over-hero]:not([data-stuck]) .hdr-cta.btn-go:hover .btn-go-icon,
+.site-header[data-over-hero]:not([data-stuck]) .hdr-cta.btn-go:focus-visible .btn-go-icon {
+  background: #fff;
 }
