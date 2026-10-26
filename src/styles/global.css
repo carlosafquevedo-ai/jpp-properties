@@ -2563,3 +2563,12 @@ input:focus-visible + .glass-seg-opt {
 .zone-mini img {
   border-radius: 0;
 }
+
+/* Hero property card: square corners (card, photo and the arrow tile). */
+.hero-deck,
+.hero-card-photo,
+.hero-card-photo img,
+.hero-card-go,
+.hero-card .card-flag {
+  border-radius: 0;
+}
