@@ -636,12 +636,13 @@ const zoneTiles = (Object.keys(zones) as ZoneId[]).map((id) => ({ id, image: zon
     window.addEventListener('resize', sync);
     sync();
 
-    // Desktop accordion: the card under the pointer (or focused / clicked) opens; the first one starts open.
+    // Desktop accordion: the card under the pointer (or focused / clicked) opens; the second one starts open (the first if there is only one).
     const cards = [...teamTrack.querySelectorAll<HTMLElement>('.team-card')];
     const open = (card: HTMLElement) => {
       cards.forEach((c) => c.toggleAttribute('data-active', c === card));
     };
-    if (cards[0]) open(cards[0]);
+    const first = cards[1] ?? cards[0];
+    if (first) open(first);
     cards.forEach((card) => {
       card.addEventListener('mouseenter', () => open(card));
       card.addEventListener('focusin', () => open(card));
