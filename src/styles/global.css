@@ -2525,3 +2525,17 @@ input:focus-visible + .glass-seg-opt {
     border-radius: 0.5rem;
   }
 }
+
+/* Header corners: same small radius as the search bar (bar, links, icons, language button and CTA). */
+.site-header .hdr-bar {
+  border-radius: 0.75rem;
+}
+.site-header .hdr-bar nav a,
+.site-header .hdr-icon,
+.site-header .lang-btn,
+.site-header .hdr-cta {
+  border-radius: 0.5rem;
+}
+.hdr-cta.btn-go .btn-go-icon {
+  border-radius: 0.4rem;
+}
