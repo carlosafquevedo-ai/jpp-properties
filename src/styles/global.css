@@ -2268,9 +2268,9 @@ textarea {
   }
 }
 
-/* Team cards: square photos (taller than 4:3, shorter than 4:5), tighter vertical padding. */
+/* Team cards: 5:6 photos (taller than 4:3, shorter than 4:5), tighter vertical padding. */
 .team-band .team-photo {
-  aspect-ratio: 1 / 1;
+  aspect-ratio: 5 / 6;
 }
 .team-band .team-ph {
   padding-bottom: 1.5rem;
