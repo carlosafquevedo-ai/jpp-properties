@@ -19,12 +19,6 @@ const colors = [
     hex: '#1b1e1c',
     use: 'O único escuro: cabeçalho, botões, secções escuras',
   },
-  {
-    name: 'Champanhe',
-    token: 'champagne',
-    hex: '#dccfae',
-    use: 'Acento premium: linhas finas, botão principal sobre escuro, pesquisa',
-  },
   { name: 'Carvão 2', token: 'forest-2', hex: '#2b2f2c', use: 'Realce sobre fundos escuros' },
   { name: 'Oliva', token: 'olive', hex: '#55662b', use: 'Ligações, destaques e secção secundária' },
   {
@@ -52,8 +46,6 @@ const pairs = [
   { label: 'Branco sobre oliva', fg: '#ffffff', bg: '#55662b' },
   { label: 'Carvão sobre lima (botões)', fg: '#1b1e1c', bg: '#9ebc3a' },
   { label: 'Lima sobre carvão', fg: '#9ebc3a', bg: '#1b1e1c' },
-  { label: 'Carvão sobre champanhe (botões)', fg: '#1b1e1c', bg: '#dccfae' },
-  { label: 'Champanhe sobre carvão', fg: '#dccfae', bg: '#1b1e1c' },
   { label: 'Lima sobre branco (não usar para texto)', fg: '#9ebc3a', bg: '#ffffff' },
 ];
 ---
@@ -65,9 +57,9 @@ const pairs = [
   <div class="container-x pb-8">
     <h1 class="font-display text-3xl text-forest sm:text-4xl">Paleta de cores</h1>
     <p class="mt-4 max-w-2xl text-lg text-ink/80">
-      O fundo base é sempre branco. O escuro é um só (carvão) e o acento premium é o champanhe. O
-      verde da marca (lima) fica para pequenos destaques: botões de ação sobre claro, etiquetas,
-      pontos e linhas. Nunca como texto sobre branco.
+      O fundo base é sempre branco. O escuro é um só (carvão) e o acento é o verde da marca. O verde
+      da marca (lima) fica para pequenos destaques: botões de ação sobre claro, etiquetas, pontos e
+      linhas. Nunca como texto sobre branco.
     </p>
   </div>
 

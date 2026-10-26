@@ -23,8 +23,8 @@
   --color-forest-2: #2b2f2c; /* hover on dark */
 
   /* Champagne: the premium accent (hairlines, eyebrows, primary button on dark, search controls) */
-  --color-champagne: #dccfae;
-  --color-champagne-2: #e8dec3;
+  --color-champagne: #9ebc3a; /* now the brand green (the old beige accent was dropped) */
+  --color-champagne-2: #b0cd4d;
 
   /* Brand greens: the JPP signature, used as small bright accents */
   --color-olive: #55662b; /* accent text and links on light */
@@ -667,9 +667,9 @@
     border-radius: 2rem;
     background:
       radial-gradient(80% 100% at 0% 0%, rgba(255, 255, 255, 0.07) 0%, transparent 60%),
-      radial-gradient(70% 90% at 100% 100%, rgba(220, 207, 174, 0.09) 0%, transparent 65%),
+      radial-gradient(70% 90% at 100% 100%, rgba(255, 255, 255, 0.09) 0%, transparent 65%),
       linear-gradient(160deg, #1d201e 0%, #121413 100%);
-    box-shadow: inset 0 0 0 1px rgba(220, 207, 174, 0.14);
+    box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.14);
     color: #fff;
   }
   @media (min-width: 64rem) {
@@ -692,7 +692,7 @@
       flex-direction: column;
       gap: 0.5rem;
       padding-top: 1rem;
-      border-top: 1px solid rgba(220, 207, 174, 0.28);
+      border-top: 1px solid rgba(255, 255, 255, 0.28);
     }
   }
   .lead-steps {
@@ -881,7 +881,7 @@
     font-size: 0.8125rem;
     font-weight: 500;
     letter-spacing: 0.12em;
-    color: #b3a37a;
+    color: rgba(24, 35, 26, 0.38);
     font-variant-numeric: tabular-nums;
   }
   /* A fine brand-green line draws across the top of a pillar on hover. */
@@ -1007,7 +1007,7 @@
     width: 62%;
     aspect-ratio: 1;
     rotate: 45deg;
-    border: 1px solid rgba(220, 207, 174, 0.35);
+    border: 1px solid rgba(255, 255, 255, 0.35);
     margin-bottom: 3rem;
   }
   .team-ph img {
@@ -1052,9 +1052,9 @@
     /* Deep warm charcoal, lit softly from the top left, with a fine champagne hairline. */
     background:
       radial-gradient(90% 120% at 0% 0%, rgba(255, 255, 255, 0.07) 0%, transparent 60%),
-      radial-gradient(70% 90% at 100% 100%, rgba(220, 207, 174, 0.08) 0%, transparent 65%),
+      radial-gradient(70% 90% at 100% 100%, rgba(255, 255, 255, 0.08) 0%, transparent 65%),
       linear-gradient(160deg, #1d201e 0%, #121413 100%);
-    box-shadow: inset 0 0 0 1px rgba(220, 207, 174, 0.14);
+    box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.14);
   }
   @media (min-width: 64rem) {
     .zones-band {
@@ -1093,7 +1093,7 @@
   /* Zones without a photo yet: dark glass with a champagne hairline instead of a flat green. */
   .zone-plain {
     background: linear-gradient(145deg, #2c2f2d 0%, #1a1c1b 100%);
-    box-shadow: inset 0 0 0 1px rgba(220, 207, 174, 0.2);
+    box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.2);
   }
   /* Tiles here are small: the arrow box alone is the call to action. */
   .zones-intro .zone-go-text {
@@ -1339,7 +1339,7 @@
      brands strip: translucent white + blur), with dark text. */
   .glass-panel {
     padding: 0.875rem 1rem 1rem;
-    border: 1px solid rgba(220, 207, 174, 0.28);
+    border: 1px solid rgba(255, 255, 255, 0.28);
     border-radius: 1.5rem;
     /* Same deep charcoal + champagne hairline as the zones band. */
     background:
@@ -1383,7 +1383,7 @@
     position: relative;
     padding: 0.5rem 0.875rem 0.375rem;
     border-radius: 0.875rem;
-    border: 1px solid rgba(220, 207, 174, 0.2);
+    border: 1px solid rgba(255, 255, 255, 0.2);
     background: rgba(255, 255, 255, 0.06); /* dark glass on the charcoal panel */
     transition:
       background-color 0.25s,
@@ -1405,7 +1405,7 @@
   }
   .glass-field:focus-within {
     background: rgba(255, 255, 255, 0.1);
-    border-color: rgba(220, 207, 174, 0.55);
+    border-color: rgba(255, 255, 255, 0.55);
   }
   .glass-field:focus-within::after {
     opacity: 1;
@@ -1421,7 +1421,7 @@
     padding: 0.125rem 1.5rem 0.375rem 0;
     border: 0;
     background: transparent
-      url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 12' fill='none' stroke='%23dccfae' stroke-width='1.6' stroke-linecap='round'%3E%3Cpath d='M2.5 4.5 6 8l3.5-3.5'/%3E%3C/svg%3E")
+      url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 12' fill='none' stroke='%239ebc3a' stroke-width='1.6' stroke-linecap='round'%3E%3Cpath d='M2.5 4.5 6 8l3.5-3.5'/%3E%3C/svg%3E")
       right 0 center / 0.85rem no-repeat;
     -webkit-appearance: none;
     appearance: none;
@@ -1546,7 +1546,7 @@
     background: linear-gradient(160deg, #1f2220 0%, #141615 100%);
     box-shadow:
       0 28px 60px -22px rgba(0, 0, 0, 0.7),
-      0 0 0 1px rgba(220, 207, 174, 0.22);
+      0 0 0 1px rgba(255, 255, 255, 0.22);
     color: #fff;
     transform-origin: top left;
     list-style: none;
@@ -1907,7 +1907,7 @@ textarea {
     --rx: 0deg;
     --ry: 0deg;
     padding: 1.25rem;
-    border: 1px solid rgba(220, 207, 174, 0.3);
+    border: 1px solid rgba(255, 255, 255, 0.3);
     border-radius: 1.125rem;
     background: linear-gradient(160deg, rgba(29, 32, 30, 0.62), rgba(18, 20, 19, 0.5));
     -webkit-backdrop-filter: blur(20px) saturate(130%);
@@ -1919,7 +1919,7 @@ textarea {
   .hero-deck .hero-controls {
     margin-top: 1rem;
     padding-top: 0.75rem;
-    border-top: 1px solid rgba(220, 207, 174, 0.22);
+    border-top: 1px solid rgba(255, 255, 255, 0.22);
   }
 }
 .hero-card-kicker {
@@ -1953,7 +1953,7 @@ textarea {
     gap: 0.25rem;
     margin: 0;
     padding-right: 1.25rem;
-    border-right: 1px solid rgba(220, 207, 174, 0.22);
+    border-right: 1px solid rgba(255, 255, 255, 0.22);
   }
   .glass-panel > form > .glass-seg .glass-seg-opt {
     padding: 0.4rem 1rem;
@@ -2189,7 +2189,7 @@ textarea {
   height: 78%;
   aspect-ratio: 1;
   rotate: 45deg;
-  border: 1px solid rgba(220, 207, 174, 0.3);
+  border: 1px solid rgba(255, 255, 255, 0.3);
 }
 .office-ph img {
   position: relative;
@@ -2211,9 +2211,9 @@ textarea {
   border-radius: 2rem;
   background:
     radial-gradient(80% 100% at 0% 0%, rgba(255, 255, 255, 0.07) 0%, transparent 60%),
-    radial-gradient(60% 90% at 100% 100%, rgba(220, 207, 174, 0.1) 0%, transparent 65%),
+    radial-gradient(60% 90% at 100% 100%, rgba(255, 255, 255, 0.1) 0%, transparent 65%),
     linear-gradient(160deg, #1d201e 0%, #121413 100%);
-  box-shadow: inset 0 0 0 1px rgba(220, 207, 174, 0.14);
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.14);
   color: #fff;
 }
 @media (min-width: 64rem) {
@@ -2306,7 +2306,7 @@ textarea {
 .team-ph-icon {
   width: 38%;
   height: auto;
-  color: rgba(220, 207, 174, 0.35);
+  color: rgba(255, 255, 255, 0.35);
   stroke-width: 1.1;
 }
 
