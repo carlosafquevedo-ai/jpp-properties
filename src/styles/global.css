@@ -3689,3 +3689,95 @@ a.rv-author:hover {
 .team-band .team-bar {
   background: rgba(27, 30, 28, 0.12);
 }
+
+/* Zones, refined: a supporting line under the heading; tiles carry a live count of listings, a larger name, and a
+   "Ver imóveis" cue that slides in on hover / focus (always visible on touch screens). The arrow boxes are gone. */
+.zones-sub {
+  margin-top: 0.6rem;
+  color: var(--color-muted);
+}
+.zone-tile-count {
+  position: absolute;
+  top: 0.75rem;
+  left: 0.75rem;
+  padding: 0.25rem 0.55rem;
+  border: 1px solid rgba(255, 255, 255, 0.28);
+  border-radius: 0.4rem;
+  background: rgba(20, 22, 21, 0.28);
+  -webkit-backdrop-filter: blur(8px);
+  backdrop-filter: blur(8px);
+  font-size: 0.72rem;
+  font-weight: 500;
+  color: #fff;
+}
+.zone-tile-name {
+  font-family: var(--font-display, inherit);
+  font-size: 1.35rem;
+  line-height: 1.1;
+  transition: transform 0.45s var(--ease-out);
+}
+.zone-tile-cta {
+  position: absolute;
+  left: 1rem;
+  bottom: 1rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--color-lime);
+  opacity: 0;
+  transform: translateY(0.5rem);
+  transition:
+    opacity 0.35s,
+    transform 0.45s var(--ease-out);
+}
+.zone-grid a.group:hover .zone-tile-name,
+.zone-grid a.group:focus-visible .zone-tile-name {
+  transform: translateY(-1.5rem);
+}
+.zone-grid a.group:hover .zone-tile-cta,
+.zone-grid a.group:focus-visible .zone-tile-cta {
+  opacity: 1;
+  transform: none;
+}
+@media (hover: none) {
+  .zone-tile-name {
+    transform: translateY(-1.5rem);
+  }
+  .zone-tile-cta {
+    opacity: 1;
+    transform: none;
+  }
+}
+/* Development card: a left-side shade so the text always reads over the photo; minis get a lime edge on hover. */
+.zones-photo::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -5;
+  pointer-events: none;
+  background: linear-gradient(
+    90deg,
+    rgba(20, 22, 21, 0.72) 0%,
+    rgba(20, 22, 21, 0.3) 55%,
+    rgba(20, 22, 21, 0) 85%
+  );
+}
+.zone-mini {
+  transition:
+    transform 0.45s var(--ease-out),
+    box-shadow 0.45s var(--ease-out),
+    background-color 0.25s,
+    border-color 0.25s;
+}
+.zone-mini:hover,
+.zone-mini:focus-visible {
+  border-color: rgba(158, 188, 58, 0.7);
+}
+@media (prefers-reduced-motion: reduce) {
+  .zone-tile-name,
+  .zone-tile-cta {
+    transition: none;
+  }
+}

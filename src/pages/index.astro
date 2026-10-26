@@ -6,7 +6,13 @@ import LeadForm from '../components/LeadForm.astro';
 import GoogleReviews from '../components/GoogleReviews.astro';
 import Careers from '../components/Careers.astro';
 import Icon from '../components/Icon.astro';
-import { formatPrice, zones, propertyTypeLabels, type ZoneId } from '../data/properties';
+import {
+  formatPrice,
+  zones,
+  propertyTypeLabels,
+  visibleProperties,
+  type ZoneId,
+} from '../data/properties';
 import { featuredProperties, heroSlides } from '../lib/catalog';
 import { sideHighlights } from '../data/home';
 import { team } from '../data/team';
@@ -28,7 +34,11 @@ const zoneImages: Partial<Record<ZoneId, string>> = {
 const aboutZones = (
   ['vilamoura', 'quarteira', 'vilasol', 'vale-do-lobo', 'quinta-do-lago', 'loule'] as ZoneId[]
 ).map((id) => ({ id, name: zones[id].name }));
-const zoneTiles = (Object.keys(zones) as ZoneId[]).map((id) => ({ id, image: zoneImages[id] }));
+const zoneTiles = (Object.keys(zones) as ZoneId[]).map((id) => ({
+  id,
+  image: zoneImages[id],
+  count: visibleProperties.filter((p) => p.zone === id).length,
+}));
 ---
 
 <SiteLayout
@@ -212,7 +222,8 @@ const zoneTiles = (Object.keys(zones) as ZoneId[]).map((id) => ({ id, image: zon
           <h2 id="zonas-titulo" class="zones-title">
             Explore por zona
           </h2>
-          <div class="zone-grid mt-8 grid grid-cols-2 gap-3 sm:grid-cols-3 lg:flex-1 lg:grid-rows-2">
+          <p class="zones-sub">Escolha uma zona para ver os imóveis disponíveis.</p>
+          <div class="zone-grid mt-6 grid grid-cols-2 gap-3 sm:grid-cols-3 lg:flex-1 lg:grid-rows-2">
             {zoneTiles.map((t) => (
               <a
                 href={`/imoveis/?zona=${t.id}`}
@@ -232,14 +243,15 @@ const zoneTiles = (Object.keys(zones) as ZoneId[]).map((id) => ({ id, image: zon
                 ) : (
                   <div class="zone-plain absolute inset-0 -z-10 transition-transform duration-700 group-hover:scale-105" />
                 )}
-                <span class="zone-go">
-                  <span class="zone-go-text">Ver propriedades nesta zona</span>
-                  <span class="zone-go-arrow">
-                    <Icon name="arrowUpRight" class="size-5" />
+                {t.count > 0 && (
+                  <span class="zone-tile-count">
+                    {t.count} {t.count === 1 ? 'imóvel' : 'imóveis'}
                   </span>
+                )}
+                <h3 class="zone-tile-name">{zones[t.id].name}</h3>
+                <span class="zone-tile-cta" aria-hidden="true">
+                  Ver imóveis <Icon name="arrowRight" class="size-4" />
                 </span>
-                <h3 class="font-display text-xl">{zones[t.id].name}</h3>
-                <span class="mt-2 block h-px w-8 bg-white/70 transition-[width,background-color] duration-500 group-hover:w-16 group-hover:bg-lime" />
               </a>
             ))}
           </div>
