@@ -2852,7 +2852,7 @@ input:focus-visible + .glass-seg-opt {
     transition: flex-grow 0.7s var(--ease-out);
   }
   .team-band .team-card[data-active] {
-    flex-grow: 4.2;
+    flex-grow: 2.3;
     cursor: default;
   }
   .team-band .team-card:hover {
