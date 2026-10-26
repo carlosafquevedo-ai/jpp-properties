@@ -2331,19 +2331,20 @@ input:focus-visible + .glass-seg-opt {
   outline-color: var(--color-lime);
 }
 .glass-field {
-  border: 1px solid var(--color-line);
-  background: var(--color-paper-2);
+  border: 1px solid rgba(27, 30, 28, 0.12);
+  background: linear-gradient(180deg, #fff 0%, #f6f6f5 100%);
 }
 .glass-field::after {
-  background: var(--color-lime);
-  opacity: 0.8;
+  background: var(--color-forest);
+  opacity: 0.7;
 }
 .glass-field:hover {
-  background: #efeadf;
+  background: #f6f6f5;
+  border-color: rgba(27, 30, 28, 0.22);
 }
 .glass-field:focus-within {
-  background: #efeadf;
-  border-color: rgba(85, 102, 43, 0.45);
+  background: #fff;
+  border-color: rgba(27, 30, 28, 0.4);
 }
 .glass-field > label,
 .glass-range-head label {
@@ -2377,7 +2378,7 @@ input:focus-visible + .glass-seg-opt {
   color: var(--color-ink);
 }
 .glass-opt[data-active] {
-  background: var(--color-paper-2);
+  background: #f6f6f5;
 }
 .glass-opt[aria-selected='true'] {
   color: var(--color-olive);
