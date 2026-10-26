@@ -2382,3 +2382,43 @@ input:focus-visible + .glass-seg-opt {
 .glass-opt[aria-selected='true'] {
   color: var(--color-olive);
 }
+
+/* Property card: carbon info panel (same black as search and zones), white type, hairline white accents. */
+.property-card {
+  background: var(--color-forest);
+  border-color: rgba(255, 255, 255, 0.08);
+}
+.property-card .card-info {
+  background: linear-gradient(180deg, #232725 0%, var(--color-forest) 100%);
+  color: #fff;
+}
+.property-card .card-info::before {
+  background: #fff;
+}
+.property-card .card-info .text-muted,
+.property-card .card-info .text-ink,
+.property-card .card-info .text-forest {
+  color: #fff;
+}
+.property-card .card-info .text-muted {
+  color: rgba(255, 255, 255, 0.62);
+}
+.property-card .card-info .text-olive,
+.property-card .card-specs svg {
+  color: rgba(255, 255, 255, 0.7);
+}
+.property-card .card-specs {
+  color: #fff;
+}
+.property-card .card-foot {
+  border-top-color: rgba(255, 255, 255, 0.14);
+}
+.property-card .card-specs li {
+  border-right-color: rgba(255, 255, 255, 0.16);
+}
+.property-card .card-new {
+  background: #fff;
+}
+.property-card:hover {
+  border-color: rgba(255, 255, 255, 0.2);
+}
