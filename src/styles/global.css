@@ -4071,3 +4071,20 @@ a.rv-author:hover {
   text-transform: uppercase;
   letter-spacing: 0.01em;
 }
+
+/* One heading style everywhere: every section title uses .zones-title (display face, same size, capitals).
+   Only the colour changes on dark backgrounds. */
+.zones-title {
+  font-family: var(--font-display, inherit);
+  font-size: clamp(2rem, 3.6vw, 3rem);
+  font-weight: 400;
+  line-height: 1.05;
+  color: var(--color-ink);
+}
+.hero-copy h1 {
+  font-weight: 400;
+}
+.careers-title.zones-title {
+  font-size: clamp(2rem, 3.6vw, 3rem);
+  color: #fff;
+}
