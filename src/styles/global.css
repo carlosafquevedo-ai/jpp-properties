@@ -2267,3 +2267,33 @@ textarea {
     border-radius: 0;
   }
 }
+
+/* Shorter team cards and band: 4:3 photos, tighter vertical padding. */
+.team-band .team-photo {
+  aspect-ratio: 4 / 3;
+}
+.team-band .team-ph {
+  padding-bottom: 1.5rem;
+}
+.team-band .team-ph i {
+  width: auto;
+  height: 88%;
+  margin-bottom: 1.5rem;
+}
+.team-band .team-ph img {
+  width: min(34%, 8rem);
+}
+.team-band .team-name {
+  padding: 2rem 1rem 0.85rem;
+}
+.team-band .team-name::before {
+  margin-bottom: 0.5rem;
+}
+.team-band {
+  padding-block: 1.75rem;
+}
+@media (min-width: 64rem) {
+  .team-band {
+    padding-block: 2.25rem;
+  }
+}
