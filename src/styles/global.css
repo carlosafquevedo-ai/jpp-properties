@@ -3272,3 +3272,9 @@ input:focus-visible + .glass-seg-opt {
     padding-top: 2rem;
   }
 }
+
+/* Team band: equal space above and below. */
+.team-band,
+.team-band:where(*) {
+  padding-bottom: 1.25rem;
+}
