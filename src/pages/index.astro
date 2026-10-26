@@ -2,14 +2,13 @@
 import SiteLayout from '../layouts/SiteLayout.astro';
 import SearchBar from '../components/SearchBar.astro';
 import PropertyCard from '../components/PropertyCard.astro';
-import ContactForm from '../components/ContactForm.astro';
 import LeadForm from '../components/LeadForm.astro';
 import Icon from '../components/Icon.astro';
 import { formatPrice, zones, propertyTypeLabels, type ZoneId } from '../data/properties';
 import { featuredProperties, heroSlides } from '../lib/catalog';
 import { sideHighlights } from '../data/home';
 import { team } from '../data/team';
-import { AMI, offices, email } from '../lib/site';
+import { AMI, offices } from '../lib/site';
 
 const featured = featuredProperties();
 const slides = heroSlides();
@@ -504,53 +503,6 @@ const zoneTiles = (Object.keys(zones) as ZoneId[]).map((id) => ({ id, image: zon
 
   <!-- Sell / buy request form (e-mailed to the team) -->
   <LeadForm />
-
-  <!-- Contact -->
-  <section
-    id="contacto"
-    class="container-x mt-28 grid gap-10 lg:grid-cols-[1fr_1.1fr] lg:gap-16"
-    aria-labelledby="contacto-titulo"
-  >
-    <div>
-      <h2 id="contacto-titulo" class="font-display text-3xl text-forest sm:text-4xl">
-        Fale connosco
-      </h2>
-      <p class="mt-4 max-w-md text-ink/80">
-        Ligue, escreva ou visite o nosso escritório. Respondemos o mais depressa possível.
-      </p>
-      <div class="mt-10 grid gap-8 sm:grid-cols-2">
-        {offices.map((o) => (
-          <div>
-            <h3 class="font-display text-xl text-forest">{o.name}</h3>
-            <address class="mt-2 text-sm not-italic leading-relaxed text-ink/80">
-              {o.address.map((l) => (
-                <div>{l}</div>
-              ))}
-            </address>
-            <ul class="mt-3 space-y-2 text-sm">
-              {o.phones.map((p) => (
-                <li>
-                  <a href={`tel:${p.tel}`} class="font-semibold text-forest hover:text-olive">
-                    {p.label}
-                  </a>
-                  <span class="block text-xs text-muted">({p.note})</span>
-                </li>
-              ))}
-            </ul>
-          </div>
-        ))}
-      </div>
-      <a
-        href={`mailto:${email}`}
-        class="mt-8 inline-flex items-center gap-2 font-semibold text-olive hover:text-forest"
-      >
-        <Icon name="mail" class="size-5" /> {email}
-      </a>
-    </div>
-    <div class="rounded-[2rem] border border-line bg-white p-6 sm:p-8">
-      <ContactForm idPrefix="home" />
-    </div>
-  </section>
 </SiteLayout>
 
 <script>
