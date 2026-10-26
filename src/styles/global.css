@@ -2411,3 +2411,67 @@ input:focus-visible + .glass-seg-opt {
 .property-card:hover {
   border-color: rgba(27, 30, 28, 0.22);
 }
+
+/* Hero primary button: lime, softly rounded, with a carbon icon tile that reacts to hover and press. */
+.btn-go {
+  gap: 0.7rem;
+  padding: 0.3rem 1.35rem 0.3rem 0.3rem;
+  border-radius: 0.8rem;
+}
+.btn-go-icon {
+  display: grid;
+  place-items: center;
+  width: 2.1rem;
+  height: 2.1rem;
+  border-radius: 0.55rem;
+  background: var(--color-forest);
+  color: #fff;
+  overflow: hidden;
+  transition:
+    transform 0.35s var(--ease-out),
+    background-color 0.25s;
+}
+.btn-go-icon svg {
+  transition: transform 0.35s var(--ease-out);
+}
+.btn-go:hover .btn-go-icon,
+.btn-go:focus-visible .btn-go-icon {
+  transform: translateX(0.15rem);
+  background: #000;
+}
+.btn-go:hover .btn-go-icon svg,
+.btn-go:focus-visible .btn-go-icon svg {
+  animation: go-nudge 0.5s var(--ease-out);
+}
+.btn-go:active .btn-go-icon {
+  transform: scale(0.9);
+}
+@keyframes go-nudge {
+  0% {
+    transform: translateX(-140%);
+  }
+  100% {
+    transform: translateX(0);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .btn-go-icon,
+  .btn-go-icon svg {
+    animation: none !important;
+    transition: none;
+  }
+}
+/* Header CTA: carbon pill with a lime tile; over the photo (and on hover) the colours swap. */
+.hdr-cta.btn-go .btn-go-icon {
+  background: var(--color-lime);
+  color: var(--color-forest);
+}
+.hdr-cta.btn-go:hover .btn-go-icon,
+.hdr-cta.btn-go:focus-visible .btn-go-icon,
+.site-header[data-over-hero]:not([data-stuck]) .hdr-cta.btn-go .btn-go-icon {
+  background: var(--color-forest);
+  color: #fff;
+}
+.hdr-cta.btn-go {
+  padding-block: 0.3rem;
+}
