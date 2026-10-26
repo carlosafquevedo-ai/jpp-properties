@@ -2674,3 +2674,9 @@ input:focus-visible + .glass-seg-opt {
   border-color: var(--color-lime);
   color: var(--color-forest);
 }
+
+/* Team heading: the same olive as the prices on the property cards. */
+.team-band #equipa-titulo,
+.team-band h2 {
+  color: var(--color-olive);
+}
