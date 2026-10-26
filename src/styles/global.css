@@ -2810,3 +2810,21 @@ input:focus-visible + .glass-seg-opt {
     transition: none;
   }
 }
+
+/* Team: name and role sit below the portrait, on the band itself (no background). */
+.team-band .team-card {
+  background: transparent;
+  overflow: visible;
+}
+.team-band .team-name {
+  position: static;
+  padding: 0.9rem 0 0;
+  background: none;
+  color: var(--color-ink);
+}
+.team-band .team-name::before {
+  display: none;
+}
+.team-band .team-name p {
+  color: var(--color-muted);
+}
