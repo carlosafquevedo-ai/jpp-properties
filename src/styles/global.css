@@ -2383,42 +2383,30 @@ input:focus-visible + .glass-seg-opt {
   color: var(--color-olive);
 }
 
-/* Property card: carbon info panel (same black as search and zones), white type, hairline white accents. */
+/* Property card: light info panel (white to a barely-there cool grey), carbon accents and hairlines. */
 .property-card {
-  background: var(--color-forest);
-  border-color: rgba(255, 255, 255, 0.08);
+  background: #fff;
+  border-color: rgba(27, 30, 28, 0.1);
 }
 .property-card .card-info {
-  background: linear-gradient(180deg, #232725 0%, var(--color-forest) 100%);
-  color: #fff;
+  background: linear-gradient(180deg, #fff 0%, #f6f6f5 100%);
 }
 .property-card .card-info::before {
-  background: #fff;
-}
-.property-card .card-info .text-muted,
-.property-card .card-info .text-ink,
-.property-card .card-info .text-forest {
-  color: #fff;
-}
-.property-card .card-info .text-muted {
-  color: rgba(255, 255, 255, 0.62);
-}
-.property-card .card-info .text-olive,
-.property-card .card-specs svg {
-  color: rgba(255, 255, 255, 0.7);
-}
-.property-card .card-specs {
-  color: #fff;
-}
-.property-card .card-foot {
-  border-top-color: rgba(255, 255, 255, 0.14);
-}
-.property-card .card-specs li {
-  border-right-color: rgba(255, 255, 255, 0.16);
+  background: var(--color-forest);
 }
 .property-card .card-new {
-  background: #fff;
+  background: var(--color-forest);
+}
+.property-card .card-specs svg,
+.property-card .card-info .text-olive {
+  color: var(--color-forest);
+}
+.property-card .card-foot {
+  border-top-color: rgba(27, 30, 28, 0.1);
+}
+.property-card .card-specs li {
+  border-right-color: rgba(27, 30, 28, 0.14);
 }
 .property-card:hover {
-  border-color: rgba(255, 255, 255, 0.2);
+  border-color: rgba(27, 30, 28, 0.22);
 }
