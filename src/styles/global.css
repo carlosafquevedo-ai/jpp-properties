@@ -135,14 +135,6 @@
       transform: none;
     }
   }
-  /* Hero primary button: warm champagne. */
-  .btn-champagne {
-    background-color: var(--color-champagne);
-    color: var(--color-forest);
-  }
-  .btn-champagne:hover {
-    background-color: var(--color-champagne-2);
-  }
   .btn-dark {
     @apply bg-forest text-white hover:bg-forest-2;
   }
