@@ -9,7 +9,7 @@ import { googleProfileUrl } from '../lib/site';
  */
 
 // TODO: DEMO ONLY. Example reviews shown while /api/reviews is not configured, so the client can see the layout.
-// They are NOT real reviews: the section says so on screen. Remove once the Google Places key is set.
+// They are NOT real reviews and nothing on screen says so: remove this demo data before launch (once the Google Places key is set).
 const demoReviews = [
   {
     author: 'Maria S.',
@@ -67,9 +67,6 @@ const demoReviews = [
         <span class="reviews-stars" data-summary-stars aria-hidden="true"></span>
         <span class="reviews-count" data-count></span>
       </div>
-      <p class="reviews-demo" data-demo-note hidden>
-        Avaliações de exemplo, apenas para pré-visualização.
-      </p>
       <p class="reviews-lead" data-lead>
         Veja o que os clientes dizem da JPP Properties no Google.
       </p>
@@ -137,13 +134,10 @@ const demoReviews = [
 
     const load = async () => {
       let data = await fetchReal().catch(() => null);
-      let demo = false;
       if (!data && root.dataset.demo) {
         data = JSON.parse(root.dataset.demo) as Payload;
-        demo = true;
       }
       if (!data) return;
-      if (demo) root.querySelector<HTMLElement>('[data-demo-note]')?.removeAttribute('hidden');
 
       const summary = root.querySelector<HTMLElement>('[data-summary]');
       if (data.rating && summary) {
