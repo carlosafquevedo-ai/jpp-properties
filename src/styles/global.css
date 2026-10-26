@@ -3169,3 +3169,26 @@ input:focus-visible + .glass-seg-opt {
 .team-band .team-bar {
   background: rgba(255, 255, 255, 0.22);
 }
+
+/* Team band: a soft tint of the brand lime (very light), carbon type. */
+.team-band {
+  background: linear-gradient(180deg, #f4f8e8 0%, #e8f0cd 100%);
+  box-shadow:
+    inset 0 1px 0 rgba(158, 188, 58, 0.28),
+    inset 0 -1px 0 rgba(158, 188, 58, 0.28);
+  color: var(--color-ink);
+}
+.team-band #equipa-titulo,
+.team-band h2 {
+  color: var(--color-forest);
+}
+.team-band > div:first-child p {
+  color: var(--color-muted);
+}
+.team-band .feat-nav {
+  border-color: rgba(27, 30, 28, 0.25);
+  color: var(--color-ink);
+}
+.team-band .team-bar {
+  background: rgba(27, 30, 28, 0.12);
+}
