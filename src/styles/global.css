@@ -3614,3 +3614,44 @@ a.rv-author:hover {
     transition: none;
   }
 }
+
+/* Zones: a large heading (no eyebrow) over the 3x2 grid. Modern touches: while one tile is hovered or focused, the
+   others step back (smaller, desaturated), and the tile tilts a little towards the pointer (script in index.astro). */
+.zones-title {
+  font-family: var(--font-display, inherit);
+  font-size: clamp(2.25rem, 4.2vw, 3.5rem);
+  line-height: 1.04;
+  letter-spacing: -0.01em;
+  color: var(--color-ink);
+}
+.zone-grid a.group {
+  --rx: 0deg;
+  --ry: 0deg;
+  --lift: 0px;
+  transform: perspective(900px) rotateX(var(--rx)) rotateY(var(--ry)) translateY(var(--lift));
+  transition:
+    transform 0.45s var(--ease-out),
+    box-shadow 0.45s var(--ease-out),
+    opacity 0.45s,
+    filter 0.45s;
+}
+@media (hover: hover) and (prefers-reduced-motion: no-preference) {
+  .zone-grid:hover a.group:not(:hover),
+  .zone-grid:focus-within a.group:not(:focus-visible):not(:hover) {
+    opacity: 0.6;
+    filter: saturate(0.6);
+    transform: perspective(900px) scale(0.97);
+  }
+  .zone-grid a.group:hover,
+  .zone-grid a.group:focus-visible {
+    --lift: -8px;
+    transform: perspective(900px) rotateX(var(--rx)) rotateY(var(--ry)) translateY(var(--lift))
+      scale(1.03);
+    z-index: 2;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .zone-grid a.group {
+    transition: none;
+  }
+}
