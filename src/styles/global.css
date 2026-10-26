@@ -2539,3 +2539,8 @@ input:focus-visible + .glass-seg-opt {
 .hdr-cta.btn-go .btn-go-icon {
   border-radius: 0.4rem;
 }
+
+/* Property card: square top (photo edge), small radius at the bottom like the search bar. */
+.property-card {
+  border-radius: 0 0 0.75rem 0.75rem;
+}
