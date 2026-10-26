@@ -3478,3 +3478,14 @@ a.rv-author:hover {
 .reviews-summary .rv-star.is-on {
   fill: #fbbc04;
 }
+.reviews-demo {
+  margin: 0;
+  padding: 0.3rem 0.65rem;
+  border: 1px dashed rgba(27, 30, 28, 0.3);
+  border-radius: 0.4rem;
+  font-size: 0.78rem;
+  color: var(--color-muted);
+}
+.reviews-demo[hidden] {
+  display: none;
+}

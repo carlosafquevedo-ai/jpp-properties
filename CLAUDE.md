@@ -91,7 +91,7 @@ Não são imóveis: são campos livres com **imagem + texto + ligação**, para 
 
 - Secção `src/components/GoogleReviews.astro` (entre a equipa e o formulário de venda). Nada é inventado: nota, total e avaliações vêm de `/api/reviews`.
 - Pages Function `functions/api/reviews.ts` (Google Places API, "New"): devolve nota, total e até 5 avaliações (limite da API). Cache de 1 hora na Cloudflare (os termos do Google limitam o tempo de cache); mostrar sempre o nome do autor com ligação.
-- Variáveis de ambiente (só nomes em `.env.example`): `GOOGLE_PLACES_API_KEY` (chave restrita à Places API) e `GOOGLE_PLACE_ID`. Sem elas, a secção mostra só o título e o botão "Ver todas no Google" (`googleProfileUrl` em `src/lib/site.ts`).
+- Variáveis de ambiente (só nomes em `.env.example`): `GOOGLE_PLACES_API_KEY` (chave restrita à Places API) e `GOOGLE_PLACE_ID`. Enquanto não houver chave, a secção mostra 5 avaliações DE EXEMPLO (marcadas no ecrã como "Avaliações de exemplo", `demoReviews` no componente; `TODO`: remover) para pré-visualização com o cliente. Se a API falhar com a chave já definida, o mesmo acontece; antes de lançar, tirar o modo de exemplo para mostrar só o título e o botão "Ver todas no Google" (`googleProfileUrl` em `src/lib/site.ts`).
 - `TODO`: criar a chave no Google Cloud (faturação ativa; uso pequeno cabe na quota gratuita), obter o `place_id` do perfil e definir as duas variáveis na Cloudflare Pages.
 
 ## Fases

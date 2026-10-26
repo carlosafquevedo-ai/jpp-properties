@@ -7,6 +7,46 @@ import { googleProfileUrl } from '../lib/site';
  * (Pages Function, Google Places API, see functions/api/reviews.ts). Until that is configured (or if Google fails)
  * only the heading and the button to the Google profile are shown.
  */
+
+// TODO: DEMO ONLY. Example reviews shown while /api/reviews is not configured, so the client can see the layout.
+// They are NOT real reviews: the section says so on screen. Remove once the Google Places key is set.
+const demoReviews = [
+  {
+    author: 'Maria S.',
+    authorUrl: null,
+    rating: 5,
+    when: 'há 2 semanas',
+    text: 'Acompanharam-nos em todos os passos da compra do nosso apartamento. Sempre disponíveis, claros nas explicações e atentos a cada detalhe. Recomendo sem hesitar.',
+  },
+  {
+    author: 'João P.',
+    authorUrl: null,
+    rating: 5,
+    when: 'há um mês',
+    text: 'Vendemos a nossa casa em poucas semanas. A avaliação foi realista, as fotografias ficaram excelentes e a comunicação foi sempre rápida. Profissionais de confiança.',
+  },
+  {
+    author: 'Sophie L.',
+    authorUrl: null,
+    rating: 5,
+    when: 'há 2 meses',
+    text: 'Great team who really know the Algarve. They showed us several properties that matched exactly what we were looking for and helped with every step until the deed.',
+  },
+  {
+    author: 'Carlos M.',
+    authorUrl: null,
+    rating: 4,
+    when: 'há 3 meses',
+    text: 'Bom acompanhamento e muito conhecimento da zona de Vilamoura. O processo foi tranquilo e fomos sempre informados do ponto da situação.',
+  },
+  {
+    author: 'Ana R.',
+    authorUrl: null,
+    rating: 5,
+    when: 'há 4 meses',
+    text: 'Encontraram o arrendamento ideal para a nossa família. Atenciosos, simpáticos e muito profissionais. Voltaremos a contar com eles.',
+  },
+];
 ---
 
 <section
@@ -15,6 +55,7 @@ import { googleProfileUrl } from '../lib/site';
   aria-labelledby="avaliacoes-titulo"
   data-reviews
   data-endpoint="/api/reviews"
+  data-demo={JSON.stringify({ rating: 4.8, count: null, reviews: demoReviews })}
 >
   <div class="reviews-grid">
     <div class="reviews-intro">
@@ -26,6 +67,9 @@ import { googleProfileUrl } from '../lib/site';
         <span class="reviews-stars" data-summary-stars aria-hidden="true"></span>
         <span class="reviews-count" data-count></span>
       </div>
+      <p class="reviews-demo" data-demo-note hidden>
+        Avaliações de exemplo, apenas para pré-visualização.
+      </p>
       <p class="reviews-lead" data-lead>
         Veja o que os clientes dizem da JPP Properties no Google.
       </p>
@@ -82,12 +126,24 @@ import { googleProfileUrl } from '../lib/site';
       el.replaceChildren(...[1, 2, 3, 4, 5].map((i) => star(value >= i - 0.25)));
     };
 
-    const load = async () => {
+    const fetchReal = async (): Promise<Payload | null> => {
       const res = await fetch(root.dataset.endpoint ?? '/api/reviews', {
         headers: { accept: 'application/json' },
       });
-      if (!res.ok) return;
+      if (!res.ok) return null;
       const data = (await res.json()) as Payload;
+      return data.reviews?.length ? data : null;
+    };
+
+    const load = async () => {
+      let data = await fetchReal().catch(() => null);
+      let demo = false;
+      if (!data && root.dataset.demo) {
+        data = JSON.parse(root.dataset.demo) as Payload;
+        demo = true;
+      }
+      if (!data) return;
+      if (demo) root.querySelector<HTMLElement>('[data-demo-note]')?.removeAttribute('hidden');
 
       const summary = root.querySelector<HTMLElement>('[data-summary]');
       if (data.rating && summary) {
