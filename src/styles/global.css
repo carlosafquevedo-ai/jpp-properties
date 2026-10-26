@@ -2544,3 +2544,10 @@ input:focus-visible + .glass-seg-opt {
 .property-card {
   border-radius: 0 0 0.75rem 0.75rem;
 }
+
+/* Zones band: small radius (same as the search bar) on the corners that don't bleed off the screen. */
+@media (min-width: 64rem) {
+  .zones-band {
+    border-radius: 0.75rem 0 0 0.75rem;
+  }
+}
