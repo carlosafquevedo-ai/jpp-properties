@@ -3662,3 +3662,8 @@ a.rv-author:hover {
     radial-gradient(70% 120% at 0% 0%, rgba(255, 255, 255, 0.08) 0%, transparent 60%),
     linear-gradient(160deg, #3b403b 0%, #2c302d 100%);
 }
+
+/* The team heading uses the same type as the other section titles (sentence case), in white on the graphite band. */
+.team-band #equipa-titulo {
+  color: #fff;
+}
