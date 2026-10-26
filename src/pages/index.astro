@@ -3,6 +3,7 @@ import SiteLayout from '../layouts/SiteLayout.astro';
 import SearchBar from '../components/SearchBar.astro';
 import PropertyCard from '../components/PropertyCard.astro';
 import LeadForm from '../components/LeadForm.astro';
+import GoogleReviews from '../components/GoogleReviews.astro';
 import Icon from '../components/Icon.astro';
 import { formatPrice, zones, propertyTypeLabels, type ZoneId } from '../data/properties';
 import { featuredProperties, heroSlides } from '../lib/catalog';
@@ -500,6 +501,9 @@ const zoneTiles = (Object.keys(zones) as ZoneId[]).map((id) => ({ id, image: zon
       </div>
     </div>
   </section>
+
+  <!-- Google reviews (live from /api/reviews once the Places API key is set) -->
+  <GoogleReviews />
 
   <!-- Sell / buy request form (e-mailed to the team) -->
   <LeadForm />

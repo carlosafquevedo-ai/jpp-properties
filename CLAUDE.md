@@ -87,6 +87,13 @@ Não são imóveis: são campos livres com **imagem + texto + ligação**, para 
 - Variáveis de ambiente (só nomes em `.env.example`): `RESEND_API_KEY`, `LEAD_TO_EMAIL`, `LEAD_FROM_EMAIL` (domínio verificado no Resend), `TURNSTILE_SECRET_KEY` e `PUBLIC_TURNSTILE_SITE_KEY`.
 - `TODO`: textos provisórios em PT; versões EN/FR; página de Política de Privacidade (o consentimento aponta para `/politica-de-privacidade/`).
 
+## Avaliações Google (página inicial)
+
+- Secção `src/components/GoogleReviews.astro` (entre a equipa e o formulário de venda). Nada é inventado: nota, total e avaliações vêm de `/api/reviews`.
+- Pages Function `functions/api/reviews.ts` (Google Places API, "New"): devolve nota, total e até 5 avaliações (limite da API). Cache de 1 hora na Cloudflare (os termos do Google limitam o tempo de cache); mostrar sempre o nome do autor com ligação.
+- Variáveis de ambiente (só nomes em `.env.example`): `GOOGLE_PLACES_API_KEY` (chave restrita à Places API) e `GOOGLE_PLACE_ID`. Sem elas, a secção mostra só o título e o botão "Ver todas no Google" (`googleProfileUrl` em `src/lib/site.ts`).
+- `TODO`: criar a chave no Google Cloud (faturação ativa; uso pequeno cabe na quota gratuita), obter o `place_id` do perfil e definir as duas variáveis na Cloudflare Pages.
+
 ## Fases
 
 1. Setup · 2. Protótipo de design (aprovação do cliente) · 3. Sanity · 4. Integração · 5. Formulários · 6. Migração · 7. SEO · 8. Segurança e QA · 9. Lançamento · 10. Entrega.
