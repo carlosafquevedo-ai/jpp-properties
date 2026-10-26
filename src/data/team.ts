@@ -39,4 +39,11 @@ export const team: Agent[] = [
     email,
     whatsapp: mainPhone.tel.replace(/\D/g, ''),
   },
+  {
+    name: 'Nome do agente',
+    role: 'Agente imobiliário',
+    phone: mainPhone,
+    email,
+    whatsapp: mainPhone.tel.replace(/\D/g, ''),
+  },
 ];

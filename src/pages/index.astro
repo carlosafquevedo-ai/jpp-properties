@@ -406,7 +406,7 @@ const zoneTiles = (Object.keys(zones) as ZoneId[]).map((id) => ({ id, image: zon
     <!-- Team: full width, four per view, carousel when the team grows (the section keeps its height). -->
     <div
       id="equipa"
-      class="team-band mt-20 grid gap-8 lg:mt-24 lg:grid-cols-[minmax(0,19rem)_minmax(0,1fr)] lg:gap-14"
+      class="team-band mt-20 grid gap-8 lg:mt-24 lg:grid-cols-[minmax(0,16rem)_minmax(0,1fr)] lg:gap-14"
     >
       <div class="rise flex flex-col justify-between gap-8 lg:gap-0">
         <div>
@@ -439,7 +439,7 @@ const zoneTiles = (Object.keys(zones) as ZoneId[]).map((id) => ({ id, image: zon
           class="team-grid"
           aria-label="A nossa equipa"
           data-team-track
-          style={`--n-sm: ${Math.min(team.length, 2)}; --n-md: ${Math.min(team.length, 3)}; --n-lg: ${Math.min(team.length, 3)}`}
+          style={`--n-sm: ${Math.min(team.length, 2)}; --n-md: ${Math.min(team.length, 3)}; --n-lg: ${Math.min(team.length, 4)}`}
         >
           {team.map((a) => (
             <li class="team-card">
