@@ -2297,3 +2297,15 @@ textarea {
     padding-block: 2.25rem;
   }
 }
+
+/* Placeholder until each agent's portrait arrives: a quiet silhouette (no logo). */
+.team-band .team-ph i,
+.team-band .team-ph img {
+  display: none;
+}
+.team-ph-icon {
+  width: 38%;
+  height: auto;
+  color: rgba(220, 207, 174, 0.35);
+  stroke-width: 1.1;
+}

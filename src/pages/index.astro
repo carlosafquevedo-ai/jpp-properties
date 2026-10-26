@@ -448,8 +448,7 @@ const zoneTiles = (Object.keys(zones) as ZoneId[]).map((id) => ({ id, image: zon
                   <img src={a.photo} alt={a.name} loading="lazy" />
                 ) : (
                   <div class="team-ph" aria-hidden="true">
-                    <i></i>
-                    <img src={logoWhiteImage} alt="" loading="lazy" />
+                    <Icon name="user" class="team-ph-icon" />
                   </div>
                 )}
                 <div class="team-name">
