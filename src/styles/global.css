@@ -2680,3 +2680,53 @@ input:focus-visible + .glass-seg-opt {
 .team-band h2 {
   color: var(--color-olive);
 }
+
+/* Sell / buy request: full-width light band (same as the zones and team bands); the white card keeps a fine border. */
+.lead-shell {
+  width: 100vw;
+  margin-left: calc(50% - 50vw);
+  padding-inline: calc(50vw - 50%);
+  padding-block: 2.5rem;
+  border-radius: 0;
+  background: linear-gradient(180deg, #fafaf9 0%, #f1f1ef 100%);
+  box-shadow:
+    inset 0 1px 0 rgba(27, 30, 28, 0.06),
+    inset 0 -1px 0 rgba(27, 30, 28, 0.06);
+  color: var(--color-ink);
+}
+@media (min-width: 64rem) {
+  .lead-shell {
+    padding-block: 3.5rem;
+  }
+}
+.lead-shell #lead-title {
+  color: var(--color-ink);
+}
+.lead-shell [data-lead-text] {
+  color: var(--color-muted);
+}
+.lead-shell .zone-eyebrow {
+  color: var(--color-muted);
+}
+.lead-shell .zone-eyebrow::before {
+  background: var(--color-lime);
+  height: 2px;
+}
+.lead-shell .lead-steps {
+  color: var(--color-muted);
+}
+.lead-shell .lead-step-num {
+  color: var(--color-olive);
+  font-weight: 600;
+}
+@media (min-width: 64rem) {
+  .lead-shell .lead-steps li {
+    border-top-color: rgba(27, 30, 28, 0.16);
+  }
+}
+.lead-shell .lead-card {
+  border: 1px solid rgba(27, 30, 28, 0.1);
+  box-shadow:
+    0 1px 2px rgba(27, 30, 28, 0.05),
+    0 14px 30px -18px rgba(27, 30, 28, 0.18);
+}
