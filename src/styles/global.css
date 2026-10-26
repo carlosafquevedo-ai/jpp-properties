@@ -2633,3 +2633,44 @@ input:focus-visible + .glass-seg-opt {
 .property-card .card-specs {
   color: var(--color-ink);
 }
+
+/* Team band: light background (like the zones band); the portrait cards stay carbon so their white names read. */
+.team-band {
+  background: linear-gradient(180deg, #fafaf9 0%, #f1f1ef 100%);
+  box-shadow:
+    inset 0 1px 0 rgba(27, 30, 28, 0.06),
+    inset 0 -1px 0 rgba(27, 30, 28, 0.06);
+  color: var(--color-ink);
+}
+.team-band #equipa-titulo,
+.team-band h2 {
+  color: var(--color-ink);
+}
+.team-band > div:first-child p {
+  color: var(--color-muted);
+}
+.team-band .feat-nav {
+  border-color: rgba(27, 30, 28, 0.22);
+  color: var(--color-ink);
+}
+.team-band .feat-nav:hover:not(:disabled) {
+  background: var(--color-lime);
+  border-color: var(--color-lime);
+  color: var(--color-forest);
+}
+.team-band .team-bar {
+  background: rgba(27, 30, 28, 0.1);
+}
+.team-band .team-bar > span {
+  background: var(--color-lime);
+}
+.team-band .team-contacts a {
+  border-color: rgba(27, 30, 28, 0.22);
+  color: var(--color-ink);
+}
+.team-band .team-contacts a:hover,
+.team-band .team-contacts a:focus-visible {
+  background: var(--color-lime);
+  border-color: var(--color-lime);
+  color: var(--color-forest);
+}
