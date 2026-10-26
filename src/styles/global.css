@@ -4038,3 +4038,29 @@ a.rv-author:hover {
     border-top: 0;
   }
 }
+
+/* Sell / buy form: back on a white card (rounded, fine border, soft shadow). */
+.lead-shell .lead-card {
+  padding: 1.25rem;
+  border: 1px solid rgba(27, 30, 28, 0.08);
+  border-radius: 0.75rem;
+  background: #fff;
+  box-shadow:
+    0 1px 2px rgba(27, 30, 28, 0.05),
+    0 24px 44px -24px rgba(27, 30, 28, 0.3);
+}
+@media (min-width: 40rem) {
+  .lead-shell .lead-card {
+    padding: 2rem;
+  }
+}
+.lead-shell .lead-tabs {
+  background: var(--color-paper-2);
+}
+.lead-shell .field {
+  background-color: #fbfbf9;
+}
+.lead-shell .field:focus,
+.lead-shell .field:focus-visible {
+  background-color: #fff;
+}
