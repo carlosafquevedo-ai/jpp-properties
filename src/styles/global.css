@@ -3478,3 +3478,68 @@ a.rv-author:hover {
 .reviews-summary .rv-star.is-on {
   fill: #fbbc04;
 }
+
+/* Careers: centred intro, then a split card (photo left, text panel right). */
+.careers {
+  margin-top: 3.5rem;
+}
+.careers-head {
+  max-width: 40rem;
+  margin: 0 auto 2rem;
+  text-align: center;
+}
+.careers-card {
+  display: grid;
+  max-width: 62rem;
+  margin: 0 auto;
+}
+@media (min-width: 48rem) {
+  .careers-card {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  }
+}
+.careers-photo {
+  min-height: 15rem;
+  overflow: hidden;
+}
+.careers-photo img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: 50% 40%;
+  transition: transform 0.9s var(--ease-out);
+}
+.careers-card:hover .careers-photo img {
+  transform: scale(1.04);
+}
+.careers-body {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 2rem;
+  background: var(--color-paper-2);
+}
+@media (min-width: 64rem) {
+  .careers-body {
+    padding: 3rem;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .careers-photo img {
+    transition: none;
+  }
+}
+.careers-photo {
+  position: relative;
+  min-height: 18rem;
+}
+.careers-photo img {
+  position: absolute;
+  inset: 0;
+}
+@media (min-width: 48rem) {
+  .careers-card {
+    min-height: 22rem;
+  }
+}
