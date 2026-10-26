@@ -4064,3 +4064,10 @@ a.rv-author:hover {
 .lead-shell .field:focus-visible {
   background-color: #fff;
 }
+
+/* Section titles and the hero headline in capitals. */
+.zones-title,
+.hero-copy h1 {
+  text-transform: uppercase;
+  letter-spacing: 0.01em;
+}
