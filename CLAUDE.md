@@ -58,7 +58,7 @@ A pesquisa (hero e listagem) é dirigida por dados. Ao construir o Sanity (fase 
 O header (e o rodapé, a barra de contacto móvel e a página de contactos) lê tudo de `siteSettings`; nada fica escrito à mão no código. O painel tem de pedir, como **obrigatórios**:
 
 - **Escritórios**: nome, morada e **telefones** (número + tipo "rede móvel" ou "rede fixa", para a nota legal "(Chamada para rede ... nacional)"). O ícone de telefone do header abre a lista destes números, agrupados por escritório.
-- **WhatsApp** (número, formato internacional) e **Instagram** (endereço do perfil). Os ícones do header só aparecem se estiverem preenchidos.
+- **WhatsApp** (número, formato internacional) e **Instagram** (endereço do perfil). O Instagram aparece no header se estiver preenchido; o WhatsApp está no widget flutuante e no menu móvel (não no header).
 - Validação do formato dos números e dos endereços, com frase de ajuda em português em cada campo.
 - `TODO` no protótipo: o WhatsApp é provisório (telemóvel principal) e o Instagram aponta para a página inicial do Instagram até haver o perfil real.
 
