@@ -2572,3 +2572,11 @@ input:focus-visible + .glass-seg-opt {
 .hero-card .card-flag {
   border-radius: 0;
 }
+
+/* Team cards and their contact buttons: square corners. */
+.team-card,
+.team-photo,
+.team-photo > img,
+.team-contacts a {
+  border-radius: 0;
+}
