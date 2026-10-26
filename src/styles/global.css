@@ -2784,3 +2784,27 @@ input:focus-visible + .glass-seg-opt {
   width: 0.95rem;
   height: 0.95rem;
 }
+
+/* Team contacts, portfolio style: a lime pill flush with the photo's right edge, holding round carbon buttons with lime icons. */
+.team-band .team-contacts {
+  top: 1rem;
+  right: 0;
+  gap: 0.4rem;
+  padding: 0.4rem 0.35rem 0.4rem 0.4rem;
+  border-radius: 9999px 0 0 9999px;
+  background: var(--color-lime);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+}
+.team-band .team-contacts a {
+  width: 1.9rem;
+  height: 1.9rem;
+  background: var(--color-forest);
+  color: var(--color-lime);
+  box-shadow: none;
+}
+.team-band .team-contacts a:hover,
+.team-band .team-contacts a:focus-visible {
+  background: #fff;
+  color: var(--color-forest);
+  transform: scale(1.08);
+}
