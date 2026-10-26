@@ -2748,3 +2748,39 @@ input:focus-visible + .glass-seg-opt {
   border-color: transparent;
   color: var(--color-olive);
 }
+
+/* Team contacts: a slim vertical stack of small lime icons on the right edge of the photo (top right, away from the name). */
+.team-band .team-card {
+  position: relative;
+}
+.team-band .team-contacts {
+  position: absolute;
+  top: 0.75rem;
+  right: 0.75rem;
+  z-index: 2;
+  flex-direction: column;
+  gap: 0.4rem;
+  margin: 0;
+}
+.team-band .team-contacts a {
+  width: 2rem;
+  height: 2rem;
+  border: 0;
+  border-radius: 9999px;
+  background: var(--color-lime);
+  color: var(--color-forest);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.28);
+  transition:
+    transform 0.25s var(--ease-out),
+    background-color 0.25s;
+}
+.team-band .team-contacts a:hover,
+.team-band .team-contacts a:focus-visible {
+  background: #fff;
+  color: var(--color-forest);
+  transform: scale(1.1);
+}
+.team-band .team-contacts a svg {
+  width: 0.95rem;
+  height: 0.95rem;
+}
