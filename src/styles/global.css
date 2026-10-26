@@ -284,7 +284,7 @@
     height: 100%;
     width: 25%;
     border-radius: 2px;
-    background: var(--color-forest);
+    background: var(--color-lime);
     transition: transform 0.15s linear;
   }
   /* Card: ONE framed object (photo above, ivory panel below, no overlap). It floats by lifting as a whole
