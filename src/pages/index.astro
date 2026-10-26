@@ -369,9 +369,14 @@ const zoneTiles = (Object.keys(zones) as ZoneId[]).map((id) => ({ id, image: zon
             seu imóvel ou encontrar um arrendamento.
           </p>
         </div>
-        <a href="#contacto" class="btn btn-dark">
-          Falar com a equipa
-        </a>
+        <div class="flex flex-wrap gap-3">
+          <a href={`tel:${offices[0]!.phones[0]!.tel}`} class="btn btn-dark">
+            <Icon name="phone" class="size-4" /> Ligar
+          </a>
+          <a href={offices[0]!.mapUrl} class="btn btn-ghost" target="_blank" rel="noopener">
+            Ver no mapa
+          </a>
+        </div>
       </div>
     </div>
 
