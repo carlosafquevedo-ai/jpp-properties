@@ -3781,3 +3781,57 @@ a.rv-author:hover {
     transition: none;
   }
 }
+
+/* Development card, in the style of the zone stage: rounded, lifted, a deep bottom shade, a large title, a lime
+   button; the two smaller developments become white cards. */
+.zones-photo {
+  border-radius: 0.75rem;
+  box-shadow:
+    0 2px 4px rgba(27, 30, 28, 0.08),
+    0 24px 40px -20px rgba(27, 30, 28, 0.45);
+}
+.zones-photo::after {
+  background: linear-gradient(
+    to top,
+    rgba(20, 22, 21, 0.9) 0%,
+    rgba(20, 22, 21, 0.45) 45%,
+    rgba(20, 22, 21, 0.05) 80%
+  );
+}
+.zones-photo > img {
+  transition: transform 1.2s var(--ease-out);
+}
+.zones-photo:hover > img {
+  transform: scale(1.04);
+}
+.dev-title {
+  font-size: clamp(2rem, 3.4vw, 3rem);
+}
+.dev-cta svg {
+  transition: transform 0.3s var(--ease-out);
+}
+.zones-photo a:hover .dev-cta svg {
+  transform: translateX(3px);
+}
+.zone-mini {
+  border: 0;
+  border-radius: 0.6rem;
+  background: rgba(255, 255, 255, 0.96);
+  -webkit-backdrop-filter: none;
+  backdrop-filter: none;
+  box-shadow: 0 10px 22px -12px rgba(0, 0, 0, 0.55);
+}
+.zone-mini:hover,
+.zone-mini:focus-visible {
+  background: #fff;
+}
+.zone-mini img {
+  border-radius: 0.4rem;
+}
+.zone-mini .text-white\/65 {
+  color: var(--color-olive);
+  font-weight: 600;
+}
+.zone-mini .text-white {
+  color: var(--color-ink);
+}
