@@ -3278,3 +3278,14 @@ input:focus-visible + .glass-seg-opt {
 .team-band:where(*) {
   padding-bottom: 1.25rem;
 }
+
+/* Tighter vertical rhythm between the about, team and sell/buy sections. */
+#sobre {
+  margin-top: 4rem;
+}
+#sobre .team-band {
+  margin-top: 3rem;
+}
+#vender {
+  margin-top: 3rem;
+}
