@@ -2828,3 +2828,82 @@ input:focus-visible + .glass-seg-opt {
 .team-band .team-name p {
   color: var(--color-muted);
 }
+
+/* Team on desktop: expanding portraits. One card is open (photo, name panel, contact icons); the others are slim
+   strips that open on hover, focus or click (script in index.astro sets data-active). Below lg it stays a carousel. */
+@media (min-width: 64rem) {
+  .team-band .team-grid {
+    display: flex;
+    gap: 0.75rem;
+    height: 27rem;
+    padding: 0;
+    overflow: visible;
+    scroll-snap-type: none;
+  }
+  .team-band .team-card {
+    flex: 1 1 0;
+    min-width: 0;
+    max-width: none;
+    height: 100%;
+    overflow: hidden;
+    cursor: pointer;
+    background: var(--color-forest);
+    transform: none;
+    transition: flex-grow 0.7s var(--ease-out);
+  }
+  .team-band .team-card[data-active] {
+    flex-grow: 4.2;
+    cursor: default;
+  }
+  .team-band .team-card:hover {
+    transform: none;
+  }
+  .team-band .team-photo {
+    position: absolute;
+    inset: 0;
+    aspect-ratio: auto;
+    height: 100%;
+  }
+  .team-band .team-photo > img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: 50% 18%;
+  }
+  .team-band .team-photo::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: rgba(27, 30, 28, 0.34);
+    transition: opacity 0.5s;
+  }
+  .team-band .team-card[data-active] .team-photo::after {
+    opacity: 0;
+  }
+  .team-band .team-name {
+    position: absolute;
+    inset: auto 0 0 0;
+    z-index: 2;
+    padding: 1rem 1.15rem 1.1rem;
+    background: rgba(255, 255, 255, 0.94);
+    -webkit-backdrop-filter: blur(12px);
+    backdrop-filter: blur(12px);
+    border-top: 3px solid var(--color-lime);
+    transform: translateY(101%);
+    transition: transform 0.6s var(--ease-out);
+  }
+  .team-band .team-card[data-active] .team-name {
+    transform: none;
+    transition-delay: 0.15s;
+  }
+  .team-band .team-contacts {
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s;
+  }
+  .team-band .team-card[data-active] .team-contacts {
+    opacity: 1;
+    pointer-events: auto;
+    transition-delay: 0.3s;
+  }
+}
