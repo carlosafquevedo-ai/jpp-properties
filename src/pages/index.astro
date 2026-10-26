@@ -308,6 +308,36 @@ const zoneTiles = (Object.keys(zones) as ZoneId[]).map((id) => ({ id, image: zon
         <a href="#contacto" class="btn btn-dark">
           Falar com a equipa
         </a>
+        <!-- Map of Portugal (the Algarve at the foot) with the office as a pin; its pop-up card opens Google Maps. -->
+        <div class="pt-map">
+          <div class="pt-map-inner">
+            <img
+              src="/maps/portugal.webp"
+              alt=""
+              width="1254"
+              height="1254"
+              loading="lazy"
+              decoding="async"
+            />
+            <a
+              href={offices[0]!.mapUrl}
+              class="pt-pin"
+              target="_blank"
+              rel="noopener"
+              aria-label={`Abrir o escritório de ${offices[0]!.name} no Google Maps`}
+            >
+              <span class="pt-pin-dot" aria-hidden="true"></span>
+              <span class="pt-pin-card">
+                <span class="pt-pin-kicker">Escritório</span>
+                <span class="pt-pin-name">{offices[0]!.name}</span>
+                <span class="pt-pin-addr">{offices[0]!.address.join(', ')}</span>
+                <span class="pt-pin-go">
+                  Ver no Google Maps <Icon name="arrowUpRight" class="size-4" />
+                </span>
+              </span>
+            </a>
+          </div>
+        </div>
       </div>
       <div class="rise about-copy grid max-w-[40.5rem] content-start gap-4 text-left text-base leading-relaxed text-ink/80 md:text-justify sm:text-[1.0625rem]">
         <!-- TODO: provisional SEO copy (PT). To be reviewed with the client; EN/FR versions pending. -->
