@@ -1,41 +1,47 @@
 ---
 import Icon from './Icon.astro';
+import { offices } from '../lib/site';
 
-// TODO: provisional copy (PT); EN/FR pending. The photo is the office entrance as a stand-in: replace it with a team
-// photo when the client sends one. The button goes to a careers page that does not exist yet (/carreiras/).
+// TODO: provisional copy (PT); EN/FR pending. The banner photo is a zone photo and the card photo the office shopfront,
+// both stand-ins until the client sends a team photo. The button goes to a careers page that does not exist yet.
 const careersUrl = '/carreiras/';
+const office = offices[0]!;
 ---
 
 <section id="carreiras" class="container-x careers" aria-labelledby="carreiras-titulo">
-  <div class="careers-head">
-    <h2 id="carreiras-titulo" class="font-display text-3xl text-forest sm:text-4xl">
-      Faça carreira connosco
-    </h2>
-    <p class="mt-4 text-ink/80">
-      Procuramos consultores imobiliários que queiram crescer no Algarve, a começar ou com
-      experiência.
-    </p>
-  </div>
-  <div class="careers-card">
-    <div class="careers-photo">
+  <div class="careers-hero">
+    <div class="careers-bg" aria-hidden="true">
+      <img src="/zones/quinta-do-lago.jpg" alt="" loading="lazy" decoding="async" />
+    </div>
+    <div class="careers-copy">
+      <h2 id="carreiras-titulo" class="careers-title">
+        Faça carreira
+        <br />
+        connosco
+      </h2>
+      <p class="careers-lead">
+        Procuramos consultores imobiliários que queiram crescer no Algarve, a começar ou com
+        experiência.
+      </p>
+    </div>
+    <article class="careers-card">
       <img
-        src="/office/escritorio-entrada.webp"
-        alt="Entrada do escritório da JPP Properties em Vilamoura"
+        class="careers-card-photo"
+        src="/office/escritorio-vilamoura.webp"
+        alt="Montra do escritório da JPP Properties em Vilamoura"
         loading="lazy"
         decoding="async"
       />
-    </div>
-    <div class="careers-body">
-      <h3 class="font-display text-2xl text-forest sm:text-3xl">
-        Trabalhe com quem conhece a zona
-      </h3>
-      <p class="mt-4 text-ink/80">
-        Quer fazer parte de uma equipa que acompanha clientes da primeira visita à escritura?
-        Conte-nos o seu percurso e fale com a JPP Properties.
-      </p>
-      <a href={careersUrl} class="btn btn-dark mt-6 self-start">
-        Quero ser consultor <Icon name="arrowRight" class="size-4" />
-      </a>
-    </div>
+      <div class="careers-card-body">
+        <p class="careers-card-kicker">Escritório de {office.name}</p>
+        <h3 class="careers-card-title">Venha conhecer a equipa</h3>
+        <p class="careers-card-text">
+          Conte-nos o seu percurso e fale com a JPP Properties, sem compromisso.
+        </p>
+        <a href={careersUrl} class="btn btn-lime careers-cta">
+          Quero ser consultor <Icon name="arrowRight" class="size-4" />
+        </a>
+      </div>
+    </article>
   </div>
 </section>

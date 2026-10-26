@@ -3479,95 +3479,138 @@ a.rv-author:hover {
   fill: #fbbc04;
 }
 
-/* Careers: centred intro, then a split card (photo left, text panel right). */
+/* Careers: a photo banner with a big headline, and a white card that floats over its lower edge, its photo sticking
+   out of the card (references: photo banner + overlapping image card). */
 .careers {
   margin-top: 3.5rem;
+  margin-bottom: 7rem;
 }
-.careers-head {
-  max-width: 40rem;
-  margin: 0 auto 2rem;
-  text-align: center;
+.careers-hero {
+  position: relative;
 }
-.careers-card {
-  display: grid;
-  max-width: 62rem;
-  margin: 0 auto;
-}
-@media (min-width: 48rem) {
-  .careers-card {
-    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
-  }
-}
-.careers-photo {
-  min-height: 15rem;
+.careers-bg {
+  position: absolute;
+  inset: 0;
   overflow: hidden;
+  border-radius: 0.75rem;
+  background: var(--color-forest);
 }
-.careers-photo img {
-  display: block;
+.careers-bg img {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  object-position: 50% 40%;
-  transition: transform 0.9s var(--ease-out);
+  object-position: 50% 55%;
+  transition: transform 1.2s var(--ease-out);
 }
-.careers-card:hover .careers-photo img {
-  transform: scale(1.04);
+.careers-bg::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    90deg,
+    rgba(20, 22, 21, 0.78) 0%,
+    rgba(20, 22, 21, 0.4) 60%,
+    rgba(20, 22, 21, 0.2) 100%
+  );
 }
-.careers-body {
+.careers-hero:hover .careers-bg img {
+  transform: scale(1.05);
+}
+.careers-copy {
+  position: relative;
+  max-width: 34rem;
+  padding: 3rem 1.5rem 9rem;
+  color: #fff;
+}
+.careers-title {
+  font-family: var(--font-display, inherit);
+  font-size: clamp(2.5rem, 6vw, 4.25rem);
+  line-height: 1.02;
+  letter-spacing: -0.01em;
+  color: #fff;
+}
+.careers-lead {
+  max-width: 26rem;
+  margin-top: 1.25rem;
+  color: rgba(255, 255, 255, 0.85);
+}
+.careers-card {
+  position: relative;
+  display: grid;
+  gap: 1.25rem;
+  margin: -6rem 1rem 0;
+  padding: 1.25rem;
+  background: #fff;
+  border-radius: 0.75rem;
+  box-shadow:
+    0 2px 6px rgba(27, 30, 28, 0.08),
+    0 30px 50px -22px rgba(27, 30, 28, 0.45);
+  transition:
+    transform 0.5s var(--ease-out),
+    box-shadow 0.5s var(--ease-out);
+}
+.careers-card-photo {
+  width: 100%;
+  height: 11rem;
+  object-fit: cover;
+  object-position: 50% 45%;
+  border-radius: 0.75rem;
+  box-shadow: 0 16px 28px -14px rgba(27, 30, 28, 0.55);
+}
+.careers-card-body {
   display: flex;
   flex-direction: column;
+  align-items: flex-start;
   justify-content: center;
-  padding: 2rem;
-  background: var(--color-paper-2);
 }
-@media (min-width: 64rem) {
-  .careers-body {
-    padding: 3rem;
+.careers-card-kicker {
+  font-size: 0.85rem;
+  color: var(--color-muted);
+}
+.careers-card-title {
+  margin-top: 0.35rem;
+  font-family: var(--font-display, inherit);
+  font-size: 1.6rem;
+  line-height: 1.15;
+  color: var(--color-forest);
+}
+.careers-card-text {
+  margin-top: 0.6rem;
+  color: rgba(27, 30, 28, 0.78);
+}
+.careers-cta {
+  margin-top: 1.1rem;
+}
+@media (min-width: 48rem) {
+  .careers-copy {
+    padding: 4.5rem 3.5rem 10rem;
+  }
+  .careers-card {
+    position: absolute;
+    right: 3rem;
+    bottom: -3.5rem;
+    width: min(36rem, calc(100% - 6rem));
+    grid-template-columns: 11rem minmax(0, 1fr);
+    margin: 0;
+    padding: 1.5rem 1.75rem 1.5rem 1.5rem;
+  }
+  .careers-card-photo {
+    height: 100%;
+    min-height: 12rem;
+    margin-left: -3.5rem;
+  }
+}
+@media (hover: hover) and (prefers-reduced-motion: no-preference) {
+  .careers-card:hover {
+    transform: translateY(-6px);
+    box-shadow:
+      0 2px 6px rgba(27, 30, 28, 0.08),
+      0 40px 60px -24px rgba(27, 30, 28, 0.5);
   }
 }
 @media (prefers-reduced-motion: reduce) {
-  .careers-photo img {
-    transition: none;
-  }
-}
-.careers-photo {
-  position: relative;
-  min-height: 18rem;
-}
-.careers-photo img {
-  position: absolute;
-  inset: 0;
-}
-@media (min-width: 48rem) {
+  .careers-bg img,
   .careers-card {
-    min-height: 22rem;
-  }
-}
-
-/* Zone tiles and the development card float: a soft resting shadow and a lift on hover / focus. */
-.zones-intro a.group,
-.zones-photo,
-.zone-mini {
-  box-shadow:
-    0 2px 4px rgba(27, 30, 28, 0.08),
-    0 14px 24px -12px rgba(27, 30, 28, 0.35);
-  transition:
-    transform 0.45s var(--ease-out),
-    box-shadow 0.45s var(--ease-out);
-}
-@media (hover: hover) and (prefers-reduced-motion: no-preference) {
-  .zones-intro a.group:hover,
-  .zones-intro a.group:focus-visible {
-    transform: translateY(-8px);
-    box-shadow:
-      0 4px 8px rgba(27, 30, 28, 0.1),
-      0 28px 36px -16px rgba(27, 30, 28, 0.5);
-  }
-  .zone-mini:hover,
-  .zone-mini:focus-visible {
-    transform: translateY(-4px);
-    box-shadow:
-      0 4px 8px rgba(0, 0, 0, 0.18),
-      0 18px 26px -12px rgba(0, 0, 0, 0.55);
+    transition: none;
   }
 }
