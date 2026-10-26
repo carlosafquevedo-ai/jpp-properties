@@ -2474,3 +2474,38 @@ input:focus-visible + .glass-seg-opt {
 .hdr-cta.btn-go {
   padding-block: 0.3rem;
 }
+
+/* Search bar (desktop): one flat white bar. Fields are not boxed; thin dividers separate them and the
+   dark search button closes the row. */
+@media (min-width: 64rem) {
+  .glass-panel .glass-field {
+    border: 0;
+    border-radius: 0.75rem;
+    background: transparent;
+    box-shadow: none;
+  }
+  .glass-panel .glass-field::after {
+    display: none;
+  }
+  .glass-panel .glass-field:hover,
+  .glass-panel .glass-field:focus-within {
+    background: #f6f6f5;
+    border-color: transparent;
+  }
+  .glass-panel .glass-field + .glass-field {
+    position: relative;
+  }
+  .glass-panel .glass-field + .glass-field::before {
+    content: '';
+    position: absolute;
+    left: -0.4rem;
+    top: 18%;
+    bottom: 18%;
+    width: 1px;
+    background: rgba(27, 30, 28, 0.12);
+  }
+  .glass-panel .glass-field > label,
+  .glass-panel .glass-range-head label {
+    font-size: 0.72rem;
+  }
+}
