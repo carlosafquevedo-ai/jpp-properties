@@ -2929,3 +2929,9 @@ input:focus-visible + .glass-seg-opt {
 .team-band .team-bar {
   background: rgba(27, 30, 28, 0.12);
 }
+
+/* Team heading: carbon black. */
+.team-band #equipa-titulo,
+.team-band h2 {
+  color: var(--color-forest);
+}
