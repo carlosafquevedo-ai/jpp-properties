@@ -3543,3 +3543,31 @@ a.rv-author:hover {
     min-height: 22rem;
   }
 }
+
+/* Zone tiles and the development card float: a soft resting shadow and a lift on hover / focus. */
+.zones-intro a.group,
+.zones-photo,
+.zone-mini {
+  box-shadow:
+    0 2px 4px rgba(27, 30, 28, 0.08),
+    0 14px 24px -12px rgba(27, 30, 28, 0.35);
+  transition:
+    transform 0.45s var(--ease-out),
+    box-shadow 0.45s var(--ease-out);
+}
+@media (hover: hover) and (prefers-reduced-motion: no-preference) {
+  .zones-intro a.group:hover,
+  .zones-intro a.group:focus-visible {
+    transform: translateY(-8px);
+    box-shadow:
+      0 4px 8px rgba(27, 30, 28, 0.1),
+      0 28px 36px -16px rgba(27, 30, 28, 0.5);
+  }
+  .zone-mini:hover,
+  .zone-mini:focus-visible {
+    transform: translateY(-4px);
+    box-shadow:
+      0 4px 8px rgba(0, 0, 0, 0.18),
+      0 18px 26px -12px rgba(0, 0, 0, 0.55);
+  }
+}
