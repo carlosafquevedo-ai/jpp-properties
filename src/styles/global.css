@@ -3655,3 +3655,10 @@ a.rv-author:hover {
     transition: none;
   }
 }
+
+/* Team band: a softer graphite instead of pure carbon (a faint highlight keeps it rich). */
+.team-band {
+  background:
+    radial-gradient(70% 120% at 0% 0%, rgba(255, 255, 255, 0.08) 0%, transparent 60%),
+    linear-gradient(160deg, #3b403b 0%, #2c302d 100%);
+}
