@@ -3,7 +3,7 @@ import Icon from './Icon.astro';
 import { logoImage, logoWhiteImage } from '../data/properties';
 import { locales, localizedPath } from '../i18n/routes';
 import { useTranslations } from '../i18n/ui';
-import { instagramUrl, mainPhone, offices, whatsappUrl } from '../lib/site';
+import { email, instagramUrl, mainPhone, offices, openingHours, whatsappUrl } from '../lib/site';
 
 interface Props {
   /** Home page: the header is transparent over the hero until the page is scrolled. */
@@ -88,43 +88,16 @@ const linkClass =
           ))}
         </ul>
       </div>
-      <div class="relative hidden md:block" data-phone>
-        <button
-          type="button"
-          class="hdr-icon"
-          aria-expanded="false"
-          aria-controls="phone-menu"
-          aria-label="Ligar: ver os números de telefone"
-        >
-          <Icon name="phone" class="size-5" />
-        </button>
-        <div
-          id="phone-menu"
-          class="lang-menu phone-menu"
-          role="group"
-          aria-label="Números de telefone"
-          hidden
-        >
-          {offices.map((o) => (
-            <section>
-              <h2 class="phone-office">{o.name}</h2>
-              <ul>
-                {o.phones.map((p) => (
-                  <li>
-                    <a href={`tel:${p.tel}`} class="mega-link lang-item">
-                      <span class="flex flex-col">
-                        <span class="font-semibold">{p.label}</span>
-                        <span class="phone-note">({p.note})</span>
-                      </span>
-                      <Icon name="phone" class="size-4 text-olive" />
-                    </a>
-                  </li>
-                ))}
-              </ul>
-            </section>
-          ))}
-        </div>
-      </div>
+      <button
+        type="button"
+        class="hdr-icon hdr-info-btn hidden md:grid"
+        aria-haspopup="dialog"
+        aria-controls="info-panel"
+        aria-label="Contactos e horário"
+        data-info-open
+      >
+        <Icon name="dots" class="size-5" />
+      </button>
       <a
         href={instagramUrl}
         class="hdr-icon hidden md:grid"
@@ -196,6 +169,74 @@ const linkClass =
     </div>
   </div>
 </header>
+
+<!-- Contact panel (opened from the dots button): address, e-mail, phones, hours, social links. -->
+<dialog id="info-panel" class="info-panel" aria-labelledby="info-title">
+  <div class="info-head">
+    <h2 id="info-title" class="info-title">
+      Fale connosco
+    </h2>
+    <button type="button" class="info-close" aria-label="Fechar" data-info-close>
+      <Icon name="close" class="size-5" />
+    </button>
+  </div>
+  <div class="info-blocks">
+    {offices.map((o) => (
+      <section class="info-block">
+        <h3 class="info-label">Morada · {o.name}</h3>
+        <a href={o.mapUrl} target="_blank" rel="noopener" class="info-value info-link">
+          {o.address.map((l) => (
+            <span class="block">{l}</span>
+          ))}
+        </a>
+      </section>
+    ))}
+    <section class="info-block">
+      <h3 class="info-label">Email</h3>
+      <a href={`mailto:${email}`} class="info-value info-link">
+        {email}
+      </a>
+    </section>
+    <section class="info-block">
+      <h3 class="info-label">Telefone</h3>
+      <ul class="info-value info-phones">
+        {offices
+          .flatMap((o) => o.phones)
+          .map((p) => (
+            <li>
+              <a href={`tel:${p.tel}`} class="info-link">
+                {p.label}
+              </a>
+              <span class="info-note">({p.note})</span>
+            </li>
+          ))}
+      </ul>
+    </section>
+    <section class="info-block">
+      <h3 class="info-label">Horário</h3>
+      {openingHours.length > 0 ? (
+        <ul class="info-value">
+          {openingHours.map((h) => (
+            <li>{h}</li>
+          ))}
+        </ul>
+      ) : (
+        <p class="info-value info-todo">A confirmar</p>
+      )}
+    </section>
+    <section class="info-block">
+      <h3 class="info-label">Redes</h3>
+      <div class="info-social">
+        <a href={instagramUrl} target="_blank" rel="noopener" aria-label="Instagram">
+          <Icon name="instagram" class="size-5" />
+        </a>
+        <a href={whatsappUrl} target="_blank" rel="noopener" aria-label="WhatsApp">
+          <Icon name="whatsapp" class="size-5" />
+        </a>
+      </div>
+    </section>
+  </div>
+</dialog>
 
 <script>
   const header = document.getElementById('site-header');
@@ -289,12 +330,19 @@ const linkClass =
     document.querySelector<HTMLElement>('[data-lang]'),
     document.getElementById('lang-menu'),
   );
-  // The phone list opens on click only (it holds the numbers people may want to call).
-  register(
-    document.querySelector<HTMLElement>('[data-phone]'),
-    document.getElementById('phone-menu'),
-    false,
-  );
+  // Contact panel: a modal dialog (Escape and the backdrop close it).
+  const infoPanel = document.getElementById('info-panel') as HTMLDialogElement | null;
+  if (infoPanel) {
+    document
+      .querySelectorAll<HTMLElement>('[data-info-open]')
+      .forEach((b) => b.addEventListener('click', () => infoPanel.showModal()));
+    infoPanel
+      .querySelector<HTMLElement>('[data-info-close]')
+      ?.addEventListener('click', () => infoPanel.close());
+    infoPanel.addEventListener('click', (e) => {
+      if (e.target === infoPanel) infoPanel.close();
+    });
+  }
 
   document.addEventListener('keydown', (e) => {
     if (e.key !== 'Escape') return;

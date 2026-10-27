@@ -4128,3 +4128,138 @@ a.rv-author:hover {
 .hero-copy h1 {
   font-weight: 600;
 }
+
+/* Header contact panel: a dark card that drops in at the top right (modal dialog). Blocks for address, e-mail,
+   phones, hours and social links; lime labels. */
+.info-panel {
+  position: fixed;
+  inset: 5.5rem max(var(--gutter), calc((100vw - var(--page-w)) / 2 + var(--gutter))) auto auto;
+  width: min(24rem, calc(100vw - 2rem));
+  max-height: calc(100dvh - 7rem);
+  margin: 0;
+  padding: 1.5rem;
+  overflow-y: auto;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 1rem;
+  background: #1f2220;
+  color: #fff;
+  box-shadow: 0 40px 80px -30px rgba(0, 0, 0, 0.6);
+  scrollbar-width: thin;
+}
+.info-panel::backdrop {
+  background: rgba(20, 22, 21, 0.45);
+  -webkit-backdrop-filter: blur(4px);
+  backdrop-filter: blur(4px);
+}
+.info-panel[open] {
+  animation: info-in 0.35s var(--ease-out);
+}
+@keyframes info-in {
+  from {
+    opacity: 0;
+    transform: translateY(-10px) scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+.info-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+}
+.info-title {
+  font-family: var(--font-display, inherit);
+  font-size: 1.75rem;
+  font-weight: 600;
+  line-height: 1.1;
+}
+.info-close {
+  display: grid;
+  place-items: center;
+  width: 2.75rem;
+  height: 2.75rem;
+  flex: none;
+  border-radius: 0.6rem;
+  background: rgba(255, 255, 255, 0.07);
+  color: #fff;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+.info-close:hover,
+.info-close:focus-visible {
+  background: rgba(255, 255, 255, 0.14);
+}
+.info-blocks {
+  display: grid;
+  gap: 0.5rem;
+  margin-top: 1.25rem;
+}
+.info-block {
+  padding: 1rem 1.1rem;
+  border-radius: 0.75rem;
+  background: rgba(255, 255, 255, 0.05);
+}
+.info-label {
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--color-lime);
+}
+.info-value {
+  margin-top: 0.45rem;
+  font-size: 0.95rem;
+  line-height: 1.5;
+  color: rgba(255, 255, 255, 0.92);
+}
+.info-link {
+  display: block;
+  color: inherit;
+  transition: color 0.2s;
+}
+.info-link:hover,
+.info-link:focus-visible {
+  color: var(--color-lime);
+}
+.info-phones {
+  display: grid;
+  gap: 0.4rem;
+}
+.info-note {
+  display: block;
+  font-size: 0.75rem;
+  color: rgba(255, 255, 255, 0.55);
+}
+.info-todo {
+  color: rgba(255, 255, 255, 0.55);
+}
+.info-social {
+  display: flex;
+  gap: 0.5rem;
+  margin-top: 0.6rem;
+}
+.info-social a {
+  display: grid;
+  place-items: center;
+  width: 2.75rem;
+  height: 2.75rem;
+  border-radius: 0.6rem;
+  background: rgba(255, 255, 255, 0.08);
+  color: #fff;
+  transition:
+    background-color 0.2s,
+    color 0.2s;
+}
+.info-social a:hover,
+.info-social a:focus-visible {
+  background: var(--color-lime);
+  color: var(--color-forest);
+}
+@media (prefers-reduced-motion: reduce) {
+  .info-panel[open] {
+    animation: none;
+  }
+}

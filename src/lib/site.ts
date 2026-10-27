@@ -19,6 +19,8 @@ export const offices = [
 ] as const;
 
 export const email = 'geral@jppproperties.com';
+/** Opening hours shown in the header's contact panel. TODO: confirm with the client (placeholder until then). */
+export const openingHours: string[] = [];
 export const mainPhone = offices[0].phones[0];
 // TODO: confirm the WhatsApp number with the client (provisionally the main mobile line).
 export const whatsappUrl = 'https://wa.me/351917629447';
