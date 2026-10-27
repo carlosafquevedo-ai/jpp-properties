@@ -4284,3 +4284,33 @@ a.rv-author:hover {
     pointer-events: none;
   }
 }
+
+/* Featured spotlight (wide screens): cards sit on a common baseline; the spotlit one (2nd visible by default, or
+   the one under the pointer) shows a taller photo, the others step back slightly. */
+@media (min-width: 64rem) {
+  .feat-track {
+    align-items: flex-end;
+  }
+  .feat-item .property-card {
+    height: auto;
+  }
+  .feat-item .card-photo {
+    aspect-ratio: 1.25;
+    transition: aspect-ratio 0.55s var(--ease-out);
+  }
+  .feat-item[data-spot] .card-photo {
+    aspect-ratio: 0.95;
+  }
+  .feat-item .property-card {
+    transition:
+      transform 0.45s var(--ease-out),
+      box-shadow 0.45s var(--ease-out),
+      opacity 0.45s;
+  }
+  .feat-track:has(.feat-item[data-spot]) .feat-item:not([data-spot]) .property-card {
+    opacity: 0.88;
+  }
+  .feat-item[data-spot] .property-card {
+    box-shadow: 0 24px 40px -24px rgba(27, 30, 28, 0.45);
+  }
+}
