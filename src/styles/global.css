@@ -4124,3 +4124,7 @@ a.rv-author:hover {
 .hero-copy h1 {
   font-weight: 500;
 }
+.zones-title,
+.hero-copy h1 {
+  font-weight: 600;
+}
