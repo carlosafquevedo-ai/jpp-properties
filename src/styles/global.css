@@ -4564,3 +4564,12 @@ a.rv-author:hover {
 .hcard {
   min-height: clamp(520px, calc(100svh - 14rem), 700px);
 }
+
+/* Hero: copy and listing card moved up, their tops on the same line. */
+@media (min-width: 64rem) {
+  .hcard-inner {
+    flex: 1;
+    align-items: flex-start;
+    padding-top: 3rem;
+  }
+}
