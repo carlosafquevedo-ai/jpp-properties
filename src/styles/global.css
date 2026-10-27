@@ -4346,3 +4346,11 @@ a.rv-author:hover {
     aspect-ratio: 1.1;
   }
 }
+
+/* Featured cards back to their original width (4 per row); the spotlit one only gets a taller photo. */
+@media (min-width: 64rem) {
+  .feat-item,
+  .feat-item[data-spot] {
+    width: calc((100% - 4.5rem) / 4);
+  }
+}
