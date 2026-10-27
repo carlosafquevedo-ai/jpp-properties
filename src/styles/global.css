@@ -4269,3 +4269,18 @@ a.rv-author:hover {
   padding-left: 1rem;
   border-left: 2px solid var(--color-lime);
 }
+
+/* Mouse-draggable carousels (DragScroll.astro): grab cursor where a row can scroll, no text selection while dragging. */
+@media (pointer: fine) {
+  .drag-on {
+    cursor: grab;
+  }
+  .drag-on.is-dragging {
+    cursor: grabbing;
+    user-select: none;
+  }
+  .is-dragging a,
+  .is-dragging img {
+    pointer-events: none;
+  }
+}

@@ -4,6 +4,7 @@ import SiteHeader from '../components/SiteHeader.astro';
 import SiteFooter from '../components/SiteFooter.astro';
 import MobileContactBar from '../components/MobileContactBar.astro';
 import FloatingWidgets from '../components/FloatingWidgets.astro';
+import DragScroll from '../components/DragScroll.astro';
 import type { RouteKey } from '../i18n/routes';
 
 interface Props {
@@ -25,4 +26,5 @@ const { title, description, route, padTop = true } = Astro.props;
   <SiteFooter />
   <MobileContactBar />
   <FloatingWidgets />
+  <DragScroll />
 </BaseLayout>

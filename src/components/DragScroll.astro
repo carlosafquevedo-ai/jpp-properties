@@ -1,0 +1,125 @@
+---
+/**
+ * Mouse-friendly carousels: every horizontal scroller listed below can be dragged with the mouse (touch and
+ * trackpads already scroll natively). On release the row settles on the nearest item, a quick flick moves one
+ * item on, and a drag never triggers the click on the link underneath.
+ */
+---
+
+<script>
+  const SELECTOR = '.feat-track, .team-grid, .reviews-list, .card-scroller, [data-drag-scroll]';
+  const fine = window.matchMedia('(pointer: fine)');
+  const reduce = window.matchMedia('(prefers-reduced-motion: reduce)');
+
+  const scrollable = (el: HTMLElement) => el.scrollWidth - el.clientWidth > 4;
+
+  /** Distance (px) from the current scroll position to each item's start, from layout positions (not affected by
+      transforms such as the card tilt). */
+  const offsets = (el: HTMLElement) => {
+    const items = [...el.children] as HTMLElement[];
+    const base = items[0]?.offsetLeft ?? 0;
+    return items.map((c) => c.offsetLeft - base - el.scrollLeft);
+  };
+
+  const attach = (el: HTMLElement) => {
+    if (el.dataset.dragReady) return;
+    el.dataset.dragReady = '';
+    // Grab cursor only while the row actually overflows.
+    const mark = () => el.classList.toggle('drag-on', scrollable(el));
+    new ResizeObserver(mark).observe(el);
+    mark();
+    let startX = 0;
+    let startLeft = 0;
+    let lastX = 0;
+    let lastT = 0;
+    let speed = 0;
+    let dragging = false;
+    let down = false;
+    let suppress = false;
+
+    el.addEventListener('pointerdown', (e) => {
+      if (e.pointerType !== 'mouse' || e.button !== 0 || !fine.matches) return;
+      if ((e.target as Element).closest(SELECTOR) !== el || !scrollable(el)) return;
+      if ((e.target as Element).closest('button, input, select, textarea')) return;
+      down = true;
+      dragging = false;
+      startX = lastX = e.clientX;
+      startLeft = el.scrollLeft;
+      lastT = performance.now();
+      speed = 0;
+    });
+
+    el.addEventListener('pointermove', (e) => {
+      if (!down) return;
+      const dx = e.clientX - startX;
+      if (!dragging && Math.abs(dx) > 5) {
+        dragging = true;
+        el.setPointerCapture(e.pointerId);
+        el.classList.add('is-dragging');
+        el.style.scrollSnapType = 'none';
+        el.style.scrollBehavior = 'auto';
+      }
+      if (!dragging) return;
+      const now = performance.now();
+      speed = (e.clientX - lastX) / Math.max(now - lastT, 1);
+      lastX = e.clientX;
+      lastT = now;
+      el.scrollLeft = startLeft - dx;
+    });
+
+    const end = (e: PointerEvent) => {
+      if (!down) return;
+      down = false;
+      if (!dragging) return;
+      dragging = false;
+      suppress = true;
+      setTimeout(() => (suppress = false), 0);
+      if (el.hasPointerCapture(e.pointerId)) el.releasePointerCapture(e.pointerId);
+      el.classList.remove('is-dragging');
+
+      // Settle on the nearest item; a fast flick goes one further in its direction.
+      const list = offsets(el);
+      let i = list.reduce((best, o, k) => (Math.abs(o) < Math.abs(list[best]!) ? k : best), 0);
+      if (Math.abs(speed) > 0.5) {
+        const dir = speed < 0 ? 1 : -1;
+        const ahead = list.findIndex((o) => (dir > 0 ? o > 2 : false));
+        if (dir > 0 && ahead !== -1 && Math.abs(list[i]!) < 2) i = ahead;
+        if (dir < 0) {
+          const behind = list
+            .map((o, k) => [o, k] as const)
+            .filter(([o]) => o < -2)
+            .pop();
+          if (behind && Math.abs(list[i]!) < 2) i = behind[1];
+        }
+      }
+      el.scrollTo({
+        left: el.scrollLeft + (list[i] ?? 0),
+        behavior: reduce.matches ? 'auto' : 'smooth',
+      });
+      window.setTimeout(() => {
+        el.style.scrollSnapType = '';
+        el.style.scrollBehavior = '';
+      }, 450);
+    };
+    el.addEventListener('pointerup', end);
+    el.addEventListener('pointercancel', end);
+
+    // A drag is not a click: stop links and card clicks from firing after it.
+    el.addEventListener(
+      'click',
+      (e) => {
+        if (!suppress) return;
+        e.preventDefault();
+        e.stopPropagation();
+      },
+      true,
+    );
+    // No ghost-image dragging of photos and links.
+    el.addEventListener('dragstart', (e) => e.preventDefault());
+  };
+
+  const init = () => document.querySelectorAll<HTMLElement>(SELECTOR).forEach(attach);
+  init();
+  // Reviews are rendered after a fetch: pick up scrollers added later.
+  new MutationObserver(init).observe(document.body, { childList: true, subtree: true });
+</script>
