@@ -4638,3 +4638,36 @@ a.rv-author:hover {
   background: var(--color-forest);
   color: #fff;
 }
+
+/* Wider hero card; at the top of the page the header matches its width, and once scrolled it narrows back to
+   the page column (animated). Both use the same inset so their edges line up. */
+.hcard {
+  margin-inline: max(0.75rem, calc((100% - var(--page-w)) / 2 - 3rem));
+}
+/* The header box has the gutter as side padding: its full width is 100% + 2 * gutter. */
+.site-header:not([data-stuck]) .hdr-bar {
+  --hdr-full: calc(100% + 2 * var(--gutter));
+  --hdr-inset: max(0.75rem, calc((var(--hdr-full) - var(--page-w)) / 2 - 3rem));
+  max-width: none;
+  width: calc(var(--hdr-full) - 2 * var(--hdr-inset));
+  margin-left: calc(var(--hdr-inset) - var(--gutter));
+  margin-right: 0;
+}
+.site-header .hdr-bar {
+  transition:
+    background-color 0.35s,
+    border-color 0.35s,
+    box-shadow 0.35s,
+    height 0.35s var(--ease-out),
+    max-width 0.5s var(--ease-out),
+    width 0.5s var(--ease-out),
+    margin 0.5s var(--ease-out);
+}
+@media (min-width: 64rem) {
+  .hcard-inner {
+    padding-inline: 3rem;
+  }
+  .hcard > div:last-child {
+    width: calc(100% - 6rem) !important;
+  }
+}
