@@ -4314,3 +4314,9 @@ a.rv-author:hover {
     box-shadow: 0 24px 40px -24px rgba(27, 30, 28, 0.45);
   }
 }
+
+/* Map drawn as an architectural sheet (outline, hatching and construction lines in soft olive): no filter needed. */
+.pt-map-inner > img {
+  filter: none;
+  opacity: 1;
+}
