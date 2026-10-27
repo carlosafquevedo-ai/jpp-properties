@@ -717,22 +717,21 @@ const zoneTiles = (Object.keys(zones) as ZoneId[]).map((id) => ({
     window.addEventListener('resize', syncBar);
     syncBar();
 
-    // Spotlight: the second visible card is the large one; the card under the pointer (or with focus) takes over
+    // Spotlight: the first visible card is the large one; the card under the pointer (or with focus) takes over
     // while it is hovered. Only on wide screens, where several cards are visible.
     const featItems = [...featTrack.querySelectorAll<HTMLElement>('.feat-item')];
     const wide = window.matchMedia('(min-width: 64rem)');
     let hovered: HTMLElement | null = null;
+    featTrack.scrollLeft = 0;
     const firstVisible = () => {
       const left = featTrack.scrollLeft;
       const base = featItems[0]?.offsetLeft ?? 0;
-      return featItems.findIndex((it) => it.offsetLeft - base >= left - 4);
+      return featItems.findIndex((it) => it.offsetLeft - base >= left - 8);
     };
     const spot = () => {
       const target = !wide.matches
         ? null
-        : (hovered ??
-          featItems[Math.min(Math.max(firstVisible(), 0) + 1, featItems.length - 1)] ??
-          null);
+        : (hovered ?? featItems[Math.max(firstVisible(), 0)] ?? null);
       featItems.forEach((it) => it.toggleAttribute('data-spot', it === target));
     };
     featItems.forEach((it) => {
