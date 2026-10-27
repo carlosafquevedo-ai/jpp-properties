@@ -4088,3 +4088,33 @@ a.rv-author:hover {
   font-size: clamp(2rem, 3.6vw, 3rem);
   color: #fff;
 }
+
+/* Sell / buy: no band colour; the form card carries the lime instead, as a soft gradient with a light glow. */
+.lead-shell {
+  background: none;
+  box-shadow: none;
+}
+.lead-shell .lead-card {
+  border: 1px solid rgba(158, 188, 58, 0.35);
+  background:
+    radial-gradient(120% 70% at 100% 0%, rgba(255, 255, 255, 0.75) 0%, transparent 55%),
+    radial-gradient(90% 60% at 0% 100%, rgba(158, 188, 58, 0.28) 0%, transparent 60%),
+    linear-gradient(160deg, #f6f9ec 0%, #e6efc8 100%);
+  box-shadow:
+    0 1px 2px rgba(27, 30, 28, 0.05),
+    0 30px 60px -28px rgba(85, 102, 43, 0.45);
+}
+.lead-shell .lead-tabs {
+  background: rgba(255, 255, 255, 0.6);
+  border-color: rgba(85, 102, 43, 0.18);
+}
+.lead-shell .lead-group > legend {
+  border-bottom-color: rgba(85, 102, 43, 0.22);
+}
+.lead-shell .field {
+  background-color: #fff;
+  border-color: rgba(85, 102, 43, 0.2);
+}
+.lead-shell .lead-chip > span {
+  background: rgba(255, 255, 255, 0.85);
+}
