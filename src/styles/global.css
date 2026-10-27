@@ -4780,3 +4780,15 @@ a.rv-author:hover {
   height: 1.35em;
   margin-bottom: -0.1em;
 }
+.team-title-mark {
+  height: 1.2em;
+}
+.team-title-r1 {
+  gap: 0.25em;
+}
+.team-title-r1 > span {
+  padding-left: 0.25em;
+}
+.zones-title.team-title {
+  font-size: clamp(2rem, 2.9vw, 2.75rem);
+}
