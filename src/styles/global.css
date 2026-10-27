@@ -4573,3 +4573,9 @@ a.rv-author:hover {
     padding-top: 3rem;
   }
 }
+@media (min-width: 64rem) {
+  /* Copy a little lower: centred against the listing card. */
+  .hcard .hero-copy {
+    align-self: center;
+  }
+}
