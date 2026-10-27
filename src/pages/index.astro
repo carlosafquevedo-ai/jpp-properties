@@ -225,38 +225,33 @@ const zoneTiles = (Object.keys(zones) as ZoneId[]).map((id) => ({
             Explore por zona
           </h2>
           <p class="zones-sub">Escolha uma zona para ver os imóveis disponíveis.</p>
-          <div class="zone-grid mt-6 grid grid-cols-2 gap-3 sm:grid-cols-3 lg:flex-1 lg:grid-rows-2">
+          <!-- Zones as an architectural sheet: small square photos with the name beside them, staggered. -->
+          <ul class="zx-board">
             {zoneTiles.map((t) => (
-              <a
-                href={`/imoveis/?zona=${t.id}`}
-                class="group relative isolate flex aspect-square flex-col justify-end overflow-hidden rounded-2xl p-4 lg:aspect-auto text-white"
-              >
-                {t.image ? (
-                  <>
-                    <img
-                      src={t.image}
-                      alt=""
-                      class="absolute inset-0 -z-20 size-full object-cover transition-transform duration-700 group-hover:scale-105"
-                      loading="lazy"
-                      referrerpolicy="no-referrer"
-                    />
-                    <div class="absolute inset-0 -z-10 bg-gradient-to-t from-forest/90 via-forest/35 to-forest/5" />
-                  </>
-                ) : (
-                  <div class="zone-plain absolute inset-0 -z-10 transition-transform duration-700 group-hover:scale-105" />
-                )}
-                {t.count > 0 && (
-                  <span class="zone-tile-count">
-                    {t.count} {t.count === 1 ? 'imóvel' : 'imóveis'}
+              <li>
+                <a href={`/imoveis/?zona=${t.id}`} class="zx-tile">
+                  <span class="zx-photo">
+                    {t.image ? (
+                      <img src={t.image} alt="" loading="lazy" referrerpolicy="no-referrer" />
+                    ) : (
+                      <span class="zone-plain absolute inset-0" />
+                    )}
+                    <span class="zx-go" aria-hidden="true">
+                      <Icon name="arrowUpRight" class="size-4" />
+                    </span>
                   </span>
-                )}
-                <h3 class="zone-tile-name">{zones[t.id].name}</h3>
-                <span class="zone-tile-cta" aria-hidden="true">
-                  Ver imóveis <Icon name="arrowRight" class="size-4" />
-                </span>
-              </a>
+                  <span class="zx-label">
+                    <span class="zx-name">{zones[t.id].name}</span>
+                    <span class="zx-count">
+                      {t.count > 0
+                        ? `${t.count} ${t.count === 1 ? 'imóvel' : 'imóveis'}`
+                        : 'Ver zona'}
+                    </span>
+                  </span>
+                </a>
+              </li>
             ))}
-          </div>
+          </ul>
         </div>
 
         {mainHighlight && (

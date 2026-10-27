@@ -4453,3 +4453,102 @@ a.rv-author:hover {
     transition: none;
   }
 }
+
+/* Zones as an architectural sheet (reference: small square photos with uppercase captions beside them, staggered).
+   Two columns; in each row the left tile sets its caption on the left of the photo, the right one on the right,
+   and the right column sits lower. Photos are softly desaturated and come to full colour on hover / focus. */
+.zx-board {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1.5rem 1.25rem;
+  margin: 1.75rem 0 0;
+  padding: 0;
+  list-style: none;
+}
+.zx-board > li:nth-child(even) {
+  margin-top: 3.25rem;
+}
+.zx-tile {
+  display: flex;
+  align-items: flex-end;
+  gap: 0.85rem;
+  color: var(--color-ink);
+}
+.zx-board > li:nth-child(odd) .zx-tile {
+  flex-direction: row-reverse;
+  justify-content: flex-start;
+}
+.zx-board > li:nth-child(odd) .zx-label {
+  text-align: right;
+}
+.zx-photo {
+  position: relative;
+  display: block;
+  flex: none;
+  width: clamp(6.5rem, 11vw, 9rem);
+  aspect-ratio: 1;
+  overflow: hidden;
+  background: var(--color-paper-2);
+  box-shadow: 0 14px 24px -14px rgba(27, 30, 28, 0.45);
+}
+.zx-photo img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  filter: saturate(0.55);
+  transition:
+    transform 0.8s var(--ease-out),
+    filter 0.5s;
+}
+.zx-go {
+  position: absolute;
+  right: 0.4rem;
+  top: 0.4rem;
+  display: grid;
+  place-items: center;
+  width: 1.8rem;
+  height: 1.8rem;
+  background: var(--color-lime);
+  color: var(--color-forest);
+  opacity: 0;
+  transform: scale(0.8);
+  transition:
+    opacity 0.3s,
+    transform 0.4s var(--ease-out);
+}
+.zx-label {
+  display: grid;
+  gap: 0.3rem;
+  padding-bottom: 0.15rem;
+}
+.zx-name {
+  font-family: var(--font-display, inherit);
+  font-size: clamp(0.95rem, 1.35vw, 1.15rem);
+  font-weight: 600;
+  line-height: 1.05;
+  text-transform: uppercase;
+}
+.zx-count {
+  font-size: 0.75rem;
+  color: var(--color-muted);
+}
+.zx-tile:hover .zx-photo img,
+.zx-tile:focus-visible .zx-photo img {
+  filter: none;
+  transform: scale(1.06);
+}
+.zx-tile:hover .zx-go,
+.zx-tile:focus-visible .zx-go {
+  opacity: 1;
+  transform: none;
+}
+.zx-tile:hover .zx-count,
+.zx-tile:focus-visible .zx-count {
+  color: var(--color-olive);
+}
+@media (prefers-reduced-motion: reduce) {
+  .zx-photo img,
+  .zx-go {
+    transition: none;
+  }
+}
