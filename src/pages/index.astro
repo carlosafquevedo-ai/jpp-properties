@@ -45,11 +45,10 @@ const zoneTiles = (Object.keys(zones) as ZoneId[]).map((id) => ({
   title="JPP Properties | Imóveis no Algarve"
   description="Apartamentos e moradias em Vilamoura, Quarteira, Vale do Lobo e Quinta do Lago. JPP Properties, AMI 9361."
   route="home"
-  padTop={false}
 >
   <!-- Hero: full-bleed rotating photos, rounded bottom corners and a hanging tab that holds the search box -->
   <section>
-    <div class="hero-shape relative isolate z-20 flex min-h-[clamp(760px,100svh,1040px)] flex-col justify-end">
+    <div class="hero-shape hcard relative isolate z-20 flex flex-col justify-end">
       <div class="absolute inset-0 -z-20 overflow-hidden" data-hero-media>
         {slides.map((slide, i) => (
           <img
@@ -64,7 +63,7 @@ const zoneTiles = (Object.keys(zones) as ZoneId[]).map((id) => ({
       </div>
       <div class="hero-shade absolute inset-0 -z-10"></div>
 
-      <div class="container-x pb-8 pt-32 text-white lg:flex lg:items-start lg:justify-between lg:gap-10">
+      <div class="container-x hcard-inner pb-8 text-white lg:flex lg:items-start lg:justify-between lg:gap-10">
         <div class="hero-copy">
           <h1 class="max-w-4xl font-display text-[clamp(2rem,4.2vw,3.5rem)] leading-[1]">
             Encontre

@@ -4453,3 +4453,58 @@ a.rv-author:hover {
     transition: none;
   }
 }
+
+/* ---- Hero as a card -------------------------------------------------------------------------------------------
+   The hero sits below the header as a rounded card inside the page column. Two pieces break out of its frame:
+   the listing card hangs over the right edge (solid carbon with a lime edge, so it reads off the photo too) and the
+   search bar straddles the bottom edge. */
+.hcard {
+  min-height: clamp(560px, calc(100svh - 9rem), 820px);
+  margin-inline: max(var(--gutter), calc((100% - var(--page-w)) / 2 + var(--gutter)));
+  margin-bottom: 3.5rem;
+}
+.hcard > [data-hero-media],
+.hcard > .hero-shade {
+  border-radius: 1.5rem;
+}
+.hcard-inner {
+  width: 100%;
+  max-width: none;
+  padding-top: 3.5rem;
+  padding-inline: 2.5rem;
+}
+@media (max-width: 63.99rem) {
+  .hcard-inner {
+    padding-inline: 1.5rem;
+  }
+}
+/* Search bar: half inside, half outside the bottom edge. */
+.hcard > div:last-child {
+  width: calc(100% - 3rem) !important;
+  padding-bottom: 0 !important;
+  margin-bottom: -2.75rem;
+}
+@media (min-width: 64rem) {
+  .hcard > div:last-child {
+    width: calc(100% - 5rem) !important;
+  }
+  /* Listing card: overhangs the right edge of the hero. */
+  .hcard .hero-deck {
+    position: absolute;
+    top: 2.5rem;
+    right: -2.25rem;
+    z-index: 5;
+    background: linear-gradient(160deg, #262a27 0%, #171918 100%);
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+    border: 0;
+    border-top: 3px solid var(--color-lime);
+    border-radius: 1rem;
+    box-shadow:
+      0 2px 6px rgba(0, 0, 0, 0.15),
+      0 34px 60px -24px rgba(0, 0, 0, 0.55);
+  }
+  .hcard .hero-copy {
+    max-width: calc(100% - 26rem);
+  }
+}
