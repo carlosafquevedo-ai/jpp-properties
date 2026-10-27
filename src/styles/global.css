@@ -4699,3 +4699,13 @@ a.rv-author:hover {
     padding-left: max(1.5rem, calc((100% - (min(100vw, var(--page-w)) - 2 * var(--gutter))) / 2));
   }
 }
+
+/* Section titles a size down (max 36px), for a calmer rhythm; the hero headline keeps its own size. */
+.zones-title,
+.careers-title.zones-title {
+  font-size: clamp(1.6rem, 2.6vw, 2.25rem);
+  line-height: 1.08;
+}
+.hero-copy h1 {
+  font-size: clamp(2rem, 4.2vw, 3.5rem);
+}
