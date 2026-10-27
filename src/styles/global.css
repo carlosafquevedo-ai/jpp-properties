@@ -4736,3 +4736,47 @@ a.rv-author:hover {
     grid-template-columns: minmax(0, 19rem) minmax(0, 1fr);
   }
 }
+
+/* Team heading as a staggered statement at the top of the column (the brand mark leads the first line), the lead
+   text stays on the bottom line of the portraits. */
+@media (min-width: 64rem) {
+  .team-band > div:first-child {
+    justify-content: space-between;
+  }
+  .team-band .team-lead {
+    margin-top: auto;
+  }
+}
+.zones-title.team-title {
+  display: grid;
+  gap: 0.05em;
+  font-size: clamp(2.25rem, 3.6vw, 3.4rem);
+  line-height: 0.98;
+}
+.team-title-row {
+  display: flex;
+  align-items: flex-end;
+  white-space: nowrap;
+}
+.team-title-r1 {
+  gap: 0.35em;
+  padding-left: 0;
+}
+.team-title-mark {
+  width: auto;
+  height: 0.95em;
+  flex: none;
+}
+.team-title-r2 {
+  margin-left: -0.15em;
+}
+.team-title-r3 {
+  padding-left: 1.6em;
+}
+.team-title-r1 > span {
+  padding-left: 0.6em;
+}
+.team-title-mark {
+  height: 1.35em;
+  margin-bottom: -0.1em;
+}

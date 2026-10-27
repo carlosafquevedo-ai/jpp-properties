@@ -446,18 +446,23 @@ const zoneTiles = (Object.keys(zones) as ZoneId[]).map((id) => ({
       class="team-band mt-20 grid gap-8 lg:mt-24 lg:grid-cols-[minmax(0,16rem)_minmax(0,1fr)] lg:gap-14"
     >
       <div class="rise flex flex-col justify-between gap-8 lg:gap-0">
-        <div>
-          <h2 id="equipa-titulo" class="zones-title team-title">
-            Conheça
-            <br />
-            a equipa
-            <br />
-            JPP
-          </h2>
-          <p class="mt-5 max-w-xs text-white">
-            Fale diretamente com quem o vai acompanhar, da primeira visita à escritura.
-          </p>
-        </div>
+        <h2 id="equipa-titulo" class="zones-title team-title">
+          <span class="team-title-row team-title-r1">
+            <img
+              src="/brand/logo-mark-black.png"
+              alt=""
+              class="team-title-mark"
+              width="276"
+              height="319"
+            />
+            <span>Conheça</span>
+          </span>
+          <span class="team-title-row team-title-r2">a equipa</span>
+          <span class="team-title-row team-title-r3">JPP</span>
+        </h2>
+        <p class="team-lead mt-5 max-w-xs text-white">
+          Fale diretamente com quem o vai acompanhar, da primeira visita à escritura.
+        </p>
         <div class="team-nav" data-team-nav hidden>
           <button type="button" class="feat-nav" data-team-prev aria-label="Agentes anteriores">
             <Icon name="chevronLeft" class="size-5" />
