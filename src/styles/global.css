@@ -34,7 +34,7 @@
 /* One page width for the whole site: every section, the hero, the footer and the header
    align to the same column. Change --page-w here and everything follows. */
 :root {
-  --page-w: 90rem;
+  --page-w: 86rem;
   --gutter: clamp(1.25rem, 4vw, 2rem);
   --header-h: 4.5rem;
   --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
@@ -4637,15 +4637,4 @@ a.rv-author:hover {
 .site-header .hdr-cta.btn-go .btn-go-icon {
   background: var(--color-forest);
   color: #fff;
-}
-
-/* Page width now follows the hero card: a wider column (90rem) with a slimmer side margin on desktop, so every
-   section lines up with the hero's edges. */
-@media (min-width: 64rem) {
-  :root {
-    --gutter: 1rem;
-  }
-}
-.hcard {
-  margin-inline: max(var(--gutter), calc((100% - var(--page-w)) / 2 + var(--gutter)));
 }
