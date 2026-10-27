@@ -39,7 +39,7 @@ Website da JPP Properties (AMI 9361), agência imobiliária no Algarve. Esta é 
 - **O fundo base de todas as secções é branco** (`paper`). `paper-2` (névoa) só para apoio: filtros, etiquetas, campos.
 - Paleta em `src/styles/global.css` (ver `/paleta/`): **carvão** (`forest`, `#1b1e1c`, o único escuro: cabeçalho, botões escuros, pesquisa, banda das zonas), marfim (`paper-2`), linha, tinta, cinza quente e o **verde da marca** (lima `#9EBC3A` e oliva): destaques e botões principais (hero, cabeçalho sobre a fotografia), etiquetas, pontos e barras; linhas finas em branco translúcido sobre o carvão (sem bege/champanhe). Evitar misturar novos tons: usar sempre estes tokens.
 - Lima só em fundos (botões, etiquetas) com texto escuro; nunca como texto sobre branco (contraste 2,2:1).
-- Uma única largura de página: `--page-w` e `--gutter` em `global.css`; usar sempre `.container-x`.
+- Uma única largura de página: `--page-w` (90rem) e `--gutter` (1rem no computador) em `global.css`, igual à largura do hero; usar sempre `.container-x`.
 - `TODO`: confirmar cores com o cliente quando chegarem os logótipos.
 
 ## Pesquisa e painel Sanity: requisitos a não esquecer
