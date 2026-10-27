@@ -4527,3 +4527,35 @@ a.rv-author:hover {
     right: -2.25rem;
   }
 }
+
+/* Hero card, balanced: one inner margin (2.5rem) for the copy and the search bar so their left edges line up;
+   the copy and the listing card share a bottom line just above the search bar, the card still hanging over the
+   right edge. */
+@media (min-width: 64rem) {
+  .hcard-inner {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 3rem;
+    padding: 3rem 2.5rem 2.25rem;
+  }
+  .hcard > div:last-child {
+    width: calc(100% - 5rem) !important;
+  }
+  .hcard .hero-deck {
+    position: relative;
+    top: auto;
+    right: auto;
+    margin-right: -3.1rem;
+    flex: none;
+  }
+  .hcard .hero-copy {
+    max-width: 36rem;
+    padding-bottom: 0.25rem;
+  }
+}
+@media (min-width: 92rem) {
+  .hcard .hero-deck {
+    margin-right: -4.75rem;
+  }
+}
