@@ -4709,3 +4709,7 @@ a.rv-author:hover {
 .hero-copy h1 {
   font-size: clamp(2rem, 4.2vw, 3.5rem);
 }
+.zones-title,
+.careers-title.zones-title {
+  font-size: clamp(1.45rem, 2.1vw, 1.875rem);
+}
