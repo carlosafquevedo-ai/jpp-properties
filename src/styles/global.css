@@ -4263,3 +4263,225 @@ a.rv-author:hover {
     animation: none;
   }
 }
+
+/* ---- Hero, editorial ---------------------------------------------------------------------------------------
+   The copy sits low on the photo, a large headline over a short lead. On the right, a property index replaces the
+   card: one row per slide (number, name, zone, price), the active row bright with a lime progress line, the others
+   dimmed. The photo drifts slowly while its slide is shown. */
+.hero-main {
+  min-height: calc(100svh - 11rem);
+}
+.hero-title {
+  font-family: var(--font-display, inherit);
+  font-size: clamp(2.5rem, 5.4vw, 4.75rem);
+  font-weight: 600;
+  line-height: 0.98;
+  letter-spacing: -0.005em;
+  text-transform: uppercase;
+  text-wrap: balance;
+}
+.hero-copy {
+  max-width: 44rem;
+}
+.hero-copy > p {
+  padding-left: 1rem;
+  border-left: 2px solid var(--color-lime);
+}
+
+.hero-slide {
+  transform-origin: 60% 50%;
+}
+@media (prefers-reduced-motion: no-preference) {
+  .hero-slide.is-active {
+    animation: hero-drift var(--hero-interval, 6500ms) linear both;
+  }
+}
+@keyframes hero-drift {
+  from {
+    transform: scale(1.08);
+  }
+  to {
+    transform: scale(1);
+  }
+}
+
+.hero-index {
+  width: 100%;
+}
+@media (min-width: 64rem) {
+  .hero-index {
+    width: 21rem;
+    flex: none;
+  }
+}
+.hero-index-list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  border-top: 1px solid rgba(255, 255, 255, 0.22);
+}
+.hero-row {
+  position: relative;
+  display: flex;
+  align-items: flex-start;
+  gap: 0.9rem;
+  width: 100%;
+  height: auto;
+  padding: 0.85rem 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.22);
+  background: none;
+  color: rgba(255, 255, 255, 0.55);
+  text-align: left;
+  cursor: pointer;
+  transition: color 0.3s;
+}
+.hero-row:hover,
+.hero-row[aria-current='true'] {
+  color: #fff;
+}
+/* The progress line runs along the bottom edge of the active row. */
+.hero-row > span:last-child {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -1px;
+  height: 2px;
+  width: auto;
+  background: none;
+}
+.hero-row > span:last-child::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: var(--color-lime);
+  transform: scaleX(0);
+  transform-origin: left;
+}
+.hero-row[aria-current='true'] > span:last-child::after {
+  transform: scaleX(1);
+}
+.hero-row.is-run > span:last-child::after {
+  animation: hero-progress var(--hero-interval, 6500ms) linear both;
+}
+@keyframes hero-progress {
+  from {
+    transform: scaleX(0);
+  }
+  to {
+    transform: scaleX(1);
+  }
+}
+.hero-row-num {
+  flex: none;
+  width: 1.6rem;
+  padding-top: 0.15rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  font-variant-numeric: tabular-nums;
+}
+.hero-row[aria-current='true'] .hero-row-num {
+  color: var(--color-lime);
+}
+.hero-row-body {
+  display: grid;
+  gap: 0.2rem;
+  min-width: 0;
+}
+.hero-row-title {
+  font-family: var(--font-display, inherit);
+  font-size: 1rem;
+  font-weight: 500;
+  line-height: 1.25;
+}
+.hero-row-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0 0.75rem;
+  font-size: 0.8rem;
+  opacity: 0.85;
+}
+.hero-row-price {
+  font-weight: 600;
+}
+.hero-index-foot {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-top: 1rem;
+}
+.hero-open {
+  display: none;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: #fff;
+  border-bottom: 2px solid var(--color-lime);
+  padding-bottom: 0.15rem;
+}
+.hero-open[data-active] {
+  display: inline-flex;
+}
+.hero-open:hover {
+  color: var(--color-lime);
+}
+.hero-index-foot .hero-pause {
+  margin-left: auto;
+}
+@media (max-width: 63.99rem) {
+  .hero-index {
+    display: none;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .hero-row > span:last-child::after,
+  .hero-row.is-run > span:last-child::after {
+    animation: none;
+  }
+}
+/* Index rows reuse the slideshow's dot buttons: undo the dot styling on the text spans. */
+.hero-row > span:not(:last-child) {
+  position: static;
+  width: auto;
+  height: auto;
+  border-radius: 0;
+  background: none;
+  overflow: visible;
+}
+.hero-row > span:not(:last-child)::after {
+  content: none;
+}
+.hero-row > .hero-row-num {
+  display: block;
+  width: 1.6rem;
+}
+.hero-row > .hero-row-body {
+  display: grid;
+}
+.hero-row > span:last-child {
+  display: block;
+  border-radius: 0;
+  overflow: hidden;
+}
+/* A quiet glass panel behind the index keeps it legible over bright photos. */
+@media (min-width: 64rem) {
+  .hero-index {
+    padding: 1.1rem 1.25rem 1rem;
+    border: 1px solid rgba(255, 255, 255, 0.14);
+    border-radius: 0.75rem;
+    background: rgba(20, 22, 21, 0.38);
+    -webkit-backdrop-filter: blur(14px) saturate(1.2);
+    backdrop-filter: blur(14px) saturate(1.2);
+  }
+  .hero-index-list {
+    border-top: 0;
+  }
+  .hero-index-list li:last-child .hero-row {
+    border-bottom-color: transparent;
+  }
+  .hero-index-list li:last-child .hero-row[aria-current='true'] {
+    border-bottom-color: rgba(255, 255, 255, 0.22);
+  }
+}
