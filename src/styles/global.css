@@ -4559,3 +4559,8 @@ a.rv-author:hover {
     margin-right: -4.75rem;
   }
 }
+
+/* Hero card a little shorter. */
+.hcard {
+  min-height: clamp(520px, calc(100svh - 14rem), 700px);
+}
