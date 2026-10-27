@@ -4713,3 +4713,11 @@ a.rv-author:hover {
 .careers-title.zones-title {
   font-size: clamp(1.45rem, 2.1vw, 1.875rem);
 }
+
+/* Team: heading and text sit on the bottom edge of the portraits. */
+@media (min-width: 64rem) {
+  .team-band > div:first-child {
+    justify-content: flex-end;
+    gap: 1.5rem;
+  }
+}
