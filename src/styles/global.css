@@ -4118,3 +4118,9 @@ a.rv-author:hover {
 .lead-shell .lead-chip > span {
   background: rgba(255, 255, 255, 0.85);
 }
+
+/* Headings a touch heavier (medium), same face and size everywhere. */
+.zones-title,
+.hero-copy h1 {
+  font-weight: 500;
+}
