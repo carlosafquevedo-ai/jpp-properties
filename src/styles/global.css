@@ -4263,3 +4263,9 @@ a.rv-author:hover {
     animation: none;
   }
 }
+
+/* Hero lead: a lime rule on its left edge. */
+.hero-copy > p {
+  padding-left: 1rem;
+  border-left: 2px solid var(--color-lime);
+}
