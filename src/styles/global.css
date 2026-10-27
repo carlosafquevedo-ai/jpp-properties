@@ -4336,3 +4336,13 @@ a.rv-author:hover {
     transition: none;
   }
 }
+
+/* Spotlit featured card: a gentler step up (a little wider, a little taller). */
+@media (min-width: 64rem) {
+  .feat-item[data-spot] {
+    width: calc((100% - 4.5rem) / 3.6 * 1.12);
+  }
+  .feat-item[data-spot] .card-photo {
+    aspect-ratio: 1.1;
+  }
+}
