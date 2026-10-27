@@ -4685,3 +4685,17 @@ a.rv-author:hover {
     0 18px 34px -24px rgba(0, 0, 0, 0.3),
     0 6px 12px -10px rgba(0, 0, 0, 0.16);
 }
+
+/* Search bar on the page column (same width as the sections below), centred on the wider hero. */
+.hcard > div:last-child,
+.hcard > div:last-child[style] {
+  width: calc(min(100vw, var(--page-w)) - 2 * var(--gutter)) !important;
+  max-width: calc(100% - 1.5rem);
+}
+
+/* Hero copy starts on the page column's left edge (same line as the search bar and the sections below). */
+@media (min-width: 64rem) {
+  .hcard-inner {
+    padding-left: max(1.5rem, calc((100% - (min(100vw, var(--page-w)) - 2 * var(--gutter))) / 2));
+  }
+}
