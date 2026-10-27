@@ -4354,3 +4354,102 @@ a.rv-author:hover {
     width: calc((100% - 4.5rem) / 4);
   }
 }
+
+/* Office pin card, refined: photo with a chip, name, address with a pin, and a footer link with a lime arrow. */
+.pt-pin-card {
+  width: 15rem;
+  padding: 0.45rem;
+  gap: 0;
+  border: 1px solid rgba(27, 30, 28, 0.08);
+  border-radius: 0.9rem;
+  background: #fff;
+  box-shadow:
+    0 1px 2px rgba(27, 30, 28, 0.06),
+    0 22px 40px -18px rgba(27, 30, 28, 0.38);
+}
+.pt-pin-card > :not(.pt-pin-photo) {
+  padding-inline: 0;
+}
+.pt-pin-media {
+  position: relative;
+  display: block;
+  overflow: hidden;
+  border-radius: 0.6rem;
+}
+.pt-pin-photo {
+  height: 8.5rem;
+  margin: 0;
+  border-radius: 0;
+  transition: transform 0.8s var(--ease-out);
+}
+.pt-pin:hover .pt-pin-photo {
+  transform: scale(1.05);
+}
+.pt-pin-chip {
+  position: absolute;
+  left: 0.5rem;
+  top: 0.5rem;
+  padding: 0.2rem 0.55rem;
+  border-radius: 0.4rem;
+  background: rgba(255, 255, 255, 0.92);
+  font-size: 0.7rem;
+  font-weight: 600;
+  color: var(--color-ink);
+}
+.pt-pin-body {
+  display: grid;
+  gap: 0.35rem;
+  padding: 0.75rem 0.55rem 0.35rem;
+}
+.pt-pin-name {
+  font-family: var(--font-display, inherit);
+  font-size: 1.15rem;
+  font-weight: 600;
+  line-height: 1.15;
+  color: var(--color-ink);
+}
+.pt-pin-addr {
+  display: flex;
+  gap: 0.35rem;
+  font-size: 0.78rem;
+  line-height: 1.4;
+  color: var(--color-muted);
+}
+.pt-pin-addr svg {
+  margin-top: 0.05rem;
+  color: var(--color-olive);
+}
+.pt-pin-go {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 0.4rem;
+  padding-top: 0.6rem;
+  border-top: 1px solid rgba(27, 30, 28, 0.08);
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: var(--color-ink);
+}
+.pt-pin-go-ic {
+  display: grid;
+  place-items: center;
+  width: 1.9rem;
+  height: 1.9rem;
+  border-radius: 9999px;
+  background: var(--color-lime);
+  color: var(--color-forest);
+  transition: transform 0.3s var(--ease-out);
+}
+.pt-pin:hover .pt-pin-go-ic,
+.pt-pin:focus-visible .pt-pin-go-ic {
+  transform: rotate(45deg);
+}
+.pt-pin:hover .pt-pin-go svg {
+  transform: none;
+}
+@media (prefers-reduced-motion: reduce) {
+  .pt-pin-photo,
+  .pt-pin-go-ic {
+    transition: none;
+  }
+}
