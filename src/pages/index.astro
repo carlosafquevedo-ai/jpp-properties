@@ -45,11 +45,49 @@ const zoneTiles = (Object.keys(zones) as ZoneId[]).map((id) => ({
   title="JPP Properties | Imóveis no Algarve"
   description="Apartamentos e moradias em Vilamoura, Quarteira, Vale do Lobo e Quinta do Lago. JPP Properties, AMI 9361."
   route="home"
-  padTop={false}
 >
-  <!-- Hero: full-bleed rotating photos, rounded bottom corners and a hanging tab that holds the search box -->
-  <section>
-    <div class="hero-shape relative isolate z-20 flex min-h-[clamp(760px,100svh,1040px)] flex-col justify-end">
+  <!-- Hero (editorial): a big headline on white with the lead and real facts, then the photo panel below
+       (rotating photos, listing card, caption) with the search bar on its foot. -->
+  <section class="hx">
+    <div class="container-x hx-top">
+      <div class="hx-side">
+        <span class="hx-pill">Imobiliária no Algarve</span>
+        <p class="hx-lead">
+          Apartamentos e moradias em Vilamoura, Quarteira, Vale do Lobo e Quinta do Lago.
+          Acompanhamos cada passo, da primeira visita à decisão.
+        </p>
+        <div class="hx-actions">
+          <a href="/imoveis/" class="btn btn-lime">
+            Ver todos os imóveis
+          </a>
+          <a href="#vender" class="btn btn-ghost">
+            Quero vender
+          </a>
+        </div>
+      </div>
+      <h1 class="hx-title">
+        Encontre
+        <br />
+        a sua casa
+        <br />
+        no Algarve.
+      </h1>
+      <dl class="hx-facts">
+        <div>
+          <dt>Imóveis disponíveis</dt>
+          <dd>{visibleProperties.length}</dd>
+        </div>
+        <div>
+          <dt>Zonas do Algarve</dt>
+          <dd>{Object.keys(zones).length}</dd>
+        </div>
+        <div>
+          <dt>Licença AMI</dt>
+          <dd>{AMI}</dd>
+        </div>
+      </dl>
+    </div>
+    <div class="hero-shape hx-panel relative isolate z-20 flex flex-col justify-end">
       <div class="absolute inset-0 -z-20 overflow-hidden" data-hero-media>
         {slides.map((slide, i) => (
           <img
@@ -63,30 +101,13 @@ const zoneTiles = (Object.keys(zones) as ZoneId[]).map((id) => ({
         ))}
       </div>
       <div class="hero-shade absolute inset-0 -z-10"></div>
+      <p class="hx-caption" aria-hidden="true">
+        Viver
+        <br />
+        no Algarve
+      </p>
 
-      <div class="container-x pb-8 pt-32 text-white lg:flex lg:items-start lg:justify-between lg:gap-10">
-        <div class="hero-copy">
-          <h1 class="max-w-4xl font-display text-[clamp(2rem,4.2vw,3.5rem)] leading-[1]">
-            Encontre
-            <br />
-            a sua casa
-            <br />
-            no Algarve.
-          </h1>
-          <p class="mt-5 max-w-xl text-lg leading-relaxed text-white/90 [@media(max-height:740px)]:hidden">
-            Apartamentos e moradias em Vilamoura, Quarteira, Vale do Lobo e Quinta do Lago.
-            Acompanhamos cada passo, da primeira visita à decisão.
-          </p>
-          <div class="mt-6 flex flex-wrap items-center gap-3">
-            <a href="/imoveis/" class="btn btn-lime">
-              Ver todos os imóveis
-            </a>
-            <a href="#vender" class="btn bg-white text-forest hover:bg-paper-2">
-              Quero vender
-            </a>
-          </div>
-        </div>
-
+      <div class="hx-panel-inner pb-8 pt-8 text-white lg:flex lg:items-start lg:justify-end lg:gap-10">
         <div class="hero-deck mt-8 lg:mt-0 lg:w-[22rem] lg:shrink-0" data-deck>
           <div class="hero-cards hidden lg:grid">
             {slides.map((slide, i) =>
@@ -162,10 +183,7 @@ const zoneTiles = (Object.keys(zones) as ZoneId[]).map((id) => ({
         </div>
       </div>
 
-      <div
-        class="relative z-10 mx-auto pb-10 lg:pb-16"
-        style="width: min(100% - 3rem, var(--page-w) - 1.5rem)"
-      >
+      <div class="hx-search relative z-10">
         <div class="glass-panel">
           <SearchBar />
         </div>

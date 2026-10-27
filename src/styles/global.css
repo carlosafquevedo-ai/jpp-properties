@@ -4453,3 +4453,143 @@ a.rv-author:hover {
     transition: none;
   }
 }
+
+/* ---- Hero, editorial (reference: big title on white over a rounded photo panel) ------------------------------
+   Top: a three-column band on white (pill, lead and buttons | the big headline | three real facts).
+   Below: the photo panel within the page column, rounded, with a caption bottom-left, the listing card on the right
+   and the search bar on its foot. */
+.hx-top {
+  display: grid;
+  gap: 1.75rem;
+  padding-top: 1.5rem;
+  padding-bottom: 2rem;
+}
+@media (min-width: 64rem) {
+  .hx-top {
+    grid-template-columns: minmax(0, 15rem) minmax(0, 1fr) minmax(0, 11rem);
+    align-items: end;
+    gap: 2.5rem;
+    padding-top: 2.5rem;
+    padding-bottom: 2.5rem;
+  }
+  .hx-title {
+    order: 0;
+  }
+  .hx-side {
+    order: -1;
+  }
+}
+.hx-title {
+  font-family: var(--font-display, inherit);
+  font-size: clamp(2.75rem, 6.4vw, 6rem);
+  font-weight: 600;
+  line-height: 0.92;
+  letter-spacing: -0.015em;
+  text-transform: uppercase;
+  color: var(--color-ink);
+}
+.hx-side {
+  display: grid;
+  justify-items: start;
+  gap: 1rem;
+}
+.hx-pill {
+  padding: 0.35rem 0.85rem;
+  border: 1px solid rgba(27, 30, 28, 0.35);
+  border-radius: 9999px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--color-ink);
+}
+.hx-lead {
+  font-size: 0.92rem;
+  line-height: 1.55;
+  color: var(--color-muted);
+}
+.hx-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+.hx-facts {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1rem;
+  margin: 0;
+}
+@media (min-width: 64rem) {
+  .hx-facts {
+    grid-template-columns: minmax(0, 1fr);
+    justify-items: end;
+    text-align: right;
+    gap: 1.1rem;
+  }
+}
+.hx-facts > div {
+  display: flex;
+  flex-direction: column-reverse;
+}
+.hx-facts dd {
+  margin: 0;
+  font-family: var(--font-display, inherit);
+  font-size: clamp(1.75rem, 2.6vw, 2.4rem);
+  font-weight: 600;
+  line-height: 1;
+  color: var(--color-ink);
+}
+.hx-facts dt {
+  margin-top: 0.25rem;
+  font-size: 0.72rem;
+  font-weight: 500;
+  color: var(--color-muted);
+}
+
+/* Photo panel inside the page column. */
+.hx-panel {
+  min-height: clamp(30rem, 62svh, 42rem);
+  margin-inline: max(var(--gutter), calc((100% - var(--page-w)) / 2 + var(--gutter)));
+}
+.hx-panel > [data-hero-media],
+.hx-panel > .hero-shade {
+  border-radius: 1rem;
+}
+.hx-panel-inner {
+  padding-inline: 1.5rem;
+}
+@media (min-width: 64rem) {
+  .hx-panel-inner {
+    position: absolute;
+    top: 0;
+    right: 0;
+    padding: 1.5rem;
+  }
+}
+.hx-caption {
+  position: absolute;
+  left: 1.75rem;
+  bottom: 9.5rem;
+  font-family: var(--font-display, inherit);
+  font-size: clamp(1.25rem, 2vw, 1.75rem);
+  font-weight: 600;
+  line-height: 1.05;
+  text-transform: uppercase;
+  color: #fff;
+  text-shadow: 0 1px 16px rgba(14, 24, 16, 0.5);
+}
+.hx-search {
+  margin: 0 1rem 1rem;
+}
+@media (min-width: 64rem) {
+  .hx-search {
+    margin: 0 1.5rem 1.5rem;
+  }
+}
+@media (max-width: 63.99rem) {
+  .hx-caption {
+    display: none;
+  }
+}
+.hx-lead {
+  padding-left: 0.85rem;
+  border-left: 2px solid var(--color-lime);
+}
