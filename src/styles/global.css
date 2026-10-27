@@ -4508,3 +4508,22 @@ a.rv-author:hover {
     max-width: calc(100% - 26rem);
   }
 }
+
+/* Wider hero card: it runs past the page column (16px from the screen edges on most laptops); the listing card
+   keeps hanging over its right edge within that margin. */
+.hcard {
+  margin-inline: max(1rem, calc((100% - var(--page-w)) / 2 - 1rem));
+}
+@media (min-width: 64rem) {
+  .hcard .hero-deck {
+    right: -0.6rem;
+  }
+  .hcard-inner {
+    padding-inline: 3.5rem;
+  }
+}
+@media (min-width: 92rem) {
+  .hcard .hero-deck {
+    right: -2.25rem;
+  }
+}
