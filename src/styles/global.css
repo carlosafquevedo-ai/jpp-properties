@@ -4928,3 +4928,127 @@ a.rv-author:hover {
     transition: none;
   }
 }
+
+/* How we work, as posters: six tall cards in three tones (carbon, lime tint, ivory). Each carries a huge ghost
+   numeral, an icon tile and the step; on hover it lifts and the numeral comes forward. */
+.hww-steps {
+  display: none;
+}
+.hww-cards {
+  display: grid;
+  gap: 1rem;
+  margin: 2.25rem 0 0;
+  padding: 0;
+  list-style: none;
+}
+@media (min-width: 40rem) {
+  .hww-cards {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+@media (min-width: 64rem) {
+  .hww-cards {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 1.25rem;
+  }
+}
+.hww-card {
+  --bg: #1b1e1c;
+  --fg: #fff;
+  --muted: rgba(255, 255, 255, 0.72);
+  --tile: var(--color-lime);
+  --tile-fg: var(--color-forest);
+  --ghost: rgba(255, 255, 255, 0.08);
+  position: relative;
+  isolation: isolate;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 2.5rem;
+  min-height: 18rem;
+  padding: 1.5rem;
+  overflow: hidden;
+  border-radius: 0.75rem;
+  background: var(--bg);
+  color: var(--fg);
+  box-shadow:
+    0 1px 2px rgba(27, 30, 28, 0.06),
+    0 18px 30px -22px rgba(27, 30, 28, 0.4);
+  transition:
+    transform 0.45s var(--ease-out),
+    box-shadow 0.45s var(--ease-out);
+}
+.hww-card[data-tone='1'] {
+  --bg: linear-gradient(160deg, #f4f8e8 0%, #e3edc4 100%);
+  --fg: var(--color-ink);
+  --muted: var(--color-muted);
+  --tile: var(--color-forest);
+  --tile-fg: var(--color-lime);
+  --ghost: rgba(85, 102, 43, 0.14);
+}
+.hww-card[data-tone='2'] {
+  --bg: var(--color-paper-2);
+  --fg: var(--color-ink);
+  --muted: var(--color-muted);
+  --tile: var(--color-lime);
+  --tile-fg: var(--color-forest);
+  --ghost: rgba(27, 30, 28, 0.07);
+  box-shadow:
+    inset 0 0 0 1px rgba(27, 30, 28, 0.08),
+    0 18px 30px -22px rgba(27, 30, 28, 0.3);
+}
+.hww-card-num {
+  position: absolute;
+  right: -0.4rem;
+  top: -1.6rem;
+  z-index: -1;
+  font-family: var(--font-display, inherit);
+  font-size: 9rem;
+  font-weight: 700;
+  line-height: 1;
+  letter-spacing: -0.04em;
+  color: var(--ghost);
+  transition:
+    transform 0.6s var(--ease-out),
+    color 0.4s;
+}
+.hww-card-icon {
+  display: grid;
+  place-items: center;
+  width: 3rem;
+  height: 3rem;
+  border-radius: 0.6rem;
+  background: var(--tile);
+  color: var(--tile-fg);
+}
+.hww-card-title {
+  font-family: var(--font-display, inherit);
+  font-size: 1.4rem;
+  font-weight: 600;
+  line-height: 1.15;
+  color: var(--fg);
+}
+.hww-card-text {
+  margin-top: 0.55rem;
+  max-width: 22rem;
+  font-size: 0.95rem;
+  line-height: 1.55;
+  color: var(--muted);
+}
+@media (hover: hover) and (prefers-reduced-motion: no-preference) {
+  .hww-card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 30px 44px -24px rgba(27, 30, 28, 0.5);
+  }
+  .hww-card:hover .hww-card-num {
+    transform: translate(-0.4rem, 0.4rem) scale(1.05);
+    color: var(--tile);
+    opacity: 0.35;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .hww-card,
+  .hww-card-num {
+    transition: none;
+  }
+}

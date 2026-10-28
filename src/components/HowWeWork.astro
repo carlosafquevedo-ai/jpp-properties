@@ -1,33 +1,40 @@
 ---
 import Icon from './Icon.astro';
+import type { IconName } from './Icon.astro';
 
 /**
  * "Como trabalhamos": the sale process in six steps, ending in a call to the request form below.
  * TODO: PROVISIONAL copy (PT). The steps describe a typical agency process, not confirmed facts about JPP:
  * the client must confirm or rewrite each step (photography, marketing, viewings...). EN/FR pending.
  */
-const steps = [
+const steps: { icon: IconName; title: string; text: string }[] = [
   {
+    icon: 'search',
     title: 'Análise do imóvel',
     text: 'Avaliamos o seu imóvel com base em vendas reais recentes da zona, sem compromisso.',
   },
   {
+    icon: 'images',
     title: 'Preparação e apresentação',
     text: 'Preparamos o imóvel e a informação para o apresentar da melhor forma.',
   },
   {
+    icon: 'pinMap',
     title: 'Divulgação',
     text: 'Damos a conhecer o imóvel a quem procura, no nosso site e nos canais da agência.',
   },
   {
+    icon: 'calendar',
     title: 'Visitas',
     text: 'Organizamos as visitas e acompanhamos cada interessado.',
   },
   {
+    icon: 'chat',
     title: 'Proposta e negociação',
     text: 'Tratamos das propostas e da negociação, mantendo-o informado em cada passo.',
   },
   {
+    icon: 'houseKey',
     title: 'Escritura e entrega',
     text: 'Acompanhamos o processo até à escritura e à entrega das chaves.',
   },
@@ -43,12 +50,19 @@ const steps = [
       Do primeiro contacto à escritura, um processo claro e acompanhado por uma única equipa.
     </p>
   </div>
-  <ol class="hww-steps">
+  <ol class="hww-cards">
     {steps.map((s, i) => (
-      <li class="hww-step">
-        <span class="hww-num">{String(i + 1).padStart(2, '0')}</span>
-        <h3 class="hww-title">{s.title}</h3>
-        <p class="hww-text">{s.text}</p>
+      <li class="hww-card" data-tone={i % 3}>
+        <span class="hww-card-num" aria-hidden="true">
+          {String(i + 1).padStart(2, '0')}
+        </span>
+        <span class="hww-card-icon" aria-hidden="true">
+          <Icon name={s.icon} class="size-6" />
+        </span>
+        <div class="hww-card-body">
+          <h3 class="hww-card-title">{s.title}</h3>
+          <p class="hww-card-text">{s.text}</p>
+        </div>
       </li>
     ))}
   </ol>
