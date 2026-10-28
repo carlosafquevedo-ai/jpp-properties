@@ -1,5 +1,5 @@
 import { heroImage, properties, zones, type Property } from '../data/properties';
-import { homePage, MAX_FEATURED, MAX_HERO_LISTINGS } from '../data/home';
+import { demoSoldSlugs, homePage, MAX_FEATURED, MAX_HERO_LISTINGS, MAX_RECENTLY_SOLD } from '../data/home';
 
 /** Listings that can be shown on the site (sold ones drop out). */
 const showable = (list: Property[]) => list.filter((p) => p.availability !== 'sold');
@@ -39,4 +39,22 @@ export function heroSlides() {
       property: undefined as Property | undefined,
     },
   ];
+}
+
+/**
+ * "Vendidos recentemente": the newest sold listings (sale listings only), so the section updates by itself when the
+ * team marks a listing as sold. Returns no listings when nothing is sold yet; the section then hides that row.
+ * TODO: remove the demo fallback (existing listings shown as sold) before launch; it is only for the prototype.
+ */
+export function recentlySold(): { list: Property[]; demo: boolean } {
+  const sold = properties
+    .filter((p) => p.availability === 'sold' && p.listingType === 'sale')
+    .sort((a, b) => b.addedAt.localeCompare(a.addedAt))
+    .slice(0, MAX_RECENTLY_SOLD);
+  if (sold.length) return { list: sold, demo: false };
+  const demo = demoSoldSlugs
+    .map((slug) => properties.find((p) => p.slug === slug))
+    .filter((p): p is Property => Boolean(p))
+    .slice(0, MAX_RECENTLY_SOLD);
+  return { list: demo, demo: true };
 }

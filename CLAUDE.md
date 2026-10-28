@@ -40,6 +40,10 @@ Website da JPP Properties (AMI 9361), agência imobiliária no Algarve. Esta é 
 - Paleta em `src/styles/global.css` (ver `/paleta/`): **carvão** (`forest`, `#1b1e1c`, o único escuro: cabeçalho, botões escuros, pesquisa, banda das zonas), marfim (`paper-2`), linha, tinta, cinza quente e o **verde da marca** (lima `#9EBC3A` e oliva): destaques e botões principais (hero, cabeçalho sobre a fotografia), etiquetas, pontos e barras; linhas finas em branco translúcido sobre o carvão (sem bege/champanhe). Evitar misturar novos tons: usar sempre estes tokens.
 - Lima só em fundos (botões, etiquetas) com texto escuro; nunca como texto sobre branco (contraste 2,2:1).
 - Uma única largura de página: `--page-w` e `--gutter` em `global.css`; usar sempre `.container-x`.
+- **Ritmo da página** (bloco "Page rhythm", no fim de `global.css`):
+  - Faixas de apoio num só tom, **marfim** (`--band-bg`), nunca verde-lima. O carvão fica para os momentos fortes (hero, carreiras, rodapé).
+  - Espaço entre secções: `--section-gap`. Espaço interior das faixas: `--band-pad`. Não usar margens avulsas.
+  - Cantos: **retos** quando o bloco toca a borda do ecrã ou é uma foto em grelha (imóveis, zonas, equipa, vendidos). **Redondos** em tudo o que flutua dentro da página: `--r-panel` (24px), `--r-card` (12px), `--r-sm` (8px). Um raio interior é o exterior menos o recuo.
 - `TODO`: confirmar cores com o cliente quando chegarem os logótipos.
 
 ## Pesquisa e painel Sanity: requisitos a não esquecer
@@ -79,6 +83,24 @@ Não são imóveis: são campos livres com **imagem + texto + ligação**, para 
 - Sanity (Página inicial): lista "Destaques laterais", máximo 3, arrastar para ordenar; o primeiro aparece grande. Cada item: **etiqueta** (ex.: "Empreendimento"), **título**, **texto curto** (máx. ~140 caracteres, com contador), **imagem** (com texto alternativo obrigatório) e **ligação** (página interna ou endereço externo).
 - Se a lista estiver vazia, o painel desaparece e os mosaicos das zonas ocupam a largura toda (já tratado em `src/pages/index.astro`).
 - Dados de protótipo em `src/data/home.ts` (`sideHighlights`), com a mesma forma do documento Sanity.
+
+## Resultados (página inicial)
+
+Secção `src/components/Results.astro` (entre as avaliações Google e "Como trabalhamos"): até 4 números grandes com uma legenda curta (ex.: "98%" / "Média do valor pedido alcançado"), numa linha sem cartões, e por baixo **"Vendidos recentemente"**: os 4 imóveis de venda mais recentes com estado "vendido" (foto, selo "Vendido", nome e zona, sem preço). Atualiza-se sozinha quando a equipa marca um imóvel como vendido; sem vendidos, essa linha desaparece.
+
+- `TODO` obrigatório: enquanto não houver vendidos, o protótipo mostra imóveis à venda como exemplo (`demoSoldSlugs` em `src/data/home.ts`); remover antes do lançamento.
+
+- Sanity (Página inicial): lista "Resultados", máximo 4, arrastar para ordenar. Cada item: **valor** (ex.: "98", "4,2"), **unidade** opcional (ex.: "%", "M€", "dias") e **legenda**, com frase de ajuda em português. Lista vazia: a secção desaparece.
+- `TODO` obrigatório: os números atuais em `src/data/home.ts` (`resultStats`) são **de exemplo**, não são dados da JPP. Pedir os valores reais ao cliente antes do lançamento; versões EN/FR.
+
+## Faixa "Visite-nos" (antes do rodapé)
+
+Secção `src/components/ContactBand.astro`, mostrada em **todas as páginas** pelo `SiteLayout`, logo antes do rodapé (desligar com `contactBand={false}`), sem painel nem fotografia: título com os botões "Ligar agora" e "WhatsApp" ao lado, e por baixo morada (com "Como chegar", que abre o Google Maps), telefones (com a nota legal), email e horário numa linha separada por filetes.
+
+- Lê tudo de `siteSettings` (hoje `src/lib/site.ts`): nada escrito à mão. O horário só aparece quando estiver preenchido (`TODO` acima).
+- O rodapé já não repete morada, telefones e email: fica com marca, navegação, links legais (Política de Privacidade, Resolução de Litígios, Livro de Reclamações), redes sociais e AMI.
+- Sem mapa embutido: um iframe do Google Maps criaria cookies antes do consentimento.
+- `TODO`: textos provisórios em PT; versões EN/FR. Com mais de um escritório, decidir se a faixa mostra o principal ou todos.
 
 ## Formulário de pedido (vender / comprar)
 

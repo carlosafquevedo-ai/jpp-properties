@@ -1,0 +1,54 @@
+---
+import { MAX_RESULT_STATS, resultStats } from '../data/home';
+import { zones } from '../data/properties';
+import { recentlySold } from '../lib/catalog';
+
+// "Resultados": headline figures in one open row (no cards), then the most recently sold listings as a light strip.
+// TODO: provisional copy (PT); EN/FR pending. The figures are placeholders (resultStats in src/data/home.ts) and the
+// sold listings are a demo until real ones are marked as sold (recentlySold in src/lib/catalog.ts).
+const stats = resultStats.slice(0, MAX_RESULT_STATS);
+const { list: sold } = recentlySold();
+---
+
+{
+  (stats.length > 0 || sold.length > 0) && (
+    <section id="resultados" class="container-x results" aria-labelledby="resultados-titulo">
+      <h2 id="resultados-titulo" class="zones-title">
+        Resultados
+      </h2>
+      <p class="results-lead">Os números que resumem o nosso trabalho e os imóveis vendidos mais recentes.</p>
+
+      {stats.length > 0 && (
+        <ul class="results-stats">
+          {stats.map((s) => (
+            <li>
+              <p class="results-value">
+                {s.value}
+                {s.unit && <span class="results-unit">{s.unit}</span>}
+              </p>
+              <p class="results-label">{s.label}</p>
+            </li>
+          ))}
+        </ul>
+      )}
+
+      {sold.length > 0 && (
+        <div class="results-sold">
+          <h3 class="results-sold-title">Vendidos recentemente</h3>
+          <ul class="results-sold-list">
+            {sold.map((p) => (
+              <li class="results-sold-item">
+                <div class="results-sold-photo">
+                  <img src={p.images[0]} alt="" loading="lazy" decoding="async" referrerpolicy="no-referrer" />
+                  <span class="results-sold-flag">Vendido</span>
+                </div>
+                <p class="results-sold-name">{p.title}</p>
+                <p class="results-sold-zone">{[p.locality, zones[p.zone].name].filter(Boolean).join(', ')}</p>
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
+    </section>
+  )
+}

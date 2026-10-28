@@ -19,7 +19,7 @@ const price = getPriceRange();
     </label>
   </fieldset>
 
-  <div class="grid grid-cols-2 gap-x-3 gap-y-1 sm:grid-cols-4 lg:grid-cols-[1.1fr_1.1fr_0.9fr_1.4fr_auto] lg:gap-x-3 lg:items-center">
+  <div class="grid grid-cols-2 gap-x-3 gap-y-1 sm:grid-cols-3 lg:grid-cols-[1.1fr_1.1fr_0.9fr_1.4fr_auto] lg:gap-x-3 lg:items-center">
     <div class="glass-field col-span-2 sm:col-span-1">
       <label for="s-zona">Zona</label>
       <select id="s-zona" name="zona" class="glass-select">
@@ -48,7 +48,7 @@ const price = getPriceRange();
       </select>
     </div>
     <div
-      class="glass-field glass-range col-span-2 sm:col-span-1"
+      class="glass-field glass-range col-span-2 sm:col-span-2 lg:col-span-1"
       data-range
       data-min={price.min}
       data-max={price.max}
@@ -73,7 +73,7 @@ const price = getPriceRange();
     </div>
     <button
       type="submit"
-      class="btn btn-dark self-stretch lg:min-h-0 col-span-2 sm:col-span-4 lg:col-span-1"
+      class="btn btn-dark self-stretch lg:min-h-0 col-span-2 sm:col-span-1 lg:col-span-1"
     >
       <Icon name="search" class="size-5" />
       <span>Pesquisar</span>

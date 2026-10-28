@@ -68,3 +68,37 @@ export const sideHighlights: Highlight[] = [
     href: '/imoveis/t1-novo-rua-da-azinheira-quarteira/',
   },
 ];
+
+/** One figure in the "Resultados" section: a big number (with an optional smaller unit) and a short caption. */
+export interface ResultStat {
+  value: string;
+  unit?: string;
+  label: string;
+}
+
+export const MAX_RESULT_STATS = 4;
+
+/**
+ * "Resultados" section. In production: a list on the Sanity "Página inicial" document (max 4, drag to reorder).
+ * TODO: PLACEHOLDER figures copied from a reference layout, NOT JPP data. Ask the client for the real numbers
+ * (and the year of the largest sale) before launch; EN/FR captions pending.
+ */
+export const resultStats: ResultStat[] = [
+  { value: '98', unit: '%', label: 'Média do valor pedido alcançado' },
+  { value: '4,2', unit: 'M€', label: 'Maior venda em 2025' },
+  { value: '45', unit: 'dias', label: 'Tempo médio de venda' },
+  { value: '30+', unit: 'anos', label: 'De experiência no setor imobiliário' },
+];
+
+export const MAX_RECENTLY_SOLD = 4;
+
+/**
+ * TODO: DEMO ONLY, remove before launch. Listings still for sale, shown as "Vendido" in the "Resultados" section
+ * so the client can preview it while no listing is marked as sold. In production the row lists real sold listings.
+ */
+export const demoSoldSlugs = [
+  't2-perto-da-praia-quarteira',
+  'apartamento-t2-casuarinas-vilamoura',
+  't1-novo-rua-da-azinheira-quarteira',
+  'oliveiras-residence-quarteira',
+];

@@ -126,8 +126,8 @@ const steps = [
           <!-- SELL -->
           <fieldset class="lead-group" data-panel="vender">
             <legend>O imóvel</legend>
-            <div class="grid gap-4 sm:grid-cols-6 lg:grid-cols-8">
-              <div class="sm:col-span-3 lg:col-span-4">
+            <div class="grid grid-cols-2 gap-x-3 gap-y-4 sm:grid-cols-6 sm:gap-x-4 lg:grid-cols-8">
+              <div class="col-span-2 sm:col-span-3 lg:col-span-4">
                 <label for="lead-concelho" class="lead-label">
                   Localidade / concelho *
                 </label>
@@ -142,7 +142,7 @@ const steps = [
                   class="field"
                 />
               </div>
-              <div class="sm:col-span-3 lg:col-span-4">
+              <div class="order-1 sm:order-none sm:col-span-3 lg:col-span-4">
                 <label for="lead-cp" class="lead-label">
                   Código postal
                 </label>
@@ -157,7 +157,7 @@ const steps = [
                   class="field"
                 />
               </div>
-              <div class="sm:col-span-4 lg:col-span-6">
+              <div class="col-span-2 sm:col-span-4 lg:col-span-6">
                 <label for="lead-morada" class="lead-label">
                   Morada *
                 </label>
@@ -170,13 +170,13 @@ const steps = [
                   class="field"
                 />
               </div>
-              <div class="sm:col-span-2">
+              <div class="order-1 sm:order-none sm:col-span-2">
                 <label for="lead-porta" class="lead-label">
                   Nº da porta *
                 </label>
                 <input id="lead-porta" name="porta" type="text" required class="field" />
               </div>
-              <div class="sm:col-span-3 lg:col-span-4">
+              <div class="order-2 col-span-2 sm:order-none sm:col-span-3 lg:col-span-4">
                 <label for="lead-tipologia" class="lead-label">
                   Tipo de imóvel *
                 </label>
@@ -193,13 +193,13 @@ const steps = [
                   ))}
                 </select>
               </div>
-              <div class="sm:col-span-3 lg:col-span-4" data-outro hidden>
+              <div class="order-2 col-span-2 sm:order-none sm:col-span-3 lg:col-span-4" data-outro hidden>
                 <label for="lead-outro" class="lead-label">
                   Qual? *
                 </label>
                 <input id="lead-outro" name="tipologia_outro" type="text" class="field" />
               </div>
-              <div class="sm:col-span-2">
+              <div class="order-2 sm:order-none sm:col-span-2">
                 <label for="lead-quartos" class="lead-label">
                   Quartos
                 </label>
@@ -210,7 +210,7 @@ const steps = [
                   ))}
                 </select>
               </div>
-              <div class="sm:col-span-2">
+              <div class="order-2 sm:order-none sm:col-span-2">
                 <label for="lead-wc" class="lead-label">
                   Casas de banho
                 </label>
@@ -221,7 +221,7 @@ const steps = [
                   ))}
                 </select>
               </div>
-              <div class="sm:col-span-2">
+              <div class="order-2 sm:order-none sm:col-span-2">
                 <label for="lead-area" class="lead-label">
                   Área útil (m²) *
                 </label>
@@ -236,7 +236,7 @@ const steps = [
                   class="field"
                 />
               </div>
-              <div class="sm:col-span-2">
+              <div class="order-2 sm:order-none sm:col-span-2">
                 <label for="lead-terreno" class="lead-label">
                   Área do terreno (m²)
                 </label>
@@ -250,7 +250,7 @@ const steps = [
                   class="field"
                 />
               </div>
-              <div class="sm:col-span-2">
+              <div class="order-2 sm:order-none sm:col-span-2">
                 <label for="lead-ano" class="lead-label">
                   Ano de construção
                 </label>
@@ -265,7 +265,7 @@ const steps = [
                   class="field"
                 />
               </div>
-              <div class="sm:col-span-2">
+              <div class="order-2 sm:order-none sm:col-span-2">
                 <label for="lead-estado" class="lead-label">
                   Estado
                 </label>
@@ -276,7 +276,7 @@ const steps = [
                   ))}
                 </select>
               </div>
-              <div class="sm:col-span-6 lg:col-span-8">
+              <div class="order-3 col-span-2 sm:order-none sm:col-span-6 lg:col-span-8">
                 <span class="lead-label">Características</span>
                 <div class="mt-2 flex flex-wrap gap-2">
                   {extras.map(([, l]) => (
@@ -287,7 +287,7 @@ const steps = [
                   ))}
                 </div>
               </div>
-              <div class="sm:col-span-3 lg:col-span-4">
+              <div class="order-3 col-span-2 sm:order-none sm:col-span-3 lg:col-span-4">
                 <label for="lead-preco" class="lead-label">
                   Preço pretendido (€)
                 </label>
@@ -307,8 +307,8 @@ const steps = [
           <!-- BUY -->
           <fieldset class="lead-group" data-panel="comprar" hidden disabled>
             <legend>O que procura</legend>
-            <div class="grid gap-4 sm:grid-cols-6 lg:grid-cols-8">
-              <div class="sm:col-span-6 lg:col-span-8">
+            <div class="grid grid-cols-2 gap-x-3 gap-y-4 sm:grid-cols-6 sm:gap-x-4 lg:grid-cols-8">
+              <div class="col-span-2 sm:col-span-6 lg:col-span-8">
                 <span class="lead-label">Zonas de interesse</span>
                 <div class="mt-2 flex flex-wrap gap-2">
                   {zoneList.map((z) => (
@@ -319,7 +319,7 @@ const steps = [
                   ))}
                 </div>
               </div>
-              <div class="sm:col-span-6 lg:col-span-8">
+              <div class="col-span-2 sm:col-span-6 lg:col-span-8">
                 <span class="lead-label">Tipo de imóvel</span>
                 <div class="mt-2 flex flex-wrap gap-2">
                   {buyTypes.map(([, l]) => (
@@ -341,7 +341,7 @@ const steps = [
                   ))}
                 </select>
               </div>
-              <div class="sm:col-span-2">
+              <div class="order-1 col-span-2 sm:order-none sm:col-span-2">
                 <label for="lead-orcamento" class="lead-label">
                   Orçamento máximo (€) *
                 </label>
