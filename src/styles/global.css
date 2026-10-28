@@ -5017,3 +5017,56 @@ a.rv-author:hover {
     background: rgba(27, 30, 28, 0.24);
   }
 }
+
+/* Listing card, refined: deep olive with a soft sheen and a fine lime edge; ivory type, lime accents. */
+@media (min-width: 64rem) {
+  .hcard .hero-deck {
+    background:
+      radial-gradient(120% 60% at 100% 0%, rgba(178, 205, 77, 0.22) 0%, transparent 60%),
+      linear-gradient(165deg, #3f4f1f 0%, #2c3716 55%, #222b12 100%);
+    border-top: 2px solid var(--color-lime);
+    color: #f5f2ea;
+    box-shadow:
+      0 2px 6px rgba(20, 28, 8, 0.2),
+      0 34px 60px -26px rgba(20, 28, 8, 0.65),
+      inset 0 1px 0 rgba(255, 255, 255, 0.08);
+  }
+  .hcard .hero-deck .hero-card-kicker {
+    color: var(--color-lime);
+  }
+  .hcard .hero-deck .card-flag {
+    background: var(--color-lime);
+    color: var(--color-forest);
+  }
+  .hcard .hero-deck h2,
+  .hcard .hero-deck p {
+    color: #f5f2ea;
+  }
+  .hcard .hero-deck ul {
+    color: rgba(245, 242, 234, 0.85);
+  }
+  .hcard .hero-deck .text-white\/80,
+  .hcard .hero-deck .text-white\/85 {
+    color: rgba(245, 242, 234, 0.75);
+  }
+  .hcard .hero-deck .hero-card-go {
+    background: #f5f2ea;
+    color: var(--color-forest);
+  }
+  .hcard .hero-deck .hero-controls {
+    border-top-color: rgba(245, 242, 234, 0.2);
+  }
+  .hcard .hero-deck .hero-dot > span {
+    background: rgba(245, 242, 234, 0.25);
+  }
+  .hcard .hero-deck .hero-dot > span::after {
+    background: var(--color-lime);
+  }
+  .hcard .hero-deck .hero-pause {
+    background: rgba(245, 242, 234, 0.14);
+    color: #f5f2ea;
+  }
+  .hcard .hero-deck .hero-pause:hover {
+    background: rgba(245, 242, 234, 0.24);
+  }
+}
