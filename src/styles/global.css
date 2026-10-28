@@ -4806,3 +4806,33 @@ a.rv-author:hover {
     justify-content: flex-start;
   }
 }
+
+/* Header at the top of the page: full width, flush with the top edge and square. Once scrolled it becomes the
+   floating capsule at page-column width (all animated). */
+.site-header {
+  transition: top 0.4s var(--ease-out);
+}
+.site-header:not([data-stuck]) {
+  top: 0;
+}
+.site-header:not([data-stuck]) .hdr-bar {
+  --hdr-inset: 0px;
+  border-radius: 0 0 1rem 1rem;
+  border-top-color: transparent;
+}
+.site-header .hdr-bar {
+  transition:
+    background-color 0.35s,
+    border-color 0.35s,
+    box-shadow 0.35s,
+    height 0.35s var(--ease-out),
+    max-width 0.5s var(--ease-out),
+    width 0.5s var(--ease-out),
+    margin 0.5s var(--ease-out),
+    border-radius 0.4s var(--ease-out);
+}
+@media (min-width: 64rem) {
+  .site-header:not([data-stuck]) .hdr-bar {
+    padding-inline: max(1.5rem, calc((100% - var(--page-w)) / 2 + var(--gutter) + 1rem));
+  }
+}
