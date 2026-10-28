@@ -5,6 +5,7 @@ import PropertyCard from '../components/PropertyCard.astro';
 import LeadForm from '../components/LeadForm.astro';
 import GoogleReviews from '../components/GoogleReviews.astro';
 import Careers from '../components/Careers.astro';
+import HowWeWork from '../components/HowWeWork.astro';
 import Icon from '../components/Icon.astro';
 import {
   formatPrice,
@@ -535,11 +536,14 @@ const zoneTiles = (Object.keys(zones) as ZoneId[]).map((id) => ({
   <!-- Google reviews (live from /api/reviews once the Places API key is set) -->
   <GoogleReviews />
 
-  <!-- Careers: invitation to join the team (links to a careers page, to be built) -->
-  <Careers />
+  <!-- How we work: the sale process in six steps, leading into the request form -->
+  <HowWeWork />
 
   <!-- Sell / buy request form (e-mailed to the team) -->
   <LeadForm />
+
+  <!-- Careers: invitation to join the team (links to a careers page, to be built) -->
+  <Careers />
 </SiteLayout>
 
 <script>
