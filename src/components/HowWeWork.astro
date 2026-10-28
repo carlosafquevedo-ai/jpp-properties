@@ -41,35 +41,35 @@ const steps: { icon: IconName; title: string; text: string }[] = [
 ];
 ---
 
-<section id="como-trabalhamos" class="container-x hww" aria-labelledby="hww-titulo">
-  <div class="hww-head">
-    <h2 id="hww-titulo" class="zones-title">
-      Como trabalhamos
-    </h2>
-    <p class="hww-lead">
-      Do primeiro contacto à escritura, um processo claro e acompanhado por uma única equipa.
-    </p>
-  </div>
-  <ol class="hww-cards">
-    {steps.map((s, i) => (
-      <li class="hww-card" data-tone={i % 3}>
-        <span class="hww-card-num" aria-hidden="true">
-          {String(i + 1).padStart(2, '0')}
-        </span>
-        <span class="hww-card-icon" aria-hidden="true">
-          <Icon name={s.icon} class="size-6" />
-        </span>
-        <div class="hww-card-body">
+<section id="como-trabalhamos" class="hww" aria-labelledby="hww-titulo">
+  <div class="container-x">
+    <div class="hww-head">
+      <div>
+        <h2 id="hww-titulo" class="zones-title">
+          Como trabalhamos
+        </h2>
+        <p class="hww-lead">
+          Do primeiro contacto à escritura, um processo claro e acompanhado por uma única equipa.
+        </p>
+      </div>
+      <a href="#vender" class="btn btn-lime">
+        Pedir avaliação <Icon name="arrowRight" class="size-4" />
+      </a>
+    </div>
+    <ol class="hww-flow">
+      {steps.map((s, i) => (
+        <li class="hww-card">
+          <span class="hww-dot" aria-hidden="true"></span>
+          <span class="hww-card-icon" aria-hidden="true">
+            <Icon name={s.icon} class="size-4" />
+          </span>
+          <span class="hww-card-num" aria-hidden="true">
+            {String(i + 1).padStart(2, '0')}
+          </span>
           <h3 class="hww-card-title">{s.title}</h3>
           <p class="hww-card-text">{s.text}</p>
-        </div>
-      </li>
-    ))}
-  </ol>
-  <div class="hww-cta">
-    <p class="hww-cta-text">Pronto para saber o que o seu imóvel vale?</p>
-    <a href="#vender" class="btn btn-lime">
-      Pedir avaliação <Icon name="arrowRight" class="size-4" />
-    </a>
+        </li>
+      ))}
+    </ol>
   </div>
 </section>

@@ -4837,218 +4837,131 @@ a.rv-author:hover {
   }
 }
 
-/* How we work: six numbered steps on fine dividers (three per row on desktop), a lime marker on each number,
-   then a closing call to the request form. */
+/* How we work (reference: MeewVision): an ivory band, a head row (title and lead left, call to action right), a
+   timeline with a lime dot per step, and white cards whose huge numeral is clipped by the card's top edge of text. */
 .hww {
+  width: 100vw;
   margin-top: 4rem;
+  margin-left: calc(50% - 50vw);
+  padding-block: 3rem;
+  background: var(--color-paper-2);
 }
 .hww-head {
-  display: grid;
-  gap: 0.75rem;
-  max-width: 40rem;
-}
-.hww-lead {
-  color: var(--color-muted);
-}
-.hww-steps {
-  display: grid;
-  margin: 2.25rem 0 0;
-  padding: 0;
-  list-style: none;
-  border-top: 1px solid rgba(27, 30, 28, 0.14);
-}
-@media (min-width: 40rem) {
-  .hww-steps {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
-}
-@media (min-width: 64rem) {
-  .hww-steps {
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-  }
-}
-.hww-step {
-  position: relative;
-  padding: 1.5rem 1.5rem 1.75rem 0;
-  border-bottom: 1px solid rgba(27, 30, 28, 0.14);
-}
-@media (min-width: 64rem) {
-  .hww-step:not(:nth-child(3n + 1)) {
-    padding-left: 1.5rem;
-    border-left: 1px solid rgba(27, 30, 28, 0.14);
-  }
-}
-.hww-num {
-  display: inline-block;
-  font-family: var(--font-display, inherit);
-  font-size: 2.25rem;
-  font-weight: 600;
-  line-height: 1;
-  color: var(--color-ink);
-  background-image: linear-gradient(var(--color-lime), var(--color-lime));
-  background-repeat: no-repeat;
-  background-size: 100% 0.3em;
-  background-position: 0 92%;
-  transition: background-size 0.4s var(--ease-out);
-}
-.hww-step:hover .hww-num {
-  background-size: 100% 100%;
-}
-.hww-title {
-  margin-top: 0.85rem;
-  font-family: var(--font-display, inherit);
-  font-size: 1.2rem;
-  font-weight: 600;
-  line-height: 1.2;
-  color: var(--color-ink);
-}
-.hww-text {
-  margin-top: 0.5rem;
-  max-width: 24rem;
-  font-size: 0.95rem;
-  line-height: 1.6;
-  color: var(--color-muted);
-}
-.hww-cta {
   display: flex;
   flex-wrap: wrap;
-  align-items: center;
+  align-items: flex-end;
   justify-content: space-between;
-  gap: 1rem 2rem;
-  margin-top: 2rem;
+  gap: 1.25rem 2rem;
 }
-.hww-cta-text {
-  font-family: var(--font-display, inherit);
-  font-size: 1.35rem;
-  font-weight: 500;
-  color: var(--color-ink);
+.hww-lead {
+  max-width: 34rem;
+  margin-top: 0.75rem;
+  color: var(--color-muted);
 }
-@media (prefers-reduced-motion: reduce) {
-  .hww-num {
-    transition: none;
-  }
-}
-
-/* How we work, as posters: six tall cards in three tones (carbon, lime tint, ivory). Each carries a huge ghost
-   numeral, an icon tile and the step; on hover it lifts and the numeral comes forward. */
-.hww-steps {
-  display: none;
-}
-.hww-cards {
+.hww-flow {
+  position: relative;
   display: grid;
   gap: 1rem;
-  margin: 2.25rem 0 0;
+  margin: 2.5rem 0 0;
   padding: 0;
   list-style: none;
 }
 @media (min-width: 40rem) {
-  .hww-cards {
+  .hww-flow {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 }
 @media (min-width: 64rem) {
-  .hww-cards {
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-    gap: 1.25rem;
+  .hww-flow {
+    grid-template-columns: repeat(6, minmax(0, 1fr));
+    gap: 0.9rem;
+    padding-top: 1.75rem;
+  }
+  /* The timeline: a thin lime line across the top, one dot above each card. */
+  .hww-flow::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0.3rem;
+    height: 2px;
+    background: var(--color-lime);
+  }
+}
+.hww-dot {
+  display: none;
+}
+@media (min-width: 64rem) {
+  .hww-dot {
+    position: absolute;
+    left: 1rem;
+    top: -1.72rem;
+    display: block;
+    width: 0.65rem;
+    height: 0.65rem;
+    border-radius: 9999px;
+    background: var(--color-lime);
+    box-shadow: 0 0 0 4px rgba(158, 188, 58, 0.3);
   }
 }
 .hww-card {
-  --bg: #1b1e1c;
-  --fg: #fff;
-  --muted: rgba(255, 255, 255, 0.72);
-  --tile: var(--color-lime);
-  --tile-fg: var(--color-forest);
-  --ghost: rgba(255, 255, 255, 0.08);
   position: relative;
-  isolation: isolate;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  gap: 2.5rem;
-  min-height: 18rem;
-  padding: 1.5rem;
-  overflow: hidden;
-  border-radius: 0.75rem;
-  background: var(--bg);
-  color: var(--fg);
+  min-height: 15rem;
+  padding: 1.1rem 1.1rem 1.4rem;
+  background: #fff;
+  border-radius: 0.5rem;
   box-shadow:
-    0 1px 2px rgba(27, 30, 28, 0.06),
-    0 18px 30px -22px rgba(27, 30, 28, 0.4);
+    0 1px 2px rgba(27, 30, 28, 0.05),
+    0 14px 24px -18px rgba(27, 30, 28, 0.3);
   transition:
     transform 0.45s var(--ease-out),
     box-shadow 0.45s var(--ease-out);
 }
-.hww-card[data-tone='1'] {
-  --bg: linear-gradient(160deg, #f4f8e8 0%, #e3edc4 100%);
-  --fg: var(--color-ink);
-  --muted: var(--color-muted);
-  --tile: var(--color-forest);
-  --tile-fg: var(--color-lime);
-  --ghost: rgba(85, 102, 43, 0.14);
-}
-.hww-card[data-tone='2'] {
-  --bg: var(--color-paper-2);
-  --fg: var(--color-ink);
-  --muted: var(--color-muted);
-  --tile: var(--color-lime);
-  --tile-fg: var(--color-forest);
-  --ghost: rgba(27, 30, 28, 0.07);
-  box-shadow:
-    inset 0 0 0 1px rgba(27, 30, 28, 0.08),
-    0 18px 30px -22px rgba(27, 30, 28, 0.3);
-}
-.hww-card-num {
-  position: absolute;
-  right: -0.4rem;
-  top: -1.6rem;
-  z-index: -1;
-  font-family: var(--font-display, inherit);
-  font-size: 9rem;
-  font-weight: 700;
-  line-height: 1;
-  letter-spacing: -0.04em;
-  color: var(--ghost);
-  transition:
-    transform 0.6s var(--ease-out),
-    color 0.4s;
-}
 .hww-card-icon {
+  position: absolute;
+  right: 0.85rem;
+  top: 0.85rem;
   display: grid;
   place-items: center;
-  width: 3rem;
-  height: 3rem;
-  border-radius: 0.6rem;
-  background: var(--tile);
-  color: var(--tile-fg);
+  width: 2.1rem;
+  height: 2.1rem;
+  border-radius: 0.5rem;
+  background: var(--color-paper-2);
+  color: var(--color-ink);
+}
+.hww-card-num {
+  display: block;
+  height: 3.1rem;
+  overflow: hidden;
+  font-family: var(--font-display, inherit);
+  font-size: 4.6rem;
+  font-weight: 700;
+  line-height: 1;
+  letter-spacing: -0.03em;
+  color: var(--color-olive);
 }
 .hww-card-title {
+  margin-top: 0.5rem;
   font-family: var(--font-display, inherit);
-  font-size: 1.4rem;
+  font-size: 1.05rem;
   font-weight: 600;
-  line-height: 1.15;
-  color: var(--fg);
+  line-height: 1.2;
+  color: var(--color-ink);
 }
 .hww-card-text {
-  margin-top: 0.55rem;
-  max-width: 22rem;
-  font-size: 0.95rem;
-  line-height: 1.55;
-  color: var(--muted);
+  margin-top: 0.5rem;
+  font-size: 0.85rem;
+  line-height: 1.5;
+  color: var(--color-muted);
 }
 @media (hover: hover) and (prefers-reduced-motion: no-preference) {
   .hww-card:hover {
     transform: translateY(-6px);
-    box-shadow: 0 30px 44px -24px rgba(27, 30, 28, 0.5);
-  }
-  .hww-card:hover .hww-card-num {
-    transform: translate(-0.4rem, 0.4rem) scale(1.05);
-    color: var(--tile);
-    opacity: 0.35;
+    box-shadow: 0 24px 34px -22px rgba(27, 30, 28, 0.45);
   }
 }
 @media (prefers-reduced-motion: reduce) {
-  .hww-card,
-  .hww-card-num {
+  .hww-card {
     transition: none;
   }
 }
