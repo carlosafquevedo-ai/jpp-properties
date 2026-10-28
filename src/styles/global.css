@@ -4965,3 +4965,55 @@ a.rv-author:hover {
     transition: none;
   }
 }
+
+/* Listing card in the brand lime: a soft gradient with a light glow, carbon type, carbon "Novo" flag and controls. */
+@media (min-width: 64rem) {
+  .hcard .hero-deck {
+    background:
+      radial-gradient(110% 70% at 100% 0%, rgba(255, 255, 255, 0.38) 0%, transparent 55%),
+      linear-gradient(160deg, #b4d04e 0%, #9ebc3a 55%, #8aa72f 100%);
+    border-top: 0;
+    color: var(--color-forest);
+    box-shadow:
+      0 2px 6px rgba(27, 30, 28, 0.12),
+      0 34px 60px -24px rgba(60, 80, 15, 0.55);
+  }
+  .hcard .hero-deck .hero-card-kicker {
+    color: rgba(27, 30, 28, 0.78);
+  }
+  .hcard .hero-deck .card-flag {
+    background: var(--color-forest);
+    color: var(--color-lime);
+  }
+  .hcard .hero-deck h2,
+  .hcard .hero-deck p {
+    color: var(--color-forest);
+  }
+  .hcard .hero-deck ul {
+    color: rgba(27, 30, 28, 0.85);
+  }
+  .hcard .hero-deck .text-white\/80,
+  .hcard .hero-deck .text-white\/85 {
+    color: rgba(27, 30, 28, 0.78);
+  }
+  .hcard .hero-deck .hero-card-go {
+    background: var(--color-forest);
+    color: var(--color-lime);
+  }
+  .hcard .hero-deck .hero-controls {
+    border-top-color: rgba(27, 30, 28, 0.22);
+  }
+  .hcard .hero-deck .hero-dot > span {
+    background: rgba(27, 30, 28, 0.22);
+  }
+  .hcard .hero-deck .hero-dot > span::after {
+    background: var(--color-forest);
+  }
+  .hcard .hero-deck .hero-pause {
+    background: rgba(27, 30, 28, 0.14);
+    color: var(--color-forest);
+  }
+  .hcard .hero-deck .hero-pause:hover {
+    background: rgba(27, 30, 28, 0.24);
+  }
+}
