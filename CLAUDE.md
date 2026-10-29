@@ -39,6 +39,7 @@ Website da JPP Properties (AMI 9361), agência imobiliária no Algarve. Esta é 
 - **O fundo base de todas as secções é branco** (`paper`). `paper-2` (névoa) só para apoio: filtros, etiquetas, campos.
 - Paleta em `src/styles/global.css` (ver `/paleta/`): **carvão** (`forest`, `#1b1e1c`, o único escuro: cabeçalho, botões escuros, pesquisa, banda das zonas), marfim (`paper-2`), linha, tinta, cinza quente e o **verde da marca** (lima `#9EBC3A` e oliva): destaques e botões principais (hero, cabeçalho sobre a fotografia), etiquetas, pontos e barras; linhas finas em branco translúcido sobre o carvão (sem bege/champanhe). Evitar misturar novos tons: usar sempre estes tokens.
 - Lima só em fundos (botões, etiquetas) com texto escuro; nunca como texto sobre branco (contraste 2,2:1).
+- **Superfície verde** (fim de `global.css`): o cabeçalho, os botões verdes e as etiquetas usam `--hdr-surface` / `--green-surface` (verde-lima escuro `#2e3f12` → `#4b6a1a` → lima, com faixa de luz lima-pálida e grão), sempre com texto branco. O oliva passou a `#4b6a1a`. Detalhes finos (linhas, pontos, barra do preço) ficam em lima simples. Versão clara invertida (`--light-surface`) no botão "Contactar".
 - Uma única largura de página: `--page-w` e `--gutter` em `global.css`; usar sempre `.container-x`.
 - **Ritmo da página** (bloco "Page rhythm", no fim de `global.css`):
   - Faixas de apoio num só tom, **marfim** (`--band-bg`), nunca verde-lima. O carvão fica para os momentos fortes (hero, carreiras, rodapé).
@@ -59,7 +60,7 @@ A pesquisa (hero e listagem) é dirigida por dados. Ao construir o Sanity (fase 
 
 ## Definições do site (Sanity): contactos do header
 
-O header (e o rodapé, a barra de contacto móvel e a página de contactos) lê tudo de `siteSettings`; nada fica escrito à mão no código. O painel tem de pedir, como **obrigatórios**:
+O header (e a faixa "Visite-nos", o menu do telemóvel e a página de contactos) lê tudo de `siteSettings`; nada fica escrito à mão no código. O painel tem de pedir, como **obrigatórios**:
 
 - **Escritórios**: nome, morada e **telefones** (número + tipo "rede móvel" ou "rede fixa", para a nota legal "(Chamada para rede ... nacional)"). O botão de pontos (grelha 3×3) do header abre o painel "Fale connosco": morada, email, telefones, horário e redes. `TODO`: horário de abertura (`openingHours` em `src/lib/site.ts`), a pedir ao cliente; no Sanity, campo próprio em `siteSettings`.
 - **WhatsApp** (número, formato internacional) e **Instagram** (endereço do perfil). O Instagram aparece no header se estiver preenchido; o WhatsApp está no widget flutuante e no menu móvel (não no header).

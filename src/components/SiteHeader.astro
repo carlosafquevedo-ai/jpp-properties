@@ -116,56 +116,70 @@ const linkClass =
       <button
         type="button"
         id="menu-btn"
-        class="grid size-11 cursor-pointer place-items-center rounded-full bg-lime text-forest lg:hidden"
+        class="menu-toggle lg:hidden"
         aria-expanded="false"
         aria-controls="mobile-menu"
         aria-label="Abrir menu"
       >
-        <Icon name="menu" class="size-6" />
+        <span class="menu-toggle-lines" aria-hidden="true"><i></i><i></i></span>
       </button>
     </div>
   </div>
 
-  <div
-    id="mobile-menu"
-    hidden
-    class="hdr-panel rounded-3xl border border-line bg-paper p-6 shadow-xl lg:hidden"
-  >
+  <!-- Phones and tablets: the header capsule unfolds into this panel (same gradient), links first, then the
+       contact actions as icons (as on desktop) and the language. -->
+  <div id="mobile-menu" hidden class="m-menu lg:hidden">
     <nav aria-label="Menu móvel">
-      <ul class="space-y-1">
+      <ul class="m-menu-links">
         {links.map((l) => (
           <li>
-            <a href={l.href} class="block rounded-xl px-2 py-3 font-display text-2xl text-forest">
-              {l.label}
+            <a
+              href={l.href}
+              class="m-menu-link"
+              aria-current={l.match && path.startsWith(l.match) ? 'page' : undefined}
+            >
+              <span>{l.label}</span>
+              <Icon name="arrowUpRight" class="m-menu-arrow size-5" />
             </a>
           </li>
         ))}
       </ul>
     </nav>
-    <nav class="mt-3 flex items-center gap-1 text-sm font-semibold" aria-label="Idioma">
-      {langLinks.map(({ l, href }) => (
-        <a
-          href={href}
-          hreflang={l}
-          lang={l}
-          aria-current={l === currentLocale ? 'true' : undefined}
-          class="rounded-md px-3 py-2 uppercase tracking-wide text-ink/55 aria-[current=true]:bg-paper-2 aria-[current=true]:text-ink"
-        >
-          {l}
+    <div class="m-menu-foot">
+      <div class="m-menu-actions">
+        <a href={`tel:${mainPhone.tel}`} class="m-icon m-icon-main" aria-label={`Ligar ${mainPhone.label}`}>
+          <Icon name="phone" class="size-5" />
         </a>
-      ))}
-    </nav>
-    <a href={`tel:${mainPhone.tel}`} class="btn btn-lime mt-4 w-full">
-      <Icon name="phone" class="size-5" />
-      {mainPhone.label}
-    </a>
-    <div class="mt-2 grid grid-cols-2 gap-2">
-      <a href={whatsappUrl} class="btn btn-ghost" target="_blank" rel="noopener">
-        <Icon name="whatsapp" class="size-5" /> WhatsApp
-      </a>
-      <a href={instagramUrl} class="btn btn-ghost" target="_blank" rel="noopener">
-        <Icon name="instagram" class="size-5" /> Instagram
-      </a>
+        <a href={whatsappUrl} class="m-icon" target="_blank" rel="noopener" aria-label="WhatsApp">
+          <Icon name="whatsapp" class="size-5" />
+        </a>
+        <a href={instagramUrl} class="m-icon" target="_blank" rel="noopener" aria-label="Instagram">
+          <Icon name="instagram" class="size-5" />
+        </a>
+        <button
+          type="button"
+          class="m-icon"
+          aria-haspopup="dialog"
+          aria-controls="info-panel"
+          aria-label="Contactos e horário"
+          data-info-open
+        >
+          <Icon name="dots" class="size-5" />
+        </button>
+      </div>
+      <nav class="m-menu-lang" aria-label="Idioma">
+        {langLinks.map(({ l, href, name }) => (
+          <a
+            href={href}
+            hreflang={l}
+            lang={l}
+            aria-label={name}
+            aria-current={l === currentLocale ? 'true' : undefined}
+          >
+            {l.toUpperCase()}
+          </a>
+        ))}
+      </nav>
     </div>
   </div>
 </header>
@@ -286,10 +300,11 @@ const linkClass =
     btn.setAttribute('aria-expanded', String(open));
     btn.setAttribute('aria-label', open ? 'Fechar menu' : 'Abrir menu');
     panel.hidden = !open;
+    header?.toggleAttribute('data-menu-open', open);
   };
   btn?.addEventListener('click', () => setOpen(btn.getAttribute('aria-expanded') !== 'true'));
   panel?.addEventListener('click', (e) => {
-    if ((e.target as HTMLElement).closest('a')) setOpen(false);
+    if ((e.target as HTMLElement).closest('a, [data-info-open]')) setOpen(false);
   });
 
   // Dropdowns (language list, phone list): the language list opens on hover (mouse) and on the button

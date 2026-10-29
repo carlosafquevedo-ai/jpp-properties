@@ -3,7 +3,6 @@ import BaseLayout from './BaseLayout.astro';
 import SiteHeader from '../components/SiteHeader.astro';
 import SiteFooter from '../components/SiteFooter.astro';
 import ContactBand from '../components/ContactBand.astro';
-import MobileContactBar from '../components/MobileContactBar.astro';
 import FloatingWidgets from '../components/FloatingWidgets.astro';
 import DragScroll from '../components/DragScroll.astro';
 import type { RouteKey } from '../i18n/routes';
@@ -21,14 +20,13 @@ interface Props {
 const { title, description, route, padTop = true, contactBand = true } = Astro.props;
 ---
 
-<BaseLayout locale="pt" {title} {description} {route} noindex bodyClass="pb-14 lg:pb-0">
+<BaseLayout locale="pt" {title} {description} {route} noindex>
   <SiteHeader overHero={!padTop} />
   <main id="main" class:list={[padTop && 'pt-28']}>
     <slot />
     {contactBand && <ContactBand />}
   </main>
   <SiteFooter />
-  <MobileContactBar />
   <FloatingWidgets />
   <DragScroll />
 </BaseLayout>

@@ -88,42 +88,59 @@ const zoneTiles = (Object.keys(zones) as ZoneId[]).map((id) => ({
         </div>
 
         <div class="hero-deck mt-8 lg:mt-0 lg:w-[22rem] lg:shrink-0" data-deck>
-          <p class="hero-deck-badge hidden lg:flex">
-            <Icon name="star" class="size-3.5" /> Imóvel em destaque
-          </p>
           <div class="hero-cards hidden lg:grid">
             {slides.map((slide, i) =>
               slide.property ? (
-                <article class="hero-card" data-slide={i} inert={i !== 0} aria-hidden={i !== 0}>
+                <article class="hero-card hc" data-slide={i} inert={i !== 0} aria-hidden={i !== 0}>
                   <a
                     href={`/imoveis/${slide.property.slug}/`}
-                    class="hero-card-photo group [@media(max-height:760px)]:hidden"
-                    aria-label={`Ver imóvel: ${slide.property.title}`}
+                    class="hc-photo group"
+                    tabindex="-1"
+                    aria-hidden="true"
                   >
                     <img
                       src={slide.property.images[1] ?? slide.property.images[0]}
                       alt=""
-                      class="aspect-[4/3] w-full object-cover transition-transform duration-500 group-hover:scale-[1.04]"
+                      class="transition-transform duration-500 group-hover:scale-[1.04]"
                       loading="lazy"
                       referrerpolicy="no-referrer"
                     />
-                    {slide.property.condition === 'new' && (
-                      <span class="card-flag hero-card-flag">Novo</span>
-                    )}
-                    <span class="hero-card-go">
+                    <span class="hc-go" aria-hidden="true">
                       <Icon name="arrowUpRight" class="size-5" />
                     </span>
                   </a>
-                  <div class="hero-card-body">
-                    <h2 class="hero-card-title">{slide.property.title}</h2>
-                    <p class="hero-card-place">
-                      <Icon name="pin" class="size-3.5" />
-                      {[slide.property.locality, zones[slide.property.zone].name]
-                        .filter(Boolean)
-                        .join(', ')}
-                    </p>
-                    <p class="hero-card-price">{formatPrice(slide.property.price)}</p>
+                  <ul class="hc-chips" aria-label="Características">
+                    {slide.property.features.slice(0, 2).map((f) => (
+                      <li>
+                        <span class="hc-check" aria-hidden="true">
+                          <Icon name="check" class="size-3" />
+                        </span>
+                        {f}
+                      </li>
+                    ))}
+                  </ul>
+                  <div class="hc-stat">
+                    <p class="hc-stat-label">Em destaque</p>
+                    <p class="hc-stat-value">{slide.property.usableArea} m²</p>
+                    <p class="hc-stat-text">Área útil</p>
                   </div>
+                  <a href={`/imoveis/${slide.property.slug}/`} class="hc-product">
+                    <img
+                      src={slide.property.images[2] ?? slide.property.images[0]}
+                      alt=""
+                      class="hc-thumb"
+                      loading="lazy"
+                      referrerpolicy="no-referrer"
+                    />
+                    <div class="min-w-0">
+                      <h2 class="hc-title">{slide.property.title}</h2>
+                      <p class="hc-price">{formatPrice(slide.property.price)}</p>
+                      <p class="hc-place">
+                        <Icon name="pin" class="size-3" />
+                        {zones[slide.property.zone].name}
+                      </p>
+                    </div>
+                  </a>
                 </article>
               ) : null,
             )}
@@ -175,11 +192,11 @@ const zoneTiles = (Object.keys(zones) as ZoneId[]).map((id) => ({
           Uma seleção dos imóveis que a nossa equipa recomenda neste momento.
         </p>
       </div>
-      <div class="flex items-center gap-5">
+      <div class="flex w-full items-center justify-between gap-5 sm:w-auto sm:justify-start">
         <a href="/imoveis/" class="feat-all">
           Ver todos os imóveis <Icon name="arrowRight" class="size-4" />
         </a>
-        <div class="hidden gap-2 sm:flex">
+        <div class="flex gap-2">
           <button type="button" class="feat-nav" data-feat-prev aria-label="Imóveis anteriores">
             <Icon name="chevronLeft" class="size-5" />
           </button>
@@ -357,15 +374,15 @@ const zoneTiles = (Object.keys(zones) as ZoneId[]).map((id) => ({
           </div>
         </div>
       </div>
-      <div class="rise flex flex-col items-start gap-6 lg:self-center">
+      <div class="rise order-first flex flex-col items-start gap-6 lg:order-none lg:self-center">
         <h2 id="sobre-titulo" class="zones-title">
           Somos daqui. Sentimos o mercado como poucos.
         </h2>
         <div class="about-copy grid max-w-[40.5rem] content-start gap-4 text-left text-base leading-relaxed text-ink/80 md:text-justify sm:text-[1.0625rem]">
           <!-- TODO: provisional SEO copy (PT). To be reviewed with the client; EN/FR versions pending. -->
           <p>
-            A JPP Properties é uma imobiliária no Algarve (licença AMI {AMI}), especializada na
-            compra, venda e arrendamento de apartamentos, moradias e terrenos em{' '}
+            A JPP Properties é uma imobiliária no Algarve (AMI {AMI}) especializada na compra,
+            venda e arrendamento de apartamentos, moradias e terrenos em{' '}
             {aboutZones.map((z, i) => (
               <>
                 <a href={`/imoveis/?zona=${z.id}`}>{z.name}</a>
@@ -374,14 +391,9 @@ const zoneTiles = (Object.keys(zones) as ZoneId[]).map((id) => ({
             ))}
           </p>
           <p>
-            Dos condomínios e campos de golfe às marinas e praias, ajudamos quem quer viver,
-            investir ou ter uma casa de férias no Algarve a encontrar o imóvel certo, com informação
-            clara e atualizada sobre cada zona.
-          </p>
-          <p>
             Conhecemos cada zona por dentro e acompanhamos cada passo, da primeira visita à
-            escritura, para que decida com segurança, seja para comprar casa no Algarve, vender o
-            seu imóvel ou encontrar um arrendamento.
+            escritura, para quem quer comprar casa no Algarve, vender o seu imóvel ou investir com
+            segurança.
           </p>
         </div>
         <div class="flex flex-wrap gap-3">
@@ -454,9 +466,8 @@ const zoneTiles = (Object.keys(zones) as ZoneId[]).map((id) => ({
         </h2>
         <!-- TODO: provisional SEO copy (PT); to be reviewed with the client. EN/FR pending. -->
         <p class="team-lead">
-          Consultores imobiliários no Algarve que conhecem cada zona, de Vilamoura e Quarteira a
-          Vale do Lobo e Quinta do Lago. Fale diretamente com quem o vai acompanhar na compra, venda
-          ou arrendamento do seu imóvel, da primeira visita à escritura.
+          Consultores imobiliários no Algarve que conhecem cada zona. Fale diretamente com quem o vai
+          acompanhar, da primeira visita à escritura.
         </p>
         <div class="team-nav" data-team-nav hidden>
           <button type="button" class="feat-nav" data-team-prev aria-label="Agentes anteriores">
@@ -671,6 +682,23 @@ const zoneTiles = (Object.keys(zones) as ZoneId[]).map((id) => ({
       card.addEventListener('focusin', () => open(card));
       card.addEventListener('click', () => open(card));
     });
+  }
+</script>
+
+<script>
+  // "Somos daqui" map: drawn in when it scrolls into view (CSS in global.css), the office card last.
+  const ptMap = document.querySelector<HTMLElement>('.pt-map');
+  if (ptMap && !window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    ptMap.dataset.draw = '';
+    new IntersectionObserver(
+      (entries, obs) => {
+        if (entries.some((e) => e.isIntersecting)) {
+          ptMap.dataset.draw = 'on';
+          obs.disconnect();
+        }
+      },
+      { threshold: 0.35 },
+    ).observe(ptMap);
   }
 </script>
 

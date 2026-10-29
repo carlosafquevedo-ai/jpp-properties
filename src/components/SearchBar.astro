@@ -81,8 +81,8 @@ const price = getPriceRange();
   </div>
 </form>
 <script>
-  // Custom option list for mouse users (the native one can't be styled). Touch devices keep the
-  // native <select>, which is the best experience there. The real <select> stays in the form.
+  // Custom option list (the native one can't be styled), on every device so phones get the same modern list as
+  // desktop. The real <select> stays in the form.
   const CHECK =
     '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" class="glass-check"><path d="M20 6 9 17l-5-5"/></svg>';
 
@@ -233,9 +233,7 @@ const price = getPriceRange();
     paint();
   };
 
-  if (window.matchMedia('(hover: hover) and (pointer: fine)').matches) {
-    document.querySelectorAll<HTMLSelectElement>('.glass-field select').forEach(enhance);
-  }
+  document.querySelectorAll<HTMLSelectElement>('.glass-field select').forEach(enhance);
 </script>
 
 <script>
