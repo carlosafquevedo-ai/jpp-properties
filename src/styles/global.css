@@ -9096,3 +9096,9 @@ footer.on-dark {
 .lead-more[open] .lead-more-caret {
   transform: rotate(180deg);
 }
+
+/* Home: the sell band (mist, full width) is the last section, so the footer sits right under it with no white strip
+   between them. Other pages end on white and keep the footer's top margin. */
+main:has(> section#vender:last-of-type) + footer {
+  margin-top: 0;
+}
