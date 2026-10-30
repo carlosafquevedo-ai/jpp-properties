@@ -1,4 +1,5 @@
 ---
+import Flag from './Flag.astro';
 import Icon from './Icon.astro';
 import { logoImage, logoWhiteImage } from '../data/properties';
 import { locales, localizedPath } from '../i18n/routes';
@@ -68,6 +69,7 @@ const linkClass =
           aria-controls="lang-menu"
           aria-label={`Idioma: ${langLinks.find((x) => x.l === currentLocale)?.name}`}
         >
+          <Flag locale={currentLocale} />
           {currentLocale}
           <Icon name="chevronDown" class="lang-caret size-4" />
         </button>
@@ -81,7 +83,8 @@ const linkClass =
                 aria-current={l === currentLocale ? 'true' : undefined}
                 class="mega-link lang-item"
               >
-                <span>{name}</span>
+                <Flag locale={l} />
+                <span class="lang-name">{name}</span>
                 <Icon name="check" class="lang-check size-4" />
               </a>
             </li>
@@ -176,6 +179,7 @@ const linkClass =
             aria-label={name}
             aria-current={l === currentLocale ? 'true' : undefined}
           >
+            <Flag locale={l} />
             {l.toUpperCase()}
           </a>
         ))}

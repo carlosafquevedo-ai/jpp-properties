@@ -9,6 +9,7 @@ import HowWeWork from '../components/HowWeWork.astro';
 import Results from '../components/Results.astro';
 import ZoneExplorer from '../components/ZoneExplorer.astro';
 import Icon from '../components/Icon.astro';
+import FlutedWave from '../components/FlutedWave.astro';
 import {
   formatPrice,
   zones,
@@ -17,7 +18,7 @@ import {
 } from '../data/properties';
 import { featuredProperties, heroSlides } from '../lib/catalog';
 import { team } from '../data/team';
-import { AMI, offices } from '../lib/site';
+import { AMI, email, offices } from '../lib/site';
 
 const featured = featuredProperties();
 const slides = heroSlides();
@@ -46,6 +47,7 @@ const zoneTiles = (Object.keys(zones) as ZoneId[]).map((id) => ({
   description="Apartamentos e moradias em Vilamoura, Quarteira, Vale do Lobo e Quinta do Lago. JPP Properties, AMI 9361."
   route="home"
   padTop={false}
+  contactBand={false}
 >
   <!-- Hero: full-bleed rotating photos, rounded bottom corners and a hanging tab that holds the search box -->
   <section>
@@ -111,7 +113,7 @@ const zoneTiles = (Object.keys(zones) as ZoneId[]).map((id) => ({
                   </ul>
                   <a href={`/imoveis/${slide.property.slug}/`} class="hc-product">
                     <div class="hc-product-head">
-                      <h2 class="hc-title">{slide.property.title}</h2>
+                      <p class="hc-title">{slide.property.title}</p>
                       <span class="hc-arrow" aria-hidden="true">
                         <Icon name="arrowUpRight" class="size-4" />
                       </span>
@@ -298,6 +300,29 @@ const zoneTiles = (Object.keys(zones) as ZoneId[]).map((id) => ({
             Ver no mapa
           </a>
         </div>
+        <!-- The main phone and the e-mail from the site settings (the home page has no "Visite-nos" band, so they live
+             here; the other numbers stay in the "Fale connosco" panel and the contacts page). -->
+        <ul class="about-contacts" aria-label="Contactos">
+          {offices[0]!.phones.slice(0, 1).map((p) => (
+            <li>
+              <span class="about-contact-icon glass-ic" aria-hidden="true">
+                <Icon name="phone" class="size-4" />
+              </span>
+              <span>
+                <a href={`tel:${p.tel}`}>{p.label}</a>
+                <span class="about-contact-note">({p.note})</span>
+              </span>
+            </li>
+          ))}
+          <li>
+            <span class="about-contact-icon glass-ic" aria-hidden="true">
+              <Icon name="mail" class="size-4" />
+            </span>
+            <span>
+              <a href={`mailto:${email}`}>{email}</a>
+            </span>
+          </li>
+        </ul>
       </div>
     </div>
 
@@ -343,6 +368,7 @@ const zoneTiles = (Object.keys(zones) as ZoneId[]).map((id) => ({
       id="equipa"
       class="team-band mt-20 grid gap-8 lg:mt-24 lg:grid-cols-[minmax(0,16rem)_minmax(0,1fr)] lg:gap-14"
     >
+      <FlutedWave class="team-wave" />
       <div class="rise flex flex-col justify-between gap-8 lg:gap-0">
         <h2 id="equipa-titulo" class="zones-title team-title">
           <span class="team-title-row team-title-r1">

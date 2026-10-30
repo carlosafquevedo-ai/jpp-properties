@@ -1,12 +1,16 @@
-// "Somos daqui" map as a 3D dotted globe: the land shape is read from the drawn map image (no map data or
-// libraries), sampled into a dot matrix, and laid on a sphere with a latitude/longitude graticule. The globe turns
+// "Somos daqui" map as a 3D globe: the land shape is read from the drawn map image (no map data or libraries),
+// smoothed into a contour, and laid on a sphere with a latitude/longitude graticule. The land is one solid shape in
+// the fern ramp with a light rim on its coast, and a fine network of light (hairlines between small glowing nodes,
+// the office pin as its hub) runs over it, the same thin green light as the site's other effects. The globe turns
 // into place when it scrolls into view, follows the mouse a little, and can be dragged; the office pin tracks its
 // point on the sphere. The <img> stays in the page as the fallback without JS.
 
-type Dot = { x: number; y: number; z: number; south: number; delay: number };
+type P3 = { x: number; y: number; z: number };
+type Node = P3 & { south: number; delay: number };
+type Link = { a: P3; b: P3; delay: number; hub: boolean };
 
 // One green, as a fern ramp from north to south: deep forest olive brightening through the brand greens into a lime
-// glow over the Algarve. Only greens from the site scale, so the blend never turns muddy. [position 0..1, r, g, b]
+// glow over the Algarve (the land's fill gradient). Only greens from the site scale, so the blend never turns muddy. [position 0..1, r, g, b]
 const LAND: [number, number, number, number][] = [
   [0, 36, 51, 26], // --g-800
   [0.45, 75, 106, 26], // --g-500
@@ -14,15 +18,6 @@ const LAND: [number, number, number, number][] = [
   [0.86, 158, 188, 58], // lime
   [1, 178, 206, 72], // lime glow
 ];
-const landColour = (s: number) => {
-  let i = 1;
-  while (i < LAND.length - 1 && s > LAND[i][0]) i++;
-  const [p0, r0, g0, b0] = LAND[i - 1];
-  const [p1, r1, g1, b1] = LAND[i];
-  const t = clamp((s - p0) / (p1 - p0), 0, 1);
-  return [r0 + (r1 - r0) * t, g0 + (g1 - g0) * t, b0 + (b1 - b0) * t].map(Math.round).join(',');
-};
-
 const DEG = Math.PI / 180;
 const clamp = (v: number, lo: number, hi: number) => Math.min(hi, Math.max(lo, v));
 // Stylised globe: one degree of real latitude spans K degrees on the sphere, so Portugal covers a large cap and
@@ -42,6 +37,29 @@ const onSphere = (a: number, b: number) => ({
   y: Math.sin(b),
   z: Math.cos(b) * Math.cos(a),
 });
+
+/** Small seeded random, so the network is the same on every visit. */
+const seeded = (seed: number) => () => {
+  seed = (seed * 1664525 + 1013904223) >>> 0;
+  return seed / 4294967296;
+};
+
+/** 3×3 box blur of a field, to round the stair-stepped mask into a smooth coast without losing its shape. */
+const blur = (src: Float32Array, n: number) => {
+  const out = new Float32Array(n * n);
+  for (let y = 0; y < n; y++)
+    for (let x = 0; x < n; x++) {
+      let sum = 0;
+      for (let dy = -1; dy <= 1; dy++)
+        for (let dx = -1; dx <= 1; dx++) {
+          const xx = x + dx;
+          const yy = y + dy;
+          if (xx >= 0 && yy >= 0 && xx < n && yy < n) sum += src[yy * n + xx];
+        }
+      out[y * n + x] = sum / 9;
+    }
+  return out;
+};
 
 /**
  * Land mask from the drawing, as an n×n grid. The land is only faint hatching, so the image is averaged down to
@@ -119,27 +137,107 @@ export function initPtGlobe(map: HTMLElement) {
       b: ((cy - y) / h) * REAL_LAT_SPAN * K * DEG,
     });
 
-    const dots: Dot[] = [];
-    for (let y = minY; y <= maxY; y++)
-      for (let x = minX; x <= maxX; x++) {
-        if (!grid[y * N + x]) continue;
-        const { a, b } = toAngles(x, y);
-        const south = (y - minY) / h;
-        // The draw-in runs as a wave from the Algarve northwards.
-        dots.push({ ...onSphere(a, b), south, delay: (1 - south) * 0.55 + Math.random() * 0.12 });
+    // Smooth field and marching squares: each grid square keeps the part of it that is land (clipped at the 0.5
+    // contour, interpolated along its edges), so the fill and the coastline share one smooth outline.
+    let field = new Float32Array(N * N);
+    for (let i = 0; i < N * N; i++) field[i] = grid[i];
+    field = blur(field, N);
+    const f = (x: number, y: number) => (x >= 0 && y >= 0 && x < N && y < N ? field[y * N + x] : 0);
+    const at = (x: number, y: number) => {
+      const { a, b } = toAngles(x, y);
+      return onSphere(a, b);
+    };
+    const polys: P3[][] = [];
+    const coast: [P3, P3][] = [];
+    const outline: P3[] = [];
+    for (let y = minY - 2; y <= maxY + 1; y++)
+      for (let x = minX - 2; x <= maxX + 1; x++) {
+        const c: [number, number, number][] = [
+          [x, y, f(x, y)],
+          [x + 1, y, f(x + 1, y)],
+          [x + 1, y + 1, f(x + 1, y + 1)],
+          [x, y + 1, f(x, y + 1)],
+        ];
+        if (c.every((k) => k[2] < 0.5)) continue;
+        const poly: P3[] = [];
+        const cross: P3[] = [];
+        for (let i = 0; i < 4; i++) {
+          const [x0, y0, v0] = c[i];
+          const [x1, y1, v1] = c[(i + 1) % 4];
+          if (v0 >= 0.5) poly.push(at(x0, y0));
+          if (v0 >= 0.5 !== v1 >= 0.5) {
+            const t = (0.5 - v0) / (v1 - v0);
+            const p3 = at(x0 + (x1 - x0) * t, y0 + (y1 - y0) * t);
+            poly.push(p3);
+            cross.push(p3);
+          }
+        }
+        polys.push(poly);
+        for (let i = 0; i + 1 < cross.length; i += 2) {
+          coast.push([cross[i], cross[i + 1]]);
+          outline.push(cross[i]);
+        }
       }
+    // North and south ends of the land, for the fern gradient.
+    const north = at(cx, minY);
+    const southEnd = at(cx, maxY);
+
+    // The network: nodes spread evenly over the inland (seeded, at least 7 cells apart), each linked to its two
+    // nearest neighbours. It draws in as a wave from the Algarve northwards.
+    const rand = seeded(9361);
+    const spots: { x: number; y: number }[] = [];
+    for (let y = minY; y <= maxY; y++)
+      for (let x = minX; x <= maxX; x++) if (f(x, y) > 0.8) spots.push({ x, y });
+    for (let i = spots.length - 1; i > 0; i--) {
+      const j = Math.floor(rand() * (i + 1));
+      [spots[i], spots[j]] = [spots[j], spots[i]];
+    }
+    const picked: { x: number; y: number }[] = [];
+    for (const sp of spots) {
+      if (picked.length >= 30) break;
+      if (picked.every((q) => Math.hypot(q.x - sp.x, q.y - sp.y) >= 7)) picked.push(sp);
+    }
+    const nodes: Node[] = picked.map((q) => {
+      const south = (q.y - minY) / h;
+      return { ...at(q.x, q.y), south, delay: (1 - south) * 0.5 + rand() * 0.1 };
+    });
+    const links: Link[] = [];
+    const seen = new Set<string>();
+    picked.forEach((q, i) => {
+      picked
+        .map((r, j) => ({ j, d: Math.hypot(r.x - q.x, r.y - q.y) }))
+        .filter((e) => e.j !== i && e.d < 16)
+        .sort((m, n) => m.d - n.d)
+        .slice(0, 2)
+        .forEach(({ j }) => {
+          const key = i < j ? `${i}-${j}` : `${j}-${i}`;
+          if (seen.has(key)) return;
+          seen.add(key);
+          links.push({ a: nodes[i], b: nodes[j], delay: Math.max(nodes[i].delay, nodes[j].delay), hub: false });
+        });
+    });
 
     // The office pin, from its position in % of the image (set in CSS).
     const pinX = (parseFloat(getComputedStyle(pin).left) / inner.clientWidth) * N;
     const pinY = (parseFloat(getComputedStyle(pin).top) / inner.clientHeight) * N;
     const pinAngles = toAngles(pinX, pinY);
     const pinPoint = onSphere(pinAngles.a, pinAngles.b);
+    // The office is the hub: its three nearest nodes link to it in a brighter line.
+    picked
+      .map((q, i) => ({ i, d: Math.hypot(q.x - pinX, q.y - pinY) }))
+      .sort((m, n) => m.d - n.d)
+      .slice(0, 3)
+      .forEach(({ i }) => links.push({ a: pinPoint, b: nodes[i], delay: 0.1, hub: true }));
 
     const canvas = document.createElement('canvas');
     canvas.className = 'pt-globe';
     canvas.setAttribute('aria-hidden', 'true');
     inner.insertBefore(canvas, pin);
     const ctx = canvas.getContext('2d')!;
+    // The land is drawn opaque on its own layer, then laid on the globe in one pass, so the seams between the
+    // marching-squares pieces never show.
+    const landLayer = document.createElement('canvas');
+    const lctx = landLayer.getContext('2d')!;
     map.dataset.globe = '';
 
     let W = 0, H = 0, dpr = 1;
@@ -169,11 +267,11 @@ export function initPtGlobe(map: HTMLElement) {
       W = r.width;
       H = r.height;
       dpr = Math.min(window.devicePixelRatio || 1, 2);
-      canvas.width = Math.round(W * dpr);
-      canvas.height = Math.round(H * dpr);
+      canvas.width = landLayer.width = Math.round(W * dpr);
+      canvas.height = landLayer.height = Math.round(H * dpr);
       let x0 = Infinity, x1 = -Infinity, y0 = Infinity, y1 = -Infinity;
       scale = 1; ox = 0; oy = 0;
-      for (const d of dots) {
+      for (const d of outline) {
         const q = project(rotate(d, REST.yaw, REST.pitch));
         x0 = Math.min(x0, q.sx); x1 = Math.max(x1, q.sx);
         y0 = Math.min(y0, q.sy); y1 = Math.max(y1, q.sy);
@@ -244,15 +342,82 @@ export function initPtGlobe(map: HTMLElement) {
         line(pts);
       }
 
-      // Land dots: the fern ramp, the Algarve brightest and a little larger; nearer dots larger.
+      // Land: one solid shape in the fern ramp (deep olive in the north to lime over the Algarve), with a soft
+      // light from the top left so it reads as tinted glass on the globe.
+      const P = (p: P3) => project(rotate(p, yaw, pitch));
+      const landIn = easeOut(clamp(reveal / 0.6, 0, 1));
+      lctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      lctx.clearRect(0, 0, W, H);
+      const qn = P(north);
+      const qs = P(southEnd);
+      const fern = lctx.createLinearGradient(qn.sx, qn.sy, qs.sx, qs.sy);
+      for (const [pos, r, gr, b] of LAND) fern.addColorStop(pos, `rgb(${r},${gr},${b})`);
+      lctx.fillStyle = fern;
+      lctx.strokeStyle = fern;
+      lctx.lineWidth = 0.6;
+      lctx.lineJoin = 'round';
+      lctx.beginPath();
+      for (const poly of polys) {
+        poly.forEach((p, i) => {
+          const q = P(p);
+          if (i) lctx.lineTo(q.sx, q.sy);
+          else lctx.moveTo(q.sx, q.sy);
+        });
+        lctx.closePath();
+      }
+      lctx.fill();
+      lctx.stroke();
+      lctx.globalCompositeOperation = 'source-atop';
+      const sheen = lctx.createLinearGradient(qn.sx - R * 0.4, qn.sy, qs.sx + R * 0.4, qs.sy);
+      sheen.addColorStop(0, 'rgba(255,255,255,0.22)');
+      sheen.addColorStop(0.5, 'rgba(255,255,255,0)');
+      sheen.addColorStop(1, 'rgba(255,255,255,0.08)');
+      lctx.fillStyle = sheen;
+      lctx.fillRect(0, 0, W, H);
+      lctx.globalCompositeOperation = 'source-over';
+      ctx.globalAlpha = 0.92 * landIn;
+      ctx.drawImage(landLayer, 0, 0, W, H);
       ctx.globalAlpha = 1;
-      for (const d of dots) {
-        const t = clamp((reveal - d.delay) / 0.35, 0, 1);
+
+      // Coast: a light rim, like the edge of a glass piece.
+      ctx.beginPath();
+      for (const [p0, p1] of coast) {
+        const q0 = P(p0);
+        const q1 = P(p1);
+        ctx.moveTo(q0.sx, q0.sy);
+        ctx.lineTo(q1.sx, q1.sy);
+      }
+      ctx.lineWidth = 1;
+      ctx.lineCap = 'round';
+      ctx.strokeStyle = `rgba(214,232,150,${0.85 * landIn})`;
+      ctx.stroke();
+
+      // Network: hairlines grow from one node to the other, then the nodes light up.
+      for (const l of links) {
+        const t = easeOut(clamp((reveal - l.delay) / 0.4, 0, 1));
         if (t <= 0) continue;
-        const q = project(rotate(d, yaw, pitch));
-        if (!q.visible) continue;
-        const r = (d.south > 0.82 ? 1.8 : 1.5) * q.f * (0.6 + 0.4 * easeOut(t));
-        ctx.fillStyle = `rgba(${landColour(d.south)},${(0.85 + 0.15 * d.south) * t})`;
+        const qa = P(l.a);
+        const qb = P(l.b);
+        ctx.beginPath();
+        ctx.moveTo(qa.sx, qa.sy);
+        ctx.lineTo(qa.sx + (qb.sx - qa.sx) * t, qa.sy + (qb.sy - qa.sy) * t);
+        ctx.lineWidth = l.hub ? 1.1 : 0.75;
+        ctx.strokeStyle = l.hub ? 'rgba(232,242,196,0.85)' : 'rgba(214,232,150,0.45)';
+        ctx.stroke();
+      }
+      for (const n of nodes) {
+        const t = clamp((reveal - n.delay - 0.2) / 0.3, 0, 1);
+        if (t <= 0) continue;
+        const q = P(n);
+        const r = (1.3 + 0.6 * n.south) * q.f;
+        const halo = ctx.createRadialGradient(q.sx, q.sy, 0, q.sx, q.sy, r * 4);
+        halo.addColorStop(0, `rgba(214,232,150,${0.45 * t})`);
+        halo.addColorStop(1, 'rgba(214,232,150,0)');
+        ctx.fillStyle = halo;
+        ctx.beginPath();
+        ctx.arc(q.sx, q.sy, r * 4, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.fillStyle = `rgba(240,247,220,${t})`;
         ctx.beginPath();
         ctx.arc(q.sx, q.sy, r, 0, Math.PI * 2);
         ctx.fill();

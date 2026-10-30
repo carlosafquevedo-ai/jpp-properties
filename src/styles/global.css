@@ -3491,34 +3491,6 @@ a.rv-author:hover {
 .careers-hero {
   position: relative;
 }
-.careers-bg {
-  position: absolute;
-  inset: 0;
-  overflow: hidden;
-  border-radius: 0.75rem;
-  background: var(--color-forest);
-}
-.careers-bg img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  object-position: 50% 55%;
-  transition: transform 1.2s var(--ease-out);
-}
-.careers-bg::after {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(
-    90deg,
-    rgba(20, 22, 21, 0.78) 0%,
-    rgba(20, 22, 21, 0.4) 60%,
-    rgba(20, 22, 21, 0.2) 100%
-  );
-}
-.careers-hero:hover .careers-bg img {
-  transform: scale(1.05);
-}
 .careers-copy {
   position: relative;
   max-width: 34rem;
@@ -3537,85 +3509,12 @@ a.rv-author:hover {
   margin-top: 1.25rem;
   color: rgba(255, 255, 255, 0.85);
 }
-.careers-card {
-  position: relative;
-  display: grid;
-  gap: 1.25rem;
-  margin: -6rem 1rem 0;
-  padding: 1.25rem;
-  background: #fff;
-  border-radius: 0.75rem;
-  box-shadow:
-    0 2px 6px rgba(27, 30, 28, 0.08),
-    0 30px 50px -22px rgba(27, 30, 28, 0.45);
-  transition:
-    transform 0.5s var(--ease-out),
-    box-shadow 0.5s var(--ease-out);
-}
-.careers-card-photo {
-  width: 100%;
-  height: 11rem;
-  object-fit: cover;
-  object-position: 50% 45%;
-  border-radius: 0.75rem;
-  box-shadow: 0 16px 28px -14px rgba(27, 30, 28, 0.55);
-}
-.careers-card-body {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  justify-content: center;
-}
-.careers-card-kicker {
-  font-size: 0.85rem;
-  color: var(--color-muted);
-}
-.careers-card-title {
-  margin-top: 0.35rem;
-  font-family: var(--font-display, inherit);
-  font-size: 1.6rem;
-  line-height: 1.15;
-  color: var(--color-forest);
-}
-.careers-card-text {
-  margin-top: 0.6rem;
-  color: rgba(27, 30, 28, 0.78);
-}
-.careers-cta {
-  margin-top: 1.1rem;
-}
+
 @media (min-width: 48rem) {
   .careers-copy {
     padding: 4.5rem 3.5rem 10rem;
   }
-  .careers-card {
-    position: absolute;
-    right: 3rem;
-    bottom: -3.5rem;
-    width: min(36rem, calc(100% - 6rem));
-    grid-template-columns: 11rem minmax(0, 1fr);
-    margin: 0;
-    padding: 1.5rem 1.75rem 1.5rem 1.5rem;
-  }
-  .careers-card-photo {
-    height: 100%;
-    min-height: 12rem;
-    margin-left: -3.5rem;
-  }
-}
-@media (hover: hover) and (prefers-reduced-motion: no-preference) {
-  .careers-card:hover {
-    transform: translateY(-6px);
-    box-shadow:
-      0 2px 6px rgba(27, 30, 28, 0.08),
-      0 40px 60px -24px rgba(27, 30, 28, 0.5);
-  }
-}
-@media (prefers-reduced-motion: reduce) {
-  .careers-bg img,
-  .careers-card {
-    transition: none;
-  }
+
 }
 
 /* Zones: a large heading (no eyebrow) over the 3x2 grid. Modern touches: while one tile is hovered or focused, the
@@ -5627,7 +5526,7 @@ a.rv-author:hover {
 
 /* ==== Page rhythm (one system for colour, corners and spacing; keep this block last) ===========================
    Colour: white is the base; ONE light tone (ivory) for supporting bands and surfaces; carbon for the strong moments
-   (hero, careers, footer); lime only as an accent (buttons, flags, dots), never as a section background.
+   (hero, footer); lime only as an accent (buttons, flags, dots), never as a section background.
    Corners, two families kept on purpose:
    - square: anything that touches the screen edge (full-bleed bands) and photos laid out in a grid (property
      photos, zone tiles, team portraits, sold listings);
@@ -5710,7 +5609,6 @@ footer.on-dark {
     border-radius: var(--r-panel) 0 0 var(--r-panel);
   }
 }
-.careers-bg,
 .lead-shell .lead-card {
   border-radius: var(--r-panel);
 }
@@ -5729,7 +5627,6 @@ footer.on-dark {
 
 /* Rounded family: cards and small pieces. */
 .hww-card,
-.careers-card,
 .reviews-grid > * {
   border-radius: var(--r-card);
 }
@@ -5835,16 +5732,7 @@ footer.on-dark {
   .careers-copy {
     padding: 3.5rem 3rem 8rem;
   }
-  .careers-card {
-    position: relative;
-    right: auto;
-    bottom: auto;
-    width: auto;
-    margin: -5.5rem 2rem 0;
-  }
-  .careers-card-photo {
-    margin-left: 0;
-  }
+
 }
 
 /* Back to top: on phones and tablets it moves to the right, above the contact bar, away from the reading column. */
@@ -7096,11 +6984,11 @@ footer.on-dark {
   }
 }
 
-/* "Somos daqui" on phones and tablets: the location card floats above the map, so the map column needs a clear gap
-   below the Ligar / Ver no mapa buttons. */
+/* "Somos daqui" on phones and tablets: the location card now sits under the globe, so the contacts above only need
+   a short gap before the map (the globe's own soft edge adds the rest). */
 @media (max-width: 63.99rem) {
   #sobre > .grid:first-child {
-    row-gap: 4.5rem;
+    row-gap: 1rem;
   }
 }
 
@@ -7178,7 +7066,6 @@ footer.on-dark {
     margin-inline: auto;
   }
 }
-
 
 /* Team band on phones and tablets: even padding top and bottom and a modest gap between the intro and the cards. */
 @media (max-width: 63.99rem) {
@@ -7621,15 +7508,17 @@ footer.on-dark {
     .feat-nav,
     .team-contacts a,
     .about-pillar-icon,
-    .hww-card-icon
+    .hww-card-icon,
+    .careers-perk-icon
   ):not(#\#) {
   border: 0;
   border-radius: 22%;
   color: rgba(255, 255, 255, 0.75);
   background-color: rgba(27, 30, 28, 0.9);
   background-image: linear-gradient(180deg, rgba(255, 255, 255, 0.09), rgba(255, 255, 255, 0.025));
-  -webkit-backdrop-filter: blur(10px);
-  backdrop-filter: blur(10px);
+  /* No backdrop blur: at 90% opacity it would not show, and on a page of many icons it costs every scroll frame. */
+  -webkit-backdrop-filter: none;
+  backdrop-filter: none;
   box-shadow:
     inset 0 0 0 1px rgba(255, 255, 255, 0.16),
     inset 0 1px 0 rgba(255, 255, 255, 0.14),
@@ -7654,7 +7543,7 @@ footer.on-dark {
     .feat-nav,
     .team-contacts a
   ):is(:hover, :focus-visible, [aria-expanded='true']):not(:disabled):not(#\#),
-:is(.about-pillar:hover .about-pillar-icon, .hww-card:hover .hww-card-icon):not(#\#) {
+:is(.about-pillar:hover .about-pillar-icon, .hww-card:hover .hww-card-icon, .careers-perk:hover .careers-perk-icon):not(#\#) {
   color: #fff;
   background-color: rgba(27, 30, 28, 0.9);
   background-image: linear-gradient(180deg, rgba(158, 188, 58, 0.32), rgba(158, 188, 58, 0.08));
@@ -8104,7 +7993,7 @@ footer.on-dark {
 
 /* ==== Visual identity ============================================================================================
    One system across the page, light and coherent with the green atmosphere:
-   - strong moments: dark photography (hero, careers, with a green wash) and the green atmosphere (zones, team);
+   - strong moments: dark photography (hero) and the green atmosphere (zones, team);
    - calm surfaces: white, and a pale sage mist for support bands (no beige);
    - one card: a white sheet with a hairline edge and a soft, long shadow;
    - one accent: lime only in small details (dots, lines, needle); buttons keep the green surface. */
@@ -8250,19 +8139,9 @@ footer.on-dark {
   background: #f6f8f1;
 }
 
-/* Careers: the photo takes a green duotone wash so it belongs to the same family (no navy sky). */
-.careers-bg img {
-  filter: sepia(0.45) hue-rotate(38deg) saturate(1.2) brightness(0.85);
-}
-.careers-bg::after {
-  background:
-    var(--hdr-grain),
-    linear-gradient(90deg, rgba(20, 30, 15, 0.85) 0%, rgba(20, 30, 15, 0.5) 60%, rgba(20, 30, 15, 0.3) 100%);
-}
-
 /* ==== One green ==================================================================================================
    Every green on the page comes from one scale, built on the exact values the header and buttons already use, so
-   no surface drifts in hue. The atmosphere photo and the careers photo no longer get their colour from filters
+   no surface drifts in hue. The atmosphere photo no longer gets its colour from filters
    (sepia + hue shift gave a muddy olive-grey): a "color" blend takes the hue from the brand olive (--g-500) and keeps
    only the photo's light and shade; the darkening layers use the same scale. */
 :root {
@@ -8302,34 +8181,6 @@ footer.on-dark {
     radial-gradient(60% 80% at 100% 100%, rgba(95, 130, 34, 0.25) 0%, transparent 65%),
     linear-gradient(180deg, rgba(36, 51, 26, 0.35) 0%, rgba(26, 36, 20, 0.62) 100%);
 }
-
-/* Careers: the same olive blend over its photo, then the same deep-green shade. */
-.careers-bg img {
-  filter: none;
-}
-.careers-bg::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  z-index: 1;
-  background: var(--g-500);
-  mix-blend-mode: color;
-  pointer-events: none;
-}
-.careers-bg img {
-  filter: brightness(0.8);
-}
-.careers-bg::after {
-  z-index: 2;
-  background:
-    var(--hdr-grain),
-    linear-gradient(90deg, rgba(26, 36, 20, 0.9) 0%, rgba(26, 36, 20, 0.7) 55%, rgba(36, 51, 26, 0.6) 100%);
-}
-.careers-bg {
-  z-index: 0;
-  isolation: isolate;
-}
-
 
 /* ==== Zones: photo slider ========================================================================================
    src/components/ZoneExplorer.astro + src/scripts/zone-explorer.ts. The active zone's photo, blurred and toned,
@@ -8797,8 +8648,7 @@ footer.on-dark {
 }
 
 /* ==== Hero: glass panel behind the listing deck ===================================================================
-   As the MeewVision hero's "Projetos em destaque" box: one quiet frosted-glass panel (a light veil, a fine light
-   rim) holds the photo, the listing card and the controls together over the hero photo. It follows the deck's
+   As the MeewVision hero's "Projetos em destaque" box: one quiet glass panel (clear green glass, a rim of light) holds the photo, the listing card and the controls together over the hero photo. It follows the deck's
    outline: around the photo and the controls, stepping out to the left only where the listing card overhangs
    (src/scripts/hero-deck-panel.ts draws the shape; without JS the deck keeps a plain rounded box). */
 @media (min-width: 64rem) {
@@ -8819,12 +8669,18 @@ footer.on-dark {
     backdrop-filter: none;
     box-shadow: none;
   }
+  /* Clear green glass, not grey fog: the photo behind is blurred and kept in colour, with a faint tint from pale
+     lime at the top to deep olive at the bottom, a soft lime light rising from the lower edge (the zones horizon)
+     and a sheen across the top left. The rim is a gradient of light (hero-deck-panel.ts). */
   .hero-deck-glass {
     position: absolute;
     z-index: -1;
-    background: linear-gradient(160deg, rgba(255, 255, 255, 0.14) 0%, rgba(255, 255, 255, 0.05) 100%);
-    -webkit-backdrop-filter: blur(18px) saturate(130%);
-    backdrop-filter: blur(18px) saturate(130%);
+    background:
+      linear-gradient(125deg, rgba(255, 255, 255, 0.16) 0%, rgba(255, 255, 255, 0.03) 28%, transparent 45%),
+      radial-gradient(70% 22% at 55% 100%, rgba(158, 188, 58, 0.28) 0%, rgba(158, 188, 58, 0.08) 55%, transparent 100%),
+      linear-gradient(180deg, rgba(233, 239, 216, 0.1) 0%, rgba(26, 36, 20, 0.22) 100%);
+    -webkit-backdrop-filter: blur(22px) saturate(150%) brightness(0.92);
+    backdrop-filter: blur(22px) saturate(150%) brightness(0.92);
     pointer-events: none;
   }
   .hero-deck-glass svg {
@@ -8836,7 +8692,7 @@ footer.on-dark {
   }
   .hero-deck-glass path {
     fill: none;
-    stroke: rgba(255, 255, 255, 0.26);
+    stroke: url(#hero-rim);
     /* Half of it is clipped away with the panel: a 1px rim on the inside. */
     stroke-width: 2;
   }
@@ -8844,4 +8700,399 @@ footer.on-dark {
     margin-top: 0.6rem;
     padding: 0 0.15rem;
   }
+}
+
+/* Language flags: round, small, with a hairline edge; they lift slightly on hover. */
+.flag {
+  flex: none;
+  width: 1.25rem;
+  height: 1.25rem;
+  border-radius: 9999px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.25);
+  transition: transform 0.25s var(--ease-out);
+}
+.lang-btn {
+  gap: 0.5rem;
+}
+.lang-btn:hover .flag,
+.lang-item:hover .flag {
+  transform: scale(1.1);
+}
+.lang-item {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+.lang-item .lang-name {
+  flex: 1;
+}
+.m-menu-lang a {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+}
+.m-menu-lang .flag {
+  width: 1rem;
+  height: 1rem;
+}
+
+/* ==== Careers: green columns ====================================================================================
+   One low, balanced panel: on the left, on the page white, the headline, one line of intro and the button; on the
+   right, reeded glass over a deep olive lit by a soft lime glow (wide equal reeds with soft cylinder shading and
+   hairline joints, the same quiet light as the zones horizon and the team fins; a mask fades it into the white). Over the columns, one glass sheet lists the three
+   reasons to join, glass icon + one line each, divided by hairlines (a list, not a sequence: no numbers). The columns are
+   the one bold element; everything else stays quiet. On phones and tablets it stacks and the columns rise from the
+   bottom, behind the list. */
+.careers {
+  margin-bottom: var(--section-gap);
+}
+.careers-hero {
+  display: grid;
+  gap: 1.75rem;
+  padding: 2rem 1.25rem 1.25rem;
+  overflow: visible;
+  border: 1px solid var(--sheet-edge);
+  border-radius: var(--r-panel);
+  background: #fff;
+}
+.careers-cols {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  overflow: hidden;
+  border-radius: inherit;
+  /* The light behind the glass: deep olive lit by one soft lime glow (as the zones horizon) and a fainter one low on
+     the right, so the reeds have something to bend. */
+  background:
+    radial-gradient(55% 75% at 22% 18%, rgba(158, 188, 58, 0.55) 0%, rgba(95, 130, 34, 0.25) 40%, transparent 75%),
+    radial-gradient(45% 60% at 92% 100%, rgba(108, 145, 38, 0.45) 0%, transparent 70%),
+    linear-gradient(90deg, var(--g-400) 0%, var(--g-700) 35%, var(--g-900) 100%);
+  -webkit-mask-image: linear-gradient(180deg, transparent 30%, #000 70%);
+  mask-image: linear-gradient(180deg, transparent 30%, #000 70%);
+}
+/* Reeded glass: wide, equal reeds, each a soft cylinder (a light rim on the left that rolls into shade, a faint
+   catch-light on the right), divided by a hairline. No saturated stripes: the colour comes from the light behind. */
+.careers-cols span {
+  flex: 1 1 0;
+  background: linear-gradient(
+    90deg,
+    rgba(233, 239, 216, 0.2) 0%,
+    rgba(233, 239, 216, 0.07) 18%,
+    rgba(18, 26, 13, 0) 45%,
+    rgba(18, 26, 13, 0.28) 88%,
+    rgba(233, 239, 216, 0.1) 100%
+  );
+  box-shadow: inset 1px 0 0 rgba(214, 232, 150, 0.16);
+}
+.careers-cols::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: var(--hdr-grain);
+  opacity: 0.45;
+  pointer-events: none;
+}
+.careers-hero .careers-copy {
+  position: relative;
+  max-width: 28rem;
+  padding: 0;
+  color: var(--color-ink);
+}
+.careers-title.zones-title {
+  color: var(--color-forest);
+}
+.careers-hero .careers-lead {
+  margin-top: 0.75rem;
+  color: rgba(27, 30, 28, 0.72);
+}
+.careers-hero .careers-cta {
+  margin-top: 1.5rem;
+}
+/* The reasons: one glass sheet, three rows. */
+.careers-perks {
+  position: relative;
+  margin: 0;
+  padding: 0.25rem 1.25rem;
+  list-style: none;
+  border: 1px solid rgba(255, 255, 255, 0.7);
+  border-radius: var(--r-card);
+  background: rgba(255, 255, 255, 0.78);
+  -webkit-backdrop-filter: blur(16px) saturate(1.2);
+  backdrop-filter: blur(16px) saturate(1.2);
+  box-shadow: var(--sheet-shadow);
+}
+.careers-perk {
+  display: flex;
+  align-items: center;
+  gap: 0.9rem;
+  padding: 0.85rem 0;
+  font-size: 0.925rem;
+  line-height: 1.4;
+  color: var(--color-ink);
+}
+.careers-perk + .careers-perk {
+  border-top: 1px solid var(--sheet-edge);
+}
+.careers-perk-icon {
+  display: grid;
+  flex: none;
+  place-items: center;
+  width: 2.25rem;
+  height: 2.25rem;
+  /* Look: the site's glass icon square (see "glass-ic"). */
+}
+@media (min-width: 48rem) {
+  .careers-hero {
+    padding: 2.5rem 2.5rem 2rem;
+  }
+}
+/* Desktop: two columns of equal weight, text left on white, the reasons right on the green. */
+@media (min-width: 64rem) {
+  .careers-hero {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 27rem);
+    align-items: center;
+    gap: 3rem;
+    padding: 2.75rem 2.75rem 2.75rem 3.5rem;
+  }
+  .careers-cols {
+    left: 38%;
+    -webkit-mask-image: linear-gradient(90deg, transparent 0%, #000 45%);
+    mask-image: linear-gradient(90deg, transparent 0%, #000 45%);
+  }
+}
+
+/* ==== Light effects ==============================================================================================
+   One family of effects, all built from the brand greens and thin vertical light, each chosen for what its section
+   is about, and kept quiet (behind the content, faded at the edges, no constant motion):
+   - Hero: the listing deck's clear green glass with a rim of light (see "Hero: glass panel").
+   - Careers: reeded glass over a soft green light (above).
+   - Explore by zone: a horizon of light along the panel's lower edge, as the sea line at dusk; the cards float on it.
+   - Meet the team: a ribbon of thin fins rising in a wave behind the heading (FlutedWave.astro; desktop only).
+   - Sell: hairline columns rising like a value curve under the steps; they grow once when the section appears. */
+
+/* Zones: the horizon. A bright hairline that fades out to both sides, a soft glow above it. */
+.zx-beam {
+  position: absolute;
+  inset: auto 0 0;
+  z-index: 4;
+  height: 60%;
+  pointer-events: none;
+  mix-blend-mode: screen;
+  background:
+    linear-gradient(90deg, transparent 2%, rgba(232, 242, 196, 0.95) 30%, rgba(214, 232, 150, 0.5) 60%, transparent 95%)
+      left 0 bottom 0.75rem / 100% 1px no-repeat,
+    radial-gradient(18% 10% at 30% calc(100% - 0.75rem), rgba(232, 242, 196, 0.7) 0%, transparent 100%),
+    radial-gradient(48% 60% at 30% 100%, rgba(158, 188, 58, 0.45) 0%, rgba(158, 188, 58, 0.12) 50%, transparent 80%);
+}
+
+/* Team: the fin ribbon, behind the heading column, faded towards the portraits and the edges. */
+.team-band {
+  position: relative;
+}
+.team-wave {
+  position: absolute;
+  inset: 0 auto 0 0;
+  z-index: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  opacity: 0.8;
+  -webkit-mask-image: linear-gradient(90deg, transparent 0%, #000 12%, #000 70%, transparent 100%);
+  mask-image: linear-gradient(90deg, transparent 0%, #000 12%, #000 70%, transparent 100%);
+}
+/* Desktop only: on phones the text stacks over it and it would only add noise. */
+@media (max-width: 63.99rem) {
+  .team-wave {
+    display: none;
+  }
+}
+@media (min-width: 64rem) {
+  /* Only across the heading column (gutter + 16rem column + gap), where nothing covers it. */
+  .team-wave {
+    width: calc(50vw - 50% + 22rem);
+  }
+}
+.team-band > :not(.team-wave) {
+  position: relative;
+  z-index: 1;
+}
+
+/* Sell: the rising value lines. */
+.lead-rise {
+  display: none;
+}
+@media (min-width: 64rem) {
+  .lead-rise {
+    display: flex;
+    align-items: flex-end;
+    gap: 0;
+    justify-content: space-between;
+    height: 9rem;
+    margin-top: 2.5rem;
+    -webkit-mask-image: linear-gradient(90deg, transparent 0%, #000 30%);
+    mask-image: linear-gradient(90deg, transparent 0%, #000 30%);
+  }
+  .lead-rise span {
+    width: 2px;
+    height: var(--h);
+    border-radius: 2px 2px 0 0;
+    background: linear-gradient(180deg, var(--g-lime) 0%, rgba(75, 106, 26, 0.55) 35%, rgba(75, 106, 26, 0) 100%);
+    transform-origin: bottom;
+  }
+  .lead-rise span:last-child {
+    box-shadow: 0 0 12px 2px rgba(158, 188, 58, 0.55);
+  }
+}
+@media (min-width: 64rem) and (prefers-reduced-motion: no-preference) and (scripting: enabled) {
+  .lead-rise span {
+    transform: scaleY(0);
+    transition: transform 0.9s var(--ease-out);
+    transition-delay: calc(var(--i) * 28ms + 250ms);
+  }
+  .lead-shell.is-in .lead-rise span {
+    transform: none;
+  }
+}
+
+/* ==== Header: the zones night ====================================================================================
+   The header bar (and the phone menu, which unfolds from it) takes the "Explore por zona" atmosphere: a near-black
+   olive night with soft brand-green glows and the film grain, and the same horizon of light along its lower edge
+   (a pale-lime hairline fading out to both sides, a low glow above it). White type keeps full contrast; the green
+   buttons and tags keep --green-surface. */
+:root {
+  --hdr-surface:
+    var(--hdr-grain),
+    linear-gradient(90deg, transparent 4%, rgba(232, 242, 196, 0.7) 32%, rgba(214, 232, 150, 0.3) 64%, transparent 94%)
+      left bottom / 100% 1px no-repeat,
+    radial-gradient(38% 130% at 32% 130%, rgba(158, 188, 58, 0.3) 0%, rgba(158, 188, 58, 0.08) 50%, transparent 75%),
+    radial-gradient(30% 160% at 0% 0%, rgba(95, 130, 34, 0.42) 0%, transparent 70%),
+    radial-gradient(34% 170% at 100% 60%, rgba(75, 106, 26, 0.45) 0%, transparent 70%),
+    radial-gradient(22% 120% at 64% 0%, rgba(158, 188, 58, 0.12) 0%, transparent 70%),
+    linear-gradient(90deg, #121a0d 0%, #1a2414 55%, #24331a 100%);
+}
+.site-header .hdr-bar,
+.site-header[data-stuck] .hdr-bar,
+.m-menu {
+  border-color: rgba(214, 232, 150, 0.16);
+}
+
+/* "Somos daqui": phones and e-mail under the buttons (they replace the "Visite-nos" band on the home page). A
+   hairline above, then a two-column list: glass icon, the number or address, and the legal note for phones. */
+.about-contacts {
+  display: grid;
+  gap: 1rem 2rem;
+  width: 100%;
+  max-width: 40.5rem;
+  margin: 0.5rem 0 0;
+  padding: 1.5rem 0 0;
+  list-style: none;
+  border-top: 1px solid var(--color-line);
+}
+.about-contacts li {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.85rem;
+  min-width: 0;
+}
+.about-contacts li > span:last-child {
+  display: grid;
+  gap: 0.15rem;
+  min-width: 0;
+}
+.about-contact-icon {
+  display: grid;
+  flex: none;
+  place-items: center;
+  width: 2.25rem;
+  height: 2.25rem;
+}
+.about-contacts a {
+  justify-self: start;
+  font-size: 1rem;
+  font-weight: 500;
+  color: var(--color-ink);
+  text-decoration: underline;
+  text-decoration-color: transparent;
+  text-underline-offset: 0.25em;
+  transition: text-decoration-color 0.2s;
+  overflow-wrap: anywhere;
+}
+.about-contacts a:hover,
+.about-contacts a:focus-visible {
+  text-decoration-color: var(--g-lime);
+}
+.about-contact-note {
+  font-size: 0.8rem;
+  color: var(--color-muted);
+}
+.about-contacts li:hover .about-contact-icon {
+  color: #fff;
+  box-shadow:
+    inset 0 0 0 1px rgba(158, 188, 58, 0.75),
+    inset 0 1px 0 rgba(255, 255, 255, 0.3),
+    0 10px 26px -8px rgba(158, 188, 58, 0.6);
+}
+@media (min-width: 40rem) {
+  .about-contacts {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+/* Sell form: the optional details fold away under one quiet row, so the form shows only what the team needs to
+   call back (where, what, how big, who). Opening it reveals the rest in the same grid. */
+.lead-more {
+  margin-top: 1.25rem;
+}
+.lead-more > summary {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.85rem 1rem;
+  border: 1px dashed rgba(75, 106, 26, 0.35);
+  border-radius: var(--r-sm);
+  font-weight: 500;
+  color: var(--color-ink);
+  cursor: pointer;
+  list-style: none;
+  transition:
+    border-color 0.2s,
+    background-color 0.2s;
+}
+.lead-more > summary::-webkit-details-marker {
+  display: none;
+}
+.lead-more > summary:hover,
+.lead-more > summary:focus-visible {
+  border-color: var(--g-500);
+  background-color: var(--g-50);
+}
+.lead-more[open] > summary {
+  border-style: solid;
+  border-color: var(--color-line);
+}
+.lead-more-hint {
+  min-width: 0;
+  overflow: hidden;
+  font-size: 0.85rem;
+  font-weight: 400;
+  color: var(--color-muted);
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+/* Fieldsets size to their content by default; let the form shrink to the phone width. */
+.lead-group {
+  min-width: 0;
+}
+@media (max-width: 39.99rem) {
+  .lead-more-hint {
+    display: none;
+  }
+}
+.lead-more-caret {
+  flex: none;
+  margin-left: auto;
+  transition: transform 0.25s var(--ease-out);
+}
+.lead-more[open] .lead-more-caret {
+  transform: rotate(180deg);
 }

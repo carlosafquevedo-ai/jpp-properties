@@ -2,16 +2,21 @@
 import Icon from './Icon.astro';
 import { offices } from '../lib/site';
 
-// TODO: provisional copy (PT); EN/FR pending. The banner photo is a zone photo and the card photo the office shopfront,
-// both stand-ins until the client sends a team photo. The button goes to a careers page that does not exist yet.
+// TODO: provisional copy (PT), to confirm with the client; EN/FR pending. The button goes to a careers page that does
+// not exist yet.
 const careersUrl = '/carreiras/';
 const office = offices[0]!;
+const perks = [
+  { icon: 'clientCare', text: 'Formação e acompanhamento desde o primeiro dia.' },
+  { icon: 'houseKey', text: 'Imóveis no Algarve e o apoio de toda a equipa em cada negócio.' },
+  { icon: 'pinMap', text: `Um escritório local em ${office.name}, perto de quem compra e vende.` },
+] as const;
 ---
 
 <section id="carreiras" class="container-x careers" aria-labelledby="carreiras-titulo">
   <div class="careers-hero">
-    <div class="careers-bg" aria-hidden="true">
-      <img src="/zones/quinta-do-lago.jpg" alt="" loading="lazy" decoding="async" />
+    <div class="careers-cols" aria-hidden="true">
+      {Array.from({ length: 7 }, () => <span />)}
     </div>
     <div class="careers-copy">
       <h2 id="carreiras-titulo" class="zones-title careers-title">
@@ -23,25 +28,21 @@ const office = offices[0]!;
         Procuramos consultores imobiliários que queiram crescer no Algarve, a começar ou com
         experiência.
       </p>
+      <a href={careersUrl} class="btn btn-lime careers-cta">
+        Quero ser consultor <Icon name="arrowRight" class="size-4" />
+      </a>
     </div>
-    <article class="careers-card">
-      <img
-        class="careers-card-photo"
-        src="/office/escritorio-vilamoura.webp"
-        alt="Montra do escritório da JPP Properties em Vilamoura"
-        loading="lazy"
-        decoding="async"
-      />
-      <div class="careers-card-body">
-        <p class="careers-card-kicker">Escritório de {office.name}</p>
-        <h3 class="careers-card-title">Venha conhecer a equipa</h3>
-        <p class="careers-card-text">
-          Conte-nos o seu percurso e fale com a JPP Properties, sem compromisso.
-        </p>
-        <a href={careersUrl} class="btn btn-lime careers-cta">
-          Quero ser consultor <Icon name="arrowRight" class="size-4" />
-        </a>
-      </div>
-    </article>
+    <ul class="careers-perks">
+      {
+        perks.map(({ icon, text }) => (
+          <li class="careers-perk">
+            <span class="careers-perk-icon" aria-hidden="true">
+              <Icon name={icon} class="size-5" />
+            </span>
+            {text}
+          </li>
+        ))
+      }
+    </ul>
   </div>
 </section>

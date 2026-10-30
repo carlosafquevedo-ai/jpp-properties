@@ -53,8 +53,29 @@ export function initHeroDeckPanel(deck: HTMLElement) {
   glass.setAttribute('aria-hidden', 'true');
   const svgNs = 'http://www.w3.org/2000/svg';
   const svg = document.createElementNS(svgNs, 'svg');
+  // The rim catches the light: bright pale lime at the top left, fading along the sides, a faint return at the
+  // bottom right (the same thin light as the site's other effects).
+  const defs = document.createElementNS(svgNs, 'defs');
+  const grad = document.createElementNS(svgNs, 'linearGradient');
+  grad.id = 'hero-rim';
+  grad.setAttribute('x1', '0');
+  grad.setAttribute('y1', '0');
+  grad.setAttribute('x2', '1');
+  grad.setAttribute('y2', '1');
+  for (const [offset, colour] of [
+    ['0', 'rgba(240,247,220,0.9)'],
+    ['0.3', 'rgba(214,232,150,0.28)'],
+    ['0.65', 'rgba(255,255,255,0.06)'],
+    ['1', 'rgba(214,232,150,0.45)'],
+  ]) {
+    const stop = document.createElementNS(svgNs, 'stop');
+    stop.setAttribute('offset', offset);
+    stop.setAttribute('stop-color', colour);
+    grad.appendChild(stop);
+  }
+  defs.appendChild(grad);
   const rim = document.createElementNS(svgNs, 'path');
-  svg.appendChild(rim);
+  svg.append(defs, rim);
   glass.appendChild(svg);
   deck.prepend(glass);
 
