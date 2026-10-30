@@ -93,7 +93,7 @@ Decidido com o cliente: o painel de destaques (imagem + texto + ligação para e
 
 ## Resultados (página inicial)
 
-Secção `src/components/Results.astro` (entre as avaliações Google e "Como trabalhamos"): até 4 números grandes com uma legenda curta (ex.: "98%" / "Média do valor pedido alcançado"), numa linha sem cartões, e por baixo **"Vendidos recentemente"**: os 4 imóveis de venda mais recentes com estado "vendido" (foto, selo "Vendido", nome e zona, sem preço). Atualiza-se sozinha quando a equipa marca um imóvel como vendido; sem vendidos, essa linha desaparece.
+Secção `src/components/Results.astro` (entre as avaliações Google e "Como trabalhamos"): até 4 números grandes com uma legenda curta (ex.: "98%" / "Média do valor pedido alcançado"), numa linha sem cartões; os números contam de 0 até ao valor uma vez, quando aparecem (com um segmento lima a desenhar-se na linha de cima; ao passar o rato o segmento ocupa a coluna toda; leitores de ecrã leem só o valor final; sem JS ou com movimento reduzido aparecem logo), e por baixo **"Vendidos recentemente"**: os 4 imóveis de venda mais recentes com estado "vendido" (foto, selo "Vendido", nome e zona, sem preço). Atualiza-se sozinha quando a equipa marca um imóvel como vendido; sem vendidos, essa linha desaparece.
 
 - `TODO` obrigatório: enquanto não houver vendidos, o protótipo mostra imóveis à venda como exemplo (`demoSoldSlugs` em `src/data/home.ts`); remover antes do lançamento.
 

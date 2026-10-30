@@ -4,6 +4,9 @@ import { zones } from '../data/properties';
 import { recentlySold } from '../lib/catalog';
 
 // "Resultados": headline figures in one open row (no cards), then the most recently sold listings as a light strip.
+// The figures count up once when the row comes into view, each with a lime segment drawing along the top line; on
+// hover a column's segment runs its full width. Screen readers get the final value only; without JS (or with reduced
+// motion) the final values show at once.
 // TODO: provisional copy (PT); EN/FR pending. The figures are placeholders (resultStats in src/data/home.ts) and the
 // sold listings are a demo until real ones are marked as sold (recentlySold in src/lib/catalog.ts).
 const stats = resultStats.slice(0, MAX_RESULT_STATS);
@@ -19,12 +22,15 @@ const { list: sold } = recentlySold();
       <p class="results-lead">Os números que resumem o nosso trabalho e os imóveis vendidos mais recentes.</p>
 
       {stats.length > 0 && (
-        <ul class="results-stats">
+        <ul class="results-stats" data-results-stats>
           {stats.map((s) => (
             <li>
               <p class="results-value">
-                {s.value}
-                {s.unit && <span class="results-unit">{s.unit}</span>}
+                <span class="sr-only">{[s.value, s.unit].filter(Boolean).join(' ')}</span>
+                <span aria-hidden="true">
+                  <span data-count={s.value}>{s.value}</span>
+                  {s.unit && <span class="results-unit">{s.unit}</span>}
+                </span>
               </p>
               <p class="results-label">{s.label}</p>
             </li>
@@ -52,3 +58,56 @@ const { list: sold } = recentlySold();
     </section>
   )
 }
+
+<script>
+  // Count-up: numbers like "98", "4,2", "30+" or "1.250" count from 0 to their value (same decimals and separator,
+  // any trailing text kept), staggered left to right, once.
+  const row = document.querySelector<HTMLElement>('[data-results-stats]');
+  const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if (row && !reduce && 'IntersectionObserver' in window) {
+    const items = [...row.querySelectorAll<HTMLElement>('[data-count]')]
+      .map((el) => {
+        const m = (el.dataset.count ?? '').match(/^(\d+)(?:([.,])(\d+))?(.*)$/);
+        if (!m) return null;
+        const [, int, sep = '', dec = '', rest] = m;
+        // A "." followed by three digits is a thousands separator in PT ("1.250"), not a decimal.
+        const thousands = sep === '.' && dec.length === 3;
+        const target = thousands ? Number(int + dec) : Number(`${int}.${dec || 0}`);
+        const decimals = thousands ? 0 : dec.length;
+        const format = (v: number) => {
+          let txt = v.toFixed(decimals);
+          if (decimals) txt = txt.replace('.', sep);
+          if (thousands) txt = Math.round(v).toLocaleString('pt-PT').replace(/\s/g, '.');
+          return txt + rest;
+        };
+        return { el, target, format };
+      })
+      .filter((x): x is NonNullable<typeof x> => x !== null);
+
+    items.forEach(({ el, format }) => (el.textContent = format(0)));
+    row.dataset.counting = '';
+
+    new IntersectionObserver(
+      (entries, obs) => {
+        if (!entries.some((e) => e.isIntersecting)) return;
+        obs.disconnect();
+        row.dataset.counted = '';
+        const DURATION = 1400;
+        const STAGGER = 140;
+        const start = performance.now();
+        const ease = (t: number) => 1 - Math.pow(1 - t, 4);
+        const tick = (now: number) => {
+          let done = true;
+          items.forEach(({ el, target, format }, i) => {
+            const t = Math.min(1, Math.max(0, (now - start - i * STAGGER) / DURATION));
+            if (t < 1) done = false;
+            el.textContent = format(target * ease(t));
+          });
+          if (!done) requestAnimationFrame(tick);
+        };
+        requestAnimationFrame(tick);
+      },
+      { threshold: 0.5 },
+    ).observe(row);
+  }
+</script>

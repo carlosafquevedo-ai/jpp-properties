@@ -9102,3 +9102,78 @@ footer.on-dark {
 main:has(> section#vender:last-of-type) + footer {
   margin-top: 0;
 }
+
+/* Results: interactive figures. Digits keep one width while they count; each column gets a lime segment on the top
+   line (like the "Somos daqui" pillars) that draws in as its number counts, and runs the full column on hover, where
+   the unit also lights up. */
+.results-value {
+  font-variant-numeric: tabular-nums;
+}
+.results-stats > li {
+  position: relative;
+  transition: transform 0.35s var(--ease-out);
+}
+.results-stats > li::before {
+  content: '';
+  position: absolute;
+  top: calc(-1.75rem - 1px);
+  left: 0;
+  width: 2.5rem;
+  height: 2px;
+  border-radius: 2px;
+  background: linear-gradient(90deg, var(--g-500), var(--g-lime));
+  transform-origin: left;
+  transition: width 0.5s var(--ease-out);
+}
+/* Phones: two rows, so the segment sits just above each figure instead of on the shared top line. */
+@media (max-width: 47.99rem) {
+  .results-stats > li::before {
+    top: -0.85rem;
+  }
+}
+@media (min-width: 48rem) {
+  .results-stats > li:not(:first-child)::before {
+    left: 1rem;
+  }
+}
+@media (min-width: 64rem) {
+  .results-stats > li:not(:first-child)::before {
+    left: 1.75rem;
+  }
+}
+.results-unit {
+  transition: color 0.3s;
+}
+@media (hover: hover) {
+  .results-stats > li:hover::before {
+    width: calc(100% - 1.75rem);
+  }
+  .results-stats > li:hover .results-unit {
+    color: var(--g-400);
+  }
+}
+@media (prefers-reduced-motion: no-preference) {
+  .results-stats[data-counting] > li::before {
+    transform: scaleX(0);
+    transition:
+      transform 1.4s var(--ease-out),
+      width 0.5s var(--ease-out);
+  }
+  .results-stats[data-counted] > li::before {
+    transform: none;
+  }
+  .results-stats[data-counted] > li:nth-child(2)::before {
+    transition-delay: 0.14s, 0s;
+  }
+  .results-stats[data-counted] > li:nth-child(3)::before {
+    transition-delay: 0.28s, 0s;
+  }
+  .results-stats[data-counted] > li:nth-child(4)::before {
+    transition-delay: 0.42s, 0s;
+  }
+  @media (hover: hover) {
+    .results-stats > li:hover {
+      transform: translateY(-2px);
+    }
+  }
+}
