@@ -5,6 +5,7 @@ import SiteFooter from '../components/SiteFooter.astro';
 import ContactBand from '../components/ContactBand.astro';
 import FloatingWidgets from '../components/FloatingWidgets.astro';
 import DragScroll from '../components/DragScroll.astro';
+import SiteIntro from '../components/SiteIntro.astro';
 import type { RouteKey } from '../i18n/routes';
 
 interface Props {
@@ -21,6 +22,7 @@ const { title, description, route, padTop = true, contactBand = true } = Astro.p
 ---
 
 <BaseLayout locale="pt" {title} {description} {route} noindex>
+  <SiteIntro />
   <SiteHeader overHero={!padTop} />
   <main id="main" class:list={[padTop && 'pt-28']}>
     <slot />

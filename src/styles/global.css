@@ -1040,7 +1040,7 @@
   /* Zones band background: black gradient, starts at the page column on the left (with an inner margin
      around the tiles) and runs to the screen edge on the right. */
   .zones-band {
-    padding-block: 3.5rem;
+    padding-block: var(--band-pad);
     /* Deep warm charcoal, lit softly from the top left, with a fine champagne hairline. */
     background:
       radial-gradient(90% 120% at 0% 0%, rgba(255, 255, 255, 0.07) 0%, transparent 60%),
@@ -1052,7 +1052,7 @@
     .zones-band {
       --edge: max(var(--gutter), calc((100cqw - var(--page-w)) / 2 + var(--gutter)));
       margin-left: var(--edge);
-      padding: 2.5rem 0 2.5rem 2.5rem;
+      padding: 1.25rem 0 1.25rem 2.5rem;
     }
   }
 
@@ -2975,9 +2975,12 @@ input:focus-visible + .glass-seg-opt {
   width: 0.9rem;
   height: 0.9rem;
   border-radius: 9999px;
-  background: var(--color-lime);
+  /* Lime glow, the bright end of the globe's fern ramp. */
+  background: radial-gradient(circle at 35% 30%, #d6e896, var(--color-lime) 60%, #6c9126);
   border: 2px solid #fff;
-  box-shadow: 0 1px 4px rgba(27, 30, 28, 0.4);
+  box-shadow:
+    0 1px 4px rgba(27, 30, 28, 0.35),
+    0 0 14px rgba(158, 188, 58, 0.6);
 }
 .pt-pin-dot::after {
   content: '';
@@ -4706,9 +4709,13 @@ a.rv-author:hover {
   font-size: clamp(1.6rem, 2.6vw, 2.25rem);
   line-height: 1.08;
 }
-/* Hero headline at the MeewVision size: clamp(28px, 2.7vw, 38px). */
+/* One display heading size for the whole site (hero headline, team heading, zone name): the MeewVision hero
+   size, clamp(28px, 2.7vw, 38px). Section titles (.zones-title) are the smaller second level. */
+:root {
+  --h-display: clamp(1.75rem, 2.7vw, 2.375rem);
+}
 .hero-copy h1 {
-  font-size: clamp(1.75rem, 2.7vw, 2.375rem);
+  font-size: var(--h-display);
 }
 .zones-title,
 .careers-title.zones-title {
@@ -4751,8 +4758,8 @@ a.rv-author:hover {
 .zones-title.team-title {
   display: grid;
   gap: 0.05em;
-  font-size: clamp(2.25rem, 3.6vw, 3.4rem);
-  line-height: 0.98;
+  font-size: var(--h-display);
+  line-height: 1;
 }
 .team-title-row {
   display: flex;
@@ -4791,7 +4798,7 @@ a.rv-author:hover {
   padding-left: 0.25em;
 }
 .zones-title.team-title {
-  font-size: clamp(2rem, 2.9vw, 2.75rem);
+  font-size: var(--h-display);
 }
 
 /* Team lead: right under the heading (no longer pushed to the bottom). */
@@ -5631,8 +5638,8 @@ a.rv-author:hover {
   --r-panel: 1.5rem;
   --r-card: 0.75rem;
   --r-sm: 0.5rem;
-  --section-gap: clamp(4rem, 7vw, 6rem);
-  --band-pad: clamp(3rem, 6vw, 4.5rem);
+  --section-gap: clamp(2.5rem, 4.5vw, 3.75rem);
+  --band-pad: clamp(2rem, 4vw, 3rem);
   --band-bg: linear-gradient(180deg, #f7f4ed 0%, var(--color-paper-2) 100%);
   --band-edge: rgba(27, 30, 28, 0.06);
 }
@@ -5666,6 +5673,12 @@ footer.on-dark {
 }
 .hww {
   padding-block: var(--band-pad);
+}
+/* Same top padding as the zones and team bands. */
+@media (min-width: 64rem) {
+  .hww {
+    padding-top: 1.25rem;
+  }
 }
 .lead-shell .lead-card {
   border: 1px solid var(--color-line);
@@ -6792,7 +6805,8 @@ footer.on-dark {
 .hc-chips li:nth-child(2) .hc-check,
 .lead-shell .lead-chip > input:checked + span,
 .lead-shell .lead-steps li:first-child .lead-step-num,
-.pt-pin-go-ic {
+.pt-pin-go-ic,
+.zx-card-go {
   border-color: rgba(214, 232, 150, 0.25);
   background-color: #4b6a1a;
   background-image: var(--green-surface);
@@ -6807,7 +6821,9 @@ footer.on-dark {
 .site-header[data-over-hero]:not([data-stuck]) .hdr-cta:focus-visible,
 .m-icon-main:hover,
 .m-icon-main:focus-visible,
-.green-surface:hover {
+.green-surface:hover,
+.zx-card a:hover .zx-card-go,
+.zx-card a:focus-visible .zx-card-go {
   border-color: rgba(214, 232, 150, 0.4);
   background-color: #567a1e;
   background-image: var(--green-surface-hover);
@@ -8012,465 +8028,6 @@ footer.on-dark {
   }
 }
 
-/* ==== Zones: editorial highlight card ============================================================================
-   The side highlights (src/data/home.ts sideHighlights; Sanity "Destaques laterais") as one white card on the
-   ivory band: a rounded photo whose bottom-right corner is cut into a notch that holds a round green arrow (the
-   notch is a card-coloured plate with two concave fillets), a dark-glass label on the photo, the title and short
-   text below, and the other highlights as a quiet list inside the same card. */
-.zones-hl {
-  --hl-bg: #fff;
-  --hl-notch: 4rem;
-  --hl-fillet: 1rem;
-  display: flex;
-  flex-direction: column;
-  padding: 0.5rem;
-  border: 1px solid rgba(27, 30, 28, 0.06);
-  border-radius: var(--r-panel);
-  background: var(--hl-bg);
-  box-shadow: 0 24px 48px -36px rgba(27, 30, 28, 0.4);
-}
-.hl-main {
-  display: block;
-  color: var(--color-ink);
-  text-decoration: none;
-}
-.hl-media {
-  position: relative;
-  display: block;
-  aspect-ratio: 16 / 10;
-  overflow: hidden;
-  border-radius: calc(var(--r-panel) - 0.55rem);
-}
-.hl-media > img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  transition: transform 0.9s var(--ease-out);
-}
-.hl-main:hover .hl-media > img {
-  transform: scale(1.04);
-}
-.hl-chip {
-  position: absolute;
-  left: 0.85rem;
-  top: 0.85rem;
-  padding: 0.4rem 0.75rem;
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  border-radius: 9999px;
-  background: rgba(20, 22, 21, 0.5);
-  -webkit-backdrop-filter: blur(12px) saturate(140%);
-  backdrop-filter: blur(12px) saturate(140%);
-  font-size: 0.75rem;
-  font-weight: 500;
-  line-height: 1;
-  color: #fff;
-}
-/* The notch: a card-coloured plate over the photo's corner, with concave fillets above it and to its left. */
-.hl-notch {
-  position: absolute;
-  right: 0;
-  bottom: 0;
-  display: grid;
-  place-items: center;
-  width: var(--hl-notch);
-  height: var(--hl-notch);
-  padding: 0.55rem 0 0 0.55rem;
-  border-top-left-radius: 1.6rem;
-  background: var(--hl-bg);
-}
-.hl-notch::before,
-.hl-notch::after {
-  content: '';
-  position: absolute;
-  width: var(--hl-fillet);
-  height: var(--hl-fillet);
-  background: radial-gradient(
-    circle at 0 0,
-    transparent calc(var(--hl-fillet) - 0.5px),
-    var(--hl-bg) var(--hl-fillet)
-  );
-}
-.hl-notch::before {
-  right: 0;
-  bottom: 100%;
-}
-.hl-notch::after {
-  right: 100%;
-  bottom: 0;
-}
-.hl-go {
-  display: grid;
-  place-items: center;
-  width: 100%;
-  height: 100%;
-  border-radius: 9999px;
-  background-color: #4b6a1a;
-  background-image: var(--green-surface);
-  color: #fff;
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.18);
-  transition:
-    background 0.3s,
-    color 0.3s;
-}
-.hl-go svg {
-  transition: transform 0.35s var(--ease-out);
-}
-.hl-main:hover .hl-go,
-.hl-main:focus-visible .hl-go {
-  background-color: var(--color-lime);
-  background-image: none;
-  color: var(--color-forest);
-}
-.hl-main:hover .hl-go svg,
-.hl-main:focus-visible .hl-go svg {
-  transform: translate(2px, -2px);
-}
-.hl-main:focus-visible {
-  outline: none;
-}
-.hl-main:focus-visible .hl-media {
-  outline: 2px solid var(--color-olive);
-  outline-offset: 3px;
-}
-.hl-body {
-  display: block;
-  padding: 0.95rem 0.75rem 0.7rem;
-}
-.hl-title {
-  display: block;
-  font-family: var(--font-display, inherit);
-  font-size: clamp(1.25rem, 1.6vw, 1.45rem);
-  font-weight: 600;
-  line-height: 1.15;
-  letter-spacing: -0.02em;
-}
-.hl-text {
-  display: -webkit-box;
-  overflow: hidden;
-  margin-top: 0.4rem;
-  max-width: 34rem;
-  -webkit-line-clamp: 2;
-  -webkit-box-orient: vertical;
-  font-size: 0.85rem;
-  line-height: 1.5;
-  color: var(--color-muted);
-}
-
-/* The other highlights: a quiet list inside the card. */
-.hl-more {
-  margin: 0;
-  padding: 0 0.3rem 0.2rem;
-  list-style: none;
-}
-.hl-more li + li,
-.hl-more li:first-child {
-  border-top: 1px solid var(--color-line);
-}
-.hl-row {
-  display: grid;
-  grid-template-columns: 2.25rem minmax(0, 1fr) auto;
-  align-items: center;
-  gap: 0.75rem;
-  padding: 0.45rem 0.45rem;
-  border-radius: var(--r-card);
-  color: var(--color-ink);
-  text-decoration: none;
-  transition: background-color 0.25s;
-}
-.hl-row img {
-  width: 2.25rem;
-  height: 2.25rem;
-  border-radius: 0.5rem;
-  object-fit: cover;
-}
-.hl-row-label {
-  display: block;
-  font-size: 0.72rem;
-  font-weight: 500;
-  color: var(--color-olive);
-}
-.hl-row-title {
-  display: block;
-  overflow: hidden;
-  font-family: var(--font-display, inherit);
-  font-size: 0.9rem;
-  font-weight: 600;
-  line-height: 1.25;
-  letter-spacing: -0.01em;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
-.hl-row-go {
-  color: var(--color-muted);
-  transition:
-    transform 0.35s var(--ease-out),
-    color 0.25s;
-}
-.hl-row:hover,
-.hl-row:focus-visible {
-  background: var(--color-paper-2);
-}
-.hl-row:hover .hl-row-go,
-.hl-row:focus-visible .hl-row-go {
-  color: var(--color-olive);
-  transform: translateX(3px);
-}
-@media (prefers-reduced-motion: reduce) {
-  .hl-media > img,
-  .hl-go,
-  .hl-go svg,
-  .hl-row,
-  .hl-row-go {
-    transition: none;
-  }
-}
-
-/* ==== Zones: layout ==============================================================================================
-   Minimal and compact: one editorial heading row (title left, line right), then two panels of the same height,
-   the zone strips and the highlight card (white), with hairline edges and soft shadows. */
-.zones-layout {
-  display: grid;
-  gap: 1rem;
-  padding-inline: var(--gutter);
-}
-.zones-head {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: baseline;
-  justify-content: space-between;
-  gap: 0.35rem 2rem;
-  margin-bottom: 0.75rem;
-}
-.zones-head .zones-sub {
-  margin: 0;
-}
-@media (min-width: 64rem) {
-  .zones-layout {
-    padding: 0 2.5rem 0 0;
-  }
-  .zones-layout.has-hl {
-    grid-template-columns: minmax(0, 1.3fr) minmax(0, 1fr);
-    grid-template-rows: auto 24rem;
-  }
-  .zones-head {
-    grid-column: 1 / -1;
-  }
-}
-/* The highlight card fills its panel: the photo takes the free height. */
-.zones-hl .hl-main {
-  display: flex;
-  flex: 1;
-  flex-direction: column;
-  min-height: 0;
-}
-@media (min-width: 64rem) {
-  .zones-hl .hl-media {
-    flex: 1;
-    min-height: 8rem;
-    aspect-ratio: auto;
-  }
-  /* Out of the flow, so the photo's own size never stretches the panels. */
-  .zones-hl .hl-media > img {
-    position: absolute;
-    inset: 0;
-  }
-}
-
-/* ==== Zones: expanding strips ===================================================================================
-   One tall photo strip per zone (src/scripts/zone-picker.ts opens one on hover / focus / first tap). Closed strips:
-   a muted photo, the name written vertically at the top, a small pin at the foot. The open strip widens to full
-   colour and shows the count and "Explorar". Phones: the strips stack as a vertical accordion. */
-.zone-strips {
-  display: flex;
-  gap: 0.5rem;
-  height: 24rem;
-  margin: 0;
-  padding: 0;
-  list-style: none;
-}
-.zone-strip {
-  position: relative;
-  flex: 1 1 0;
-  min-width: 0;
-  overflow: hidden;
-  border-radius: 1rem;
-  background: var(--color-forest);
-  box-shadow: 0 20px 40px -32px rgba(27, 30, 28, 0.6);
-  transition: flex-grow 0.6s var(--ease-out);
-}
-.zone-strip[data-active] {
-  flex-grow: 4.2;
-}
-.zone-strip > a {
-  position: absolute;
-  inset: 0;
-  display: block;
-  color: #fff;
-  text-decoration: none;
-}
-.zone-strip img,
-.zone-strip .zone-plain {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  filter: saturate(0.55) brightness(0.7);
-  transform: scale(1.08);
-  transition:
-    filter 0.6s ease,
-    transform 1.2s var(--ease-out);
-}
-.zone-strip[data-active] img,
-.zone-strip[data-active] .zone-plain {
-  filter: none;
-  transform: none;
-}
-/* Shade: even on closed strips, deeper at the foot on the open one. */
-.zone-strip > a::after {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background:
-    linear-gradient(180deg, rgba(20, 22, 21, 0.45) 0%, transparent 30%),
-    linear-gradient(0deg, rgba(20, 22, 21, 0.7) 0%, transparent 45%);
-  pointer-events: none;
-}
-.zone-strip-name {
-  position: absolute;
-  z-index: 1;
-  left: 50%;
-  top: 1.1rem;
-  translate: -50% 0;
-  writing-mode: vertical-rl;
-  font-family: var(--font-display, inherit);
-  font-size: 0.95rem;
-  font-weight: 600;
-  line-height: 1;
-  letter-spacing: -0.005em;
-  white-space: nowrap;
-  transition:
-    left 0.6s var(--ease-out),
-    translate 0.6s var(--ease-out);
-}
-.zone-strip[data-active] .zone-strip-name {
-  left: 1.25rem;
-  translate: 0 0;
-}
-.zone-strip-ic {
-  position: absolute;
-  z-index: 1;
-  left: 50%;
-  bottom: 1.1rem;
-  translate: -50% 0;
-  opacity: 0.7;
-  transition: opacity 0.3s;
-}
-.zone-strip[data-active] .zone-strip-ic {
-  opacity: 0;
-}
-.zone-strip-foot {
-  position: absolute;
-  z-index: 1;
-  left: 1.25rem;
-  right: 1.25rem;
-  bottom: 1.1rem;
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  gap: 0.6rem;
-  opacity: 0;
-  translate: 0 0.5rem;
-  pointer-events: none;
-  transition:
-    opacity 0.3s,
-    translate 0.5s var(--ease-out);
-}
-.zone-strip[data-active] .zone-strip-foot {
-  opacity: 1;
-  translate: 0 0;
-  transition-delay: 0.25s;
-}
-.zone-strip-count {
-  font-size: 0.8rem;
-  color: rgba(255, 255, 255, 0.78);
-  white-space: nowrap;
-}
-.zone-strip-go {
-  display: inline-flex;
-  flex: none;
-  align-items: center;
-  gap: 0.35rem;
-  padding: 0.55rem 0.95rem;
-  border: 1px solid rgba(214, 232, 150, 0.25);
-  border-radius: 6px;
-  /* Same surface as the site's main CTAs (.btn-lime). */
-  background-color: #4b6a1a;
-  background-image: var(--green-surface);
-  font-size: 0.8rem;
-  font-weight: 600;
-  color: #fff;
-  box-shadow: 0 6px 16px -8px rgba(0, 0, 0, 0.45);
-}
-.zone-strip > a:hover .zone-strip-go,
-.zone-strip > a:focus-visible .zone-strip-go {
-  border-color: rgba(214, 232, 150, 0.4);
-  background-color: #567a1e;
-  background-image: var(--green-surface-hover);
-}
-.zone-strip > a:focus-visible {
-  outline: 2px solid var(--color-lime);
-  outline-offset: -2px;
-  border-radius: inherit;
-}
-@media (max-width: 40rem) {
-  .zone-strips {
-    flex-direction: column;
-    height: auto;
-    gap: 0.4rem;
-  }
-  .zone-strip {
-    flex: none;
-    height: 3.4rem;
-    transition: height 0.5s var(--ease-out);
-  }
-  .zone-strip[data-active] {
-    height: 13rem;
-  }
-  .zone-strip-name {
-    left: 1.1rem;
-    top: 50%;
-    translate: 0 -50%;
-    writing-mode: horizontal-tb;
-    font-size: 1rem;
-  }
-  .zone-strip[data-active] .zone-strip-name {
-    top: 1.1rem;
-    left: 1.1rem;
-    translate: 0 0;
-    font-size: 1.15rem;
-  }
-  .zone-strip-ic {
-    left: auto;
-    right: 1.1rem;
-    top: 50%;
-    bottom: auto;
-    translate: 0 -50%;
-  }
-  .zone-strip-foot {
-    left: 1.1rem;
-    right: 1.1rem;
-  }
-}
-@media (prefers-reduced-motion: reduce) {
-  .zone-strip,
-  .zone-strip img,
-  .zone-strip-name,
-  .zone-strip-foot {
-    transition: none;
-  }
-}
-
 /* ==== Green atmosphere (zones and team bands) =====================================================================
    Instead of flat ivory, these bands are a living green: a real photo of pines and fairways (Vilasol), heavily blurred
    and stretched sideways like a motion-blurred shot, deepened with a forest-green wash, a soft lime light in the top
@@ -8515,55 +8072,16 @@ footer.on-dark {
   color: rgba(255, 255, 255, 0.72);
 }
 
-/* Zone strips as floating glass. */
-.zone-strip {
-  box-shadow:
-    0 2px 6px rgba(0, 0, 0, 0.18),
-    0 28px 50px -26px rgba(0, 0, 0, 0.75);
-  transition:
-    flex-grow 0.6s var(--ease-out),
-    translate 0.5s var(--ease-out),
-    box-shadow 0.5s var(--ease-out);
-}
-.zone-strip > a::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  z-index: 2;
-  border-radius: inherit;
-  box-shadow:
-    inset 0 0 0 1px rgba(255, 255, 255, 0.16),
-    inset 0 1px 0 rgba(255, 255, 255, 0.28);
-  pointer-events: none;
-}
-@media (min-width: 40.01rem) {
-  .zone-strip[data-active] {
-    translate: 0 -4px;
-    box-shadow:
-      0 2px 6px rgba(0, 0, 0, 0.2),
-      0 36px 60px -26px rgba(0, 0, 0, 0.85);
-  }
-}
-
-/* The highlight card: a crisp off-white sheet floating over the green, with a light glass rim. */
-.zones-hl {
-  --hl-bg: #fbfcf7;
-  border: 1px solid rgba(255, 255, 255, 0.55);
-  box-shadow:
-    0 0 0 6px rgba(255, 255, 255, 0.06),
-    0 2px 6px rgba(0, 0, 0, 0.15),
-    0 40px 70px -30px rgba(0, 0, 0, 0.7);
-}
-@media (prefers-reduced-motion: reduce) {
-  .zone-strip {
-    transition: none;
-  }
-}
-
 /* Team band on the green atmosphere: room for the cards' shadows, and the heading, bird mark and text in light
    tones (the olive versions were made for ivory). */
 .team-band {
   padding-block: var(--band-pad);
+}
+/* Same top and bottom padding as the zones band. */
+@media (min-width: 64rem) {
+  .team-band {
+    padding-block: 1.25rem;
+  }
 }
 .team-band #equipa-titulo,
 .team-band #equipa-titulo span {
@@ -8810,4 +8328,520 @@ footer.on-dark {
 .careers-bg {
   z-index: 0;
   isolation: isolate;
+}
+
+
+/* ==== Zones: photo slider ========================================================================================
+   src/components/ZoneExplorer.astro + src/scripts/zone-explorer.ts. The active zone's photo, blurred and toned,
+   fills a rounded panel that runs to the right edge; on the left its name, text, link and the controls (arrows,
+   a lime progress line, the counter); on the right every zone as a card, the active one wider and in full colour. */
+.zx {
+  position: relative;
+  isolation: isolate;
+  display: grid;
+  /* The text keeps a fixed column; the cards get the rest, so wider screens show more of them. */
+  grid-template-columns: minmax(16rem, 22rem) minmax(0, 1fr);
+  gap: 1.5rem 2rem;
+  margin-inline: var(--gutter);
+  padding: var(--band-pad) var(--gutter);
+  overflow: hidden;
+  border-radius: var(--r-panel);
+  background: var(--g-950);
+  color: #fff;
+  /* Vertical scrolling stays with the page; sideways swipes change zone (the card row still scrolls itself). */
+  touch-action: pan-y;
+}
+/* From lg, as the team band: 1.25rem top and bottom; the panel starts on the page column and runs to the right
+   edge of the screen (only the left corners rounded), the head keeping to the page column on the right. */
+@media (min-width: 64rem) {
+  .zx {
+    --zx-edge: max(var(--gutter), calc((100cqw - var(--page-w)) / 2 + var(--gutter)));
+    margin: 0 0 0 var(--zx-edge);
+    padding: 1.25rem 0 1.25rem 2.5rem;
+    border-radius: var(--r-panel) 0 0 var(--r-panel);
+  }
+  .zx-cards {
+    margin-right: var(--zx-edge);
+  }
+}
+/* "Explore por zona" as a light line above the zone name (like the hero's subtitles), not a bold title. */
+.zx-eyebrow {
+  margin: 0 0 0.75rem;
+  font-size: 1rem;
+  font-weight: 400;
+  line-height: 1.4;
+  color: rgba(255, 255, 255, 0.8);
+}
+.zx-eyebrow::before {
+  content: '— ';
+}
+.zx-stage {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+}
+/* The background is atmosphere, not a second picture: the zone's photo heavily blurred, toned to the brand olive
+   (a "color" blend of --g-500, as the other green bands) and grained, so the sharp cards are the only photos. */
+.zx {
+  --zx-bg-filter: blur(40px) saturate(0.9) brightness(0.85);
+}
+.zx-bg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0;
+  filter: var(--zx-bg-filter);
+  transform: scale(1.15);
+}
+.zx-stage::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  background: var(--g-500);
+  mix-blend-mode: color;
+  opacity: 0.7;
+  pointer-events: none;
+}
+.zx-bg[data-active] {
+  opacity: 0.45;
+}
+.zx.zx-fade .zx-bg {
+  transition: opacity 0.9s ease;
+}
+.zx-shade {
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  /* A near-black olive night with soft brand-green glows (as the portfolio's services band), the zone's blurred
+     photo glowing faintly through; darker on the left behind the text; the header's grain over it. */
+  background:
+    var(--hdr-grain),
+    radial-gradient(38% 55% at 18% 85%, rgba(95, 130, 34, 0.42) 0%, transparent 70%),
+    radial-gradient(30% 45% at 62% 10%, rgba(158, 188, 58, 0.16) 0%, transparent 70%),
+    radial-gradient(35% 60% at 95% 70%, rgba(75, 106, 26, 0.35) 0%, transparent 70%),
+    linear-gradient(90deg, rgba(10, 14, 8, 0.88) 0%, rgba(10, 14, 8, 0.68) 45%, rgba(10, 14, 8, 0.6) 100%);
+}
+
+/* Text: all zones stacked in one cell; the active one fades in, its lines rising one after another. */
+.zx-content {
+  align-self: center;
+  min-width: 0;
+}
+.zx-texts {
+  display: grid;
+}
+.zx-text {
+  grid-area: 1 / 1;
+  opacity: 0;
+  visibility: hidden;
+  transition:
+    opacity 0.35s ease,
+    visibility 0s linear 0.35s;
+}
+.zx-text[data-active] {
+  opacity: 1;
+  visibility: visible;
+  transition: opacity 0.5s ease 0.2s;
+}
+.zx-text > * {
+  translate: 0 1.1rem;
+  transition: translate 0.35s ease;
+}
+.zx-text[data-active] > * {
+  translate: 0 0;
+  transition: translate 0.9s var(--ease-out) 0.2s;
+}
+.zx-text[data-active] > :nth-child(2) {
+  transition-delay: 0.28s;
+}
+.zx-text[data-active] > :nth-child(3) {
+  transition-delay: 0.36s;
+}
+.zx-text[data-active] > :nth-child(4) {
+  transition-delay: 0.44s;
+}
+.zx-kicker {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin: 0.9rem 0 0;
+  font-size: 0.85rem;
+  color: rgba(255, 255, 255, 0.7);
+}
+.zx-kicker::before {
+  content: '';
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--color-lime);
+}
+.zx-name {
+  margin: 0 0 0.6rem;
+  font-family: var(--font-display, inherit);
+  font-size: var(--h-display);
+  font-weight: 600;
+  line-height: 1;
+  letter-spacing: -0.02em;
+  text-wrap: balance;
+}
+.zx-blurb {
+  max-width: 22rem;
+  margin: 0;
+  font-size: 0.95rem;
+  line-height: 1.6;
+  color: rgba(255, 255, 255, 0.82);
+}
+.zx-go {
+  margin-top: 1.25rem;
+}
+
+/* Cards (after the portfolio "services" row): tall, equal cards in a fixed order that run off the panel's right
+   edge and scroll sideways. Each one: the zone photo under a deep olive wash, a glass pin tile at the top left, the
+   name and the count at the foot. The zone being read keeps full colour, a lime rim and the green arrow. */
+.zx-side {
+  align-self: stretch;
+  display: flex;
+  min-width: 0;
+}
+.zx-cards {
+  display: flex;
+  flex: 1;
+  gap: 1rem;
+  min-width: 0;
+  min-height: clamp(16rem, 20vw, 19rem);
+  margin: 0;
+  padding: 0;
+  overflow-x: auto;
+  list-style: none;
+  scrollbar-width: none;
+}
+.zx-cards::-webkit-scrollbar {
+  display: none;
+}
+.zx-card {
+  position: relative;
+  flex: 0 0 clamp(12rem, 15vw, 14rem);
+}
+.zx-card a {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  height: 100%;
+  padding: 1.1rem;
+  overflow: hidden;
+  border-radius: 1rem;
+  background: var(--g-800);
+  color: #fff;
+  text-decoration: none;
+  box-shadow: 0 24px 40px -28px rgba(0, 0, 0, 0.8);
+  transition: translate 0.35s var(--ease-out);
+}
+.zx-card a::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: inherit;
+  pointer-events: none;
+  transition:
+    border-color 0.4s,
+    box-shadow 0.4s;
+}
+.zx-card[data-active] a::before {
+  border-color: var(--color-lime);
+  box-shadow: inset 0 0 0 1px var(--color-lime);
+}
+.zx-card img,
+.zx-card .zone-plain {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  filter: saturate(0.55) brightness(0.75);
+  transition:
+    filter 0.5s ease,
+    transform 0.8s var(--ease-out);
+}
+.zx-card[data-active] img,
+.zx-card[data-active] .zone-plain,
+.zx-card a:hover img {
+  filter: none;
+}
+.zx-card a:hover img {
+  transform: scale(1.05);
+}
+/* Deep olive wash, heavier at the foot for the text (lighter on the active card). */
+.zx-card a::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(170deg, rgba(36, 51, 26, 0.55) 0%, rgba(18, 26, 13, 0.35) 45%, rgba(14, 20, 11, 0.9) 100%);
+  transition: opacity 0.5s;
+}
+.zx-card[data-active] a::after {
+  background: linear-gradient(180deg, rgba(18, 26, 13, 0.1) 0%, transparent 40%, rgba(14, 20, 11, 0.85) 100%);
+}
+.zx-card a:focus-visible {
+  outline: 2px solid var(--color-lime);
+  outline-offset: 3px;
+}
+.zx-card:not([data-active]) a:hover {
+  translate: 0 -4px;
+}
+.zx-card-ic {
+  position: absolute;
+  top: 1.1rem;
+  left: 1.1rem;
+  z-index: 1;
+  display: grid;
+  width: 2.5rem;
+  height: 2.5rem;
+  place-items: center;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  border-radius: 0.65rem;
+  background: rgba(255, 255, 255, 0.12);
+  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px);
+  color: #fff;
+}
+.zx-card-body {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+}
+.zx-card-name {
+  font-family: var(--font-display, inherit);
+  font-size: 1.15rem;
+  font-weight: 600;
+  line-height: 1.15;
+  letter-spacing: -0.01em;
+}
+.zx-card-meta {
+  font-size: 0.8rem;
+  line-height: 1.4;
+  color: rgba(255, 255, 255, 0.7);
+}
+/* Same round arrow as the rest of the site (green surface, white arrow; turns 45° on hover, as the map pin's). */
+.zx-card-go {
+  position: absolute;
+  top: 1.1rem;
+  right: 1.1rem;
+  z-index: 3;
+  display: grid;
+  width: 2.5rem;
+  height: 2.5rem;
+  place-items: center;
+  border-width: 1px;
+  border-style: solid;
+  border-radius: 9999px;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.16),
+    0 8px 18px -10px rgba(26, 33, 26, 0.6);
+  opacity: 0;
+  scale: 0.6;
+  transition:
+    opacity 0.3s ease,
+    scale 0.4s var(--ease-out),
+    transform 0.3s var(--ease-out);
+}
+.zx-card[data-active] a:hover .zx-card-go,
+.zx-card[data-active] a:focus-visible .zx-card-go {
+  transform: rotate(45deg);
+}
+.zx-card[data-active] .zx-card-go {
+  opacity: 1;
+  scale: 1;
+  transition-delay: 0.25s;
+}
+/* The row's cut edges fade out where it scrolls, so it reads as "more this way". */
+.zx-cards[data-fade-l] {
+  -webkit-mask-image: linear-gradient(90deg, transparent, #000 2.5rem);
+  mask-image: linear-gradient(90deg, transparent, #000 2.5rem);
+}
+.zx-cards[data-fade-r] {
+  -webkit-mask-image: linear-gradient(90deg, #000 calc(100% - 4rem), transparent);
+  mask-image: linear-gradient(90deg, #000 calc(100% - 4rem), transparent);
+}
+.zx-cards[data-fade-l][data-fade-r] {
+  -webkit-mask-image: linear-gradient(90deg, transparent, #000 2.5rem, #000 calc(100% - 4rem), transparent);
+  mask-image: linear-gradient(90deg, transparent, #000 2.5rem, #000 calc(100% - 4rem), transparent);
+}
+
+/* Controls: round glass arrows, the progress line and the counter. */
+.zx-controls {
+  display: flex;
+  margin-top: 1.75rem;
+  align-items: center;
+  gap: 0.75rem;
+}
+.zx-nav {
+  display: grid;
+  flex: none;
+  width: 2.75rem;
+  height: 2.75rem;
+  place-items: center;
+  border: 1px solid rgba(255, 255, 255, 0.35);
+  border-radius: 9999px;
+  background: rgba(255, 255, 255, 0.06);
+  -webkit-backdrop-filter: blur(8px);
+  backdrop-filter: blur(8px);
+  color: #fff;
+  cursor: pointer;
+  transition:
+    background-color 0.25s,
+    border-color 0.25s,
+    color 0.25s;
+}
+.zx-nav:hover,
+.zx-nav:focus-visible {
+  border-color: var(--color-lime);
+  background: var(--color-lime);
+  color: var(--color-forest);
+}
+/* Segments: seen zones full, the current one fills over the timer (its end moves on, see zone-explorer.ts) and
+   holds while the panel is paused; once the visitor takes over, the timer stops and the segment is simply full. */
+.zx-steps {
+  display: flex;
+  flex: 1;
+  gap: 4px;
+  margin-inline: 0.5rem;
+}
+.zx-step {
+  flex: 1;
+  height: 2px;
+  overflow: hidden;
+  border-radius: 2px;
+  background: rgba(255, 255, 255, 0.22);
+}
+.zx-step > i {
+  display: block;
+  width: 0;
+  height: 100%;
+  background: var(--color-lime);
+}
+.zx-step.is-done > i,
+.zx-manual .zx-step.is-current > i {
+  width: 100%;
+}
+.zx:not(.zx-manual) .zx-step.is-current > i {
+  animation: zx-fill var(--zx-dur, 7s) linear forwards;
+}
+.zx.is-paused .zx-step.is-current > i {
+  animation-play-state: paused;
+}
+@keyframes zx-fill {
+  to {
+    width: 100%;
+  }
+}
+.zx-count {
+  font-family: var(--font-display, inherit);
+  font-size: 1.85rem;
+  font-weight: 600;
+  line-height: 1;
+  letter-spacing: -0.03em;
+  font-variant-numeric: tabular-nums;
+}
+.zx-count small {
+  margin-left: 0.15rem;
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: rgba(255, 255, 255, 0.6);
+}
+
+@media (max-width: 48rem) {
+  .zx {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 1.75rem;
+    min-height: 0;
+  }
+  .zx-shade {
+    background: linear-gradient(
+      180deg,
+      rgba(18, 26, 13, 0.55) 0%,
+      rgba(18, 26, 13, 0.4) 40%,
+      rgba(18, 26, 13, 0.85) 100%
+    );
+  }
+  /* Phones: the row scrolls sideways; the active card wider. */
+  .zx-cards {
+    min-height: 12rem;
+  }
+  .zx-card {
+    flex-basis: 11rem;
+  }
+  .zx-count {
+    font-size: 1.75rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .zx-text,
+  .zx-text > *,
+  .zx-card,
+  .zx-card img,
+  .zx-card a::before,
+  .zx-card-go,
+  .zx-card a,
+  .zx.zx-fade .zx-bg {
+    transition: none;
+  }
+}
+
+/* ==== Hero: glass panel behind the listing deck ===================================================================
+   As the MeewVision hero's "Projetos em destaque" box: one quiet frosted-glass panel (a light veil, a fine light
+   rim) holds the photo, the listing card and the controls together over the hero photo. It follows the deck's
+   outline: around the photo and the controls, stepping out to the left only where the listing card overhangs
+   (src/scripts/hero-deck-panel.ts draws the shape; without JS the deck keeps a plain rounded box). */
+@media (min-width: 64rem) {
+  .hcard .hero-deck {
+    --deck-pad: 0.75rem;
+    padding: var(--deck-pad);
+    border: 1px solid rgba(255, 255, 255, 0.24);
+    border-radius: calc(20px + var(--deck-pad));
+    background: linear-gradient(160deg, rgba(255, 255, 255, 0.14) 0%, rgba(255, 255, 255, 0.05) 100%);
+    -webkit-backdrop-filter: blur(18px) saturate(130%);
+    backdrop-filter: blur(18px) saturate(130%);
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.18);
+  }
+  .hcard .hero-deck[data-shaped] {
+    border-color: transparent;
+    background: none;
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+    box-shadow: none;
+  }
+  .hero-deck-glass {
+    position: absolute;
+    z-index: -1;
+    background: linear-gradient(160deg, rgba(255, 255, 255, 0.14) 0%, rgba(255, 255, 255, 0.05) 100%);
+    -webkit-backdrop-filter: blur(18px) saturate(130%);
+    backdrop-filter: blur(18px) saturate(130%);
+    pointer-events: none;
+  }
+  .hero-deck-glass svg {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    overflow: visible;
+  }
+  .hero-deck-glass path {
+    fill: none;
+    stroke: rgba(255, 255, 255, 0.26);
+    /* Half of it is clipped away with the panel: a 1px rim on the inside. */
+    stroke-width: 2;
+  }
+  .hcard .hero-deck .hero-controls {
+    margin-top: 0.6rem;
+    padding: 0 0.15rem;
+  }
 }

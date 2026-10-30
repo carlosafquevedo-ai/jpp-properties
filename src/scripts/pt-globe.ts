@@ -3,9 +3,28 @@
 // into place when it scrolls into view, follows the mouse a little, and can be dragged; the office pin tracks its
 // point on the sphere. The <img> stays in the page as the fallback without JS.
 
-type Dot = { x: number; y: number; z: number; algarve: boolean; delay: number };
+type Dot = { x: number; y: number; z: number; south: number; delay: number };
+
+// One green, as a fern ramp from north to south: deep forest olive brightening through the brand greens into a lime
+// glow over the Algarve. Only greens from the site scale, so the blend never turns muddy. [position 0..1, r, g, b]
+const LAND: [number, number, number, number][] = [
+  [0, 36, 51, 26], // --g-800
+  [0.45, 75, 106, 26], // --g-500
+  [0.72, 108, 145, 38], // --g-300
+  [0.86, 158, 188, 58], // lime
+  [1, 178, 206, 72], // lime glow
+];
+const landColour = (s: number) => {
+  let i = 1;
+  while (i < LAND.length - 1 && s > LAND[i][0]) i++;
+  const [p0, r0, g0, b0] = LAND[i - 1];
+  const [p1, r1, g1, b1] = LAND[i];
+  const t = clamp((s - p0) / (p1 - p0), 0, 1);
+  return [r0 + (r1 - r0) * t, g0 + (g1 - g0) * t, b0 + (b1 - b0) * t].map(Math.round).join(',');
+};
 
 const DEG = Math.PI / 180;
+const clamp = (v: number, lo: number, hi: number) => Math.min(hi, Math.max(lo, v));
 // Stylised globe: one degree of real latitude spans K degrees on the sphere, so Portugal covers a large cap and
 // the graticule curves visibly.
 const K = 16;
@@ -15,7 +34,6 @@ const REST = { yaw: 4 * DEG, pitch: -14 * DEG };
 const INTRO = { yaw: -38 * DEG, pitch: -34 * DEG };
 const LIMIT = 28 * DEG;
 
-const clamp = (v: number, lo: number, hi: number) => Math.min(hi, Math.max(lo, v));
 const easeOut = (t: number) => 1 - Math.pow(1 - t, 3);
 
 /** Point on the unit sphere for local angles a (east) and b (north), in radians. */
@@ -108,7 +126,7 @@ export function initPtGlobe(map: HTMLElement) {
         const { a, b } = toAngles(x, y);
         const south = (y - minY) / h;
         // The draw-in runs as a wave from the Algarve northwards.
-        dots.push({ ...onSphere(a, b), algarve: south > 0.82, delay: (1 - south) * 0.55 + Math.random() * 0.12 });
+        dots.push({ ...onSphere(a, b), south, delay: (1 - south) * 0.55 + Math.random() * 0.12 });
       }
 
     // The office pin, from its position in % of the image (set in CSS).
@@ -175,19 +193,33 @@ export function initPtGlobe(map: HTMLElement) {
       const R = scale * CAMERA / Math.sqrt(CAMERA * CAMERA - 1);
       const g = ctx.createRadialGradient(ox - R * 0.35, oy - R * 0.4, R * 0.1, ox, oy, R);
       g.addColorStop(0, 'rgba(255,255,255,1)');
-      g.addColorStop(0.7, 'rgba(244,247,236,1)');
-      g.addColorStop(1, 'rgba(226,232,212,1)');
+      g.addColorStop(0.7, 'rgba(242,247,232,1)');
+      g.addColorStop(1, 'rgba(222,233,203,1)');
       ctx.globalAlpha = 0.25 + 0.75 * reveal;
       ctx.beginPath();
       ctx.arc(ox, oy, R, 0, Math.PI * 2);
       ctx.fillStyle = g;
       ctx.fill();
+
+      // Soft lime glow on the sphere around the Algarve; it follows the coast as the globe turns.
+      const glow = project(rotate(pinPoint, yaw, pitch));
+      if (glow.visible) {
+        ctx.save();
+        ctx.clip();
+        const gg = ctx.createRadialGradient(glow.sx, glow.sy, 0, glow.sx, glow.sy, R * 0.75);
+        gg.addColorStop(0, `rgba(183,212,74,${0.4 * reveal})`);
+        gg.addColorStop(0.45, `rgba(158,188,58,${0.14 * reveal})`);
+        gg.addColorStop(1, 'rgba(158,188,58,0)');
+        ctx.fillStyle = gg;
+        ctx.fillRect(0, 0, W, H);
+        ctx.restore();
+      }
       ctx.lineWidth = 1;
-      ctx.strokeStyle = 'rgba(27,30,28,0.22)';
+      ctx.strokeStyle = 'rgba(75,106,26,0.3)';
       ctx.stroke();
 
       // Graticule: every 10° on the stylised sphere (about 1° of real latitude).
-      ctx.strokeStyle = 'rgba(27,30,28,0.14)';
+      ctx.strokeStyle = 'rgba(75,106,26,0.16)';
       ctx.lineWidth = 0.8;
       const line = (pts: { x: number; y: number; z: number }[]) => {
         let pen = false;
@@ -212,15 +244,15 @@ export function initPtGlobe(map: HTMLElement) {
         line(pts);
       }
 
-      // Land dots: charcoal, the Algarve in the brand olive; nearer dots a little larger.
+      // Land dots: the fern ramp, the Algarve brightest and a little larger; nearer dots larger.
       ctx.globalAlpha = 1;
       for (const d of dots) {
         const t = clamp((reveal - d.delay) / 0.35, 0, 1);
         if (t <= 0) continue;
         const q = project(rotate(d, yaw, pitch));
         if (!q.visible) continue;
-        const r = (d.algarve ? 1.75 : 1.5) * q.f * (0.6 + 0.4 * easeOut(t));
-        ctx.fillStyle = d.algarve ? `rgba(95,127,34,${t})` : `rgba(27,30,28,${0.72 * t})`;
+        const r = (d.south > 0.82 ? 1.8 : 1.5) * q.f * (0.6 + 0.4 * easeOut(t));
+        ctx.fillStyle = `rgba(${landColour(d.south)},${(0.85 + 0.15 * d.south) * t})`;
         ctx.beginPath();
         ctx.arc(q.sx, q.sy, r, 0, Math.PI * 2);
         ctx.fill();

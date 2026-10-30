@@ -38,6 +38,8 @@ Website da JPP Properties (AMI 9361), agência imobiliária no Algarve. Esta é 
 - Imobiliária premium, limpa e luminosa, mobile-first, fotografia em destaque.
 - **O fundo base de todas as secções é branco** (`paper`). `paper-2` (névoa) só para apoio: filtros, etiquetas, campos.
 - Paleta em `src/styles/global.css` (ver `/paleta/`): **carvão** (`forest`, `#1b1e1c`, o único escuro: cabeçalho, botões escuros, pesquisa, banda das zonas), marfim (`paper-2`), linha, tinta, cinza quente e o **verde da marca** (lima `#9EBC3A` e oliva): destaques e botões principais (hero, cabeçalho sobre a fotografia), etiquetas, pontos e barras; linhas finas em branco translúcido sobre o carvão (sem bege/champanhe). Evitar misturar novos tons: usar sempre estes tokens.
+- **Globo "Somos daqui"** (`src/scripts/pt-globe.ts`): rampa "feto" só com verdes da escala: os pontos vão do oliva profundo no norte (`--g-800`) ao lima brilhante no Algarve, com um brilho lima à volta e o ponto do escritório em lima. Tangerina foi testada e rejeitada.
+- **Títulos com um só tamanho**: o título do hero, o de "Conheça a equipa" e o nome da zona no slider usam `--h-display` (`global.css`). Todos os títulos principais ficam com este tamanho, salvo indicação em contrário. Um subtítulo por cima de um título é uma linha leve, sem negrito (ex.: "Explore por zona").
 - Lima só em fundos (botões, etiquetas) com texto escuro; nunca como texto sobre branco (contraste 2,2:1).
 - **Superfície verde** (fim de `global.css`): o cabeçalho, os botões verdes e as etiquetas usam `--hdr-surface` / `--green-surface` (verde-lima escuro `#2e3f12` → `#4b6a1a` → lima, com faixa de luz lima-pálida e grão), sempre com texto branco. O oliva passou a `#4b6a1a`. Detalhes finos (linhas, pontos, barra do preço) ficam em lima simples. O botão "Contactar" do header é branco com texto carvão e o quadrado da seta na superfície verde (lima ao passar o rato).
 - Uma única largura de página: `--page-w` e `--gutter` em `global.css`; usar sempre `.container-x`.
@@ -79,13 +81,13 @@ Decidido com o cliente: a equipa escolhe os imóveis numa **lista ordenada na P�
 - Studio: frase de ajuda em cada lista ("Escolha até 8 imóveis. Arraste para mudar a ordem."), validação do máximo, e bloquear/avisar ao apagar um imóvel que esteja numa lista.
 - Os dados de protótipo estão em `src/data/home.ts`, com a mesma forma do documento Sanity.
 
-## Painel lateral "Destaques" (junto das zonas)
+## "Explore por zona" (slider)
 
-Não são imóveis: são campos livres com **imagem + texto + ligação**, para destacar um novo empreendimento, uma campanha ou um serviço.
+Secção `src/components/ZoneExplorer.astro` + `src/scripts/zone-explorer.ts`: a foto da zona ativa ocupa o painel **muito desfocada e tonalizada para o oliva** (atmosfera, não uma segunda foto), com nome, frase, "Ver imóveis" e os controlos (setas, progresso, contador) à esquerda. Estilo inspirado na secção de serviços do portfólio do Carlos: fundo oliva quase negro com brilhos verdes suaves (a foto da zona muito desfocada por baixo), subtítulo "— Explore por zona". À direita, **todas as zonas em cartões iguais**, que saem pela borda e deslizam de lado; **o cartão da zona escolhida passa sempre para primeiro** e as zonas seguintes vêm atrás, em círculo: foto com véu oliva, ícone de pino em vidro no canto, nome e número de imóveis em baixo; o cartão da zona ativa fica a cores, com aresta lima e a seta verde. Clicar num cartão mostra essa zona; clicar no cartão ativo (tem uma seta lima) abre os imóveis da zona. Também mudam a zona as setas, as teclas ← → e deslizar o dedo no painel; nenhum cartão sai da fila. Temporizador de 7 s visível na linha de progresso por segmentos (em pausa com o rato/foco dentro ou fora do ecrã); para de vez quando o visitante escolhe uma zona. Quando a fila não cabe, desliza de lado com as pontas esbatidas. Sem JS mostra a primeira zona e os cartões são ligações.
 
-- Sanity (Página inicial): lista "Destaques laterais", máximo 3, arrastar para ordenar; o primeiro aparece grande. Cada item: **etiqueta** (ex.: "Empreendimento"), **título**, **texto curto** (máx. ~140 caracteres, com contador), **imagem** (com texto alternativo obrigatório) e **ligação** (página interna ou endereço externo).
-- Se a lista estiver vazia, o painel desaparece e os mosaicos das zonas ocupam a largura toda (já tratado em `src/pages/index.astro`).
-- Dados de protótipo em `src/data/home.ts` (`sideHighlights`), com a mesma forma do documento Sanity.
+## "Destaques" (removidos da página inicial)
+
+Decidido com o cliente: o painel de destaques (imagem + texto + ligação para empreendimentos/campanhas) **saiu da página inicial**. Os dados de protótipo continuam em `src/data/home.ts` (`sideHighlights`), sem uso. `TODO`: decidir se volta noutro sítio; se não, não criar a lista "Destaques laterais" no Sanity e apagar `sideHighlights`.
 
 ## Resultados (página inicial)
 
@@ -104,6 +106,10 @@ Secção `src/components/ContactBand.astro`, mostrada em **todas as páginas** p
 - O rodapé já não repete morada, telefones e email: fica com marca, navegação, links legais (Política de Privacidade, Resolução de Litígios, Livro de Reclamações), redes sociais e AMI.
 - Sem mapa embutido: um iframe do Google Maps criaria cookies antes do consentimento.
 - `TODO`: textos provisórios em PT; versões EN/FR. Com mais de um escritório, decidir se a faixa mostra o principal ou todos.
+
+## Entrada do site (cortina)
+
+`src/components/SiteIntro.astro` (no `SiteLayout`): quando alguém **abre** o site (endereço escrito, favorito, link partilhado, pesquisa), uma cortina oliva profundo com o grão do cabeçalho mostra "JPP Properties" no tipo do rodapé (as letras sobem e um feixe lima deixa-as brancas) e saudações por baixo (Olá, Hello, Bonjour, "Imóveis no Algarve"); depois sobe e revela a página (~3,3 s; clique ou tecla salta). **Não aparece** ao mudar de página dentro do site, ao recarregar nem com retroceder/avançar. Sem JS não há cortina; com movimento reduzido, só um fade curto. `TODO`: versões EN/FR da última frase.
 
 ## Formulário de pedido (vender / comprar)
 

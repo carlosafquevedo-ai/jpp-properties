@@ -7,6 +7,7 @@ import GoogleReviews from '../components/GoogleReviews.astro';
 import Careers from '../components/Careers.astro';
 import HowWeWork from '../components/HowWeWork.astro';
 import Results from '../components/Results.astro';
+import ZoneExplorer from '../components/ZoneExplorer.astro';
 import Icon from '../components/Icon.astro';
 import {
   formatPrice,
@@ -15,13 +16,11 @@ import {
   type ZoneId,
 } from '../data/properties';
 import { featuredProperties, heroSlides } from '../lib/catalog';
-import { sideHighlights } from '../data/home';
 import { team } from '../data/team';
 import { AMI, offices } from '../lib/site';
 
 const featured = featuredProperties();
 const slides = heroSlides();
-const [mainHighlight, ...otherHighlights] = sideHighlights;
 
 // Zone photos used on the tiles. TODO: in production each zone document has its own photo (Sanity).
 const zoneImages: Partial<Record<ZoneId, string>> = {
@@ -208,88 +207,10 @@ const zoneTiles = (Object.keys(zones) as ZoneId[]).map((id) => ({
     </div>
   </section>
 
-  <!-- Zones: index list on the left, one large editorial highlight that bleeds to the right edge -->
-  <section
-    id="zonas"
-    class="zones-section on-dark mt-20 overflow-x-clip"
-    aria-labelledby="zonas-titulo"
-  >
-    <div class="zones-band">
-      <div class:list={['zones-layout', mainHighlight && 'has-hl']}>
-        <div class="zones-head rise">
-          <h2 id="zonas-titulo" class="zones-title">Explore por zona</h2>
-          <p class="zones-sub">Escolha uma zona para ver os imóveis disponíveis.</p>
-        </div>
-
-        {/* Zone strips: one tall photo strip per zone, the name written vertically; the open strip widens and shows
-            the count and a link (src/scripts/zone-picker.ts opens a strip on hover / focus / first tap). */}
-        <ul class="zone-strips rise" aria-label="Zonas" data-zone-strips>
-          {zoneTiles.map((t, i) => (
-            <li class="zone-strip" data-active={i === 0 ? '' : undefined}>
-              <a href={`/imoveis/?zona=${t.id}`}>
-                {t.image ? (
-                  <img src={t.image} alt="" loading="lazy" referrerpolicy="no-referrer" />
-                ) : (
-                  <span class="zone-plain" />
-                )}
-                <span class="zone-strip-name">{zones[t.id].name}</span>
-                <span class="zone-strip-ic" aria-hidden="true">
-                  <Icon name="pin" class="size-4" />
-                </span>
-                <span class="zone-strip-foot">
-                  <span class="zone-strip-count">
-                    {t.count > 0
-                      ? `${t.count} ${t.count === 1 ? 'imóvel disponível' : 'imóveis disponíveis'}`
-                      : 'Ver imóveis na zona'}
-                  </span>
-                  <span class="zone-strip-go">
-                    Explorar <Icon name="arrowUpRight" class="size-4" />
-                  </span>
-                </span>
-              </a>
-            </li>
-          ))}
-        </ul>
-
-        {mainHighlight && (
-          <div class="zones-hl">
-            {/* Editorial highlight card: the photo's bottom-right corner is cut into a notch that holds the arrow. */}
-            <a href={mainHighlight.href} class="hl-main group">
-              <span class="hl-media">
-                <img
-                  src={mainHighlight.image}
-                  alt={mainHighlight.imageAlt}
-                  loading="lazy"
-                  referrerpolicy="no-referrer"
-                />
-                <span class="hl-chip">{mainHighlight.label}</span>
-                <span class="hl-notch" aria-hidden="true">
-                  <span class="hl-go">
-                    <Icon name="arrowUpRight" class="size-5" />
-                  </span>
-                </span>
-              </span>
-              <span class="hl-body">
-                <span class="hl-title">{mainHighlight.title}</span>
-                <span class="hl-text">{mainHighlight.text}</span>
-              </span>
-            </a>
-            {otherHighlights.length > 0 && (
-              <ul class="hl-more" aria-label="Outros destaques">
-                {otherHighlights.slice(0, 2).map((h) => (
-                  <li>
-                    <a href={h.href} class="hl-row group">
-                      <img src={h.image} alt={h.imageAlt} loading="lazy" referrerpolicy="no-referrer" />
-                      <span class="hl-row-title">{h.title}</span>
-                      <Icon name="arrowRight" class="hl-row-go size-4" />
-                    </a>
-                  </li>
-                ))}
-              </ul>
-            )}
-          </div>
-        )}
-      </div>
+  <!-- Zones: a full photo slider of the zones (src/components/ZoneExplorer.astro) -->
+  <section id="zonas" class="zones-section" aria-labelledby="zonas-titulo">
+    <div class="rise">
+      <ZoneExplorer tiles={zoneTiles} />
     </div>
   </section>
 
@@ -525,6 +446,14 @@ const zoneTiles = (Object.keys(zones) as ZoneId[]).map((id) => ({
 </SiteLayout>
 
 <script>
+  import { initHeroDeckPanel } from '../scripts/hero-deck-panel';
+
+  // Hero listing deck: the glass panel follows its outline (src/scripts/hero-deck-panel.ts).
+  const heroDeck = document.querySelector<HTMLElement>('[data-deck]');
+  if (heroDeck && window.matchMedia('(min-width: 64rem)').matches) initHeroDeckPanel(heroDeck);
+</script>
+
+<script>
   // Hero slideshow: crossfade between photos, with the matching listing card.
   // Keeps rotating while people use the hero or the search box. It only pauses when the tab is
   // hidden or on request (pause button), and never autoplays for people who prefer reduced motion.
@@ -583,11 +512,11 @@ const zoneTiles = (Object.keys(zones) as ZoneId[]).map((id) => ({
 </script>
 
 <script>
-  import { initZonePicker } from '../scripts/zone-picker';
+  import { initZoneExplorer } from '../scripts/zone-explorer';
 
-  // Zones: the expanding strips (src/scripts/zone-picker.ts).
-  const zonePicker = document.querySelector<HTMLElement>('[data-zone-strips]');
-  if (zonePicker) initZonePicker(zonePicker);
+  // Zones: the photo slider (src/scripts/zone-explorer.ts).
+  const zoneExplorer = document.querySelector<HTMLElement>('[data-zx]');
+  if (zoneExplorer) initZoneExplorer(zoneExplorer);
 </script>
 
 <script>
