@@ -9634,3 +9634,559 @@ main:has(> .nf) + footer {
     inset 0 -1px 0 rgba(255, 255, 255, 0.12),
     0 30px 50px -24px rgba(0, 0, 0, 0.45);
 }
+
+/* ==== Listings: filters ==========================================================================================
+   Desktop: one sticky white sheet beside the results (scrolls inside when taller than the screen). Sections divided
+   by hairlines, each with a quiet label: a search box for reference or name; "Negócio" as a segmented switch; zones
+   and property types as multi-select chips with their counts; price as two stepped selects; bedrooms as "1+ 2+ 3+"
+   buttons; and the less common filters folded under "Mais filtros". Above the results: the count, sort, and one
+   removable chip per active filter. Phones and tablets: "Filtros" opens the same form as a full-screen sheet with a
+   sticky "Ver N imóveis" button. Fields use the site's mist surface; the selected state is carbon (as the hero's
+   search switch) or the green tint for chips. */
+.flt {
+  border: 1px solid var(--sheet-edge);
+  border-radius: var(--r-panel);
+  background: #fff;
+  box-shadow: var(--sheet-shadow);
+}
+.flt-head {
+  display: none;
+}
+.flt-body {
+  padding: 1.1rem 1.25rem 0.5rem;
+}
+.flt-label {
+  display: block;
+  margin-bottom: 0.65rem;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  color: var(--color-ink);
+}
+.flt-sec {
+  min-width: 0;
+  margin: 0;
+  padding: 1.1rem 0;
+  border: 0;
+  /* A shadow, not a border: a fieldset's legend would sit on its top border. */
+  box-shadow: inset 0 1px 0 var(--color-line);
+}
+.flt-sec > legend {
+  float: left;
+  width: 100%;
+}
+.flt-sec > legend + * {
+  clear: both;
+}
+.flt-chip[data-empty] span {
+  color: var(--color-muted);
+}
+/* Search */
+.flt-search {
+  position: relative;
+  display: flex;
+  align-items: center;
+  margin-bottom: 0.25rem;
+}
+.flt-search > svg {
+  position: absolute;
+  left: 0.85rem;
+  color: var(--color-muted);
+  pointer-events: none;
+}
+.flt-search input {
+  width: 100%;
+  height: 2.75rem;
+  padding: 0 0.9rem 0 2.4rem;
+  border: 1px solid var(--color-line);
+  border-radius: 9999px;
+  background: var(--g-50);
+  font-size: 0.9375rem;
+  color: var(--color-ink);
+  transition:
+    border-color 0.2s,
+    background-color 0.2s;
+}
+.flt-search input:focus {
+  outline: none;
+  border-color: var(--g-500);
+  background: #fff;
+  box-shadow: 0 0 0 3px rgba(158, 188, 58, 0.25);
+}
+/* Segmented switches (one choice) */
+.flt-seg {
+  display: grid;
+  grid-auto-columns: minmax(0, 1fr);
+  grid-auto-flow: column;
+  gap: 0.2rem;
+  padding: 0.2rem;
+  border-radius: 9999px;
+  background: var(--g-50);
+  box-shadow: inset 0 0 0 1px var(--color-line);
+}
+.flt-seg label {
+  position: relative;
+  cursor: pointer;
+}
+.flt-seg input {
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+}
+.flt-seg span {
+  display: grid;
+  place-items: center;
+  min-height: 2.25rem;
+  padding: 0 0.4rem;
+  border-radius: 9999px;
+  font-size: 0.875rem;
+  font-weight: 600;
+  white-space: nowrap;
+  color: var(--color-muted);
+  transition:
+    background-color 0.2s,
+    color 0.2s;
+}
+.flt-seg label:hover span {
+  color: var(--color-ink);
+}
+.flt-seg input:checked + span {
+  background: var(--color-forest);
+  color: #fff;
+  box-shadow: 0 4px 10px -6px rgba(27, 30, 28, 0.6);
+}
+.flt-seg input:focus-visible + span,
+.flt-chip input:focus-visible + span,
+.flt-check input:focus-visible + .flt-check-box {
+  outline: 2px solid var(--g-500);
+  outline-offset: 2px;
+}
+/* Chips (several choices) */
+.flt-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.45rem;
+}
+.flt-chip {
+  position: relative;
+  cursor: pointer;
+}
+.flt-chip input {
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+}
+.flt-chip span {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  min-height: 2.25rem;
+  padding: 0 0.8rem;
+  border: 1px solid var(--color-line);
+  border-radius: 9999px;
+  background: #fff;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--color-ink);
+  transition:
+    border-color 0.2s,
+    background-color 0.2s,
+    color 0.2s;
+}
+.flt-chip small {
+  font-size: 0.75rem;
+  font-weight: 500;
+  color: var(--color-muted);
+}
+.flt-chip:hover span {
+  border-color: rgba(75, 106, 26, 0.45);
+}
+.flt-chip input:checked + span {
+  border-color: var(--g-500);
+  background: var(--g-50);
+  font-weight: 600;
+  color: var(--g-700);
+  box-shadow: inset 0 0 0 1px var(--g-500);
+}
+.flt-chip input:checked + span small {
+  color: var(--g-500);
+}
+/* Selects */
+.flt-row {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.5rem;
+}
+.flt-select {
+  width: 100%;
+  height: 2.75rem;
+  padding: 0 1.9rem 0 0.75rem;
+  border: 1px solid var(--color-line);
+  border-radius: var(--r-sm);
+  text-overflow: ellipsis;
+  background: var(--g-50)
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%231b1e1c' stroke-width='1.75' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E")
+    right 0.65rem center / 1rem no-repeat;
+  font-size: 0.875rem;
+  color: var(--color-ink);
+  -webkit-appearance: none;
+  appearance: none;
+  cursor: pointer;
+  transition: border-color 0.2s;
+}
+.flt-select:hover {
+  border-color: rgba(75, 106, 26, 0.45);
+}
+.flt-select:focus-visible {
+  outline: none;
+  border-color: var(--g-500);
+  box-shadow: 0 0 0 3px rgba(158, 188, 58, 0.25);
+}
+/* "Mais filtros" */
+.flt-more {
+  border-top: 1px solid var(--color-line);
+}
+.flt-more > summary {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  min-height: 3rem;
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--color-ink);
+  cursor: pointer;
+  list-style: none;
+}
+.flt-more > summary::-webkit-details-marker {
+  display: none;
+}
+.flt-more-count,
+.flt-open-count {
+  display: inline-grid;
+  place-items: center;
+  min-width: 1.25rem;
+  height: 1.25rem;
+  padding: 0 0.35rem;
+  border-radius: 9999px;
+  background: var(--g-lime);
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: var(--g-900);
+}
+.flt-more-count[hidden],
+.flt-open-count[hidden] {
+  display: none;
+}
+.flt-more-caret {
+  margin-left: auto;
+  transition: transform 0.25s var(--ease-out);
+}
+.flt-more[open] .flt-more-caret {
+  transform: rotate(180deg);
+}
+.flt-more .flt-sec:first-of-type {
+  padding-top: 0.25rem;
+  box-shadow: none;
+}
+/* Checkbox */
+.flt-check {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  min-height: 2.75rem;
+  margin-bottom: 0.5rem;
+  border-top: 1px solid var(--color-line);
+  padding-top: 0.5rem;
+  font-size: 0.9375rem;
+  cursor: pointer;
+}
+.flt-check input {
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+}
+.flt-check-box {
+  display: grid;
+  flex: none;
+  place-items: center;
+  width: 1.25rem;
+  height: 1.25rem;
+  border: 1px solid rgba(27, 30, 28, 0.3);
+  border-radius: 0.35rem;
+  background: #fff;
+  color: transparent;
+  transition:
+    background-color 0.2s,
+    border-color 0.2s;
+}
+.flt-check input:checked + .flt-check-box {
+  border-color: var(--color-forest);
+  background: var(--color-forest);
+  color: #fff;
+}
+/* Footer: on desktop only "Limpar" (the apply button belongs to the phone sheet). */
+.flt-foot {
+  display: flex;
+  justify-content: flex-end;
+  padding: 0.6rem 1.25rem 0.9rem;
+  border-top: 1px solid var(--color-line);
+}
+.flt-clear {
+  min-height: 2.5rem;
+  padding: 0 0.25rem;
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--g-500);
+  text-decoration: underline;
+  text-underline-offset: 0.25em;
+  cursor: pointer;
+}
+.flt-clear:hover {
+  color: var(--color-forest);
+}
+.flt-apply {
+  display: none;
+}
+@media (min-width: 64rem) {
+  .flt-aside {
+    position: sticky;
+    top: 6.5rem;
+  }
+  .flt {
+    max-height: calc(100vh - 7.5rem);
+    overflow-y: auto;
+    scrollbar-width: thin;
+  }
+}
+
+/* Results bar and active filters */
+.res-bar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.75rem 1rem;
+  margin-bottom: 1rem;
+}
+.res-count {
+  font-weight: 600;
+}
+.res-sort {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-left: auto;
+}
+.res-sort-select {
+  width: auto;
+  height: 2.5rem;
+}
+.flt-open {
+  display: none;
+}
+.res-active {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.45rem;
+  margin-bottom: 1.5rem;
+}
+.res-active[hidden] {
+  display: none;
+}
+.res-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  min-height: 2.25rem;
+  padding: 0 0.6rem 0 0.85rem;
+  border: 1px solid var(--color-line);
+  border-radius: 9999px;
+  background: var(--g-50);
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--color-ink);
+  cursor: pointer;
+  transition: border-color 0.2s;
+}
+.res-chip svg {
+  width: 0.9rem;
+  height: 0.9rem;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2;
+  stroke-linecap: round;
+  color: var(--color-muted);
+}
+.res-chip:hover {
+  border-color: var(--g-500);
+}
+.res-chip:hover svg {
+  color: var(--color-ink);
+}
+.res-clear {
+  min-height: 2.25rem;
+  padding: 0 0.4rem;
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--g-500);
+  text-decoration: underline;
+  text-underline-offset: 0.25em;
+  cursor: pointer;
+}
+
+/* Phones and tablets: the filters as a full-screen sheet. */
+@media (max-width: 63.99rem) {
+  .flt-open {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    min-height: 2.75rem;
+    padding: 0 1.1rem;
+    border: 1px solid var(--color-line);
+    border-radius: 9999px;
+    background: #fff;
+    font-weight: 600;
+    color: var(--color-ink);
+    box-shadow: var(--sheet-shadow);
+    cursor: pointer;
+  }
+  .res-bar {
+    position: sticky;
+    top: 5.25rem;
+    z-index: 20;
+    margin-inline: calc(-1 * var(--gutter));
+    padding: 0.6rem var(--gutter);
+    background: rgba(255, 255, 255, 0.92);
+    -webkit-backdrop-filter: blur(10px);
+    backdrop-filter: blur(10px);
+  }
+  .res-count {
+    order: 3;
+    width: 100%;
+    font-size: 0.9375rem;
+  }
+  .res-sort label {
+    display: none;
+  }
+  .flt[data-open='false'] {
+    display: none;
+  }
+  .flt[data-open='true'] {
+    position: fixed;
+    inset: 0;
+    z-index: 90;
+    display: flex;
+    flex-direction: column;
+    border: 0;
+    border-radius: 0;
+    box-shadow: none;
+    overscroll-behavior: contain;
+  }
+  .flt-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.85rem var(--gutter);
+    border-bottom: 1px solid var(--color-line);
+  }
+  .flt-title {
+    font-family: var(--font-display, inherit);
+    font-size: 1.25rem;
+    font-weight: 600;
+  }
+  .flt-close {
+    display: grid;
+    place-items: center;
+    width: 2.75rem;
+    height: 2.75rem;
+    border-radius: 9999px;
+    background: var(--g-50);
+    color: var(--color-ink);
+    cursor: pointer;
+  }
+  .flt-body {
+    flex: 1;
+    overflow-y: auto;
+    padding: 1rem var(--gutter) 1rem;
+  }
+  .flt-foot {
+    gap: 0.75rem;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.75rem var(--gutter) calc(0.75rem + env(safe-area-inset-bottom));
+    background: #fff;
+    box-shadow: 0 -10px 24px -18px rgba(27, 30, 28, 0.4);
+  }
+  .flt-apply {
+    display: inline-flex;
+    flex: 1;
+    justify-content: center;
+    max-width: 16rem;
+    min-height: 3rem;
+  }
+  html.flt-locked {
+    overflow: hidden;
+  }
+}
+
+/* Zone and property type as vertical checklists (one row each: checkbox, name, count on the right), still several
+   choices at once; rows are 2.5rem tall for touch. */
+.flt-chips {
+  display: grid;
+  gap: 0.1rem;
+  margin-inline: -0.5rem;
+}
+.flt-chip {
+  display: block;
+}
+.flt-chip span {
+  display: flex;
+  width: 100%;
+  min-height: 2.5rem;
+  gap: 0.7rem;
+  padding: 0 0.5rem;
+  border: 0;
+  border-radius: var(--r-sm);
+  background: transparent;
+  font-size: 0.9375rem;
+  font-weight: 500;
+  box-shadow: none;
+}
+.flt-chip span::before {
+  content: '';
+  flex: none;
+  width: 1.15rem;
+  height: 1.15rem;
+  border: 1px solid rgba(27, 30, 28, 0.3);
+  border-radius: 0.3rem;
+  background: #fff center / 0.8rem no-repeat;
+  transition:
+    background-color 0.2s,
+    border-color 0.2s;
+}
+.flt-chip small {
+  margin-left: auto;
+  font-size: 0.8125rem;
+  font-variant-numeric: tabular-nums;
+}
+.flt-chip:hover span {
+  background: var(--g-50);
+}
+.flt-chip input:checked + span {
+  border: 0;
+  background: var(--g-50);
+  font-weight: 600;
+  color: var(--color-ink);
+  box-shadow: none;
+}
+.flt-chip input:checked + span::before {
+  border-color: var(--color-forest);
+  background-color: var(--color-forest);
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M5 12.5l4.5 4.5L19 7.5'/%3E%3C/svg%3E");
+}
+.flt-chip input:checked + span small {
+  color: var(--color-muted);
+}
+.flt-chip[data-empty] span::before {
+  border-color: rgba(27, 30, 28, 0.18);
+}

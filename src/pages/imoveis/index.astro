@@ -2,10 +2,30 @@
 import SiteLayout from '../../layouts/SiteLayout.astro';
 import PropertyCard from '../../components/PropertyCard.astro';
 import Icon from '../../components/Icon.astro';
-import { visibleProperties as properties } from '../../data/properties';
-import { getSearchOptions } from '../../lib/search-options';
+import { visibleProperties as properties, formatPrice } from '../../data/properties';
+import { getPriceRange, getSearchOptions } from '../../lib/search-options';
 
 const { zoneOptions, typeOptions, bedroomOptions } = getSearchOptions();
+
+// Counts shown on the zone and type chips (from the published listings).
+const countBy = (key: 'zone' | 'propertyType') =>
+  properties.reduce<Record<string, number>>((acc, p) => ((acc[p[key]] = (acc[p[key]] ?? 0) + 1), acc), {});
+const zoneCounts = countBy('zone');
+const typeCounts = countBy('propertyType');
+
+// Price steps: round figures people search with, kept within the listings' range (one step either side).
+const STEPS = [
+  50_000, 100_000, 150_000, 200_000, 250_000, 300_000, 400_000, 500_000, 750_000, 1_000_000, 1_500_000, 2_000_000,
+  3_000_000, 5_000_000,
+];
+const { min: pMin, max: pMax } = getPriceRange();
+const lo = Math.max(0, STEPS.findIndex((s) => s >= pMin) - 1);
+const hi = STEPS.findIndex((s) => s >= pMax);
+const priceSteps = STEPS.slice(lo, hi === -1 ? STEPS.length : hi + 1);
+
+const maxBaths = Math.min(Math.max(1, ...properties.map((p) => p.bathrooms)), 4);
+const bathOptions = Array.from({ length: maxBaths }, (_, i) => String(i + 1));
+const AREAS = [50, 75, 100, 150, 200, 300];
 ---
 
 <SiteLayout
@@ -17,187 +37,214 @@ const { zoneOptions, typeOptions, bedroomOptions } = getSearchOptions();
     <nav aria-label="Localização" class="text-sm text-muted">
       <ol class="flex flex-wrap items-center gap-2">
         <li>
-          <a href="/" class="hover:text-ink">
-            Início
-          </a>
+          <a href="/" class="hover:text-ink">Início</a>
         </li>
         <li aria-hidden="true">/</li>
-        <li class="text-ink" aria-current="page">
-          Imóveis
-        </li>
+        <li class="text-ink" aria-current="page">Imóveis</li>
       </ol>
     </nav>
     <h1 class="mt-3 font-display text-3xl text-forest sm:text-4xl">Imóveis no Algarve</h1>
   </div>
 
-  <div class="container-x grid items-start gap-8 lg:grid-cols-[17rem_1fr]">
-    <!-- Filters -->
-    <aside class="lg:sticky lg:top-28">
-      <button
-        type="button"
-        id="filters-toggle"
-        class="btn btn-ghost w-full lg:hidden"
-        aria-expanded="false"
-        aria-controls="filters"
-      >
-        <Icon name="sliders" class="size-5" /> Filtros
-      </button>
+  <div class="container-x grid items-start gap-8 lg:grid-cols-[19rem_1fr] lg:gap-10">
+    <!-- Filters: a sticky panel on desktop; a full-screen sheet on phones and tablets ("Filtros" opens it). -->
+    <aside class="flt-aside">
+      <form id="filters" class="flt" autocomplete="off" aria-labelledby="flt-title" data-open="false">
+        <div class="flt-head">
+          <h2 id="flt-title" class="flt-title">Filtros</h2>
+          <button type="button" class="flt-close" data-flt-close aria-label="Fechar filtros">
+            <Icon name="close" class="size-5" />
+          </button>
+        </div>
 
-      <form
-        id="filters"
-        class="mt-3 hidden space-y-5 rounded-3xl border border-line bg-white p-5 lg:mt-0 lg:block"
-        autocomplete="off"
-      >
-        <fieldset>
-          <legend class="mb-2 text-sm font-semibold">Negócio</legend>
-          <div class="grid grid-cols-3 gap-1 rounded-full bg-paper-2 p-1 text-sm font-semibold">
-            {[
-              ['', 'Todos'],
-              ['comprar', 'Comprar'],
-              ['arrendar', 'Arrendar'],
-            ].map(([v, l]) => (
-              <label class="cursor-pointer">
-                <input type="radio" name="tipo" value={v} class="peer sr-only" checked={v === ''} />
-                <span class="block rounded-full px-2 py-2 text-center text-muted peer-checked:bg-forest peer-checked:text-white peer-focus-visible:outline peer-focus-visible:outline-2 peer-focus-visible:outline-olive">
-                  {l}
-                </span>
-              </label>
-            ))}
+        <div class="flt-body">
+          <div class="flt-search">
+            <Icon name="search" class="size-4" />
+            <label for="f-q" class="sr-only">Procurar por referência ou nome</label>
+            <input id="f-q" name="q" type="search" placeholder="Referência ou nome…" spellcheck="false" />
           </div>
-        </fieldset>
 
-        <div>
-          <label for="f-zona" class="mb-1.5 block text-sm font-semibold">
-            Zona
-          </label>
-          <select id="f-zona" name="zona" class="field">
-            <option value="">Todas as zonas</option>
-            {zoneOptions.map((o) => (
-              <option value={o.value}>{o.label}</option>
-            ))}
-          </select>
-        </div>
-        <div>
-          <label for="f-imovel" class="mb-1.5 block text-sm font-semibold">
-            Tipo de imóvel
-          </label>
-          <select id="f-imovel" name="imovel" class="field">
-            <option value="">Todos os tipos</option>
-            {typeOptions.map((o) => (
-              <option value={o.value}>{o.label}</option>
-            ))}
-          </select>
-        </div>
-        <div>
-          <label for="f-quartos" class="mb-1.5 block text-sm font-semibold">
-            Quartos (mínimo)
-          </label>
-          <select id="f-quartos" name="quartos" class="field">
-            <option value="">Qualquer</option>
-            {bedroomOptions.map((o) => (
-              <option value={o.value}>{o.value}</option>
-            ))}
-          </select>
-        </div>
-        <fieldset>
-          <legend class="mb-1.5 text-sm font-semibold">Preço (€)</legend>
-          <div class="grid grid-cols-2 gap-2">
-            <div>
-              <label for="f-pmin" class="sr-only">
-                Preço mínimo
-              </label>
-              <input
-                id="f-pmin"
-                name="precoMin"
-                type="number"
-                inputmode="numeric"
-                min="0"
-                step="10000"
-                placeholder="Mín."
-                class="field"
-              />
+          <fieldset class="flt-sec">
+            <legend class="flt-label">Negócio</legend>
+            <div class="flt-seg flt-seg-3">
+              {[
+                ['', 'Todos'],
+                ['comprar', 'Comprar'],
+                ['arrendar', 'Arrendar'],
+              ].map(([v, l]) => (
+                <label>
+                  <input type="radio" name="tipo" value={v} checked={v === ''} />
+                  <span>{l}</span>
+                </label>
+              ))}
             </div>
-            <div>
-              <label for="f-pmax" class="sr-only">
-                Preço máximo
-              </label>
-              <input
-                id="f-pmax"
-                name="precoMax"
-                type="number"
-                inputmode="numeric"
-                min="0"
-                step="10000"
-                placeholder="Máx."
-                class="field"
-              />
+          </fieldset>
+
+          <fieldset class="flt-sec">
+            <legend class="flt-label">Zona</legend>
+            <div class="flt-chips">
+              {zoneOptions.map((o) => (
+                <label class="flt-chip" data-empty={(zoneCounts[o.value] ?? 0) === 0 ? '' : undefined}>
+                  <input type="checkbox" name="zona" value={o.value} />
+                  <span>
+                    {o.label}
+                    <small>{zoneCounts[o.value] ?? 0}</small>
+                  </span>
+                </label>
+              ))}
             </div>
-          </div>
-        </fieldset>
-        <div>
-          <label for="f-estado" class="mb-1.5 block text-sm font-semibold">
-            Estado
-          </label>
-          <select id="f-estado" name="estado" class="field">
-            <option value="">Novo ou usado</option>
-            <option value="new">Novo</option>
-            <option value="used">Usado</option>
-          </select>
+          </fieldset>
+
+          <fieldset class="flt-sec">
+            <legend class="flt-label">Tipo de imóvel</legend>
+            <div class="flt-chips">
+              {typeOptions.map((o) => (
+                <label class="flt-chip" data-empty={(typeCounts[o.value] ?? 0) === 0 ? '' : undefined}>
+                  <input type="checkbox" name="imovel" value={o.value} />
+                  <span>
+                    {o.label}
+                    <small>{typeCounts[o.value] ?? 0}</small>
+                  </span>
+                </label>
+              ))}
+            </div>
+          </fieldset>
+
+          <fieldset class="flt-sec">
+            <legend class="flt-label">Preço</legend>
+            <div class="flt-row">
+              <div>
+                <label for="f-pmin" class="sr-only">Preço mínimo</label>
+                <select id="f-pmin" name="precoMin" class="flt-select">
+                  <option value="">Sem mínimo</option>
+                  {priceSteps.map((n) => <option value={n}>{formatPrice(n)}</option>)}
+                </select>
+              </div>
+              <div>
+                <label for="f-pmax" class="sr-only">Preço máximo</label>
+                <select id="f-pmax" name="precoMax" class="flt-select">
+                  <option value="">Sem máximo</option>
+                  {priceSteps.map((n) => <option value={n}>{formatPrice(n)}</option>)}
+                </select>
+              </div>
+            </div>
+          </fieldset>
+
+          <fieldset class="flt-sec">
+            <legend class="flt-label">Quartos</legend>
+            <div class="flt-seg">
+              <label>
+                <input type="radio" name="quartos" value="" checked />
+                <span>Todos</span>
+              </label>
+              {bedroomOptions.slice(0, 5).map((o) => (
+                <label>
+                  <input type="radio" name="quartos" value={o.value} />
+                  <span>{o.value}+</span>
+                </label>
+              ))}
+            </div>
+          </fieldset>
+
+          <details class="flt-more" data-flt-more>
+            <summary>
+              Mais filtros <span class="flt-more-count" data-more-count hidden></span>
+              <Icon name="chevronDown" class="flt-more-caret size-4" />
+            </summary>
+
+            <fieldset class="flt-sec">
+              <legend class="flt-label">Casas de banho</legend>
+              <div class="flt-seg">
+                <label>
+                  <input type="radio" name="wc" value="" checked />
+                  <span>Todas</span>
+                </label>
+                {bathOptions.map((v) => (
+                  <label>
+                    <input type="radio" name="wc" value={v} />
+                    <span>{v}+</span>
+                  </label>
+                ))}
+              </div>
+            </fieldset>
+
+            <fieldset class="flt-sec">
+              <legend class="flt-label">Área útil mínima</legend>
+              <label for="f-area" class="sr-only">Área útil mínima</label>
+              <select id="f-area" name="area" class="flt-select">
+                <option value="">Qualquer área</option>
+                {AREAS.map((a) => <option value={a}>{a} m² ou mais</option>)}
+              </select>
+            </fieldset>
+
+            <fieldset class="flt-sec">
+              <legend class="flt-label">Estado</legend>
+              <div class="flt-seg flt-seg-3">
+                {[
+                  ['', 'Todos'],
+                  ['new', 'Novo'],
+                  ['used', 'Usado'],
+                ].map(([v, l]) => (
+                  <label>
+                    <input type="radio" name="estado" value={v} checked={v === ''} />
+                    <span>{l}</span>
+                  </label>
+                ))}
+              </div>
+            </fieldset>
+
+            <label class="flt-check">
+              <input type="checkbox" name="garagem" value="1" />
+              <span class="flt-check-box" aria-hidden="true">
+                <Icon name="check" class="size-3.5" />
+              </span>
+              Com garagem ou estacionamento
+            </label>
+          </details>
         </div>
-        <div>
-          <label for="f-ref" class="mb-1.5 block text-sm font-semibold">
-            Referência
-          </label>
-          <input id="f-ref" name="ref" type="search" placeholder="Ex.: CRT2" class="field" />
+
+        <div class="flt-foot">
+          <button type="button" class="flt-clear" data-flt-clear>Limpar</button>
+          <button type="button" class="btn btn-lime flt-apply" data-flt-close>
+            <span data-apply-label>Ver imóveis</span>
+          </button>
         </div>
-        <button
-          type="reset"
-          id="filters-reset"
-          class="w-full cursor-pointer rounded-full py-2 text-sm font-semibold text-olive underline underline-offset-4 hover:text-forest"
-        >
-          Limpar filtros
-        </button>
       </form>
     </aside>
 
     <!-- Results -->
     <section aria-label="Resultados">
-      <div class="mb-6 flex flex-wrap items-center justify-between gap-3">
-        <p id="count" class="font-semibold" role="status" aria-live="polite">
-          {properties.length} imóveis
-        </p>
-        <div class="flex items-center gap-2">
-          <label for="f-ordem" class="text-sm text-muted">
-            Ordenar por
-          </label>
-          <select id="f-ordem" name="ordem" form="filters" class="field w-auto py-2">
+      <div class="res-bar">
+        <button type="button" class="flt-open" data-flt-open aria-controls="filters" aria-expanded="false">
+          <Icon name="sliders" class="size-5" /> Filtros <span class="flt-open-count" data-open-count hidden></span>
+        </button>
+        <p id="count" class="res-count" role="status" aria-live="polite">{properties.length} imóveis</p>
+        <div class="res-sort">
+          <label for="f-ordem" class="text-sm text-muted">Ordenar</label>
+          <select id="f-ordem" name="ordem" class="flt-select res-sort-select">
             <option value="recentes">Mais recentes</option>
             <option value="preco-asc">Preço: do mais baixo</option>
             <option value="preco-desc">Preço: do mais alto</option>
+            <option value="area-desc">Maior área</option>
           </select>
         </div>
       </div>
+      <!-- Active filters: one removable chip per value, and "Limpar tudo". -->
+      <div class="res-active" data-active hidden></div>
 
       <h2 class="sr-only">Lista de imóveis</h2>
       <div id="grid" class="grid gap-x-6 gap-y-12 sm:grid-cols-2 xl:grid-cols-3">
-        {properties.map((p, i) => (
-          <PropertyCard property={p} filterable eager={i < 3} />
-        ))}
+        {properties.map((p, i) => <PropertyCard property={p} filterable eager={i < 3} />)}
       </div>
 
       <div id="empty" hidden class="rounded-3xl bg-paper-2 p-10 text-center">
         <h2 class="font-display text-2xl text-forest">Não encontrámos imóveis com estes filtros</h2>
         <p class="mx-auto mt-3 max-w-md text-ink/80">
-          Ajuste os filtros ou diga-nos o que procura. Temos acesso a imóveis que ainda não estão no
-          site.
+          Ajuste os filtros ou diga-nos o que procura. Temos acesso a imóveis que ainda não estão no site.
         </p>
         <div class="mt-6 flex flex-wrap justify-center gap-3">
-          <button type="button" id="empty-reset" class="btn btn-ghost">
-            Limpar filtros
-          </button>
-          <a href="/#vender" class="btn btn-dark">
-            Pedir um imóvel
-          </a>
+          <button type="button" class="btn btn-ghost" data-flt-clear>Limpar filtros</button>
+          <a href="/#vender" class="btn btn-dark">Pedir um imóvel</a>
         </div>
       </div>
     </section>
@@ -205,41 +252,91 @@ const { zoneOptions, typeOptions, bedroomOptions } = getSearchOptions();
 </SiteLayout>
 
 <script>
+  // Listing filters. Every change filters the cards at once, updates the count (also on the phone sheet's button),
+  // the chips of active filters and the URL (shareable; the home page search bar and zone links land here with
+  // ?tipo=&zona=&imovel=&quartos=&precoMax=). Zones and types can be several at once (comma-separated in the URL).
   const form = document.getElementById('filters') as HTMLFormElement;
   const order = document.getElementById('f-ordem') as HTMLSelectElement;
   const cards = [...document.querySelectorAll<HTMLElement>('[data-card]')];
   const count = document.getElementById('count')!;
   const empty = document.getElementById('empty')!;
   const grid = document.getElementById('grid')!;
-  const toggle = document.getElementById('filters-toggle')!;
+  const activeBox = document.querySelector<HTMLElement>('[data-active]')!;
+  const applyLabel = document.querySelector<HTMLElement>('[data-apply-label]')!;
+  const openBtn = document.querySelector<HTMLButtonElement>('[data-flt-open]')!;
+  const openCount = document.querySelector<HTMLElement>('[data-open-count]')!;
+  const more = document.querySelector<HTMLDetailsElement>('[data-flt-more]')!;
+  const moreCount = document.querySelector<HTMLElement>('[data-more-count]')!;
+  const pmax = form.elements.namedItem('precoMax') as HTMLSelectElement;
+  const pmin = form.elements.namedItem('precoMin') as HTMLSelectElement;
 
   const listingMap: Record<string, string> = { comprar: 'sale', arrendar: 'rent' };
-  const fields = [
-    'tipo',
-    'zona',
-    'imovel',
-    'quartos',
-    'precoMin',
-    'precoMax',
-    'estado',
-    'ref',
-  ] as const;
+  const money = new Intl.NumberFormat('pt-PT', { style: 'currency', currency: 'EUR', maximumFractionDigits: 0 });
+  const plural = (n: number) => (n === 1 ? '1 imóvel' : `${n} imóveis`);
 
-  const read = () => {
-    const data = new FormData(form);
-    const v = (k: string) => String(data.get(k) ?? '').trim();
-    return Object.fromEntries([...fields.map((k) => [k, v(k)]), ['ordem', order.value]]) as Record<
-      string,
-      string
-    >;
+  type State = {
+    q: string;
+    tipo: string;
+    zona: string[];
+    imovel: string[];
+    precoMin: string;
+    precoMax: string;
+    quartos: string;
+    wc: string;
+    area: string;
+    estado: string;
+    garagem: string;
+  };
+  const read = (): State => {
+    const d = new FormData(form);
+    const one = (k: string) => String(d.get(k) ?? '').trim();
+    return {
+      q: one('q'),
+      tipo: one('tipo'),
+      zona: d.getAll('zona').map(String),
+      imovel: d.getAll('imovel').map(String),
+      precoMin: one('precoMin'),
+      precoMax: one('precoMax'),
+      quartos: one('quartos'),
+      wc: one('wc'),
+      area: one('area'),
+      estado: one('estado'),
+      garagem: one('garagem'),
+    };
+  };
+
+  const label = (name: string, value: string) =>
+    form.querySelector(`input[name="${name}"][value="${value}"] + span`)?.firstChild?.textContent?.trim() ?? value;
+
+  /** The active filters as chips: [text, how to clear it]. */
+  const chipsFor = (s: State): [string, () => void][] => {
+    const set = (name: string, value: string, on: boolean) => {
+      const el = form.querySelector<HTMLInputElement>(`input[name="${name}"][value="${value}"]`);
+      if (el) el.checked = on;
+    };
+    const chips: [string, () => void][] = [];
+    if (s.q) chips.push([`“${s.q}”`, () => ((form.elements.namedItem('q') as HTMLInputElement).value = '')]);
+    if (s.tipo) chips.push([label('tipo', s.tipo), () => set('tipo', '', true)]);
+    s.zona.forEach((z) => chips.push([label('zona', z), () => set('zona', z, false)]));
+    s.imovel.forEach((t) => chips.push([label('imovel', t), () => set('imovel', t, false)]));
+    if (s.precoMin) chips.push([`Desde ${money.format(+s.precoMin)}`, () => (pmin.value = '')]);
+    if (s.precoMax) chips.push([`Até ${money.format(+s.precoMax)}`, () => (pmax.value = '')]);
+    if (s.quartos) chips.push([`${s.quartos}+ quartos`, () => set('quartos', '', true)]);
+    if (s.wc) chips.push([`${s.wc}+ casas de banho`, () => set('wc', '', true)]);
+    if (s.area) chips.push([`${s.area} m²+`, () => ((form.elements.namedItem('area') as HTMLSelectElement).value = '')]);
+    if (s.estado) chips.push([label('estado', s.estado), () => set('estado', '', true)]);
+    if (s.garagem) chips.push(['Com garagem', () => set('garagem', '1', false)]);
+    return chips;
   };
 
   const apply = () => {
-    const f = read();
+    const s = read();
+    const q = s.q.toLowerCase();
     let shown = 0;
     const sorted = [...cards].sort((a, b) => {
-      if (f.ordem === 'preco-asc') return Number(a.dataset.price) - Number(b.dataset.price);
-      if (f.ordem === 'preco-desc') return Number(b.dataset.price) - Number(a.dataset.price);
+      if (order.value === 'preco-asc') return Number(a.dataset.price) - Number(b.dataset.price);
+      if (order.value === 'preco-desc') return Number(b.dataset.price) - Number(a.dataset.price);
+      if (order.value === 'area-desc') return Number(b.dataset.area) - Number(a.dataset.area);
       return b.dataset.added!.localeCompare(a.dataset.added!);
     });
     sorted.forEach((c, i) => {
@@ -247,58 +344,136 @@ const { zoneOptions, typeOptions, bedroomOptions } = getSearchOptions();
       const d = c.dataset;
       const price = Number(d.price);
       const ok =
-        (!f.tipo || d.listing === listingMap[f.tipo]) &&
-        (!f.zona || d.zone === f.zona) &&
-        (!f.imovel || d.ptype === f.imovel) &&
-        (!f.quartos || Number(d.beds) >= Number(f.quartos)) &&
-        (!f.precoMin || price >= Number(f.precoMin)) &&
-        (!f.precoMax || price <= Number(f.precoMax)) &&
-        (!f.estado || d.condition === f.estado) &&
-        (!f.ref || (d.ref ?? '').includes(f.ref.toLowerCase()));
+        (!q || (d.ref ?? '').includes(q) || (d.title ?? '').includes(q)) &&
+        (!s.tipo || d.listing === listingMap[s.tipo]) &&
+        (!s.zona.length || s.zona.includes(d.zone!)) &&
+        (!s.imovel.length || s.imovel.includes(d.ptype!)) &&
+        (!s.precoMin || price >= Number(s.precoMin)) &&
+        (!s.precoMax || price <= Number(s.precoMax)) &&
+        (!s.quartos || Number(d.beds) >= Number(s.quartos)) &&
+        (!s.wc || Number(d.baths) >= Number(s.wc)) &&
+        (!s.area || Number(d.area) >= Number(s.area)) &&
+        (!s.estado || d.condition === s.estado) &&
+        (!s.garagem || Number(d.garage) > 0);
       c.hidden = !ok;
       if (ok) shown++;
     });
-    count.textContent = shown === 1 ? '1 imóvel' : `${shown} imóveis`;
+    count.textContent = plural(shown);
+    applyLabel.textContent = shown ? `Ver ${plural(shown)}` : 'Sem resultados';
     empty.hidden = shown > 0;
     grid.hidden = shown === 0;
 
-    // Keep the URL shareable: only non-default values are written.
-    const params = new URLSearchParams();
-    Object.entries(f).forEach(
-      ([k, val]) => val && !(k === 'ordem' && val === 'recentes') && params.set(k, val),
+    // Active filter chips, and the counts on "Filtros" and "Mais filtros".
+    const chips = chipsFor(s);
+    activeBox.replaceChildren(
+      ...chips.map(([text, clear]) => {
+        const b = document.createElement('button');
+        b.type = 'button';
+        b.className = 'res-chip';
+        b.setAttribute('aria-label', `Remover filtro: ${text}`);
+        b.innerHTML = `<span></span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18" /></svg>`;
+        b.firstElementChild!.textContent = text;
+        b.addEventListener('click', () => {
+          clear();
+          apply();
+        });
+        return b;
+      }),
     );
+    if (chips.length > 1) {
+      const all = document.createElement('button');
+      all.type = 'button';
+      all.className = 'res-clear';
+      all.textContent = 'Limpar tudo';
+      all.addEventListener('click', clearAll);
+      activeBox.append(all);
+    }
+    activeBox.hidden = chips.length === 0;
+    openCount.textContent = String(chips.length);
+    openCount.hidden = chips.length === 0;
+    const advanced = [s.wc, s.area, s.estado, s.garagem].filter(Boolean).length;
+    moreCount.textContent = String(advanced);
+    moreCount.hidden = advanced === 0;
+
+    // Shareable URL: only what is set.
+    const params = new URLSearchParams();
+    Object.entries(s).forEach(([k, v]) => {
+      const val = Array.isArray(v) ? v.join(',') : v;
+      if (val) params.set(k, val);
+    });
+    if (order.value !== 'recentes') params.set('ordem', order.value);
     const qs = params.toString();
     history.replaceState(null, '', qs ? `?${qs}` : location.pathname);
   };
 
-  // Restore state from the URL (also used by the home page search bar).
-  const params = new URLSearchParams(location.search);
-  fields.forEach((k) => {
-    const val = params.get(k);
-    if (!val) return;
-    const radios = form.querySelectorAll<HTMLInputElement>(`input[type=radio][name=${k}]`);
-    if (radios.length) radios.forEach((r) => (r.checked = r.value === val));
-    else {
-      const el = form.elements.namedItem(k);
-      if (el instanceof HTMLSelectElement || el instanceof HTMLInputElement) el.value = val;
-    }
-  });
-  if (params.get('ordem')) order.value = params.get('ordem')!;
-
-  form.addEventListener('input', apply);
-  form.addEventListener('change', apply);
-  form.addEventListener('reset', () => setTimeout(apply));
-  const reset = () => {
+  function clearAll() {
     form.reset();
     order.value = 'recentes';
     apply();
-  };
-  document.getElementById('empty-reset')!.addEventListener('click', reset);
+  }
 
-  toggle.addEventListener('click', () => {
-    const open = toggle.getAttribute('aria-expanded') !== 'true';
-    toggle.setAttribute('aria-expanded', String(open));
-    form.classList.toggle('hidden', !open);
+  // A maximum price that is not one of the steps (the home page slider sends any figure): add it as an option.
+  const ensureOption = (select: HTMLSelectElement, value: string) => {
+    if (!value || [...select.options].some((o) => o.value === value)) return;
+    const opt = new Option(money.format(Number(value)), value);
+    const after = [...select.options].find((o) => o.value && Number(o.value) > Number(value));
+    select.add(opt, after ?? null);
+  };
+
+  // Restore from the URL (the old ?ref= still works as the search text).
+  const params = new URLSearchParams(location.search);
+  if (params.get('ref') && !params.get('q')) params.set('q', params.get('ref')!);
+  ['q', 'tipo', 'precoMin', 'precoMax', 'quartos', 'wc', 'area', 'estado', 'garagem'].forEach((k) => {
+    const val = params.get(k);
+    if (!val) return;
+    const radios = form.querySelectorAll<HTMLInputElement>(`input[type=radio][name=${k}]`);
+    const box = form.querySelector<HTMLInputElement>(`input[type=checkbox][name=${k}]`);
+    if (radios.length) radios.forEach((r) => (r.checked = r.value === val));
+    else if (box) box.checked = true;
+    else {
+      const el = form.elements.namedItem(k);
+      if (el instanceof HTMLSelectElement) ensureOption(el, val);
+      if (el instanceof HTMLSelectElement || el instanceof HTMLInputElement) el.value = val;
+    }
+  });
+  ['zona', 'imovel'].forEach((k) =>
+    (params.get(k) ?? '')
+      .split(',')
+      .filter(Boolean)
+      .forEach((v) => {
+        const el = form.querySelector<HTMLInputElement>(`input[name="${k}"][value="${v}"]`);
+        if (el) el.checked = true;
+      }),
+  );
+  if (params.get('ordem')) order.value = params.get('ordem')!;
+  if (['wc', 'area', 'estado', 'garagem'].some((k) => params.get(k))) more.open = true;
+
+  // Minimum above maximum (or the reverse): move the other one out of the way.
+  pmin.addEventListener('change', () => {
+    if (pmin.value && pmax.value && +pmin.value > +pmax.value) pmax.value = '';
+  });
+  pmax.addEventListener('change', () => {
+    if (pmin.value && pmax.value && +pmin.value > +pmax.value) pmin.value = '';
+  });
+
+  form.addEventListener('input', apply);
+  form.addEventListener('change', apply);
+  order.addEventListener('change', apply);
+  form.addEventListener('submit', (e) => e.preventDefault());
+  document.querySelectorAll('[data-flt-clear]').forEach((b) => b.addEventListener('click', clearAll));
+
+  // Phones and tablets: the panel opens as a full-screen sheet; Escape, the close button or "Ver imóveis" close it.
+  const setOpen = (open: boolean) => {
+    form.dataset.open = String(open);
+    openBtn.setAttribute('aria-expanded', String(open));
+    document.documentElement.classList.toggle('flt-locked', open);
+    if (open) form.querySelector<HTMLElement>('[data-flt-close]')?.focus();
+    else openBtn.focus({ preventScroll: true });
+  };
+  openBtn.addEventListener('click', () => setOpen(true));
+  form.querySelectorAll('[data-flt-close]').forEach((b) => b.addEventListener('click', () => setOpen(false)));
+  form.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && form.dataset.open === 'true') setOpen(false);
   });
 
   apply();

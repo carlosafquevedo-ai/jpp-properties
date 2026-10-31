@@ -34,6 +34,10 @@ const filterAttrs = filterable
       'data-price': p.price,
       'data-condition': p.condition,
       'data-ref': (p.reference ?? '').toLowerCase(),
+      'data-title': p.title.toLowerCase(),
+      'data-baths': p.bathrooms,
+      'data-area': p.usableArea,
+      'data-garage': p.garageSpaces,
       'data-added': p.addedAt,
     }
   : {};
