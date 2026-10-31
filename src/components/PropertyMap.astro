@@ -1,0 +1,74 @@
+---
+import Icon from './Icon.astro';
+import { zones, type Property } from '../data/properties';
+import {
+  googleSearchUrl,
+  metresPerPixel,
+  resolveMapsUrl,
+  tilesAround,
+  zoneCentres,
+} from '../lib/maps';
+
+// Property location: a calm, static map (OpenStreetMap tiles, desaturated to the site's neutrals) with the house as a
+// green pin, or the zone as a soft area while the listing has no Google Maps link yet. The whole map opens the
+// listing in Google Maps; no script, no cookies, no API key. Tiles cover up to 1400 × 400 px around the point.
+interface Props {
+  property: Property;
+  place: string;
+}
+const { property: p, place } = Astro.props;
+
+const exact = p.mapsUrl ? await resolveMapsUrl(p.mapsUrl) : null;
+const point = exact ?? zoneCentres[p.zone];
+const zoom = exact ? 15 : 14;
+const tiles = tilesAround(point, zoom, 700, 200);
+// The zone area: about 700 m around the town centre.
+const areaPx = Math.round(700 / metresPerPixel(point.lat, zoom));
+const googleUrl = p.mapsUrl ?? googleSearchUrl(`${place}, Portugal`);
+---
+
+<div class="pmap">
+  <div class="pmap-tiles" aria-hidden="true">
+    {
+      tiles.map((t) => (
+        <img
+          src={t.src}
+          alt=""
+          width="256"
+          height="256"
+          loading="lazy"
+          decoding="async"
+          referrerpolicy="strict-origin-when-cross-origin"
+          style={`left: calc(50% + ${t.dx}px); top: calc(50% + ${t.dy}px)`}
+        />
+      ))
+    }
+  </div>
+  {
+    exact ? (
+      <span class="pmap-pin" aria-hidden="true">
+        <Icon name="home" class="size-4" />
+      </span>
+    ) : (
+      <span class="pmap-area" style={`--r: ${areaPx}px`} aria-hidden="true" />
+    )
+  }
+  <span class="pmap-tag" aria-hidden="true">{exact ? place : `Zona de ${zones[p.zone].name}`}</span>
+  <a href={googleUrl} class="pmap-link" target="_blank" rel="noopener">
+    <span class="sr-only">Abrir {place} no Google Maps</span>
+  </a>
+  <a class="pmap-credit" href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener">
+    © OpenStreetMap
+  </a>
+</div>
+<p class="mt-3 text-ink/85">
+  {exact ? `${place}.` : `Localização aproximada: ${place}.`}
+</p>
+<a
+  href={googleUrl}
+  rel="noopener"
+  target="_blank"
+  class="mt-2 inline-flex items-center gap-2 font-semibold text-olive hover:text-forest"
+>
+  Abrir no Google Maps <Icon name="arrowUpRight" class="size-5" />
+</a>

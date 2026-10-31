@@ -20,6 +20,11 @@ export interface Property {
   condition: 'new' | 'used';
   zone: ZoneId;
   locality?: string;
+  /**
+   * The house on Google Maps, pasted by the team in Sanity ("Link do Google Maps"); short links are fine. It places
+   * the pin on the property page map. Without it the map shows the zone.
+   */
+  mapsUrl?: string;
   price: number;
   bedrooms: number;
   bathrooms: number;

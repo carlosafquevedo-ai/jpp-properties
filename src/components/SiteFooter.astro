@@ -4,8 +4,8 @@ import { AMI, facebookUrl, instagramUrl, complaintsBookUrl } from '../lib/site';
 
 // Beam wordmark footer: the charcoal closing section crossed by a slow diagonal shaft of lime light, with the
 // brand set as a giant, bottom-cropped wordmark the light runs through. Ported from a React component to plain
-// Astro + a small script (no React dependency). Address, phones and e-mail live in the "Visite-nos" band just
-// above it (ContactBand, shown on every page by SiteLayout), so they are not repeated here.
+// Astro + a small script (no React dependency). Address, phones and e-mail are not listed here: "Contactos" opens
+// the header's "Fale connosco" panel (without JS it goes to the contacts in "Somos daqui" on the home page).
 const year = new Date().getFullYear();
 const wordmark = 'JPP Properties';
 
@@ -20,7 +20,7 @@ const columns = [
       { label: 'Imóveis', href: '/imoveis/' },
       { label: 'Zonas', href: '/#zonas' },
       { label: 'Vender o seu imóvel', href: '/#vender' },
-      { label: 'Contactos', href: '#contactos' },
+      { label: 'Contactos', href: '/#sobre', infoPanel: true },
     ],
   },
   {
@@ -81,6 +81,7 @@ const delay = () => `--bwf-d:${(d += 70)}ms`;
                 class="bwf-link"
                 href={l.href}
                 {...('external' in l && l.external ? { rel: 'noopener', target: '_blank' } : {})}
+                {...('infoPanel' in l && l.infoPanel ? { 'data-info-open': '', 'aria-haspopup': 'dialog' } : {})}
               >
                 <span class="bwf-link-t">{l.label}</span>
                 <svg viewBox="0 0 12 12" aria-hidden="true">

@@ -3,6 +3,7 @@ import SiteLayout from '../../layouts/SiteLayout.astro';
 import ContactForm from '../../components/ContactForm.astro';
 import PropertyCard from '../../components/PropertyCard.astro';
 import Icon from '../../components/Icon.astro';
+import PropertyMap from '../../components/PropertyMap.astro';
 import {
   properties,
   zones,
@@ -66,18 +67,19 @@ const facts = [
       </ol>
     </nav>
 
-    <!-- Gallery -->
-    <div class="mt-4 grid gap-2 lg:h-[34rem] lg:grid-cols-4 lg:grid-rows-2">
+    <!-- Gallery: on phones and tablets three photos (a tall one on the left, two stacked on the right; the third
+         shows how many more there are); on desktop the five-photo mosaic. Any photo opens the full set. -->
+    <div class="mt-4 grid h-[19rem] grid-cols-2 grid-rows-2 gap-2 sm:h-[26rem] lg:h-[34rem] lg:grid-cols-4">
       <button
         type="button"
         data-open="0"
-        class="group relative cursor-pointer overflow-hidden rounded-3xl bg-paper-2 lg:col-span-2 lg:row-span-2"
+        class="gallery-photo group relative cursor-pointer overflow-hidden bg-paper-2 row-span-2 lg:col-span-2"
         aria-label="Abrir fotografia 1"
       >
         <img
           src={gallery[0]}
           alt={`${p.title}: fotografia principal`}
-          class="aspect-[4/3] size-full object-cover transition-transform duration-700 group-hover:scale-[1.03] lg:aspect-auto"
+          class="size-full object-cover transition-transform duration-700 group-hover:scale-[1.03]"
           fetchpriority="high"
           referrerpolicy="no-referrer"
         />
@@ -87,7 +89,8 @@ const facts = [
           type="button"
           data-open={i + 1}
           class:list={[
-            'group relative hidden cursor-pointer overflow-hidden rounded-2xl bg-paper-2 lg:block',
+            'gallery-photo group relative cursor-pointer overflow-hidden bg-paper-2',
+            i < 2 ? 'block' : 'hidden lg:block',
           ]}
           aria-label={`Abrir fotografia ${i + 2}`}
         >
@@ -98,17 +101,19 @@ const facts = [
             loading="lazy"
             referrerpolicy="no-referrer"
           />
+          {i === 1 && gallery.length > 3 && (
+            <span class="absolute inset-0 grid place-items-center bg-forest/60 text-base font-semibold text-white lg:hidden">
+              +{gallery.length - 3} {gallery.length - 3 === 1 ? 'fotografia' : 'fotografias'}
+            </span>
+          )}
           {i === 3 && more > 0 && (
-            <span class="absolute inset-0 grid place-items-center bg-forest/60 text-lg font-semibold text-white">
-              +{more} fotografias
+            <span class="absolute inset-0 hidden place-items-center bg-forest/60 text-lg font-semibold text-white lg:grid">
+              +{more} {more === 1 ? 'fotografia' : 'fotografias'}
             </span>
           )}
         </button>
       ))}
     </div>
-    <button type="button" data-open="0" class="btn btn-ghost mt-3 w-full lg:hidden">
-      <Icon name="images" class="size-5" /> Ver as {gallery.length} fotografias
-    </button>
 
     <div class="mt-10 grid items-start gap-10 lg:grid-cols-[1fr_24rem] lg:gap-14">
       <div>
@@ -138,7 +143,7 @@ const facts = [
         </dl>
 
         <section class="mt-12" aria-labelledby="desc">
-          <h2 id="desc" class="font-display text-2xl text-forest">
+          <h2 id="desc" class="detail-title font-display text-2xl text-forest">
             Sobre este imóvel
           </h2>
           <div class="mt-4 max-w-2xl space-y-4 text-lg leading-relaxed text-ink/85">
@@ -149,7 +154,7 @@ const facts = [
         </section>
 
         <section class="mt-12" aria-labelledby="feat">
-          <h2 id="feat" class="font-display text-2xl text-forest">
+          <h2 id="feat" class="detail-title font-display text-2xl text-forest">
             Características
           </h2>
           <ul class="mt-4 grid gap-x-8 gap-y-3 sm:grid-cols-2">
@@ -162,18 +167,12 @@ const facts = [
         </section>
 
         <section class="mt-12" aria-labelledby="loc">
-          <h2 id="loc" class="font-display text-2xl text-forest">
+          <h2 id="loc" class="detail-title font-display text-2xl text-forest">
             Localização
           </h2>
-          <p class="mt-3 text-ink/85">Localização aproximada: {place}.</p>
-          <a
-            href={`https://www.openstreetmap.org/search?query=${encodeURIComponent(`${zones[p.zone].name}, Portugal`)}`}
-            rel="noopener"
-            target="_blank"
-            class="mt-3 inline-flex items-center gap-2 font-semibold text-olive hover:text-forest"
-          >
-            Ver no mapa <Icon name="arrowUpRight" class="size-5" />
-          </a>
+          <div class="mt-4">
+            <PropertyMap property={p} {place} />
+          </div>
         </section>
       </div>
 
@@ -182,7 +181,7 @@ const facts = [
         class="rounded-[2rem] border border-line bg-white p-6 lg:sticky lg:top-28"
         aria-labelledby="info"
       >
-        <h2 id="info" class="font-display text-2xl text-forest">
+        <h2 id="info" class="detail-title font-display text-2xl text-forest">
           Pedir informações
         </h2>
         <p class="mt-1 text-sm text-muted">Respondemos o mais depressa possível.</p>
@@ -208,7 +207,7 @@ const facts = [
     </div>
 
     <section class="mt-24" aria-labelledby="sim">
-      <h2 id="sim" class="font-display text-2xl text-forest sm:text-3xl">
+      <h2 id="sim" class="detail-title font-display text-2xl text-forest sm:text-3xl">
         Imóveis semelhantes
       </h2>
       <div class="mt-8 grid gap-x-6 gap-y-12 sm:grid-cols-2 lg:grid-cols-3">

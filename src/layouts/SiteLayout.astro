@@ -2,7 +2,6 @@
 import BaseLayout from './BaseLayout.astro';
 import SiteHeader from '../components/SiteHeader.astro';
 import SiteFooter from '../components/SiteFooter.astro';
-import ContactBand from '../components/ContactBand.astro';
 import FloatingWidgets from '../components/FloatingWidgets.astro';
 import DragScroll from '../components/DragScroll.astro';
 import SiteIntro from '../components/SiteIntro.astro';
@@ -14,19 +13,18 @@ interface Props {
   route?: RouteKey;
   /** Inner pages reserve space under the floating header. */
   padTop?: boolean;
-  /** The "Visite-nos" contact band above the footer (the footer itself no longer lists contacts). */
-  contactBand?: boolean;
+  /** The entrance curtain (off where it would only delay the message, e.g. the 404 page). */
+  intro?: boolean;
 }
 
-const { title, description, route, padTop = true, contactBand = true } = Astro.props;
+const { title, description, route, padTop = true, intro = true } = Astro.props;
 ---
 
 <BaseLayout locale="pt" {title} {description} {route} noindex>
-  <SiteIntro />
+  {intro && <SiteIntro />}
   <SiteHeader overHero={!padTop} />
   <main id="main" class:list={[padTop && 'pt-28']}>
     <slot />
-    {contactBand && <ContactBand />}
   </main>
   <SiteFooter />
   <FloatingWidgets />

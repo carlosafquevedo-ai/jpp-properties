@@ -1751,13 +1751,13 @@
 .logo-on-dark {
   display: none;
 }
-.site-header[data-over-hero]:not([data-stuck]) .logo-on-light {
+.site-header[data-over-hero]:not([data-past-hero]) .logo-on-light {
   display: none;
 }
-.site-header[data-over-hero]:not([data-stuck]) .logo-on-dark {
+.site-header[data-over-hero]:not([data-past-hero]) .logo-on-dark {
   display: block;
 }
-.site-header[data-over-hero]:not([data-stuck]) .hdr-bar {
+.site-header[data-over-hero]:not([data-past-hero]) .hdr-bar {
   /* Frosted grey glass over the photo; the current link is a white pill with dark text. */
   border-color: rgba(255, 255, 255, 0.3);
   background: rgba(255, 255, 255, 0.16);
@@ -1765,34 +1765,34 @@
   -webkit-backdrop-filter: blur(18px) saturate(140%);
   backdrop-filter: blur(18px) saturate(140%);
 }
-.site-header[data-over-hero]:not([data-stuck]) .hdr-bar nav a[aria-current] {
+.site-header[data-over-hero]:not([data-past-hero]) .hdr-bar nav a[aria-current] {
   background: #fff;
   color: var(--color-forest);
 }
-.site-header[data-over-hero]:not([data-stuck]) .hdr-bar nav a {
+.site-header[data-over-hero]:not([data-past-hero]) .hdr-bar nav a {
   color: rgba(255, 255, 255, 0.88);
 }
-.site-header[data-over-hero]:not([data-stuck]) .hdr-bar nav a:hover {
+.site-header[data-over-hero]:not([data-past-hero]) .hdr-bar nav a:hover {
   background: rgba(255, 255, 255, 0.14);
   color: #fff;
 }
-.site-header[data-over-hero]:not([data-stuck]) .hdr-icon,
-.site-header[data-over-hero]:not([data-stuck]) .lang-btn {
+.site-header[data-over-hero]:not([data-past-hero]) .hdr-icon,
+.site-header[data-over-hero]:not([data-past-hero]) .lang-btn {
   color: #fff;
 }
-.site-header[data-over-hero]:not([data-stuck]) .hdr-icon:hover,
-.site-header[data-over-hero]:not([data-stuck]) .hdr-icon[aria-expanded='true'],
-.site-header[data-over-hero]:not([data-stuck]) .lang-btn:hover,
-.site-header[data-over-hero]:not([data-stuck]) .lang-btn[aria-expanded='true'] {
+.site-header[data-over-hero]:not([data-past-hero]) .hdr-icon:hover,
+.site-header[data-over-hero]:not([data-past-hero]) .hdr-icon[aria-expanded='true'],
+.site-header[data-over-hero]:not([data-past-hero]) .lang-btn:hover,
+.site-header[data-over-hero]:not([data-past-hero]) .lang-btn[aria-expanded='true'] {
   background: rgba(255, 255, 255, 0.16);
   color: #fff;
 }
-.site-header[data-over-hero]:not([data-stuck]) .hdr-cta {
+.site-header[data-over-hero]:not([data-past-hero]) .hdr-cta {
   background-color: #fff;
   color: var(--color-forest);
 }
-.site-header[data-over-hero]:not([data-stuck]) .hdr-cta:hover,
-.site-header[data-over-hero]:not([data-stuck]) .hdr-cta:focus-visible {
+.site-header[data-over-hero]:not([data-past-hero]) .hdr-cta:hover,
+.site-header[data-over-hero]:not([data-past-hero]) .hdr-cta:focus-visible {
   background-color: var(--color-lime);
   color: var(--color-forest);
 }
@@ -2589,12 +2589,12 @@ input:focus-visible + .glass-seg-opt {
 }
 
 /* Header CTA over the photo: white (the former hover colour) is now the resting colour; the tile is light grey. */
-.site-header[data-over-hero]:not([data-stuck]) .hdr-cta.btn-go .btn-go-icon {
+.site-header[data-over-hero]:not([data-past-hero]) .hdr-cta.btn-go .btn-go-icon {
   background: #ecebe8;
   box-shadow: none;
 }
-.site-header[data-over-hero]:not([data-stuck]) .hdr-cta.btn-go:hover .btn-go-icon,
-.site-header[data-over-hero]:not([data-stuck]) .hdr-cta.btn-go:focus-visible .btn-go-icon {
+.site-header[data-over-hero]:not([data-past-hero]) .hdr-cta.btn-go:hover .btn-go-icon,
+.site-header[data-over-hero]:not([data-past-hero]) .hdr-cta.btn-go:focus-visible .btn-go-icon {
   background: #fff;
 }
 
@@ -5018,97 +5018,6 @@ a.rv-author:hover {
 
 /* Contact band: no panel or photo. A head row (title and lead left, call and WhatsApp right, like "Como trabalhamos"),
    then address, phones and e-mail in one open row split by hairlines, like the "Resultados" figures. */
-.contact-band {
-  margin-top: 5rem;
-}
-.contact-head {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: flex-end;
-  justify-content: space-between;
-  gap: 1.25rem 2rem;
-}
-.contact-lead {
-  max-width: 34rem;
-  margin-top: 0.75rem;
-  color: var(--color-muted);
-}
-.contact-actions {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.75rem;
-}
-.contact-details {
-  display: grid;
-  gap: 1.75rem;
-  margin-top: 2.25rem;
-  padding-top: 1.75rem;
-  border-top: 1px solid var(--color-line);
-}
-@media (min-width: 48rem) {
-  .contact-details {
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-    gap: 0;
-  }
-  .contact-details > div {
-    padding: 0 1.75rem;
-    border-left: 1px solid var(--color-line);
-  }
-  .contact-details > div:first-child {
-    padding-left: 0;
-    border-left: 0;
-  }
-}
-.contact-details dt {
-  font-size: 0.6875rem;
-  font-weight: 600;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  color: var(--color-olive);
-}
-.contact-details dd {
-  margin-top: 0.6rem;
-  font-size: 0.95rem;
-  line-height: 1.5;
-  color: var(--color-ink);
-}
-.contact-details address {
-  font-style: normal;
-}
-.contact-details ul {
-  display: grid;
-  gap: 0.5rem;
-}
-.contact-details dd > a,
-.contact-details li > a {
-  font-weight: 500;
-  text-decoration: underline;
-  text-decoration-color: var(--color-line);
-  text-underline-offset: 3px;
-  transition: text-decoration-color 0.2s;
-}
-.contact-details dd > a:hover,
-.contact-details li > a:hover {
-  text-decoration-color: var(--color-olive);
-}
-.contact-note {
-  display: block;
-  font-size: 0.75rem;
-  color: var(--color-muted);
-}
-.contact-details .contact-map {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.35rem;
-  margin-top: 0.75rem;
-  font-size: 0.875rem;
-  font-weight: 600;
-  color: var(--color-olive);
-  text-decoration: none;
-}
-.contact-details .contact-map:hover {
-  color: var(--color-ink);
-}
 
 /* Listing card in the brand lime: a soft gradient with a light glow, carbon type, carbon "Novo" flag and controls. */
 @media (min-width: 64rem) {
@@ -5548,7 +5457,7 @@ a.rv-author:hover {
 main > section:not(:first-child) {
   margin-top: var(--section-gap);
 }
-main > section.pt-14 {
+main > section.feat-section {
   margin-top: 0;
 }
 main > #sobre,
@@ -5747,14 +5656,6 @@ footer.on-dark {
 }
 
 /* Contact band on tablets: phones get more room than the address and e-mail. */
-@media (min-width: 48rem) and (max-width: 63.99rem) {
-  .contact-details {
-    grid-template-columns: 1fr 1.2fr 1fr;
-  }
-  .contact-details > div {
-    padding: 0 1.25rem;
-  }
-}
 /* Sold listings: four in a row from tablet up (two large rows were too tall). */
 @media (min-width: 48rem) {
   .results-sold-list {
@@ -6684,7 +6585,7 @@ footer.on-dark {
 .hero-copy a.btn-lime,
 .site-header .hdr-cta,
 .site-header[data-stuck] .hdr-cta,
-.site-header[data-over-hero]:not([data-stuck]) .hdr-cta,
+.site-header[data-over-hero]:not([data-past-hero]) .hdr-cta,
 .m-icon-main,
 .green-surface,
 .card-flag,
@@ -6705,8 +6606,8 @@ footer.on-dark {
 .hero-copy a.btn-lime:hover,
 .site-header .hdr-cta:hover,
 .site-header .hdr-cta:focus-visible,
-.site-header[data-over-hero]:not([data-stuck]) .hdr-cta:hover,
-.site-header[data-over-hero]:not([data-stuck]) .hdr-cta:focus-visible,
+.site-header[data-over-hero]:not([data-past-hero]) .hdr-cta:hover,
+.site-header[data-over-hero]:not([data-past-hero]) .hdr-cta:focus-visible,
 .m-icon-main:hover,
 .m-icon-main:focus-visible,
 .green-surface:hover,
@@ -6734,7 +6635,7 @@ footer.on-dark {
 /* In the header the CTA sits on the same green, so it takes the brighter variant and a light rim to stand out. */
 .site-header .hdr-cta,
 .site-header[data-stuck] .hdr-cta,
-.site-header[data-over-hero]:not([data-stuck]) .hdr-cta {
+.site-header[data-over-hero]:not([data-past-hero]) .hdr-cta {
   border: 1px solid rgba(214, 232, 150, 0.6);
   background-image: var(--green-surface-hover);
   box-shadow:
@@ -6767,7 +6668,7 @@ footer.on-dark {
 }
 .site-header .hdr-cta,
 .site-header[data-stuck] .hdr-cta,
-.site-header[data-over-hero]:not([data-stuck]) .hdr-cta {
+.site-header[data-over-hero]:not([data-past-hero]) .hdr-cta {
   border: 1px solid rgba(255, 255, 255, 0.85);
   background-color: #f8f6ef;
   background-image: var(--light-surface);
@@ -6778,8 +6679,8 @@ footer.on-dark {
 }
 .site-header .hdr-cta:hover,
 .site-header .hdr-cta:focus-visible,
-.site-header[data-over-hero]:not([data-stuck]) .hdr-cta:hover,
-.site-header[data-over-hero]:not([data-stuck]) .hdr-cta:focus-visible {
+.site-header[data-over-hero]:not([data-past-hero]) .hdr-cta:hover,
+.site-header[data-over-hero]:not([data-past-hero]) .hdr-cta:focus-visible {
   border-color: #fff;
   background-color: #f4f2e8;
   background-image: var(--light-surface-hover);
@@ -7110,42 +7011,6 @@ footer.on-dark {
   margin: 0;
 }
 
-/* Team intro on tablets: heading left, lead and arrows right, on shared guides: the right column starts on the
-   heading's top line and ends on its bottom line, and a fine vertical rule runs the full height between them. */
-@media (min-width: 48rem) and (max-width: 63.99rem) {
-  #equipa > .rise:first-child {
-    display: grid;
-    grid-template-columns: auto minmax(0, 1fr);
-    grid-template-rows: auto auto;
-    align-items: stretch;
-    column-gap: 2.5rem;
-    row-gap: 0;
-  }
-  #equipa > .rise:first-child .team-title {
-    grid-column: 1;
-    grid-row: 1 / span 2;
-    align-self: center;
-  }
-  #equipa > .rise:first-child .team-lead,
-  #equipa > .rise:first-child .team-nav {
-    grid-column: 2;
-    padding-left: 2rem;
-    border-left: 1px solid rgba(75, 106, 26, 0.25);
-  }
-  #equipa > .rise:first-child .team-lead {
-    grid-row: 1;
-    align-self: start;
-    max-width: none;
-    margin: 0;
-    padding-bottom: 1rem;
-  }
-  #equipa > .rise:first-child .team-nav {
-    grid-row: 2;
-    align-self: end;
-    margin: 0;
-  }
-}
-
 /* ==== Team cards on phones and tablets ===========================================================================
    A peek carousel of tall rounded portraits: the next card shows at the edge, the card in focus grows while its
    neighbours step back and dim as you swipe (scroll-driven, where supported). Name and role sit on a frosted glass
@@ -7370,13 +7235,14 @@ footer.on-dark {
   mask: url('/brand/logo-mark-black.png') center / contain no-repeat;
 }
 
-/* Team on phones only: heading, then the cards, then the arrows and the short text beneath them, on an even rhythm
-   (the intro column dissolves so its parts can be ordered around the cards). */
-@media (max-width: 39.99rem) {
+/* Team on phones and tablets, as "Explore por zona": the heading, then the portraits as the main element (the next
+   one peeking in), then the short text and the arrows last, on an even rhythm (the intro column dissolves so its
+   parts can be ordered around the cards; it is the first div, after the fin ribbon). */
+@media (max-width: 63.99rem) {
   #equipa {
     row-gap: 0;
   }
-  #equipa > .rise:first-child {
+  #equipa > div.rise:first-of-type {
     display: contents;
   }
   #equipa .team-title {
@@ -7386,14 +7252,14 @@ footer.on-dark {
     order: 2;
     margin-top: 1.5rem;
   }
-  #equipa .team-nav {
-    order: 3;
-    margin-top: 0.75rem;
-  }
   #equipa .team-lead {
-    order: 4;
-    max-width: none;
+    order: 3;
+    max-width: 36rem;
     margin-top: 1.25rem;
+  }
+  #equipa .team-nav {
+    order: 4;
+    margin-top: 1rem;
   }
 }
 
@@ -7605,7 +7471,7 @@ footer.on-dark {
     border-radius: var(--r-card);
     border-top-color: rgba(214, 232, 150, 0.28);
   }
-  .site-header[data-over-hero]:not([data-stuck]) .hdr-bar {
+  .site-header[data-over-hero]:not([data-past-hero]) .hdr-bar {
     border-top-color: rgba(255, 255, 255, 0.3);
   }
 }
@@ -7615,7 +7481,7 @@ footer.on-dark {
    warms to ivory and the tile turns lime with a carbon chevron. */
 .site-header .hdr-cta,
 .site-header[data-stuck] .hdr-cta,
-.site-header[data-over-hero]:not([data-stuck]) .hdr-cta {
+.site-header[data-over-hero]:not([data-past-hero]) .hdr-cta {
   border: 1px solid rgba(255, 255, 255, 0.9);
   background-color: #fff;
   background-image: none;
@@ -7626,15 +7492,15 @@ footer.on-dark {
 }
 .site-header .hdr-cta:hover,
 .site-header .hdr-cta:focus-visible,
-.site-header[data-over-hero]:not([data-stuck]) .hdr-cta:hover,
-.site-header[data-over-hero]:not([data-stuck]) .hdr-cta:focus-visible {
+.site-header[data-over-hero]:not([data-past-hero]) .hdr-cta:hover,
+.site-header[data-over-hero]:not([data-past-hero]) .hdr-cta:focus-visible {
   border-color: #fff;
   background-color: var(--color-paper-2);
   background-image: none;
   color: var(--color-forest);
 }
 .site-header .hdr-cta.btn-go .btn-go-icon,
-.site-header[data-over-hero]:not([data-stuck]) .hdr-cta.btn-go .btn-go-icon {
+.site-header[data-over-hero]:not([data-past-hero]) .hdr-cta.btn-go .btn-go-icon {
   background-color: #4b6a1a;
   background-image: var(--green-surface);
   color: #fff;
@@ -7642,8 +7508,8 @@ footer.on-dark {
 }
 .site-header .hdr-cta.btn-go:hover .btn-go-icon,
 .site-header .hdr-cta.btn-go:focus-visible .btn-go-icon,
-.site-header[data-over-hero]:not([data-stuck]) .hdr-cta.btn-go:hover .btn-go-icon,
-.site-header[data-over-hero]:not([data-stuck]) .hdr-cta.btn-go:focus-visible .btn-go-icon {
+.site-header[data-over-hero]:not([data-past-hero]) .hdr-cta.btn-go:hover .btn-go-icon,
+.site-header[data-over-hero]:not([data-past-hero]) .hdr-cta.btn-go:focus-visible .btn-go-icon {
   background-color: var(--color-lime);
   background-image: none;
   color: var(--color-forest);
@@ -8669,18 +8535,18 @@ footer.on-dark {
     backdrop-filter: none;
     box-shadow: none;
   }
-  /* Clear green glass, not grey fog: the photo behind is blurred and kept in colour, with a faint tint from pale
-     lime at the top to deep olive at the bottom, a soft lime light rising from the lower edge (the zones horizon)
-     and a sheen across the top left. The rim is a gradient of light (hero-deck-panel.ts). */
+  /* Clear white glass, not grey fog: the photo behind is blurred and kept in colour under a light white veil, with
+     a soft white light rising from the lower edge and a sheen across the top left. The rim is a gradient of white
+     light (hero-deck-panel.ts). */
   .hero-deck-glass {
     position: absolute;
     z-index: -1;
     background:
-      linear-gradient(125deg, rgba(255, 255, 255, 0.16) 0%, rgba(255, 255, 255, 0.03) 28%, transparent 45%),
-      radial-gradient(70% 22% at 55% 100%, rgba(158, 188, 58, 0.28) 0%, rgba(158, 188, 58, 0.08) 55%, transparent 100%),
-      linear-gradient(180deg, rgba(233, 239, 216, 0.1) 0%, rgba(26, 36, 20, 0.22) 100%);
-    -webkit-backdrop-filter: blur(22px) saturate(150%) brightness(0.92);
-    backdrop-filter: blur(22px) saturate(150%) brightness(0.92);
+      linear-gradient(125deg, rgba(255, 255, 255, 0.22) 0%, rgba(255, 255, 255, 0.05) 28%, transparent 45%),
+      radial-gradient(70% 22% at 55% 100%, rgba(255, 255, 255, 0.22) 0%, rgba(255, 255, 255, 0.06) 55%, transparent 100%),
+      linear-gradient(180deg, rgba(255, 255, 255, 0.16) 0%, rgba(255, 255, 255, 0.08) 100%);
+    -webkit-backdrop-filter: blur(22px) saturate(120%) brightness(1.05);
+    backdrop-filter: blur(22px) saturate(120%) brightness(1.05);
     pointer-events: none;
   }
   .hero-deck-glass svg {
@@ -8976,66 +8842,26 @@ footer.on-dark {
   border-color: rgba(214, 232, 150, 0.16);
 }
 
-/* "Somos daqui": phones and e-mail under the buttons (they replace the "Visite-nos" band on the home page). A
-   hairline above, then a two-column list: glass icon, the number or address, and the legal note for phones. */
-.about-contacts {
-  display: grid;
-  gap: 1rem 2rem;
-  width: 100%;
-  max-width: 40.5rem;
-  margin: 0.5rem 0 0;
-  padding: 1.5rem 0 0;
-  list-style: none;
-  border-top: 1px solid var(--color-line);
-}
-.about-contacts li {
-  display: flex;
-  align-items: flex-start;
-  gap: 0.85rem;
-  min-width: 0;
-}
-.about-contacts li > span:last-child {
-  display: grid;
-  gap: 0.15rem;
-  min-width: 0;
-}
-.about-contact-icon {
-  display: grid;
-  flex: none;
-  place-items: center;
-  width: 2.25rem;
-  height: 2.25rem;
-}
-.about-contacts a {
-  justify-self: start;
-  font-size: 1rem;
-  font-weight: 500;
-  color: var(--color-ink);
-  text-decoration: underline;
-  text-decoration-color: transparent;
-  text-underline-offset: 0.25em;
-  transition: text-decoration-color 0.2s;
-  overflow-wrap: anywhere;
-}
-.about-contacts a:hover,
-.about-contacts a:focus-visible {
-  text-decoration-color: var(--g-lime);
-}
-.about-contact-note {
-  font-size: 0.8rem;
+/* "Somos daqui": the e-mail as a quiet line under the buttons, like "Prefere falar já?" in the sell section (a
+   muted label, the address with a lime underline), so it does not read as a fourth pillar. */
+.about-mail {
+  font-size: 0.9rem;
   color: var(--color-muted);
 }
-.about-contacts li:hover .about-contact-icon {
-  color: #fff;
-  box-shadow:
-    inset 0 0 0 1px rgba(158, 188, 58, 0.75),
-    inset 0 1px 0 rgba(255, 255, 255, 0.3),
-    0 10px 26px -8px rgba(158, 188, 58, 0.6);
+.about-mail a {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  margin-left: 0.35rem;
+  font-weight: 600;
+  color: var(--color-ink);
+  border-bottom: 2px solid var(--color-lime);
+  overflow-wrap: anywhere;
+  transition: color 0.2s;
 }
-@media (min-width: 40rem) {
-  .about-contacts {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
+.about-mail a:hover,
+.about-mail a:focus-visible {
+  color: var(--color-olive);
 }
 
 /* Sell form: the optional details fold away under one quiet row, so the form shows only what the team needs to
@@ -9176,4 +9002,635 @@ main:has(> section#vender:last-of-type) + footer {
       transform: translateY(-2px);
     }
   }
+}
+
+/* Property page gallery: the same corner as the "Vendidos recentemente" photos on the home page. */
+.gallery-photo {
+  border-radius: var(--r-card);
+}
+
+/* Property page map: a calm strip, the width of the text column and a little over a third as tall, with the card
+   corner and hairline edge. The OpenStreetMap tiles are turned to soft neutrals so only the green pin (or the
+   zone's lime area) carries colour; hovering lifts the tint slightly to show the map opens Google Maps. */
+.pmap {
+  position: relative;
+  height: 14rem;
+  overflow: hidden;
+  border: 1px solid var(--sheet-edge);
+  border-radius: var(--r-card);
+  background: #eef0ee;
+  isolation: isolate;
+}
+@media (min-width: 64rem) {
+  .pmap {
+    height: 17rem;
+  }
+}
+.pmap-tiles {
+  position: absolute;
+  inset: 0;
+  filter: grayscale(1) contrast(0.9) brightness(1.06);
+  transition: filter 0.4s var(--ease-out);
+}
+.pmap-tiles img {
+  position: absolute;
+  width: 256px;
+  height: 256px;
+  max-width: none;
+}
+.pmap:hover .pmap-tiles {
+  filter: grayscale(0.7) contrast(0.95) brightness(1.04);
+}
+/* The house: a pin on the green surface with a white rim and a soft lime halo. */
+.pmap-pin {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  z-index: 1;
+  display: grid;
+  place-items: center;
+  width: 2.5rem;
+  height: 2.5rem;
+  border: 2px solid #fff;
+  border-radius: 50% 50% 50% 0;
+  background: var(--green-surface);
+  color: #fff;
+  box-shadow:
+    0 0 0 8px rgba(158, 188, 58, 0.22),
+    0 10px 22px -8px rgba(27, 30, 28, 0.55);
+  transform: translate(-50%, -100%) rotate(-45deg);
+}
+.pmap-pin svg {
+  transform: rotate(45deg);
+}
+/* The zone: a soft lime area with a thin rim. */
+.pmap-area {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  z-index: 1;
+  width: calc(var(--r) * 2);
+  height: calc(var(--r) * 2);
+  border: 1.5px solid rgba(95, 130, 34, 0.7);
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(158, 188, 58, 0.32) 0%, rgba(158, 188, 58, 0.16) 70%);
+  transform: translate(-50%, -50%);
+}
+/* Label: the dark glass pill with a lime dot, as the tags over photos. */
+.pmap-tag {
+  position: absolute;
+  bottom: 0.75rem;
+  left: 0.75rem;
+  z-index: 2;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  max-width: calc(100% - 9rem);
+  padding: 0.35rem 0.75rem;
+  overflow: hidden;
+  border-radius: 9999px;
+  background: rgba(27, 30, 28, 0.72);
+  font-size: 0.8rem;
+  font-weight: 500;
+  color: #fff;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  -webkit-backdrop-filter: blur(8px);
+  backdrop-filter: blur(8px);
+}
+.pmap-tag::before {
+  content: '';
+  flex: none;
+  width: 0.45rem;
+  height: 0.45rem;
+  border-radius: 50%;
+  background: var(--g-lime);
+}
+.pmap-link {
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+}
+.pmap-link:focus-visible {
+  outline: 2px solid var(--g-500);
+  outline-offset: -4px;
+  border-radius: var(--r-card);
+}
+.pmap-credit {
+  position: absolute;
+  right: 0.5rem;
+  bottom: 0.4rem;
+  z-index: 4;
+  padding: 0.1rem 0.4rem;
+  border-radius: 4px;
+  background: rgba(255, 255, 255, 0.8);
+  font-size: 0.65rem;
+  color: var(--color-muted);
+}
+
+/* ==== "Explore por zona" on phones and tablets ==================================================================
+   The photo leads: a light "Explore por zona" line, then the zone cards as the main element (large, the active one
+   first, the next peeking in from the right edge so the row reads as swipeable), then one line about the zone with
+   "Ver imóveis", and the controls last. The zone's name and count already sit on its card, so the text block does
+   not repeat them (the name stays for screen readers). Desktop keeps its two-column layout. */
+@media (max-width: 63.99rem) {
+  .zx {
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-areas:
+      'eyebrow'
+      'cards'
+      'text'
+      'controls';
+    gap: 1.25rem;
+    min-height: 0;
+  }
+  .zx-content {
+    display: contents;
+  }
+  .zx-eyebrow {
+    grid-area: eyebrow;
+    margin: 0;
+  }
+  .zx-side {
+    grid-area: cards;
+    /* The row runs to the panel's right edge, so the next card peeks in. */
+    margin-right: calc(-1 * var(--gutter));
+  }
+  .zx-cards {
+    min-height: 0;
+    padding-right: var(--gutter);
+    /* Card by card: the card a swipe lands on becomes the zone being read (zone-explorer.ts). */
+    scroll-snap-type: x mandatory;
+  }
+  .zx-card {
+    flex: 0 0 min(78%, 19rem);
+    height: clamp(17rem, 82vw, 21rem);
+    scroll-snap-align: start;
+  }
+  .zx-card-name {
+    font-size: 1.5rem;
+  }
+  .zx-card-meta {
+    font-size: 0.875rem;
+  }
+  .zx-texts {
+    grid-area: text;
+  }
+  .zx-text .zx-name {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+  }
+  .zx-text .zx-kicker {
+    display: none;
+  }
+  .zx-blurb {
+    max-width: none;
+  }
+  .zx-controls {
+    grid-area: controls;
+    margin-top: 0.25rem;
+  }
+}
+/* Tablets: two cards and a half in view, a little taller. */
+@media (min-width: 48rem) and (max-width: 63.99rem) {
+  .zx-card {
+    flex-basis: 40%;
+    height: 22rem;
+  }
+}
+
+/* ==== "Somos daqui" on phones and tablets =======================================================================
+   The globe leads, as the photos do in the bands above: the heading, then the globe with the office card, then the
+   two short paragraphs, the "Ligar" / "Ver no mapa" buttons and the e-mail. The text column dissolves so its parts
+   can sit around the globe. Desktop keeps text and globe side by side. */
+@media (max-width: 63.99rem) {
+  #sobre > .grid:first-child {
+    row-gap: 1.5rem;
+  }
+  #sobre > .grid:first-child > div:nth-child(2) {
+    display: contents;
+  }
+  #sobre #sobre-titulo {
+    order: 1;
+  }
+  #sobre > .grid:first-child > div:first-child {
+    order: 2;
+  }
+  #sobre .about-copy {
+    order: 3;
+  }
+  #sobre .about-copy + div {
+    order: 4;
+  }
+  #sobre .about-mail {
+    order: 5;
+  }
+}
+@media (min-width: 48rem) and (max-width: 63.99rem) {
+  #sobre .pt-map {
+    max-width: 28rem;
+  }
+}
+
+/* ==== "O que dizem de nós" on phones and tablets ================================================================
+   The reviews lead, as the photos do in the sections above: the heading with a compact score line, then the review
+   cards (running to the screen edge, the next one peeking in), and one row at the end with the arrows on the left
+   and "Ver todas no Google" on the right. Desktop keeps the intro column beside the cards. */
+@media (max-width: 63.99rem) {
+  .reviews.has-reviews .reviews-grid {
+    grid-template-columns: minmax(0, 1fr) auto;
+    grid-template-areas:
+      'title title'
+      'summary summary'
+      'list list'
+      'nav cta';
+    gap: 0.75rem;
+    align-items: center;
+  }
+  .reviews.has-reviews .reviews-intro,
+  .reviews.has-reviews .reviews-board {
+    display: contents;
+  }
+  .reviews.has-reviews #avaliacoes-titulo {
+    grid-area: title;
+  }
+  .reviews.has-reviews .reviews-summary {
+    grid-area: summary;
+  }
+  .reviews.has-reviews .reviews-score {
+    font-size: 2.25rem;
+  }
+  .reviews.has-reviews .reviews-lead {
+    display: none;
+  }
+  .reviews.has-reviews .reviews-list {
+    grid-area: list;
+    margin: 0.5rem calc(-1 * var(--gutter)) 0 0;
+    padding-right: var(--gutter);
+  }
+  .reviews.has-reviews .reviews-nav {
+    grid-area: nav;
+    margin: 0;
+  }
+  .reviews.has-reviews .reviews-intro > .btn {
+    grid-area: cta;
+    justify-self: end;
+  }
+}
+
+/* ==== Site review fixes ==========================================================================================
+   - Featured listings start one section gap below the hero's search box (a fixed 3.5rem left 69-85px on phones).
+   - Property page section titles in the same weight as every other section title.
+   - Touch screens: small text links get a 44px-high hit area without changing how they look. */
+.feat-section {
+  /* The search box hangs about 1.75rem below the hero, so the visible gap equals the section gap. */
+  padding-top: calc(var(--section-gap) - 1.75rem);
+}
+.detail-title {
+  font-weight: 600;
+  letter-spacing: -0.01em;
+}
+@media (pointer: coarse) {
+  .feat-all,
+  nav[aria-label='Localização'] a,
+  .bwf-link {
+    min-height: 2.75rem;
+  }
+  nav[aria-label='Localização'] a {
+    display: inline-flex;
+    align-items: center;
+  }
+}
+
+/* "Como trabalhamos" on phones: the six steps as one white sheet read top to bottom (outlined number on the left,
+   title and line on the right, hairlines between steps) instead of six stacked cards: same content, about half the
+   height, and the sequence reads at a glance. Tablets keep three columns of cards; desktop the timeline. */
+@media (max-width: 39.99rem) {
+  .hww-flow {
+    gap: 0;
+    padding: 0.25rem 1.1rem;
+    border: 1px solid var(--sheet-edge);
+    border-radius: var(--r-card);
+    background: #fff;
+    box-shadow: var(--sheet-shadow);
+  }
+  .hww-card {
+    display: grid;
+    grid-template-columns: 2.4rem minmax(0, 1fr);
+    column-gap: 0.9rem;
+    min-height: 0;
+    padding: 1rem 0;
+    border: 0;
+    border-radius: 0;
+    background: none;
+    box-shadow: none;
+  }
+  .hww-card + .hww-card {
+    border-top: 1px solid var(--sheet-edge);
+  }
+  .hww-card:hover {
+    transform: none;
+    box-shadow: none;
+  }
+  .hww-card-icon:not(#\#) {
+    display: none;
+  }
+  .hww-card-num,
+  .hww-card-num:not(#\#) {
+    grid-row: 1 / span 2;
+    font-size: 1.9rem;
+  }
+  .hww-card-title {
+    margin-top: 0.1rem;
+  }
+  .hww-card-text {
+    margin-top: 0.3rem;
+  }
+}
+
+/* ==== Legal pages (Política de Privacidade) ======================================================================
+   A calm reading column: the site's heading weight, 16-17px body at a comfortable measure, section titles with room
+   above, lists with lime markers and links underlined in lime (as the other text links). */
+.legal {
+  max-width: 46rem;
+  margin-top: 1.5rem;
+  color: rgba(27, 30, 28, 0.85);
+  font-size: 1rem;
+  line-height: 1.75;
+}
+@media (min-width: 48rem) {
+  .legal {
+    font-size: 1.0625rem;
+  }
+}
+.legal h1 {
+  margin-bottom: 1.5rem;
+  font-family: var(--font-display, inherit);
+  font-size: var(--h-display);
+  font-weight: 600;
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+  color: var(--color-ink);
+}
+.legal h2 {
+  margin-top: 2.5rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--color-line);
+  font-family: var(--font-display, inherit);
+  font-size: 1.25rem;
+  font-weight: 600;
+  line-height: 1.25;
+  letter-spacing: -0.01em;
+  color: var(--color-ink);
+  scroll-margin-top: 7rem;
+}
+.legal p + p,
+.legal h2 + p,
+.legal ul + p,
+.legal p + ul {
+  margin-top: 0.9rem;
+}
+.legal ul {
+  display: grid;
+  gap: 0.4rem;
+  margin: 0.75rem 0 0;
+  padding-left: 1.25rem;
+  list-style: none;
+}
+.legal ul li {
+  position: relative;
+}
+.legal ul li::before {
+  content: '';
+  position: absolute;
+  top: 0.75em;
+  left: -1.05rem;
+  width: 0.4rem;
+  height: 0.4rem;
+  border-radius: 50%;
+  background: var(--g-lime);
+}
+.legal strong {
+  font-weight: 600;
+  color: var(--color-ink);
+}
+.legal a {
+  font-weight: 500;
+  color: var(--color-ink);
+  text-decoration: underline;
+  text-decoration-color: var(--g-lime);
+  text-decoration-thickness: 2px;
+  text-underline-offset: 0.2em;
+  overflow-wrap: anywhere;
+}
+.legal a:hover {
+  color: var(--color-olive);
+}
+.legal-note {
+  font-size: 0.875rem;
+  color: var(--color-muted);
+}
+
+/* Dispute resolution: each entity as one block of address lines, divided by hairlines (the legal reading column). */
+.legal-entities {
+  display: grid;
+  margin-bottom: 1.5rem;
+  border-top: 1px solid var(--color-line);
+}
+.legal-entities > p {
+  margin: 0;
+  padding: 1.25rem 0;
+  border-bottom: 1px solid var(--color-line);
+  overflow-wrap: anywhere;
+}
+.legal-entities strong {
+  display: inline-block;
+  margin-bottom: 0.35rem;
+  font-family: var(--font-display, inherit);
+  font-size: 1.0625rem;
+}
+/* ==== 404 =========================================================================================================
+   One dark, centred screen in the "Explore por zona" night: deep olive with soft green glows and the grain, a soft
+   lime light that follows the pointer (--mx/--my), a large "404" lit from above and fading into the dark (its digits
+   lean towards the pointer, --rx/--ry, and rise one by one on load), the zones' horizon of light under it, one
+   sentence and two buttons (white, and glass). The header floats over it as glass. */
+.nf {
+  --mx: 50%;
+  --my: 35%;
+  --rx: 0deg;
+  --ry: 0deg;
+  position: relative;
+  isolation: isolate;
+  display: grid;
+  place-items: center;
+  min-height: 100svh;
+  padding: 7rem var(--gutter) 4rem;
+  overflow: hidden;
+  background:
+    var(--hdr-grain),
+    radial-gradient(45% 55% at 50% 0%, rgba(158, 188, 58, 0.16) 0%, transparent 70%),
+    radial-gradient(40% 50% at 10% 100%, rgba(95, 130, 34, 0.3) 0%, transparent 70%),
+    radial-gradient(40% 55% at 95% 80%, rgba(75, 106, 26, 0.3) 0%, transparent 70%),
+    linear-gradient(180deg, var(--g-950) 0%, #0e140a 100%);
+  color: #fff;
+  text-align: center;
+}
+.nf::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: radial-gradient(28rem circle at var(--mx) var(--my), rgba(158, 188, 58, 0.16), transparent 65%);
+  transition: background-position 0.2s;
+  pointer-events: none;
+}
+.nf-inner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  max-width: 36rem;
+}
+.nf-code {
+  display: flex;
+  gap: 0.02em;
+  margin: 0;
+  font-family: var(--font-display, inherit);
+  font-size: clamp(8.5rem, 34vw, 15rem);
+  font-weight: 700;
+  line-height: 0.85;
+  letter-spacing: -0.04em;
+  perspective: 900px;
+}
+.nf-code span {
+  display: inline-block;
+  background: linear-gradient(180deg, #fff 0%, rgba(255, 255, 255, 0.9) 30%, rgba(214, 232, 150, 0.4) 70%, rgba(214, 232, 150, 0) 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  transform: rotateX(var(--rx)) rotateY(var(--ry));
+  transition: transform 0.6s var(--ease-out);
+}
+.nf-horizon {
+  display: block;
+  width: min(30rem, 90%);
+  height: 1px;
+  margin-top: -0.25rem;
+  background: linear-gradient(90deg, transparent, rgba(232, 242, 196, 0.85) 50%, transparent);
+  box-shadow: 0 0 24px 4px rgba(158, 188, 58, 0.35);
+}
+.nf-title {
+  margin-top: 2rem;
+  font-family: var(--font-display, inherit);
+  font-size: clamp(1.4rem, 2.2vw, 1.75rem);
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  color: #fff;
+}
+.nf-text {
+  margin-top: 0.75rem;
+  font-size: 1.0625rem;
+  line-height: 1.65;
+  color: rgba(255, 255, 255, 0.72);
+}
+.nf-actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.75rem;
+  margin-top: 2rem;
+}
+.nf-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  min-height: 3.25rem;
+  padding: 0 1.5rem;
+  border-radius: var(--r-card);
+  font-weight: 600;
+  transition:
+    background-color 0.25s,
+    border-color 0.25s,
+    color 0.25s,
+    transform 0.35s var(--ease-out),
+    box-shadow 0.35s var(--ease-out);
+}
+.nf-btn-light {
+  background: #fff;
+  color: var(--color-forest);
+  box-shadow: 0 10px 26px -12px rgba(0, 0, 0, 0.6);
+}
+.nf-btn-glass {
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  background: rgba(255, 255, 255, 0.06);
+  color: #fff;
+  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px);
+}
+.nf-btn:hover,
+.nf-btn:focus-visible {
+  transform: translateY(-2px);
+}
+.nf-btn-light:hover,
+.nf-btn-light:focus-visible {
+  background: var(--g-lime);
+  box-shadow: 0 14px 30px -12px rgba(158, 188, 58, 0.6);
+}
+.nf-btn-glass:hover,
+.nf-btn-glass:focus-visible {
+  border-color: rgba(158, 188, 58, 0.75);
+  background: rgba(158, 188, 58, 0.12);
+}
+.nf-btn:focus-visible {
+  outline: 2px solid var(--g-lime);
+  outline-offset: 3px;
+}
+/* The one entrance: the digits rise one after another, then the light line draws out. */
+@media (prefers-reduced-motion: no-preference) {
+  .nf-code span {
+    animation: nf-rise 0.9s var(--ease-out) both;
+    animation-delay: calc(var(--d) * 110ms);
+  }
+  .nf-horizon {
+    animation: nf-draw 1.1s var(--ease-out) 0.35s both;
+  }
+  @keyframes nf-rise {
+    from {
+      opacity: 0;
+      translate: 0 0.25em;
+    }
+  }
+  @keyframes nf-draw {
+    from {
+      transform: scaleX(0);
+      opacity: 0;
+    }
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .nf-code span,
+  .nf-btn {
+    transition: none;
+  }
+}
+/* The page ends on the dark screen, so the footer follows straight on. */
+main:has(> .nf) + footer {
+  margin-top: 0;
+}
+
+/* ==== Header over the hero ========================================================================================
+   On the home page the header stays clear glass for as long as it sits over the hero photo (data-past-hero is set by
+   SiteHeader.astro once the hero's bottom edge passes under the bar), then turns to the green "zones night" surface.
+   The phone and tablet menu unfolds in the same glass while over the hero, so bar and menu read as one piece. */
+.site-header[data-over-hero]:not([data-past-hero]) .m-menu {
+  border-color: rgba(255, 255, 255, 0.3);
+  background: rgba(20, 24, 20, 0.38);
+  -webkit-backdrop-filter: blur(22px) saturate(140%);
+  backdrop-filter: blur(22px) saturate(140%);
+  box-shadow:
+    inset 0 -1px 0 rgba(255, 255, 255, 0.12),
+    0 30px 50px -24px rgba(0, 0, 0, 0.45);
 }

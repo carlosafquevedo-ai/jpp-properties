@@ -56,5 +56,5 @@ Todos escritos por nós como proposta; o cliente tem de os aprovar ou corrigir:
 ## 7. Decisões pendentes
 
 - [ ] "Destaques" (empreendimentos/campanhas): voltam noutro sítio ou ficam de fora?
-- [ ] Com mais de um escritório, a faixa "Visite-nos" mostra o principal ou todos?
+- [ ] Com mais de um escritório, o painel "Fale connosco" e "Somos daqui" mostram o principal ou todos?
 - [ ] Página de carreiras (`/carreiras/`): o botão "Quero ser consultor" ainda não tem página de destino.

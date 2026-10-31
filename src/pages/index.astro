@@ -47,7 +47,6 @@ const zoneTiles = (Object.keys(zones) as ZoneId[]).map((id) => ({
   description="Apartamentos e moradias em Vilamoura, Quarteira, Vale do Lobo e Quinta do Lago. JPP Properties, AMI 9361."
   route="home"
   padTop={false}
-  contactBand={false}
 >
   <!-- Hero: full-bleed rotating photos, rounded bottom corners and a hanging tab that holds the search box -->
   <section>
@@ -171,7 +170,7 @@ const zoneTiles = (Object.keys(zones) as ZoneId[]).map((id) => ({
   </section>
 
   <!-- Featured: carousel that starts on the page column and bleeds off the right edge -->
-  <section class="pt-14" aria-labelledby="destaques">
+  <section class="feat-section" aria-labelledby="destaques">
     <div class="container-x flex flex-wrap items-end justify-between gap-x-10 gap-y-5">
       <div class="max-w-xl">
         <h2 id="destaques" class="zones-title">
@@ -300,29 +299,14 @@ const zoneTiles = (Object.keys(zones) as ZoneId[]).map((id) => ({
             Ver no mapa
           </a>
         </div>
-        <!-- The main phone and the e-mail from the site settings (the home page has no "Visite-nos" band, so they live
-             here; the other numbers stay in the "Fale connosco" panel and the contacts page). -->
-        <ul class="about-contacts" aria-label="Contactos">
-          {offices[0]!.phones.slice(0, 1).map((p) => (
-            <li>
-              <span class="about-contact-icon glass-ic" aria-hidden="true">
-                <Icon name="phone" class="size-4" />
-              </span>
-              <span>
-                <a href={`tel:${p.tel}`}>{p.label}</a>
-                <span class="about-contact-note">({p.note})</span>
-              </span>
-            </li>
-          ))}
-          <li>
-            <span class="about-contact-icon glass-ic" aria-hidden="true">
-              <Icon name="mail" class="size-4" />
-            </span>
-            <span>
-              <a href={`mailto:${email}`}>{email}</a>
-            </span>
-          </li>
-        </ul>
+        <!-- E-mail from the site settings, as a quiet line (same pattern as "Prefere falar já?" in the sell section);
+             the main phone is the "Ligar" button, the other numbers stay in the "Fale connosco" panel. -->
+        <p class="about-mail">
+          Prefere escrever?
+          <a href={`mailto:${email}`}>
+            <Icon name="mail" class="size-4" /> {email}
+          </a>
+        </p>
       </div>
     </div>
 

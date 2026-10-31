@@ -1,0 +1,70 @@
+---
+import SiteLayout from '../layouts/SiteLayout.astro';
+
+// Dispute resolution: the client's text, word for word, as published on https://jppproperties.com/resolucao-de-litigios/
+// (read in October 2026). Only the presentation changed: each entity is its own block. Links as on the current page.
+// TODO (client): review before launch. The second entity is the Lisbon centre (JPP sells in the Algarve, whose
+// centre is the CIMAAL, Centro de Informação, Mediação e Arbitragem de Conflitos de Consumo do Algarve); the PDF link
+// points to the web agency's site (webcolinas.pt); "jurídico@" carries an accent, so it is not a working e-mail
+// address. EN/FR versions pending.
+---
+
+<SiteLayout
+  title="Resolução de Litígios | JPP Properties"
+  description="Entidades de Resolução Alternativa de Litígios de consumo indicadas pela JPP Properties (AMI 9361)."
+>
+  <div class="container-x">
+    <nav aria-label="Localização" class="text-sm text-muted">
+      <ol class="flex flex-wrap items-center gap-2">
+        <li>
+          <a href="/" class="hover:text-ink">Início</a>
+        </li>
+        <li aria-hidden="true">/</li>
+        <li aria-current="page">Resolução de Litígios</li>
+      </ol>
+    </nav>
+
+    <article class="legal">
+      <h1>Resolução de Litígios</h1>
+
+      <div class="legal-entities">
+        <p>
+          <strong>CNIACC – Centro nacional de informação e arbitragem de conflitos de consumo</strong><br />
+          Faculdade de direito da universidade nova de Lisboa<br />
+          Campus de Campolide, 1099-032 Lisboa<br />
+          Tel: 213 847 484<br />
+          E-mail: cniacc@unl.pt<br />
+          Web: www.arbitragemdeconsumo.org
+        </p>
+        <p>
+          <strong>Contratos celebrados na Área Metropolitana de Lisboa</strong><br />
+          Rua dos Douradores , 116 2º – 1100-207 Lisboa<br />
+          Tel: 218 807 030 / 218 807 038<br />
+          Email: jurídico@centroarbitragemlisboa.pt / director@centroarbitragemlisboa.pt<br />
+          Web: www.centroarbitragemlisboa.pt
+        </p>
+        <p>
+          <strong>Direção-Geral do Consumidor</strong><br />
+          Praça Duque de Saldanha, n.º 31 1069-013 Lisboa<br />
+          Tel: 21 356 46 00<br />
+          Telecópia: 21 356 47 19<br />
+          Email: dgc@dg.consumidor.pt<br />
+          Web: www.consumidor.pt / www.facebook.com/dgconsumidor
+        </p>
+      </div>
+
+      <p>
+        Mais informações em Portal do Consumidor <a href="https://www.consumidor.pt" target="_blank" rel="noopener"
+          >www.consumidor.pt</a
+        >.
+      </p>
+      <p>
+        Pode descarregar o documento de Resolução Alternativa de Litígios de consumo clicando <a
+          href="https://webcolinas.pt/politica_litigios.pdf"
+          target="_blank"
+          rel="noopener">aqui</a
+        >.
+      </p>
+    </article>
+  </div>
+</SiteLayout>

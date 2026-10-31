@@ -258,9 +258,20 @@ const linkClass =
 
 <script>
   const header = document.getElementById('site-header');
-  const syncHeader = () => header?.toggleAttribute('data-stuck', window.scrollY > 24);
+  // Over the home hero the bar stays glass until the hero's bottom edge passes under it (data-past-hero).
+  const hero = header?.hasAttribute('data-over-hero') ? document.querySelector<HTMLElement>('.hero-shape') : null;
+  const bar = header?.querySelector<HTMLElement>('.hdr-bar');
+  const syncHeader = () => {
+    header?.toggleAttribute('data-stuck', window.scrollY > 24);
+    if (hero && bar)
+      header?.toggleAttribute(
+        'data-past-hero',
+        hero.getBoundingClientRect().bottom <= bar.getBoundingClientRect().bottom,
+      );
+  };
   syncHeader();
   window.addEventListener('scroll', syncHeader, { passive: true });
+  window.addEventListener('resize', syncHeader, { passive: true });
 
   // Reading progress: a thin brand-green line along the bottom edge of the header capsule.
   const setProgress = () => {
@@ -354,7 +365,12 @@ const linkClass =
   if (infoPanel) {
     document
       .querySelectorAll<HTMLElement>('[data-info-open]')
-      .forEach((b) => b.addEventListener('click', () => infoPanel.showModal()));
+      .forEach((b) =>
+        b.addEventListener('click', (e) => {
+          e.preventDefault(); // links (the footer's "Contactos") open the panel instead of navigating
+          infoPanel.showModal();
+        }),
+      );
     infoPanel
       .querySelector<HTMLElement>('[data-info-close]')
       ?.addEventListener('click', () => infoPanel.close());

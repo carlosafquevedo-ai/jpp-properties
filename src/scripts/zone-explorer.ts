@@ -5,7 +5,9 @@
 //   Also the arrows, the arrow keys (focus moves along the cards) and a sideways swipe on the panel.
 // - Timer: the current segment of the progress line fills, and the zone moves on when it is full. It holds while the
 //   pointer or focus is inside or the panel is off screen, and stops for good once the visitor chooses a zone.
-// - The card of the zone being read always comes first in the row; the zones after it follow in order.
+// - Desktop: the card of the zone being read always comes first in the row; the zones after it follow in order.
+// - Phones and tablets: the cards keep their order and the row scrolls (snapping card by card); the card the swipe
+//   lands on becomes the zone being read, and the arrows and the timer scroll the row to the chosen card.
 // Without JS the first zone shows and every card is a plain link to its listings.
 
 const AUTOPLAY_MS = 7000;
@@ -22,6 +24,7 @@ export function initZoneExplorer(root: HTMLElement) {
   if (!row || n < 2 || cards.length !== n || texts.length !== n) return;
 
   const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const compact = window.matchMedia('(max-width: 63.99rem)');
   let current = 0;
   let auto = !reduced;
   root.style.setProperty('--zx-dur', `${AUTOPLAY_MS}ms`);
@@ -64,8 +67,63 @@ export function initZoneExplorer(root: HTMLElement) {
       bar.style.animation = '';
     });
     if (count) count.textContent = String(i + 1).padStart(2, '0');
-    lineUp(i);
+    if (compact.matches) scrollToCard(i);
+    else lineUp(i);
   };
+
+  // Phones and tablets: the row keeps the zones in order and scrolls to the chosen one.
+  let programmatic = false;
+  const naturalOrder = () => cards.forEach((c) => row.appendChild(c));
+  const cardOffset = (i: number) =>
+    cards[i].getBoundingClientRect().left - row.getBoundingClientRect().left + row.scrollLeft;
+  const scrollToCard = (i: number, instant = false) => {
+    const max = row.scrollWidth - row.clientWidth;
+    const left = Math.min(max, Math.max(0, cardOffset(i)));
+    if (Math.abs(left - row.scrollLeft) < 2) return;
+    programmatic = true;
+    row.scrollTo({ left, behavior: instant || reduced ? 'auto' : 'smooth' });
+  };
+  /** The card closest to the row's start edge (at the far end, the last card). */
+  const cardInView = () => {
+    let best = 0;
+    let bestDist = Infinity;
+    cards.forEach((_, j) => {
+      const d = Math.abs(cardOffset(j) - row.scrollLeft);
+      if (d < bestDist) {
+        bestDist = d;
+        best = j;
+      }
+    });
+    return best;
+  };
+  let settleTimer = 0;
+  const settle = () => {
+    window.clearTimeout(settleTimer);
+    if (programmatic) {
+      programmatic = false;
+      return;
+    }
+    if (!compact.matches) return;
+    const j = cardInView();
+    if (j !== current) choose(j);
+  };
+  row.addEventListener(
+    'scroll',
+    () => {
+      window.clearTimeout(settleTimer);
+      settleTimer = window.setTimeout(settle, 140);
+    },
+    { passive: true },
+  );
+  row.addEventListener('scrollend', settle);
+  compact.addEventListener('change', () => {
+    if (compact.matches) {
+      naturalOrder();
+      scrollToCard(current, true);
+    } else {
+      lineUp(current);
+    }
+  });
 
   /**
    * The chosen zone's card goes first, the zones after it follow round the circle. The cards are moved in the DOM
@@ -180,6 +238,7 @@ export function initZoneExplorer(root: HTMLElement) {
   root.addEventListener('pointercancel', () => (start = null));
 
   root.dataset.ready = '';
+  if (compact.matches) naturalOrder();
   show(0);
   edges();
 }

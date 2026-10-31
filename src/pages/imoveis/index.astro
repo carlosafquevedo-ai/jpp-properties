@@ -178,6 +178,7 @@ const { zoneOptions, typeOptions, bedroomOptions } = getSearchOptions();
         </div>
       </div>
 
+      <h2 class="sr-only">Lista de imóveis</h2>
       <div id="grid" class="grid gap-x-6 gap-y-12 sm:grid-cols-2 xl:grid-cols-3">
         {properties.map((p, i) => (
           <PropertyCard property={p} filterable eager={i < 3} />
