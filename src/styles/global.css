@@ -10193,7 +10193,7 @@ main:has(> .nf) + footer {
 
 /* ==== Property page ===============================================================================================
    Head: small tags (business, type and typology, new), the title, place and reference; on the right the price with
-   "Partilhar" and "Guardar". The contact card shows the consultant in charge. Long descriptions fold ("Ler mais").
+   "Partilhar". The contact card shows the consultant in charge. Long descriptions fold ("Ler mais").
    Similar listings sit one section gap below, in a row that swipes on phones. On phones and tablets a contact bar
    (price, call, WhatsApp, "Pedir visita") stays at the bottom, hidden while the contact card itself is on screen. */
 .pd-head {
@@ -10268,14 +10268,6 @@ main:has(> .nf) + footer {
 }
 .pd-action:hover {
   border-color: var(--g-500);
-}
-.pd-action[aria-pressed='true'] {
-  border-color: var(--g-500);
-  background: var(--g-50);
-  color: var(--g-700);
-}
-.pd-action[aria-pressed='true'] svg {
-  fill: currentColor;
 }
 .pd-toast {
   position: absolute;

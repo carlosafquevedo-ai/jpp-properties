@@ -182,7 +182,7 @@ const jsonLd = {
 
     <div class="mt-10 grid items-start gap-10 lg:grid-cols-[1fr_24rem] lg:gap-14">
       <div>
-        <!-- Head: tags, title, place and reference; price with share and save. -->
+        <!-- Head: tags, title, place and reference; price with "Partilhar". -->
         <div class="pd-head">
           <div class="min-w-0">
             <ul class="pd-tags" aria-label="Resumo">
@@ -199,9 +199,6 @@ const jsonLd = {
             <div class="pd-actions">
               <button type="button" class="pd-action" data-share aria-label="Partilhar este imóvel">
                 <Icon name="share" class="size-4" /> <span>Partilhar</span>
-              </button>
-              <button type="button" class="pd-action" data-save={p.slug} aria-pressed="false">
-                <Icon name="heart" class="size-4" /> <span data-save-label>Guardar</span>
               </button>
             </div>
             <p class="pd-toast" role="status" aria-live="polite" data-toast></p>
@@ -427,36 +424,6 @@ const jsonLd = {
         /* the visitor closed the share sheet */
       }
     });
-
-    // Save: a list of saved listings kept in this browser only (no account).
-    const KEY = 'jpp:saved';
-    const saveBtn = document.querySelector<HTMLButtonElement>('[data-save]');
-    const read = (): string[] => {
-      try {
-        return JSON.parse(localStorage.getItem(KEY) ?? '[]');
-      } catch {
-        return [];
-      }
-    };
-    const sync = () => {
-      if (!saveBtn) return;
-      const on = read().includes(saveBtn.dataset.save!);
-      saveBtn.setAttribute('aria-pressed', String(on));
-      saveBtn.querySelector('[data-save-label]')!.textContent = on ? 'Guardado' : 'Guardar';
-    };
-    saveBtn?.addEventListener('click', () => {
-      const slug = saveBtn.dataset.save!;
-      const list = read();
-      const next = list.includes(slug) ? list.filter((s) => s !== slug) : [...list, slug];
-      try {
-        localStorage.setItem(KEY, JSON.stringify(next));
-      } catch {
-        /* storage blocked: the button still answers for this visit */
-      }
-      sync();
-      say(next.includes(slug) ? 'Guardado neste navegador' : 'Removido dos guardados');
-    });
-    sync();
 
     // Phone/tablet contact bar: hidden while the contact card is on screen; "Pedir visita" goes to the form.
     const bar = document.querySelector<HTMLElement>('[data-pbar]');
