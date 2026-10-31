@@ -5,6 +5,8 @@ interface Props {
   propertyTitle?: string;
   idPrefix?: string;
   submitLabel?: string;
+  /** Property pages: an optional "when would you like to visit?" choice. */
+  visitPicker?: boolean;
 }
 
 const {
@@ -12,7 +14,9 @@ const {
   propertyTitle,
   idPrefix = 'contact',
   submitLabel = 'Enviar mensagem',
+  visitPicker = false,
 } = Astro.props;
+const visitTimes = ['Dias úteis, de manhã', 'Dias úteis, à tarde', 'Fim de semana', 'Indiferente'];
 const defaultMessage = propertyTitle
   ? `Olá, tenho interesse neste imóvel: ${propertyTitle}${reference ? ` (ref. ${reference})` : ''}. Gostaria de mais informações.`
   : '';
@@ -55,6 +59,19 @@ const defaultMessage = propertyTitle
       />
     </div>
   </div>
+  {
+    visitPicker && (
+      <div>
+        <label for={`${idPrefix}-visit`} class="mb-1.5 block text-sm font-medium">
+          Quando prefere visitar? <span class="font-normal text-muted">(opcional)</span>
+        </label>
+        <select id={`${idPrefix}-visit`} name="visit" class="field field-select">
+          <option value="">Escolha uma opção</option>
+          {visitTimes.map((t) => <option value={t}>{t}</option>)}
+        </select>
+      </div>
+    )
+  }
   <div>
     <label for={`${idPrefix}-msg`} class="mb-1.5 block text-sm font-medium">
       Mensagem

@@ -2,7 +2,7 @@
 import SiteLayout from '../../layouts/SiteLayout.astro';
 import ContactForm from '../../components/ContactForm.astro';
 import PropertyCard from '../../components/PropertyCard.astro';
-import Icon from '../../components/Icon.astro';
+import Icon, { type IconName } from '../../components/Icon.astro';
 import PropertyMap from '../../components/PropertyMap.astro';
 import {
   properties,
@@ -11,7 +11,8 @@ import {
   formatPrice,
   type Property,
 } from '../../data/properties';
-import { mainPhone, whatsappUrl } from '../../lib/site';
+import { team } from '../../data/team';
+import { mainPhone, SITE_URL } from '../../lib/site';
 
 export function getStaticPaths() {
   return properties.map((property) => ({ params: { slug: property.slug }, props: { property } }));
@@ -28,41 +29,89 @@ const extra =
     ? properties.filter((o) => o.slug !== p.slug && o.zone !== p.zone).slice(0, 3 - similar.length)
     : [];
 const gallery = p.images;
+const plans = p.floorPlans ?? [];
 const more = gallery.length - 5;
 
-const facts = [
+// Typology (T0, T1, …) for homes; plots and shops have none.
+const typology = p.propertyType === 'apartment' || p.propertyType === 'villa' ? `T${p.bedrooms}` : null;
+const tags = [
+  p.listingType === 'rent' ? 'Arrendamento' : 'Venda',
+  [propertyTypeLabels[p.propertyType], typology].filter(Boolean).join(' '),
+  p.condition === 'new' ? 'Novo' : null,
+].filter(Boolean) as string[];
+
+const facts: { icon: IconName; label: string; value: string }[] = [
   { icon: 'bed', label: 'Quartos', value: String(p.bedrooms) },
   { icon: 'bath', label: 'Casas de banho', value: String(p.bathrooms) },
   { icon: 'car', label: 'Garagem', value: String(p.garageSpaces) },
   { icon: 'area', label: 'Área útil', value: `${p.usableArea} m²` },
+  ...(p.grossArea ? [{ icon: 'area' as const, label: 'Área bruta', value: `${p.grossArea} m²` }] : []),
+  ...(p.plotArea ? [{ icon: 'area' as const, label: 'Área do terreno', value: `${p.plotArea} m²` }] : []),
   { icon: 'calendar', label: 'Construção', value: String(p.yearBuilt) },
   { icon: 'zap', label: 'Classe energética', value: p.energyClass ?? 'A indicar' }, // TODO: mandatory in real listings
-] as const;
+];
+
+// Long descriptions fold after a few lines ("Ler mais").
+const longText = p.description.join(' ').length > 600;
+
+// The consultant in charge (Sanity: a reference to a team member); the first one until the client assigns them.
+const agent = team[p.agent ?? 0];
+const agentPhone = agent?.phone ?? mainPhone;
+const agentWhatsapp = `https://wa.me/${agent?.whatsapp ?? mainPhone.tel.replace(/\D/g, '')}?text=${encodeURIComponent(
+  `Olá, tenho interesse no imóvel ${p.title}${p.reference ? ` (ref. ${p.reference})` : ''}.`,
+)}`;
+
+const url = new URL(`/imoveis/${p.slug}/`, SITE_URL).href;
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'RealEstateListing',
+  name: p.title,
+  url,
+  image: gallery.slice(0, 6),
+  datePosted: p.addedAt,
+  description: p.description[0],
+  offers: {
+    '@type': 'Offer',
+    price: p.price,
+    priceCurrency: 'EUR',
+    availability: p.availability === 'sold' ? 'https://schema.org/SoldOut' : 'https://schema.org/InStock',
+    businessFunction: p.listingType === 'rent' ? 'https://purl.org/goodrelations/v1#LeaseOut' : 'https://purl.org/goodrelations/v1#Sell',
+  },
+  itemOffered: {
+    '@type': p.propertyType === 'apartment' ? 'Apartment' : p.propertyType === 'villa' ? 'SingleFamilyResidence' : 'Place',
+    numberOfBedrooms: p.bedrooms,
+    numberOfBathroomsTotal: p.bathrooms,
+    floorSize: { '@type': 'QuantitativeValue', value: p.usableArea, unitCode: 'MTK' },
+    address: {
+      '@type': 'PostalAddress',
+      addressLocality: zones[p.zone].name,
+      addressRegion: 'Faro',
+      addressCountry: 'PT',
+    },
+  },
+};
 ---
 
 <SiteLayout
   title={`${p.title}, ${place} | JPP Properties`}
-  description={`${propertyTypeLabels[p.propertyType]} T${p.bedrooms} em ${place}. ${p.usableArea} m². ${formatPrice(p.price)}.`}
+  description={`${propertyTypeLabels[p.propertyType]}${typology ? ` ${typology}` : ''} em ${place}. ${p.usableArea} m². ${formatPrice(p.price)}.`}
+  image={gallery[0]}
+  ogType="product"
+  {jsonLd}
 >
   <div class="container-x">
     <nav aria-label="Localização" class="text-sm text-muted">
       <ol class="flex flex-wrap items-center gap-2">
         <li>
-          <a href="/" class="hover:text-ink">
-            Início
-          </a>
+          <a href="/" class="hover:text-ink">Início</a>
         </li>
         <li aria-hidden="true">/</li>
         <li>
-          <a href="/imoveis/" class="hover:text-ink">
-            Imóveis
-          </a>
+          <a href="/imoveis/" class="hover:text-ink">Imóveis</a>
         </li>
         <li aria-hidden="true">/</li>
         <li>
-          <a href={`/imoveis/?zona=${p.zone}`} class="hover:text-ink">
-            {zones[p.zone].name}
-          </a>
+          <a href={`/imoveis/?zona=${p.zone}`} class="hover:text-ink">{zones[p.zone].name}</a>
         </li>
       </ol>
     </nav>
@@ -114,20 +163,49 @@ const facts = [
         </button>
       ))}
     </div>
+    {
+      (plans.length > 0 || p.videoUrl) && (
+        <div class="pd-media">
+          {plans.length > 0 && (
+            <button type="button" class="pd-media-btn" data-open-plans>
+              <Icon name="floorPlan" class="size-4" /> Ver planta
+            </button>
+          )}
+          {p.videoUrl && (
+            <a href={p.videoUrl} class="pd-media-btn" target="_blank" rel="noopener">
+              <Icon name="play" class="size-4" /> Ver vídeo
+            </a>
+          )}
+        </div>
+      )
+    }
 
     <div class="mt-10 grid items-start gap-10 lg:grid-cols-[1fr_24rem] lg:gap-14">
       <div>
-        <div class="flex flex-wrap items-start justify-between gap-4">
-          <div>
-            <h1 class="max-w-2xl font-display text-3xl leading-tight text-forest sm:text-4xl">
-              {p.title}
-            </h1>
-            <p class="mt-3 flex items-center gap-2 text-muted">
+        <!-- Head: tags, title, place and reference; price with share and save. -->
+        <div class="pd-head">
+          <div class="min-w-0">
+            <ul class="pd-tags" aria-label="Resumo">
+              {tags.map((t) => <li>{t}</li>)}
+            </ul>
+            <h1 class="pd-title">{p.title}</h1>
+            <p class="mt-3 flex flex-wrap items-center gap-x-2 gap-y-1 text-muted">
               <Icon name="pin" class="size-5" /> {place}
-              {p.reference && ` · Ref. ${p.reference}`}
+              {p.reference && <span>· Ref. {p.reference}</span>}
             </p>
           </div>
-          <p class="font-display text-3xl text-forest">{formatPrice(p.price)}</p>
+          <div class="pd-price-box">
+            <p class="pd-price">{formatPrice(p.price)}</p>
+            <div class="pd-actions">
+              <button type="button" class="pd-action" data-share aria-label="Partilhar este imóvel">
+                <Icon name="share" class="size-4" /> <span>Partilhar</span>
+              </button>
+              <button type="button" class="pd-action" data-save={p.slug} aria-pressed="false">
+                <Icon name="heart" class="size-4" /> <span data-save-label>Guardar</span>
+              </button>
+            </div>
+            <p class="pd-toast" role="status" aria-live="polite" data-toast></p>
+          </div>
         </div>
 
         <dl class="mt-8 grid grid-cols-2 gap-px overflow-hidden rounded-2xl border border-line bg-line sm:grid-cols-3">
@@ -143,20 +221,25 @@ const facts = [
         </dl>
 
         <section class="mt-12" aria-labelledby="desc">
-          <h2 id="desc" class="detail-title font-display text-2xl text-forest">
-            Sobre este imóvel
-          </h2>
-          <div class="mt-4 max-w-2xl space-y-4 text-lg leading-relaxed text-ink/85">
-            {p.description.map((para) => (
-              <p>{para}</p>
-            ))}
+          <h2 id="desc" class="detail-title font-display text-2xl text-forest">Sobre este imóvel</h2>
+          <div
+            id="desc-text"
+            class:list={['pd-desc mt-4 max-w-2xl space-y-4 text-lg leading-relaxed text-ink/85', longText && 'is-folded']}
+            data-desc
+          >
+            {p.description.map((para) => <p>{para}</p>)}
           </div>
+          {
+            longText && (
+              <button type="button" class="pd-more" data-desc-toggle aria-controls="desc-text" aria-expanded="false">
+                Ler mais <Icon name="chevronDown" class="size-4" />
+              </button>
+            )
+          }
         </section>
 
         <section class="mt-12" aria-labelledby="feat">
-          <h2 id="feat" class="detail-title font-display text-2xl text-forest">
-            Características
-          </h2>
+          <h2 id="feat" class="detail-title font-display text-2xl text-forest">Características</h2>
           <ul class="mt-4 grid gap-x-8 gap-y-3 sm:grid-cols-2">
             {p.features.map((f) => (
               <li class="flex items-start gap-3 border-b border-line pb-3">
@@ -167,34 +250,56 @@ const facts = [
         </section>
 
         <section class="mt-12" aria-labelledby="loc">
-          <h2 id="loc" class="detail-title font-display text-2xl text-forest">
-            Localização
-          </h2>
+          <h2 id="loc" class="detail-title font-display text-2xl text-forest">Localização</h2>
           <div class="mt-4">
             <PropertyMap property={p} {place} />
           </div>
+          {
+            p.nearby && p.nearby.length > 0 && (
+              <ul class="pd-nearby" aria-label="Nas proximidades">
+                {p.nearby.map((n) => (
+                  <li>
+                    <span>{n.place}</span>
+                    <span class="text-muted">{n.distance}</span>
+                  </li>
+                ))}
+              </ul>
+            )
+          }
         </section>
       </div>
 
-      <!-- Contact card -->
-      <aside
-        class="rounded-[2rem] border border-line bg-white p-6 lg:sticky lg:top-28"
-        aria-labelledby="info"
-      >
-        <h2 id="info" class="detail-title font-display text-2xl text-forest">
-          Pedir informações
-        </h2>
-        <p class="mt-1 text-sm text-muted">Respondemos o mais depressa possível.</p>
-        <div class="mt-5 grid grid-cols-2 gap-2">
-          <a href={`tel:${mainPhone.tel}`} class="btn btn-lime px-3">
+      <!-- Contact card: the consultant in charge, direct call and WhatsApp, then the form. -->
+      <aside class="pd-contact lg:sticky lg:top-28" aria-labelledby="info" id="pedir-informacoes">
+        <h2 id="info" class="detail-title font-display text-2xl text-forest">Pedir informações</h2>
+        {
+          agent && (
+            <div class="pd-agent">
+              {agent.photo ? (
+                <img src={agent.photo} alt="" class="pd-agent-photo" width="56" height="56" loading="lazy" />
+              ) : (
+                <span class="pd-agent-photo pd-agent-ph" aria-hidden="true">
+                  <Icon name="user" class="size-6" />
+                </span>
+              )}
+              <div class="min-w-0">
+                <p class="pd-agent-kicker">Consultor responsável</p>
+                <p class="pd-agent-name">{agent.name}</p>
+                <p class="pd-agent-role">{agent.role}</p>
+              </div>
+            </div>
+          )
+        }
+        <div class="mt-4 grid grid-cols-2 gap-2">
+          <a href={`tel:${agentPhone.tel}`} class="btn btn-lime px-3">
             <Icon name="phone" class="size-5" /> Ligar
           </a>
-          <a href={whatsappUrl} rel="noopener" class="btn btn-ghost px-3">
+          <a href={agentWhatsapp} target="_blank" rel="noopener" class="btn btn-ghost px-3">
             <Icon name="whatsapp" class="size-5" /> WhatsApp
           </a>
         </div>
         <p class="mt-2 text-xs text-muted">
-          {mainPhone.label} ({mainPhone.note})
+          {agentPhone.label} ({mainPhone.note})
         </p>
         <hr class="my-5 border-line" />
         <ContactForm
@@ -202,20 +307,37 @@ const facts = [
           reference={p.reference}
           propertyTitle={p.title}
           submitLabel="Pedir informações"
+          visitPicker
         />
       </aside>
     </div>
 
-    <section class="mt-24" aria-labelledby="sim">
-      <h2 id="sim" class="detail-title font-display text-2xl text-forest sm:text-3xl">
-        Imóveis semelhantes
-      </h2>
-      <div class="mt-8 grid gap-x-6 gap-y-12 sm:grid-cols-2 lg:grid-cols-3">
-        {[...similar, ...extra].map((o) => (
-          <PropertyCard property={o} />
-        ))}
+    <section class="pd-similar" aria-labelledby="sim">
+      <div class="pd-similar-head">
+        <h2 id="sim" class="detail-title font-display text-2xl text-forest sm:text-3xl">Imóveis semelhantes</h2>
+        <a href={`/imoveis/?zona=${p.zone}`} class="feat-all">
+          Ver todos em {zones[p.zone].name} <Icon name="arrowRight" class="size-4" />
+        </a>
+      </div>
+      <div class="pd-similar-row">
+        {[...similar, ...extra].map((o) => <PropertyCard property={o} />)}
       </div>
     </section>
+  </div>
+
+  <!-- Phones and tablets: price and the three ways to contact, always at hand (hidden while the contact card shows). -->
+  <div class="pd-bar" data-pbar aria-label="Contactar sobre este imóvel" role="region">
+    <div class="min-w-0">
+      <p class="pd-bar-price">{formatPrice(p.price)}</p>
+      <p class="pd-bar-place">{typology ? `${typology} · ` : ''}{zones[p.zone].name}</p>
+    </div>
+    <a href={`tel:${agentPhone.tel}`} class="pd-bar-ic" aria-label={`Ligar para ${agentPhone.label}`}>
+      <Icon name="phone" class="size-5" />
+    </a>
+    <a href={agentWhatsapp} target="_blank" rel="noopener" class="pd-bar-ic" aria-label="WhatsApp">
+      <Icon name="whatsapp" class="size-5" />
+    </a>
+    <a href="#pedir-informacoes" class="btn btn-lime pd-bar-cta" data-bar-visit>Pedir visita</a>
   </div>
 
   <!-- Lightbox -->
@@ -227,37 +349,16 @@ const facts = [
     <div class="on-dark flex h-full flex-col">
       <div class="flex items-center justify-between p-4">
         <p id="lb-count" class="text-sm text-white/80" aria-live="polite"></p>
-        <button
-          type="button"
-          id="lb-close"
-          class="grid size-12 glass-ic cursor-pointer place-items-center"
-          aria-label="Fechar galeria"
-        >
+        <button type="button" id="lb-close" class="grid size-12 glass-ic cursor-pointer place-items-center" aria-label="Fechar galeria">
           <Icon name="close" class="size-6" />
         </button>
       </div>
       <div class="relative flex min-h-0 flex-1 items-center justify-center px-2 sm:px-16">
-        <button
-          type="button"
-          id="lb-prev"
-          class="absolute left-2 z-10 grid size-12 glass-ic cursor-pointer place-items-center sm:left-4"
-          aria-label="Fotografia anterior"
-        >
+        <button type="button" id="lb-prev" class="absolute left-2 z-10 grid size-12 glass-ic cursor-pointer place-items-center sm:left-4" aria-label="Fotografia anterior">
           <Icon name="chevronLeft" class="size-6" />
         </button>
-        <img
-          id="lb-img"
-          src=""
-          alt=""
-          class="max-h-full max-w-full rounded-xl object-contain"
-          referrerpolicy="no-referrer"
-        />
-        <button
-          type="button"
-          id="lb-next"
-          class="absolute right-2 z-10 grid size-12 glass-ic cursor-pointer place-items-center sm:right-4"
-          aria-label="Fotografia seguinte"
-        >
+        <img id="lb-img" src="" alt="" class="max-h-full max-w-full rounded-xl object-contain" referrerpolicy="no-referrer" />
+        <button type="button" id="lb-next" class="absolute right-2 z-10 grid size-12 glass-ic cursor-pointer place-items-center sm:right-4" aria-label="Fotografia seguinte">
           <Icon name="chevronRight" class="size-6" />
         </button>
       </div>
@@ -265,23 +366,28 @@ const facts = [
     </div>
   </dialog>
 
-  <script is:inline define:vars={{ gallery, title: p.title }}>
+  <script is:inline define:vars={{ gallery, plans, title: p.title }}>
+    // Lightbox: the photos, or the floor plans ("Ver planta").
     const dlg = document.getElementById('lightbox');
     const img = document.getElementById('lb-img');
     const count = document.getElementById('lb-count');
+    let set = gallery;
+    let what = 'fotografia';
     let i = 0;
     const show = (n) => {
-      i = (n + gallery.length) % gallery.length;
-      img.src = gallery[i];
-      img.alt = `${title}: fotografia ${i + 1} de ${gallery.length}`;
-      count.textContent = `${i + 1} / ${gallery.length}`;
+      i = (n + set.length) % set.length;
+      img.src = set[i];
+      img.alt = `${title}: ${what} ${i + 1} de ${set.length}`;
+      count.textContent = `${i + 1} / ${set.length}`;
     };
-    document.querySelectorAll('[data-open]').forEach((b) =>
-      b.addEventListener('click', () => {
-        show(Number(b.dataset.open));
-        dlg.showModal();
-      }),
-    );
+    const open = (list, kind, n) => {
+      set = list;
+      what = kind;
+      show(n);
+      dlg.showModal();
+    };
+    document.querySelectorAll('[data-open]').forEach((b) => b.addEventListener('click', () => open(gallery, 'fotografia', Number(b.dataset.open))));
+    document.querySelector('[data-open-plans]')?.addEventListener('click', () => open(plans, 'planta', 0));
     document.getElementById('lb-close').addEventListener('click', () => dlg.close());
     document.getElementById('lb-prev').addEventListener('click', () => show(i - 1));
     document.getElementById('lb-next').addEventListener('click', () => show(i + 1));
@@ -290,5 +396,80 @@ const facts = [
       if (e.key === 'ArrowRight') show(i + 1);
     });
     dlg.addEventListener('click', (e) => e.target === dlg && dlg.close());
+  </script>
+
+  <script>
+    // "Ler mais" on long descriptions.
+    const desc = document.querySelector<HTMLElement>('[data-desc]');
+    const toggle = document.querySelector<HTMLButtonElement>('[data-desc-toggle]');
+    toggle?.addEventListener('click', () => {
+      const open = desc!.classList.toggle('is-folded') === false;
+      toggle.setAttribute('aria-expanded', String(open));
+      toggle.firstChild!.textContent = open ? 'Ler menos ' : 'Ler mais ';
+    });
+
+    // Share: the phone's own share sheet, or copy the link.
+    const toast = document.querySelector<HTMLElement>('[data-toast]')!;
+    const say = (msg: string) => {
+      toast.textContent = msg;
+      toast.classList.add('is-on');
+      window.setTimeout(() => toast.classList.remove('is-on'), 2200);
+    };
+    document.querySelector('[data-share]')?.addEventListener('click', async () => {
+      const data = { title: document.title, url: location.href.split('?')[0] };
+      try {
+        if (navigator.share) await navigator.share(data);
+        else {
+          await navigator.clipboard.writeText(data.url);
+          say('Link copiado');
+        }
+      } catch {
+        /* the visitor closed the share sheet */
+      }
+    });
+
+    // Save: a list of saved listings kept in this browser only (no account).
+    const KEY = 'jpp:saved';
+    const saveBtn = document.querySelector<HTMLButtonElement>('[data-save]');
+    const read = (): string[] => {
+      try {
+        return JSON.parse(localStorage.getItem(KEY) ?? '[]');
+      } catch {
+        return [];
+      }
+    };
+    const sync = () => {
+      if (!saveBtn) return;
+      const on = read().includes(saveBtn.dataset.save!);
+      saveBtn.setAttribute('aria-pressed', String(on));
+      saveBtn.querySelector('[data-save-label]')!.textContent = on ? 'Guardado' : 'Guardar';
+    };
+    saveBtn?.addEventListener('click', () => {
+      const slug = saveBtn.dataset.save!;
+      const list = read();
+      const next = list.includes(slug) ? list.filter((s) => s !== slug) : [...list, slug];
+      try {
+        localStorage.setItem(KEY, JSON.stringify(next));
+      } catch {
+        /* storage blocked: the button still answers for this visit */
+      }
+      sync();
+      say(next.includes(slug) ? 'Guardado neste navegador' : 'Removido dos guardados');
+    });
+    sync();
+
+    // Phone/tablet contact bar: hidden while the contact card is on screen; "Pedir visita" goes to the form.
+    const bar = document.querySelector<HTMLElement>('[data-pbar]');
+    const card = document.getElementById('pedir-informacoes');
+    if (bar && card && 'IntersectionObserver' in window) {
+      new IntersectionObserver((entries) => bar.toggleAttribute('data-hide', entries[0].isIntersecting), {
+        threshold: 0.15,
+      }).observe(card);
+    }
+    document.querySelector('[data-bar-visit]')?.addEventListener('click', (e) => {
+      e.preventDefault();
+      card?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      window.setTimeout(() => card?.querySelector<HTMLSelectElement>('select[name="visit"]')?.focus({ preventScroll: true }), 600);
+    });
   </script>
 </SiteLayout>

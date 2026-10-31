@@ -25,6 +25,16 @@ export interface Property {
    * the pin on the property page map. Without it the map shows the zone.
    */
   mapsUrl?: string;
+  /** Responsible consultant: position in the team list (in Sanity, a reference to a team member). */
+  agent?: number;
+  /** Gross and plot areas in m², when they apply. */
+  grossArea?: number;
+  plotArea?: number;
+  /** Floor plan images and a video or virtual tour link, when the team adds them. */
+  floorPlans?: string[];
+  videoUrl?: string;
+  /** Distances to nearby places, typed by the team (e.g. { place: 'Praia da Falésia', distance: '5 min de carro' }). */
+  nearby?: { place: string; distance: string }[];
   price: number;
   bedrooms: number;
   bathrooms: number;
