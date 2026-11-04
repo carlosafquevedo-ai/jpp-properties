@@ -11,7 +11,7 @@
 
   /* Surfaces: white base, warm ivory for support */
   --color-paper: #ffffff; /* default background */
-  --color-paper-2: #f5f2ea; /* ivory: alternate tint, fields, tags */
+  --color-paper-2: #f5f8ee; /* pale sage (= --g-50): alternate tint, fields, tags */
   --color-line: #e7e1d3; /* borders and dividers */
 
   /* Text */
@@ -5448,7 +5448,7 @@ a.rv-author:hover {
   --r-sm: 0.5rem;
   --section-gap: clamp(2.5rem, 4.5vw, 3.75rem);
   --band-pad: clamp(2rem, 4vw, 3rem);
-  --band-bg: linear-gradient(180deg, #f7f4ed 0%, var(--color-paper-2) 100%);
+  --band-bg: linear-gradient(180deg, #f8faf3 0%, var(--color-paper-2) 100%);
   --band-edge: rgba(27, 30, 28, 0.06);
 }
 
@@ -6659,12 +6659,12 @@ footer.on-dark {
     var(--hdr-grain),
     linear-gradient(105deg, transparent 8%, rgba(158, 188, 58, 0.16) 30%, rgba(95, 127, 34, 0.26) 42%, rgba(158, 188, 58, 0.14) 54%, transparent 76%),
     radial-gradient(70% 160% at 100% 100%, rgba(158, 188, 58, 0.18) 0%, transparent 70%),
-    linear-gradient(115deg, #ffffff 0%, #f8f6ef 55%, #eef2df 100%);
+    linear-gradient(115deg, #ffffff 0%, #f6f9ef 55%, #eef2df 100%);
   --light-surface-hover:
     var(--hdr-grain),
     linear-gradient(105deg, transparent 8%, rgba(158, 188, 58, 0.22) 30%, rgba(95, 127, 34, 0.34) 42%, rgba(158, 188, 58, 0.2) 54%, transparent 76%),
     radial-gradient(70% 160% at 100% 100%, rgba(158, 188, 58, 0.26) 0%, transparent 70%),
-    linear-gradient(115deg, #ffffff 0%, #f4f2e8 55%, #e6edcf 100%);
+    linear-gradient(115deg, #ffffff 0%, #f2f6e6 55%, #e6edcf 100%);
 }
 .site-header .hdr-cta,
 .site-header[data-stuck] .hdr-cta,
@@ -11337,4 +11337,53 @@ main:has(> .nf) + footer {
   .m-menu-chev {
     transition: none;
   }
+}
+
+/* ==== Light buttons ==============================================================================================
+   Every white CTA (header "Contactar", hero "Quero vender", 404 "Página inicial", "Partilhar", "Filtros", .btn-ghost)
+   takes the whitened surface of "Explore por zona": near-white easing into pale green, a lime hairline edge, dark type
+   and a soft shadow. The green .btn-lime stays the main action beside it. */
+:is(.site-header .hdr-cta, .btn-soft, .btn-ghost, .nf-btn-light, .pd-action, .flt-open):not(#\#) {
+  border: 1px solid rgba(158, 188, 58, 0.6);
+  background-color: #fff;
+  background-image: linear-gradient(180deg, #fff 0%, #f4f8e8 100%);
+  color: var(--color-ink);
+  box-shadow: 0 6px 14px -10px rgba(46, 63, 18, 0.45);
+}
+:is(.site-header .hdr-cta, .btn-soft, .btn-ghost, .nf-btn-light, .pd-action, .flt-open):is(:hover, :focus-visible):not(#\#) {
+  border-color: var(--color-lime);
+  background-color: #fff;
+  background-image: linear-gradient(180deg, #f8fbef 0%, #e6efc9 100%);
+  color: var(--g-800);
+}
+
+/* ==== One palette =================================================================================================
+   Colour review: nothing outside the greens, white and the ink competes with the sections. Dark actions and selected
+   tabs use the scale's dark greens instead of carbon, the WhatsApp button joins the green surface, review stars are lime. */
+.btn-dark:not(#\#) {
+  background-color: var(--g-800);
+  background-image: linear-gradient(180deg, var(--g-600) 0%, var(--g-800) 100%);
+  color: #fff;
+}
+.btn-dark:is(:hover, :focus-visible):not(#\#) {
+  background-color: var(--g-700);
+  background-image: linear-gradient(180deg, var(--g-500) 0%, var(--g-700) 100%);
+  color: #fff;
+}
+input:checked + .glass-seg-opt:not(#\#),
+.flt-seg input:checked + span:not(#\#) {
+  background: var(--g-800);
+  color: #fff;
+}
+.fab-wa:not(#\#),
+.fab-wa:is(:hover, :focus-visible):not(#\#) {
+  background-color: var(--g-500);
+  background-image: var(--green-surface);
+  color: #fff;
+}
+.rv-star.is-on:not(#\#) {
+  fill: var(--color-lime);
+}
+.rv-more:not(#\#) {
+  color: var(--color-olive);
 }
