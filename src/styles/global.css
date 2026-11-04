@@ -11227,3 +11227,114 @@ main:has(> .nf) + footer {
 .zx-count small {
   color: var(--color-muted);
 }
+
+/* ==== Header menus ================================================================================================
+   Imóveis (three columns: business, zones, property types) and Sobre nós open as white sheets under the bar: on hover
+   with a mouse, on the caret with the keyboard or touch. Phones and tablets: the same options fold inside the menu. */
+.nav-drop {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+.nav-drop .nav-top {
+  padding-right: 0.25rem;
+}
+.nav-caret {
+  display: grid;
+  place-items: center;
+  width: 1.5rem;
+  height: 2rem;
+  margin-right: 0.25rem;
+  border-radius: var(--r-sm);
+  color: rgba(255, 255, 255, 0.75);
+  cursor: pointer;
+  transition:
+    color 0.2s,
+    transform 0.25s var(--ease-out);
+}
+.nav-caret:hover,
+.nav-caret:focus-visible {
+  color: #fff;
+}
+.nav-caret[aria-expanded='true'] {
+  transform: rotate(180deg);
+}
+.nav-menu {
+  right: auto;
+  left: 0;
+  display: grid;
+  gap: 1.5rem;
+  min-width: 13rem;
+  padding: 1rem 1.25rem;
+  border-radius: var(--r-card);
+}
+.nav-menu[data-cols='3'] {
+  grid-template-columns: repeat(3, minmax(9.5rem, 1fr));
+}
+.nav-menu ul {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.nav-col-title {
+  margin-bottom: 0.25rem;
+  font-size: 0.8rem;
+  color: var(--color-muted);
+}
+.nav-menu a.nav-link:not(#\#) {
+  padding: 0.45rem 0.75rem;
+  font-size: 0.925rem;
+  white-space: nowrap;
+  color: var(--color-ink);
+}
+.nav-menu a.nav-link:hover:not(#\#),
+.nav-menu a.nav-link:focus-visible:not(#\#) {
+  background: var(--g-50);
+  color: var(--color-olive);
+}
+.m-menu:not([hidden]) {
+  max-height: calc(100dvh - 6.5rem);
+  overflow-y: auto;
+}
+.m-menu-group > summary {
+  cursor: pointer;
+  list-style: none;
+}
+.m-menu-group > summary::-webkit-details-marker {
+  display: none;
+}
+.m-menu-chev {
+  color: rgba(255, 255, 255, 0.55);
+  transition: transform 0.25s var(--ease-out);
+}
+.m-menu-group[open] .m-menu-chev {
+  transform: rotate(180deg);
+}
+.m-menu-sub {
+  display: grid;
+  gap: 0.9rem;
+  padding: 0 0.25rem 1rem;
+}
+.m-menu-sub li {
+  border: 0;
+}
+.m-menu-sub a {
+  display: flex;
+  align-items: center;
+  min-height: 2.75rem;
+  color: rgba(255, 255, 255, 0.86);
+}
+.m-menu-sub a:hover,
+.m-menu-sub a:focus-visible {
+  color: var(--color-lime);
+}
+.m-menu-sub-title {
+  font-size: 0.8rem;
+  color: rgba(255, 255, 255, 0.55);
+}
+@media (prefers-reduced-motion: reduce) {
+  .nav-caret,
+  .m-menu-chev {
+    transition: none;
+  }
+}

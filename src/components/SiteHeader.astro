@@ -1,7 +1,7 @@
 ---
 import Flag from './Flag.astro';
 import Icon from './Icon.astro';
-import { logoImage, logoWhiteImage } from '../data/properties';
+import { logoImage, logoWhiteImage, propertyTypeLabels, zones } from '../data/properties';
 import { locales, localizedPath } from '../i18n/routes';
 import { useTranslations } from '../i18n/ui';
 import { email, instagramUrl, mainPhone, offices, openingHours, whatsappUrl } from '../lib/site';
@@ -12,10 +12,59 @@ interface Props {
 }
 const { overHero = false } = Astro.props;
 const path = Astro.url.pathname;
-const links = [
-  { href: '/imoveis/', label: 'Imóveis', match: '/imoveis' },
-  { href: '/#vender', label: 'Vender' },
-  { href: '/#sobre', label: 'Sobre nós' },
+type NavLink = { href: string; label: string; infoPanel?: boolean };
+type NavItem = {
+  id: string;
+  href: string;
+  label: string;
+  match?: string;
+  /** Dropdown columns; the title is left out when there is only one column. */
+  groups?: { title?: string; links: NavLink[] }[];
+};
+const links: NavItem[] = [
+  {
+    id: 'imoveis',
+    href: '/imoveis/',
+    label: 'Imóveis',
+    match: '/imoveis',
+    groups: [
+      {
+        title: 'Negócio',
+        links: [
+          { href: '/imoveis/?tipo=comprar', label: 'Comprar' },
+          { href: '/imoveis/?tipo=arrendar', label: 'Arrendar' },
+          { href: '/imoveis/', label: 'Ver todos os imóveis' },
+        ],
+      },
+      {
+        title: 'Zonas',
+        links: Object.entries(zones).map(([id, z]) => ({ href: `/imoveis/?zona=${id}`, label: z.name })),
+      },
+      {
+        title: 'Tipo de imóvel',
+        links: Object.entries(propertyTypeLabels).map(([id, label]) => ({ href: `/imoveis/?imovel=${id}`, label })),
+      },
+    ],
+  },
+  { id: 'vender', href: '/#vender', label: 'Vender' },
+  {
+    id: 'sobre',
+    href: '/#sobre',
+    label: 'Sobre nós',
+    groups: [
+      {
+        links: [
+          { href: '/#sobre', label: 'Quem somos' },
+          { href: '/#equipa', label: 'A equipa' },
+          { href: '/#resultados', label: 'Resultados' },
+          { href: '/#avaliacoes', label: 'Avaliações' },
+          { href: '/#como-trabalhamos', label: 'Como trabalhamos' },
+          { href: '/#sobre', label: 'Contactos', infoPanel: true },
+        ],
+      },
+    ],
+  },
+  { id: 'carreiras', href: '/carreiras/', label: 'Carreiras', match: '/carreiras' },
 ];
 
 // TODO: EN/FR pages are placeholders for now, so the switcher points to their home pages.
@@ -47,14 +96,43 @@ const linkClass =
     <nav class="hidden items-center lg:flex" aria-label="Principal">
       <ul class="flex items-center gap-1">
         {links.map((l) => (
-          <li>
+          <li class={l.groups ? 'nav-drop' : undefined} data-nav-drop={l.groups ? '' : undefined}>
             <a
               href={l.href}
               aria-current={l.match && path.startsWith(l.match) ? 'page' : undefined}
-              class={linkClass}
+              class={`nav-top ${linkClass}`}
             >
               {l.label}
             </a>
+            {l.groups && (
+              <>
+                <button
+                  type="button"
+                  class="nav-caret"
+                  aria-expanded="false"
+                  aria-controls={`nav-${l.id}`}
+                  aria-label={`Mostrar opções de ${l.label}`}
+                >
+                  <Icon name="chevronDown" class="size-4" />
+                </button>
+                <div id={`nav-${l.id}`} class="lang-menu nav-menu" data-cols={l.groups.length} hidden>
+                  {l.groups.map((g) => (
+                    <div class="nav-col">
+                      {g.title && <p class="nav-col-title">{g.title}</p>}
+                      <ul>
+                        {g.links.map((n) => (
+                          <li>
+                            <a href={n.href} class="mega-link nav-link" data-info-open={n.infoPanel ? '' : undefined}>
+                              {n.label}
+                            </a>
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  ))}
+                </div>
+              </>
+            )}
           </li>
         ))}
       </ul>
@@ -136,14 +214,39 @@ const linkClass =
       <ul class="m-menu-links">
         {links.map((l) => (
           <li>
-            <a
-              href={l.href}
-              class="m-menu-link"
-              aria-current={l.match && path.startsWith(l.match) ? 'page' : undefined}
-            >
-              <span>{l.label}</span>
-              <Icon name="arrowUpRight" class="m-menu-arrow size-5" />
-            </a>
+            {l.groups ? (
+              <details class="m-menu-group" name="m-menu">
+                <summary class="m-menu-link">
+                  <span>{l.label}</span>
+                  <Icon name="chevronDown" class="m-menu-chev size-5" />
+                </summary>
+                <div class="m-menu-sub">
+                  {l.groups.map((g) => (
+                    <div>
+                      {g.title && <p class="m-menu-sub-title">{g.title}</p>}
+                      <ul>
+                        {g.links.map((n) => (
+                          <li>
+                            <a href={n.href} data-info-open={n.infoPanel ? '' : undefined}>
+                              {n.label}
+                            </a>
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  ))}
+                </div>
+              </details>
+            ) : (
+              <a
+                href={l.href}
+                class="m-menu-link"
+                aria-current={l.match && path.startsWith(l.match) ? 'page' : undefined}
+              >
+                <span>{l.label}</span>
+                <Icon name="arrowUpRight" class="m-menu-arrow size-5" />
+              </a>
+            )}
           </li>
         ))}
       </ul>
@@ -287,7 +390,7 @@ const linkClass =
 
   // Scrollspy (home page): highlight the nav link of the section that is on screen.
   const spyLinks = [
-    ...document.querySelectorAll<HTMLAnchorElement>('nav[aria-label="Principal"] a[href^="/#"]'),
+    ...document.querySelectorAll<HTMLAnchorElement>('nav[aria-label="Principal"] a.nav-top[href^="/#"]'),
   ];
   const spyTargets = spyLinks
     .map((a) => ({ a, el: document.getElementById(a.getAttribute('href')!.slice(2)) }))
@@ -360,6 +463,14 @@ const linkClass =
     document.querySelector<HTMLElement>('[data-lang]'),
     document.getElementById('lang-menu'),
   );
+  // Main menu dropdowns (Imóveis, Sobre nós); following a link inside closes them.
+  document.querySelectorAll<HTMLElement>('[data-nav-drop]').forEach((root) => {
+    const menu = root.querySelector<HTMLElement>('.nav-menu');
+    register(root, menu);
+    menu?.addEventListener('click', (e) => {
+      if ((e.target as HTMLElement).closest('a')) drops.forEach(close);
+    });
+  });
   // Contact panel: a modal dialog (Escape and the backdrop close it).
   const infoPanel = document.getElementById('info-panel') as HTMLDialogElement | null;
   if (infoPanel) {
