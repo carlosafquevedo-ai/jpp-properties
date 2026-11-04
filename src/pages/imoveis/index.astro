@@ -209,6 +209,14 @@ const AREAS = [50, 75, 100, 150, 200, 300];
             <span data-apply-label>Ver imóveis</span>
           </button>
         </div>
+
+        <!-- Desktop only: a hint while more filters sit below the fold (hidden once the end is in view). -->
+        <div class="flt-hint" data-flt-hint hidden>
+          <button type="button" class="flt-hint-btn" data-flt-hint-btn>
+            Ver todos os filtros
+            <Icon name="chevronDown" class="size-4" />
+          </button>
+        </div>
       </form>
     </aside>
 
@@ -250,6 +258,30 @@ const AREAS = [50, 75, 100, 150, 200, 300];
     </section>
   </div>
 </SiteLayout>
+
+<script>
+  // "Ver todos os filtros": on desktop the filter panel scrolls on its own; show a pill while the end is out of view.
+  {
+    const form = document.getElementById('filters');
+    const more = form?.querySelector<HTMLElement>('[data-flt-hint]');
+    const btn = form?.querySelector<HTMLButtonElement>('[data-flt-hint-btn]');
+    if (form && more && btn) {
+      const update = () => {
+        const hidden = form.scrollHeight - form.scrollTop - form.clientHeight < 12;
+        more.hidden = hidden;
+      };
+      form.addEventListener('scroll', update, { passive: true });
+      new ResizeObserver(update).observe(form);
+      form.addEventListener('change', () => requestAnimationFrame(update));
+      form.addEventListener('toggle', () => requestAnimationFrame(update), true);
+      btn.addEventListener('click', () => {
+        const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+        form.scrollTo({ top: form.scrollHeight, behavior: reduce ? 'auto' : 'smooth' });
+      });
+      update();
+    }
+  }
+</script>
 
 <script>
   // Listing filters. Every change filters the cards at once, updates the count (also on the phone sheet's button),

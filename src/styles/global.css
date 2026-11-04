@@ -631,9 +631,13 @@
   .fab-top:hover {
     background: var(--color-forest-2);
   }
+  /* Desktop: above the WhatsApp button on the right, as on phones, so it never covers the filters or other content
+     on the left of the page. */
   @media (min-width: 64rem) {
     .fab-top {
-      bottom: 1.5rem;
+      left: auto;
+      right: var(--gutter);
+      bottom: 5.25rem;
     }
   }
 
@@ -9976,7 +9980,62 @@ main:has(> .nf) + footer {
 .flt-apply {
   display: none;
 }
+.flt-hint {
+  display: none;
+}
 @media (min-width: 64rem) {
+  /* Sits at the bottom edge of the scrolling panel without taking space: a soft fade and a pill that scrolls down. */
+  .flt-hint {
+    position: sticky;
+    bottom: 0;
+    z-index: 3;
+    display: block;
+    height: 0;
+    pointer-events: none;
+  }
+  .flt-hint[hidden] {
+    display: none;
+  }
+  .flt-hint::before {
+    content: '';
+    position: absolute;
+    inset: auto 0 0;
+    height: 5.5rem;
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0), #fff 78%);
+  }
+  .flt-hint-btn {
+    position: absolute;
+    left: 50%;
+    bottom: 0.9rem;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    min-height: 2.5rem;
+    padding: 0 1rem 0 1.15rem;
+    border: 1px solid var(--sheet-edge);
+    border-radius: 9999px;
+    background: #fff;
+    box-shadow: var(--sheet-shadow);
+    color: var(--color-forest);
+    font-size: 0.875rem;
+    font-weight: 600;
+    white-space: nowrap;
+    cursor: pointer;
+    pointer-events: auto;
+    transform: translateX(-50%);
+    transition: border-color 0.2s;
+  }
+  .flt-hint-btn:hover {
+    border-color: var(--color-lime);
+  }
+  .flt-hint-btn svg {
+    animation: flt-hint-nudge 1.8s ease-in-out infinite;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .flt-hint-btn svg {
+      animation: none;
+    }
+  }
   .flt-aside {
     position: sticky;
     top: 6.5rem;
@@ -11466,5 +11525,15 @@ input:checked + .glass-seg-opt:not(#\#),
         filter: none;
       }
     }
+  }
+}
+
+@keyframes flt-hint-nudge {
+  0%,
+  100% {
+    transform: translateY(-1px);
+  }
+  50% {
+    transform: translateY(2px);
   }
 }
