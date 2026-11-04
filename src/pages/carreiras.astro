@@ -286,8 +286,7 @@ const experience = ['Sem experiência no setor', 'Menos de 2 anos', '2 a 5 anos'
     </div>
   </section>
 
-  <!-- Where you will work: a sage mist band with a white strip of three equal, square-cornered office photos in one row
-       (surface from the MeewVision weddings gallery). -->
+  <!-- Where you will work: one sage mist band with three equal, square-cornered office photos in one row. -->
   <section class="cp-gal" aria-labelledby="cp-onde">
     <div class="container-x cp-head cp-head-split">
       <h2 id="cp-onde" class="zones-title">Onde vai trabalhar</h2>
@@ -296,16 +295,14 @@ const experience = ['Sem experiência no setor', 'Menos de 2 anos', '2 a 5 anos'
         Lago.
       </p>
     </div>
-    <div class="cp-gal-strip">
-      <div class="container-x cp-gal-grid">
-        {
-          officePhotos.map((p) => (
-            <figure class="cp-gal-photo">
-              <img src={p.src} alt={p.alt} width={p.w} height={p.h} loading="lazy" decoding="async" />
-            </figure>
-          ))
-        }
-      </div>
+    <div class="container-x cp-gal-grid">
+      {
+        officePhotos.map((p) => (
+          <figure class="cp-gal-photo">
+            <img src={p.src} alt={p.alt} width={p.w} height={p.h} loading="lazy" decoding="async" />
+          </figure>
+        ))
+      }
     </div>
   </section>
 
