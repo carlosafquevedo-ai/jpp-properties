@@ -10522,3 +10522,649 @@ main:has(> .nf) + footer {
     padding-bottom: 5rem;
   }
 }
+
+/* ==== Careers page (/carreiras/) =================================================================================
+   On the structure of a recruiting page (reference: Engel & Völkers): dark top with the house structure,
+   benefits in three columns, the profile as an accordion beside the green columns with "Bom saber" on a glass sheet,
+   a photo mosaic, FAQ, then the application (contacts left, the form in the property page's contact sheet right).
+   Sections are spaced by --section-gap; photos float inside the page, so they are rounded. */
+.cp-crumbs {
+  margin-bottom: 1.5rem;
+}
+.cp-kicker {
+  margin-bottom: 0.6rem;
+  font-size: 0.9rem;
+  font-weight: 400;
+  color: var(--color-muted);
+}
+.cp-lead {
+  max-width: 36rem;
+  margin-top: 0.85rem;
+  color: var(--color-muted);
+}
+.cp-section {
+  margin-top: var(--section-gap);
+}
+.cp-head {
+  margin-bottom: 2rem;
+}
+.cp-link {
+  display: inline-flex;
+  align-items: center;
+  min-height: 2.75rem;
+  font-size: 0.925rem;
+  font-weight: 600;
+  color: var(--color-ink);
+  text-decoration: underline;
+  text-decoration-color: var(--color-lime);
+  text-decoration-thickness: 2px;
+  text-underline-offset: 0.3em;
+}
+.cp-link:hover,
+.cp-link:focus-visible {
+  color: var(--color-olive);
+}
+/* Top: the "Explore por zona" night (near-black olive, soft green glows, the header's grain). Left: the title, the house
+   structure and the text. Right: the application form on the white sheet. Bottom corners round like the home hero. */
+.cp-hero {
+  --hero-r: 1.875rem;
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  /* Runs up behind the floating header (main's top padding is 7rem). */
+  margin-top: -7rem;
+  padding-top: 8.5rem;
+  padding-bottom: clamp(2rem, 4vw, 3.5rem);
+  border-radius: 0 0 var(--hero-r) var(--hero-r);
+  color: #fff;
+  /* Calm on purpose: one soft light behind the house, no grain. */
+  background:
+    radial-gradient(52% 60% at 26% 62%, rgba(95, 130, 34, 0.38) 0%, transparent 74%),
+    linear-gradient(180deg, var(--g-900) 0%, var(--g-950) 100%);
+}
+.cp-hero .cp-crumbs {
+  margin: 0;
+  color: rgba(255, 255, 255, 0.6);
+}
+.cp-hero .cp-crumbs a:hover {
+  color: #fff;
+}
+.cp-hero-grid {
+  display: grid;
+  gap: 2.5rem;
+  margin-top: 1.5rem;
+}
+.cp-hero .cp-card {
+  color: var(--color-ink);
+  scroll-margin-top: 7rem;
+}
+.cp-hero .cp-lead {
+  margin-top: 0;
+  color: rgba(255, 255, 255, 0.78);
+}
+.cp-hero-house {
+  display: block;
+  width: 100%;
+  height: auto;
+  margin-block: 1.75rem;
+  /* Grounds it: a soft shadow under the plinth. */
+  filter: drop-shadow(0 1.5rem 1.25rem rgba(8, 12, 5, 0.5));
+  animation: cp-house-rise 1.1s cubic-bezier(0.2, 0.7, 0.2, 1) both;
+}
+/* The page title: two aligned lines in capitals, one weight and one colour, white easing into a pale brand green. Sized
+   on its column, so it spans the same width as the house; the negative margin lines its capitals up with the form's top. */
+.cp-hero-intro {
+  container-type: inline-size;
+}
+.cp-wall {
+  margin-top: -0.14em;
+  padding-bottom: 0.05em;
+  font-family: var(--font-display, inherit);
+  font-size: 8.6cqi;
+  font-weight: 600;
+  line-height: 1.04;
+  letter-spacing: -0.015em;
+  text-transform: uppercase;
+  background: linear-gradient(180deg, #fff 15%, #dfe9bd 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+.cp-wall span {
+  display: block;
+  white-space: nowrap;
+}
+@keyframes cp-house-rise {
+  from {
+    opacity: 0;
+    transform: translateY(2.5rem);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .cp-hero-house {
+    animation: none;
+  }
+}
+@media (min-width: 40.0625rem) {
+  .cp-hero {
+    --hero-r: 3.25rem;
+  }
+}
+@media (min-width: 64rem) {
+  .cp-hero {
+    padding-top: 7.5rem;
+  }
+  .cp-hero-grid {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 34rem);
+    align-items: stretch;
+    gap: 4rem;
+  }
+  /* Both columns share their top and bottom lines: the title meets the form's top, the text meets its bottom, and the
+     house, whole and as wide as the title's column, sits centred between them. */
+  .cp-hero-intro {
+    display: flex;
+    flex-direction: column;
+  }
+  .cp-hero-house {
+    flex: none;
+    margin-block: auto;
+  }
+  .cp-hero .cp-card {
+    display: flex;
+    flex-direction: column;
+    padding: 2rem;
+  }
+  .cp-form {
+    flex: 1;
+  }
+}
+/* The form: one quiet rhythm; the consent and the button close it at the bottom of the sheet. */
+.cp-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  margin-top: 1.25rem;
+}
+.cp-form-end {
+  display: grid;
+  gap: 1rem;
+  margin-top: auto;
+}
+
+/* Benefits: icon rows, side by side on desktop. */
+.cp-benefits {
+  display: grid;
+  gap: 1.5rem;
+  margin: 2rem 0 0;
+  padding: 0;
+  list-style: none;
+}
+.cp-benefit {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  gap: 1rem;
+  align-items: start;
+}
+.cp-benefit-icon {
+  display: grid;
+  place-items: center;
+  width: 2.75rem;
+  height: 2.75rem;
+}
+.cp-benefit-title {
+  font-family: var(--font-display, inherit);
+  font-size: 1.1rem;
+  font-weight: 600;
+  line-height: 1.25;
+  color: var(--color-ink);
+}
+.cp-benefit-text {
+  margin-top: 0.4rem;
+  font-size: 0.925rem;
+  line-height: 1.55;
+  color: var(--color-muted);
+}
+@media (min-width: 64rem) {
+  .cp-benefits {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 2rem;
+  }
+}
+
+/* Section heads: centred, or title left and text right. */
+.cp-head-center {
+  text-align: center;
+}
+.cp-head-center .cp-lead {
+  margin-inline: auto;
+}
+.cp-head-split {
+  display: grid;
+  gap: 0.85rem;
+}
+.cp-head-split .cp-lead {
+  margin-top: 0;
+}
+@media (min-width: 64rem) {
+  .cp-head-split {
+    grid-template-columns: minmax(0, 1.15fr) minmax(0, 0.85fr);
+    align-items: end;
+    gap: 4rem;
+  }
+}
+
+/* Accordion (profile and FAQ): hairline rows, a chevron that turns. */
+.cp-acc {
+  margin-top: 1.5rem;
+  border-top: 1px solid var(--color-line);
+}
+.cp-acc-item {
+  border-bottom: 1px solid var(--color-line);
+}
+.cp-acc-item > summary {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  min-height: 3.5rem;
+  padding: 0.75rem 0;
+  font-family: var(--font-display, inherit);
+  font-size: 1.05rem;
+  font-weight: 600;
+  color: var(--color-ink);
+  cursor: pointer;
+  list-style: none;
+}
+.cp-acc-item > summary::-webkit-details-marker {
+  display: none;
+}
+.cp-acc-item > summary:hover,
+.cp-acc-item > summary:focus-visible {
+  color: var(--color-olive);
+}
+.cp-acc-chev {
+  flex: none;
+  transition: transform 0.3s var(--ease-out);
+}
+.cp-acc-item[open] .cp-acc-chev {
+  transform: rotate(180deg);
+}
+.cp-acc-item > p,
+.cp-acc-item > ol {
+  max-width: 40rem;
+  margin: 0 0 1.1rem;
+  font-size: 0.95rem;
+  line-height: 1.55;
+  color: var(--color-muted);
+}
+/* Profile: expanding panels, quiet and precise: near-white cards with a hairline edge that catches the light, one soft
+   shadow, and a thin vertical line of light on the closed cards (the site's light family). Olive line icons and titles
+   (lime is never text on white). The open card takes about two fifths of the row; the others keep a number, an icon and
+   a vertical title. Phones and tablets: a stack of rows, the open one showing its text. */
+.cp-profile {
+  padding-top: var(--section-gap);
+  border-top: 1px solid var(--color-line);
+}
+.cp-panels {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+}
+.cp-panel {
+  position: relative;
+  overflow: hidden;
+  border: 1px solid transparent;
+  border-radius: var(--r-card);
+  background:
+    linear-gradient(180deg, #fff 0%, #fafbf6 100%) padding-box,
+    linear-gradient(160deg, rgba(27, 30, 28, 0.14) 0%, rgba(27, 30, 28, 0.05) 50%, rgba(75, 106, 26, 0.24) 100%) border-box;
+  color: var(--color-ink);
+  box-shadow: 0 14px 30px -24px rgba(27, 30, 28, 0.35);
+  transition:
+    transform 0.35s var(--ease-out),
+    box-shadow 0.35s var(--ease-out);
+}
+.cp-panel:not([open]):hover {
+  transform: translateY(-2px);
+  box-shadow: 0 18px 34px -24px rgba(27, 30, 28, 0.45);
+}
+/* Open: the edge lights up in lime and a faint glow rises from the bottom. */
+.cp-panel[open] {
+  background:
+    radial-gradient(70% 45% at 30% 100%, rgba(158, 188, 58, 0.1) 0%, transparent 100%) padding-box,
+    linear-gradient(180deg, #fff 0%, #fafbf6 100%) padding-box,
+    linear-gradient(160deg, rgba(158, 188, 58, 0.85) 0%, rgba(27, 30, 28, 0.06) 45%, rgba(158, 188, 58, 0.5) 100%) border-box;
+  box-shadow: 0 22px 44px -28px rgba(46, 63, 18, 0.5);
+}
+.cp-panel-tab {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  min-height: 3.75rem;
+  padding: 0.75rem 1.25rem;
+  cursor: pointer;
+  list-style: none;
+}
+.cp-panel-tab::-webkit-details-marker {
+  display: none;
+}
+.cp-panel-tab:focus-visible {
+  outline: 2px solid var(--color-olive);
+  outline-offset: -4px;
+  border-radius: var(--r-card);
+}
+.cp-panel-num {
+  font-size: 0.8rem;
+  font-variant-numeric: tabular-nums;
+  color: var(--color-muted);
+}
+.cp-panel-tab-icon {
+  flex: none;
+  color: var(--color-olive);
+}
+.cp-panel-label {
+  font-family: var(--font-display, inherit);
+  font-size: 1.05rem;
+  font-weight: 600;
+  color: var(--color-olive);
+}
+.cp-panel-chev {
+  flex: none;
+  margin-left: auto;
+  color: var(--color-muted);
+  transition: transform 0.3s var(--ease-out);
+}
+.cp-panel[open] .cp-panel-chev {
+  transform: rotate(180deg);
+}
+.cp-panel-body {
+  position: relative;
+  z-index: 1;
+  padding: 0.25rem 1.25rem 1.5rem;
+  animation: cp-panel-in 0.45s var(--ease-out) both;
+}
+@keyframes cp-panel-in {
+  from {
+    opacity: 0;
+    transform: translateY(0.6rem);
+  }
+}
+/* The open card's icon: phones and tablets already show it in the row. */
+.cp-panel-mark {
+  display: none;
+}
+.cp-panel-title {
+  font-family: var(--font-display, inherit);
+  font-size: var(--h-display);
+  font-weight: 600;
+  line-height: 1.08;
+  letter-spacing: -0.01em;
+  color: var(--color-olive);
+}
+.cp-panel-text {
+  margin-top: 0.75rem;
+  line-height: 1.55;
+  color: var(--color-muted);
+}
+.cp-panel-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  margin: 1.1rem 0 0;
+  padding: 0;
+  list-style: none;
+}
+.cp-panel-tags li {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  padding: 0.3rem 0.75rem;
+  border: 1px solid rgba(27, 30, 28, 0.1);
+  border-radius: 9999px;
+  font-size: 0.8rem;
+  font-weight: 500;
+}
+.cp-panel-tags li::before {
+  content: '';
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--color-lime);
+}
+@media (min-width: 64rem) {
+  .cp-panels {
+    flex-direction: row;
+    height: 24rem;
+    gap: 0.75rem;
+  }
+  .cp-panel {
+    flex: 1 1 0;
+    min-width: 0;
+    transition:
+      flex-grow 0.55s var(--ease-out),
+      transform 0.35s var(--ease-out),
+      box-shadow 0.35s var(--ease-out);
+  }
+  .cp-panel[open] {
+    flex-grow: 3;
+  }
+  /* Closed: the whole card is the tab: number and icon on top, the title reading upwards at the bottom. */
+  .cp-panel-tab {
+    position: absolute;
+    inset: 0;
+    flex-wrap: wrap;
+    align-content: space-between;
+    justify-content: space-between;
+    padding: 1.5rem;
+  }
+  .cp-panel-tab-icon {
+    width: 1.35rem;
+    height: 1.35rem;
+    stroke-width: 1.5;
+  }
+  .cp-panel-label {
+    flex-basis: 100%;
+    writing-mode: vertical-rl;
+    transform: rotate(180deg);
+    font-size: 1.4rem;
+    font-weight: 600;
+    line-height: 1;
+  }
+  /* Closed: a thin vertical line of light, from the number down towards the title. */
+  .cp-panel:not([open])::after {
+    content: '';
+    position: absolute;
+    top: 3.75rem;
+    left: calc(1.5rem + 0.7rem);
+    width: 1px;
+    height: 34%;
+    pointer-events: none;
+    background: linear-gradient(180deg, rgba(158, 188, 58, 0.9) 0%, rgba(158, 188, 58, 0) 100%);
+  }
+  .cp-panel-chev {
+    display: none;
+  }
+  /* Open: only a strip on top stays the tab, with the number; the icon sits at the corner, in the body. */
+  .cp-panel[open] .cp-panel-tab {
+    inset: 0 0 auto;
+    min-height: 0;
+    cursor: default;
+  }
+  .cp-panel[open] .cp-panel-tab-icon,
+  .cp-panel[open] .cp-panel-label {
+    display: none;
+  }
+  .cp-panel-body {
+    position: absolute;
+    inset: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    padding: 0;
+    animation-delay: 0.15s;
+  }
+  .cp-panel-mark {
+    position: absolute;
+    display: block;
+    top: 0;
+    right: 0;
+    width: 1.75rem;
+    height: 1.75rem;
+    color: var(--color-olive);
+    stroke-width: 1.4;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .cp-panel,
+  .cp-panel-chev {
+    transition: none;
+  }
+  .cp-panel:not([open]):hover,
+  .cp-panel[open] {
+    transform: none;
+  }
+  .cp-panel-body {
+    animation: none;
+  }
+}
+
+/* Where you will work: a sage mist band with a white strip of three equal, square-cornered photos in one row on the page
+   column (surface from the MeewVision weddings gallery). Phones: the row slides sideways, the next photo peeking. */
+.cp-gal {
+  --cp-gal-gap: 14px;
+  margin-top: var(--section-gap);
+  padding-block: var(--band-pad);
+  background: var(--mist);
+}
+.cp-gal-strip {
+  padding-block: var(--cp-gal-gap);
+  background: #fff;
+}
+.cp-gal-grid {
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: 78%;
+  gap: var(--cp-gal-gap);
+  overflow-x: auto;
+  scroll-snap-type: x proximity;
+  scrollbar-width: none;
+}
+.cp-gal-grid::-webkit-scrollbar {
+  display: none;
+}
+.cp-gal-photo {
+  aspect-ratio: 4 / 3;
+  margin: 0;
+  overflow: hidden;
+  background: var(--color-paper-2);
+  scroll-snap-align: center;
+}
+.cp-gal-photo img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+@media (min-width: 48rem) {
+  .cp-gal-grid {
+    grid-auto-flow: row;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    overflow: visible;
+  }
+}
+
+/* Testimonial (shown only with a real quote) */
+.cp-quote blockquote {
+  max-width: 44rem;
+  margin: 0 auto;
+  text-align: center;
+}
+.cp-quote blockquote p {
+  font-family: var(--font-display, inherit);
+  font-size: clamp(1.25rem, 2vw, 1.6rem);
+  line-height: 1.35;
+  color: var(--color-forest);
+}
+.cp-quote footer {
+  margin-top: 1rem;
+  font-size: 0.9rem;
+  color: var(--color-muted);
+}
+
+/* FAQ */
+.cp-faq .cp-head {
+  margin-bottom: 0;
+}
+.cp-faq .cp-acc {
+  max-width: 48rem;
+  margin-inline: auto;
+}
+
+/* How applying works: "Como trabalhamos" in three columns, and shorter cards. */
+.cp-steps {
+  margin-top: 0;
+}
+.cp-steps .hww-card {
+  min-height: 0;
+}
+@media (min-width: 40rem) {
+  .cp-steps {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+/* Closing call to action: the hero's dark green on a floating panel; the usual gap before the footer. */
+.cp-cta {
+  display: grid;
+  gap: 1.5rem;
+  justify-items: start;
+  margin-bottom: var(--section-gap);
+  padding: clamp(1.75rem, 4vw, 3rem);
+  border-radius: var(--r-panel);
+  background:
+    radial-gradient(50% 120% at 12% 100%, rgba(95, 130, 34, 0.38) 0%, transparent 74%),
+    linear-gradient(180deg, var(--g-900) 0%, var(--g-950) 100%);
+}
+.cp-cta .zones-title {
+  color: #fff;
+}
+.cp-cta .cp-lead {
+  color: rgba(255, 255, 255, 0.78);
+}
+@media (min-width: 48rem) {
+  .cp-cta {
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: center;
+    gap: 2rem;
+  }
+}
+
+/* CV upload: the field look, with the picker as a small mist pill and the file name beside it (it may wrap). */
+.cp-file {
+  display: flex;
+  align-items: center;
+  gap: 0.85rem;
+  height: auto;
+  padding-block: 0.55rem;
+  font-size: 0.875rem;
+  color: var(--color-muted);
+}
+.cp-file-btn {
+  flex: none;
+  padding: 0.45rem 0.9rem;
+  border: 1px solid var(--sheet-edge);
+  border-radius: 9999px;
+  background: var(--color-paper-2);
+  font-weight: 500;
+  color: var(--color-ink);
+  cursor: pointer;
+}
+.cp-file-input:focus-visible + .cp-file-btn {
+  outline: 2px solid var(--color-olive);
+  outline-offset: 2px;
+}
+.cp-file-name {
+  min-width: 0;
+  line-height: 1.3;
+  overflow-wrap: anywhere;
+}

@@ -1,10 +1,10 @@
 ---
 import Icon from './Icon.astro';
 import { offices } from '../lib/site';
+import { localizedPath } from '../i18n/routes';
 
-// TODO: provisional copy (PT), to confirm with the client; EN/FR pending. The button goes to a careers page that does
-// not exist yet.
-const careersUrl = '/carreiras/';
+// TODO: provisional copy (PT), to confirm with the client; EN/FR pending.
+const careersUrl = localizedPath('careers', 'pt');
 const office = offices[0]!;
 const perks = [
   { icon: 'clientCare', text: 'Formação e acompanhamento desde o primeiro dia.' },
