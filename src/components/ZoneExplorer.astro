@@ -25,6 +25,7 @@ const pad = (n: number) => String(n).padStart(2, '0');
           alt=""
           data-active={i === 0 ? '' : undefined}
           loading={i === 0 ? 'eager' : 'lazy'}
+          decoding="async"
           referrerpolicy="no-referrer"
         />
       ) : (
@@ -80,7 +81,7 @@ const pad = (n: number) => String(n).padStart(2, '0');
             aria-current={i === 0 ? 'true' : undefined}
           >
             {t.image ? (
-              <img src={t.image} alt="" loading="lazy" referrerpolicy="no-referrer" />
+              <img src={t.image} alt="" loading="lazy" decoding="async" referrerpolicy="no-referrer" />
             ) : (
               <span class="zone-plain" />
             )}

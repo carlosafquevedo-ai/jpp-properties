@@ -9304,6 +9304,31 @@ main:has(> section#vender:last-of-type) + footer {
   .bwf-link {
     min-height: 2.75rem;
   }
+  /* Text links under the map and in consent lines get a 44px tap row too. */
+  .map-link,
+  main label a[href*='politica-de-privacidade'] {
+    display: inline-flex;
+    align-items: center;
+    min-height: 2.75rem;
+  }
+  /* Hero dots and pause button: keep the look, grow the touch area to 44px. */
+  .hero-dot,
+  .hero-pause {
+    position: relative;
+  }
+  .hero-dot::after,
+  .hero-pause::after {
+    content: '';
+    position: absolute;
+    inset: -0.25rem -0.1rem;
+    min-width: 2.75rem;
+    min-height: 2.75rem;
+    left: 50%;
+    top: 50%;
+    right: auto;
+    bottom: auto;
+    transform: translate(-50%, -50%);
+  }
   nav[aria-label='Localização'] a {
     display: inline-flex;
     align-items: center;
@@ -11386,4 +11411,60 @@ input:checked + .glass-seg-opt:not(#\#),
 }
 .rv-more:not(#\#) {
   color: var(--color-olive);
+}
+
+/* ==== Team cards on phones and tablets, refined ==================================================================
+   The row bleeds to the screen edge so the next portrait slides out of view instead of being cut at the page margin;
+   all portraits are the same size (no shrinking neighbours, which looked like a misaligned, smaller card) and keep a
+   calm 4:5 shape; the card in focus is simply the brightest. */
+@media (max-width: 63.99rem) {
+  .team-band .team-grid {
+    margin-inline: calc(var(--gutter) * -1);
+    padding: 0.5rem var(--gutter) 1.25rem;
+    scroll-padding-inline: var(--gutter);
+    gap: 0.75rem;
+  }
+  .team-band .team-card {
+    flex: 0 0 74%;
+    max-width: 21rem;
+    aspect-ratio: 4 / 5;
+    align-self: flex-start;
+  }
+  .team-band .team-photo,
+  .team-band .team-photo > img {
+    height: 100%;
+    aspect-ratio: auto;
+  }
+  .team-band .team-photo {
+    position: absolute;
+    inset: 0;
+  }
+  .team-band .team-photo > img {
+    width: 100%;
+    object-fit: cover;
+    object-position: 50% 15%;
+  }
+}
+@media (min-width: 40rem) and (max-width: 63.99rem) {
+  .team-band .team-card {
+    flex-basis: 40%;
+    max-width: 19rem;
+  }
+}
+@media (max-width: 63.99rem) and (prefers-reduced-motion: no-preference) {
+  @supports (animation-timeline: view()) {
+    .team-band .team-card {
+      animation-name: team-focus-flat;
+    }
+    @keyframes team-focus-flat {
+      0%,
+      100% {
+        filter: brightness(0.86);
+      }
+      30%,
+      55% {
+        filter: none;
+      }
+    }
+  }
 }
