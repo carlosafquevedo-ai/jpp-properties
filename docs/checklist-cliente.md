@@ -45,6 +45,7 @@ Todos escritos por nós como proposta; o cliente tem de os aprovar ou corrigir:
 - [ ] Licença ou crédito das 6 fotografias das zonas (Vilamoura, Quarteira, Vilasol, Vale do Lobo, Quinta do Lago, Loulé). Se não houver, o cliente envia fotografias próprias.
 - [ ] Logótipos em ficheiro vetorial (SVG ou PDF), para confirmar as cores da marca.
 - [ ] Uma fotografia da equipa ou do escritório para a secção de carreiras (opcional, hoje não tem foto).
+- [ ] Página de carreiras, "Onde vai trabalhar": 3 fotografias dos escritórios em boa resolução (mínimo 1400 px de largura). Hoje há 2 pequenas e 1 provisória da marina.
 
 ## 6. Páginas legais (obrigatório)
 
@@ -57,4 +58,5 @@ Todos escritos por nós como proposta; o cliente tem de os aprovar ou corrigir:
 
 - [ ] "Destaques" (empreendimentos/campanhas): voltam noutro sítio ou ficam de fora?
 - [ ] Com mais de um escritório, o painel "Fale connosco" e "Somos daqui" mostram o principal ou todos?
-- [ ] Página de carreiras (`/carreiras/`): o botão "Quero ser consultor" ainda não tem página de destino.
+- [ ] Página de carreiras: há vagas abertas reais a mostrar? Se sim, quais (função, regime, local); hoje a página não lista vagas.
+- [ ] Página de carreiras (`/carreiras/`): confirmar os textos (vantagens, perfil, "Bom saber", os 3 passos da candidatura e as respostas das perguntas frequentes, sobretudo **licença** e **remuneração**), o email que recebe as candidaturas, um testemunho real de um consultor (com autorização) e, se houver, fotos da equipa ou do escritório por dentro.
