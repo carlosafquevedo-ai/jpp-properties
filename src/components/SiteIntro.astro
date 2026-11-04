@@ -1,0 +1,245 @@
+---
+// Site entry: a short curtain when someone opens the site (a typed address, a bookmark, a shared link, a search
+// result), never when moving between its pages, reloading or going back. On the footer's deep olive with its grain,
+// the "JPP Properties" wordmark (the footer's type) rises letter by letter while a lime beam sweeps it to white;
+// a greeting turns over beneath it (PT, EN, FR, then the line); then the curtain lifts off the page.
+// The decision runs inline before the page paints, so the page never flashes first. Click or any key skips it.
+// Without JS, or with reduced motion asked for, there is no curtain (reduced motion: a short fade only).
+const wordmark = 'JPP Properties';
+// TODO: EN/FR versions of the closing line.
+const lines = ['Olá', 'Hello', 'Bonjour', 'Imóveis no Algarve'];
+---
+
+<div class="intro" id="site-intro" hidden aria-hidden="true">
+  <div class="intro-in">
+    <p class="intro-word">
+      {Array.from(wordmark).map((ch, i) => (
+        <span class="intro-lw" style={`--d:${120 + i * 45}ms`}>
+          <span class="intro-l">{ch === ' ' ? ' ' : ch}</span>
+        </span>
+      ))}
+    </p>
+    <p class="intro-lines">
+      {lines.map((l, i) => (
+        <span class="intro-line" style={`--i:${i}`}>{l}</span>
+      ))}
+    </p>
+  </div>
+</div>
+
+<script is:inline>
+  (function () {
+    var el = document.getElementById('site-intro');
+    if (!el) return;
+    var nav = performance.getEntriesByType && performance.getEntriesByType('navigation')[0];
+    var type = nav ? nav.type : 'navigate';
+    var fromSite = false;
+    try {
+      fromSite = !!document.referrer && new URL(document.referrer).origin === location.origin;
+    } catch (e) {}
+    // Only a fresh arrival: not a reload, back/forward, or a move from another page of the site.
+    if (type !== 'navigate' || fromSite) return;
+    var reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
+    el.hidden = false;
+    document.documentElement.setAttribute('data-intro', reduced ? 'calm' : 'on');
+    var done = false;
+    var finish = function () {
+      if (done) return;
+      done = true;
+      document.documentElement.setAttribute('data-intro', 'out');
+      setTimeout(function () {
+        el.remove();
+        document.documentElement.removeAttribute('data-intro');
+      }, 1000);
+    };
+    setTimeout(finish, reduced ? 600 : 3300);
+    el.addEventListener('click', finish);
+    addEventListener('keydown', finish, { once: true });
+  })();
+</script>
+
+<style>
+  /* Footer palette: deep olive ground with the header's grain, the olive wordmark, the lime beam. */
+  .intro {
+    position: fixed;
+    inset: 0;
+    z-index: 200;
+    display: grid;
+    place-items: center;
+    background: var(--g-900, #1a2414);
+    color: #fff;
+    cursor: pointer;
+    -webkit-font-smoothing: antialiased;
+  }
+  .intro[hidden] {
+    display: none;
+  }
+  .intro::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background:
+      var(--hdr-grain),
+      radial-gradient(70% 60% at 50% 50%, rgba(95, 130, 34, 0.16) 0%, transparent 75%);
+    pointer-events: none;
+  }
+  .intro-in {
+    position: relative;
+    display: grid;
+    justify-items: center;
+    gap: 0.6rem;
+    padding: 0 1.25rem;
+  }
+
+  /* Wordmark: the footer's type; the letters rise in, olive, then a lime beam runs along them and leaves them
+     white (each letter lights in turn, with a brief lime glow). */
+  .intro-word {
+    display: flex;
+    margin: 0;
+    overflow: hidden;
+    font-family: var(--font-sans);
+    font-size: clamp(2.75rem, 9vw, 7rem);
+    font-weight: 500;
+    line-height: 1.1;
+    letter-spacing: -0.045em;
+    white-space: nowrap;
+  }
+  .intro-lw {
+    display: inline-block;
+    translate: 0 105%;
+  }
+  .intro-l {
+    display: inline-block;
+    color: var(--color-olive);
+  }
+  :global(html[data-intro='on']) .intro-lw {
+    animation: intro-rise 1s cubic-bezier(0.16, 0.84, 0.2, 1) var(--d) both;
+  }
+  :global(html[data-intro='on']) .intro-l {
+    animation: intro-light 0.7s ease calc(0.85s + var(--d) * 0.9) both;
+  }
+  @keyframes intro-rise {
+    to {
+      translate: 0 0;
+    }
+  }
+  @keyframes intro-light {
+    0% {
+      color: var(--color-olive);
+      text-shadow: none;
+    }
+    45% {
+      color: var(--color-lime);
+      text-shadow: 0 0 0.35em rgba(158, 188, 58, 0.55);
+    }
+    100% {
+      color: #fff;
+      text-shadow: none;
+    }
+  }
+
+  /* Greetings: each one rises in and out in turn; the last one stays. */
+  .intro-lines {
+    position: relative;
+    display: grid;
+    margin: 0;
+    height: 1.6em;
+    overflow: hidden;
+    font-size: clamp(1.1rem, 1.8vw, 1.5rem);
+    font-weight: 500;
+    color: rgba(255, 255, 255, 0.85);
+  }
+  .intro-line {
+    grid-area: 1 / 1;
+    justify-self: center;
+    opacity: 0;
+    translate: 0 100%;
+  }
+  :global(html[data-intro='on']) .intro-line {
+    animation: intro-say 0.62s cubic-bezier(0.3, 0.8, 0.3, 1) calc(0.55s + var(--i) * 0.5s) both;
+  }
+  :global(html[data-intro='on']) .intro-line:last-child {
+    animation-name: intro-stay;
+    animation-duration: 0.7s;
+  }
+  @keyframes intro-say {
+    0% {
+      opacity: 0;
+      translate: 0 100%;
+    }
+    30%,
+    70% {
+      opacity: 1;
+      translate: 0 0;
+    }
+    100% {
+      opacity: 0;
+      translate: 0 -100%;
+    }
+  }
+  @keyframes intro-stay {
+    to {
+      opacity: 1;
+      translate: 0 0;
+    }
+  }
+
+  /* Exit: the curtain lifts with a soft rounded edge, the content fading up just before. */
+  :global(html[data-intro='out']) .intro {
+    animation: intro-lift 0.95s cubic-bezier(0.76, 0, 0.24, 1) forwards;
+    pointer-events: none;
+  }
+  :global(html[data-intro='out']) .intro-in {
+    animation: intro-fade 0.4s ease forwards;
+  }
+  :global(html[data-intro='out']) .intro-lw {
+    translate: 0 0;
+  }
+  :global(html[data-intro='out']) .intro-line:last-child {
+    opacity: 1;
+    translate: 0 0;
+  }
+  :global(html[data-intro='out']) .intro-l {
+    color: #fff;
+  }
+  @keyframes intro-lift {
+    to {
+      clip-path: inset(0 0 100% 0 round 0 0 50% 50%);
+    }
+  }
+  @keyframes intro-fade {
+    to {
+      opacity: 0;
+      translate: 0 -1.5rem;
+    }
+  }
+  .intro {
+    clip-path: inset(0 0 0 0 round 0 0 0 0);
+  }
+
+  /* Reduced motion: everything in place, a short fade out. */
+  :global(html[data-intro='calm']) .intro-lw,
+  :global(html[data-intro='calm']) .intro-line:last-child {
+    translate: 0 0;
+    opacity: 1;
+  }
+  :global(html[data-intro='calm']) .intro-l {
+    color: #fff;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    :global(html[data-intro='out']) .intro {
+      animation: intro-fade-all 0.4s ease forwards;
+    }
+    @keyframes intro-fade-all {
+      to {
+        opacity: 0;
+      }
+    }
+  }
+
+  /* No scrolling under the curtain. */
+  :global(html[data-intro='on']),
+  :global(html[data-intro='calm']) {
+    overflow: hidden;
+  }
+</style>

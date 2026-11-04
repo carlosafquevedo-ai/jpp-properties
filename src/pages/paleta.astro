@@ -1,0 +1,122 @@
+---
+import SiteLayout from '../layouts/SiteLayout.astro';
+
+// PROTOTYPE page for client approval. Values mirror the tokens in src/styles/global.css.
+const colors = [
+  { name: 'Branco', token: 'paper', hex: '#ffffff', use: 'Fundo base de todas as secções' },
+  {
+    name: 'Marfim',
+    token: 'paper-2',
+    hex: '#f5f2ea',
+    use: 'Apoio discreto: filtros, etiquetas, campos',
+  },
+  { name: 'Linha', token: 'line', hex: '#e7e1d3', use: 'Contornos e divisórias' },
+  { name: 'Tinta', token: 'ink', hex: '#1b1e1c', use: 'Texto e títulos' },
+  { name: 'Cinza quente', token: 'muted', hex: '#5b5e57', use: 'Texto secundário' },
+  {
+    name: 'Carvão',
+    token: 'forest',
+    hex: '#1b1e1c',
+    use: 'O único escuro: cabeçalho, botões, secções escuras',
+  },
+  { name: 'Carvão 2', token: 'forest-2', hex: '#2b2f2c', use: 'Realce sobre fundos escuros' },
+  { name: 'Oliva', token: 'olive', hex: '#4b6a1a', use: 'Ligações, destaques e secção secundária' },
+  {
+    name: 'Lima (marca)',
+    token: 'lime',
+    hex: '#9ebc3a',
+    use: 'Verde da JPP: botões de ação e etiquetas',
+  },
+];
+
+const lum = (hex: string) => {
+  const c = [1, 3, 5].map((i) => parseInt(hex.slice(i, i + 2), 16) / 255);
+  const [r, g, b] = c.map((v) => (v <= 0.03928 ? v / 12.92 : ((v + 0.055) / 1.055) ** 2.4));
+  return 0.2126 * r + 0.7152 * g + 0.0722 * b;
+};
+const ratio = (a: string, b: string) => {
+  const [hi, lo] = [lum(a), lum(b)].sort((x, y) => y - x);
+  return (hi + 0.05) / (lo + 0.05);
+};
+const pairs = [
+  { label: 'Texto sobre branco', fg: '#1b1e1c', bg: '#ffffff' },
+  { label: 'Texto secundário sobre branco', fg: '#5b5e57', bg: '#ffffff' },
+  { label: 'Oliva sobre branco', fg: '#4b6a1a', bg: '#ffffff' },
+  { label: 'Branco sobre carvão', fg: '#ffffff', bg: '#1b1e1c' },
+  { label: 'Branco sobre oliva', fg: '#ffffff', bg: '#4b6a1a' },
+  { label: 'Carvão sobre lima (botões)', fg: '#1b1e1c', bg: '#9ebc3a' },
+  { label: 'Lima sobre carvão', fg: '#9ebc3a', bg: '#1b1e1c' },
+  { label: 'Lima sobre branco (não usar para texto)', fg: '#9ebc3a', bg: '#ffffff' },
+];
+---
+
+<SiteLayout
+  title="Paleta de cores | JPP Properties"
+  description="Paleta de cores do protótipo do site."
+>
+  <div class="container-x pb-8">
+    <h1 class="font-display text-3xl text-forest sm:text-4xl">Paleta de cores</h1>
+    <p class="mt-4 max-w-2xl text-lg text-ink/80">
+      O fundo base é sempre branco. O escuro é um só (carvão) e o acento é o verde da marca. O verde
+      da marca (lima) fica para pequenos destaques: botões de ação sobre claro, etiquetas, pontos e
+      linhas. Nunca como texto sobre branco.
+    </p>
+  </div>
+
+  <section class="container-x" aria-label="Cores">
+    <ul class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+      {colors.map((c) => (
+        <li class="overflow-hidden rounded-2xl border border-line">
+          <div class="h-28" style={`background:${c.hex}`}></div>
+          <div class="p-4">
+            <p class="font-semibold">{c.name}</p>
+            <p class="mt-0.5 text-sm text-muted">
+              {c.hex.toUpperCase()} · <code>{c.token}</code>
+            </p>
+            <p class="mt-2 text-sm text-ink/80">{c.use}</p>
+          </div>
+        </li>
+      ))}
+    </ul>
+  </section>
+
+  <section class="container-x mt-20" aria-labelledby="contraste">
+    <h2 id="contraste" class="font-display text-2xl text-forest">
+      Contraste e legibilidade
+    </h2>
+    <p class="mt-3 max-w-2xl text-ink/80">Mínimo recomendado para texto: 4,5 para 1 (WCAG AA).</p>
+    <ul class="mt-6 grid gap-3 sm:grid-cols-2">
+      {pairs.map((p) => {
+        const r = ratio(p.fg, p.bg);
+        const ok = r >= 4.5;
+        return (
+          <li class="flex items-center gap-4 rounded-2xl border border-line p-3">
+            <span
+              class="grid h-14 w-24 shrink-0 place-items-center rounded-xl border border-line text-lg font-semibold"
+              style={`color:${p.fg};background:${p.bg}`}
+            >
+              Aa
+            </span>
+            <div>
+              <p class="text-sm font-semibold">{p.label}</p>
+              <p class="text-sm text-muted">
+                {r.toFixed(1)} para 1 · {ok ? 'Passa AA' : 'Não passa para texto'}
+              </p>
+            </div>
+          </li>
+        );
+      })}
+    </ul>
+  </section>
+
+  <section class="container-x mt-20" aria-labelledby="botoes">
+    <h2 id="botoes" class="font-display text-2xl text-forest">
+      Botões
+    </h2>
+    <div class="mt-6 flex flex-wrap gap-3">
+      <span class="btn btn-lime">Ação principal</span>
+      <span class="btn btn-dark">Ação escura</span>
+      <span class="btn btn-ghost">Secundário</span>
+    </div>
+  </section>
+</SiteLayout>

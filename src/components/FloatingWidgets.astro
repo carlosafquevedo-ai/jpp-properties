@@ -1,0 +1,44 @@
+---
+import Icon from './Icon.astro';
+import { whatsappUrl } from '../lib/site';
+---
+
+<!-- WhatsApp shortcut (bottom right, desktop: phones already have the bottom contact bar) -->
+<a
+  href={whatsappUrl}
+  target="_blank"
+  rel="noopener"
+  class="fab-wa"
+  aria-label="Falar connosco no WhatsApp"
+>
+  <Icon name="whatsapp" class="size-6" />
+  <span class="fab-wa-label">Fale connosco</span>
+</a>
+
+<!-- Back to top (bottom left), shown once 30% of the page has been scrolled -->
+<button type="button" class="fab-top" id="back-to-top" aria-label="Voltar ao topo" hidden>
+  <Icon name="arrowUp" class="size-5" />
+</button>
+
+<script>
+  const topBtn = document.getElementById('back-to-top');
+  if (topBtn) {
+    const update = () => {
+      const max = document.documentElement.scrollHeight - window.innerHeight;
+      const shown = max > 0 && window.scrollY / max >= 0.3;
+      if (shown) topBtn.hidden = false;
+      // Next frame so the fade-in transition runs after `hidden` is lifted.
+      requestAnimationFrame(() => topBtn.toggleAttribute('data-show', shown));
+    };
+    topBtn.addEventListener('transitionend', () => {
+      if (!topBtn.hasAttribute('data-show')) topBtn.hidden = true;
+    });
+    topBtn.addEventListener('click', () => {
+      const calm = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      window.scrollTo({ top: 0, behavior: calm ? 'auto' : 'smooth' });
+    });
+    window.addEventListener('scroll', update, { passive: true });
+    window.addEventListener('resize', update);
+    update();
+  }
+</script>

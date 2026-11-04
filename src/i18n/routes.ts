@@ -24,6 +24,7 @@ export const routes = {
   services: { pt: 'servicos', en: 'services', fr: 'services' },
   about: { pt: 'sobre-nos', en: 'about-us', fr: 'a-propos' },
   contact: { pt: 'contactos', en: 'contacts', fr: 'contacts' },
+  careers: { pt: 'carreiras', en: 'careers', fr: 'carrieres' },
   privacy: {
     pt: 'politica-de-privacidade',
     en: 'privacy-policy',

@@ -1,0 +1,561 @@
+---
+import Icon from './Icon.astro';
+import { zones } from '../data/properties';
+import { mainPhone } from '../lib/site';
+import {
+  casasDeBanho,
+  estados,
+  extras,
+  financiamento,
+  quartos,
+  tipologias,
+} from '../lib/lead-options';
+
+/**
+ * "Sell / buy" request form. Two intents share one card (tabs):
+ *  - vender: everything the agents need to analyse a property;
+ *  - comprar: what the buyer is looking for.
+ * The data is posted to the Pages Function at /api/lead, which e-mails the team (Resend). Nothing is stored.
+ * TODO: copy is provisional (PT); EN/FR versions pending.
+ */
+const siteKey = import.meta.env.PUBLIC_TURNSTILE_SITE_KEY as string | undefined;
+const zoneList = Object.values(zones).map((z) => z.name);
+const buyTypes = tipologias.filter(([v]) => v !== 'outro');
+
+const steps = [
+  'Preencha o formulário com os dados do imóvel ou do que procura.',
+  'A nossa equipa analisa o seu pedido.',
+  'Entramos em contacto consigo.',
+];
+---
+
+<section id="vender" class="on-dark container-x mt-24" aria-labelledby="lead-title">
+  <div class="lead-shell rise">
+    <div class="lead-intro">
+      <div>
+        <h2 id="lead-title" class="zones-title lead-title" data-lead-title>
+          Quer vender o seu imóvel?
+        </h2>
+        <p class="mt-5 max-w-md text-white/75" data-lead-text>
+          Diga-nos onde fica e o que tem. Avaliamos o imóvel e propomos a melhor forma de o
+          apresentar a quem procura.
+        </p>
+      </div>
+      <ol class="lead-steps">
+        {steps.map((s, i) => (
+          <li>
+            <span class="lead-step-num">{i + 1}</span>
+            <span>{s}</span>
+          </li>
+        ))}
+      </ol>
+      <p class="lead-call">
+        Prefere falar já?
+        <a href={`tel:${mainPhone.tel}`}>
+          <Icon name="phone" class="size-4" /> {mainPhone.label}
+        </a>
+      </p>
+      <div class="lead-rise" aria-hidden="true">
+        {Array.from({ length: 28 }, (_, i) => (
+          <span style={`--i: ${i}; --h: ${(10 + 90 * (i / 27) ** 1.8).toFixed(1)}%`} />
+        ))}
+      </div>
+    </div>
+
+    <div class="lead-card">
+      <div class="lead-tabs" role="tablist" aria-label="Tipo de pedido">
+        <button type="button" role="tab" class="lead-tab" data-tab="vender" aria-selected="true">
+          <Icon name="home" class="size-4" /> Quero vender
+        </button>
+        <button type="button" role="tab" class="lead-tab" data-tab="comprar" aria-selected="false">
+          <Icon name="search" class="size-4" /> Quero comprar
+        </button>
+      </div>
+
+      <form data-lead-form action="/api/lead" method="post" novalidate class="lead-form mt-6">
+        <input type="hidden" name="intent" value="vender" data-intent />
+        <!-- Honeypot: humans never see it; bots fill it. -->
+        <div class="absolute -left-[9999px]" aria-hidden="true">
+          <label>
+            Website <input type="text" name="website" tabindex="-1" autocomplete="off" />
+          </label>
+        </div>
+
+        <!-- Contact (both intents) -->
+        <fieldset class="lead-group lead-contact">
+          <legend>Os seus dados</legend>
+          <div class="grid gap-4 sm:grid-cols-2">
+            <div>
+              <label for="lead-name" class="lead-label">
+                Nome *
+              </label>
+              <input
+                id="lead-name"
+                name="name"
+                type="text"
+                autocomplete="name"
+                required
+                class="field"
+              />
+            </div>
+            <div>
+              <label for="lead-phone" class="lead-label">
+                Telefone *
+              </label>
+              <input
+                id="lead-phone"
+                name="phone"
+                type="tel"
+                autocomplete="tel"
+                required
+                class="field"
+              />
+            </div>
+            <div class="sm:col-span-2">
+              <label for="lead-email" class="lead-label">
+                Email *
+              </label>
+              <input
+                id="lead-email"
+                name="email"
+                type="email"
+                autocomplete="email"
+                required
+                class="field"
+              />
+            </div>
+          </div>
+        </fieldset>
+
+        <div class="lead-panels">
+          <!-- SELL -->
+          <fieldset class="lead-group" data-panel="vender">
+            <legend>O imóvel</legend>
+            <div class="grid grid-cols-2 gap-x-3 gap-y-4 sm:grid-cols-6 sm:gap-x-4 lg:grid-cols-8">
+              <div class="col-span-2 sm:col-span-3 lg:col-span-4">
+                <label for="lead-concelho" class="lead-label">
+                  Localidade / concelho *
+                </label>
+                <input
+                  id="lead-concelho"
+                  name="concelho"
+                  type="text"
+                  required
+                  autocomplete="address-level2"
+                  placeholder="Ex.: Vilamoura, Lisboa"
+                  maxlength="80"
+                  class="field"
+                />
+              </div>
+              <div class="order-1 sm:order-none sm:col-span-3 lg:col-span-4">
+                <label for="lead-cp" class="lead-label">
+                  Código postal
+                </label>
+                <input
+                  id="lead-cp"
+                  name="codigo_postal"
+                  type="text"
+                  inputmode="numeric"
+                  autocomplete="postal-code"
+                  placeholder="0000-000"
+                  pattern="\d{4}-\d{3}"
+                  class="field"
+                />
+              </div>
+              <div class="col-span-2 sm:col-span-4 lg:col-span-6">
+                <label for="lead-morada" class="lead-label">
+                  Morada *
+                </label>
+                <input
+                  id="lead-morada"
+                  name="morada"
+                  type="text"
+                  autocomplete="street-address"
+                  required
+                  class="field"
+                />
+              </div>
+              <div class="order-1 sm:order-none sm:col-span-2">
+                <label for="lead-porta" class="lead-label">
+                  Nº da porta *
+                </label>
+                <input id="lead-porta" name="porta" type="text" required class="field" />
+              </div>
+              <div class="order-2 col-span-2 sm:order-none sm:col-span-3 lg:col-span-4">
+                <label for="lead-tipologia" class="lead-label">
+                  Tipo de imóvel *
+                </label>
+                <select
+                  id="lead-tipologia"
+                  name="tipologia"
+                  required
+                  class="field field-select"
+                  data-tipologia
+                >
+                  <option value="">Escolha o tipo</option>
+                  {tipologias.map(([v, l]) => (
+                    <option value={v}>{l}</option>
+                  ))}
+                </select>
+              </div>
+              <div class="order-2 col-span-2 sm:order-none sm:col-span-3 lg:col-span-4" data-outro hidden>
+                <label for="lead-outro" class="lead-label">
+                  Qual? *
+                </label>
+                <input id="lead-outro" name="tipologia_outro" type="text" class="field" />
+              </div>
+              <div class="order-2 col-span-2 sm:order-none sm:col-span-3 lg:col-span-4">
+                <label for="lead-area" class="lead-label">
+                  Área útil (m²) *
+                </label>
+                <input
+                  id="lead-area"
+                  name="area_util"
+                  type="number"
+                  min="1"
+                  step="1"
+                  inputmode="numeric"
+                  required
+                  class="field"
+                />
+              </div>
+            </div>
+
+            <!-- Optional details, folded so the form stays short; the team can ask for them later. -->
+            <details class="lead-more">
+              <summary>
+                <span>Acrescentar detalhes</span>
+                <span class="lead-more-hint">opcional: quartos, áreas, estado, preço</span>
+                <Icon name="chevronDown" class="lead-more-caret size-4" />
+              </summary>
+              <div class="mt-4 grid grid-cols-2 gap-x-3 gap-y-4 sm:grid-cols-6 sm:gap-x-4 lg:grid-cols-8">
+                <div class="sm:col-span-2">
+                  <label for="lead-quartos" class="lead-label">
+                    Quartos
+                  </label>
+                  <select id="lead-quartos" name="quartos" class="field field-select">
+                    <option value="">—</option>
+                    {quartos.map(([v, l]) => (
+                      <option value={v}>{l}</option>
+                    ))}
+                  </select>
+                </div>
+                <div class="sm:col-span-2">
+                  <label for="lead-wc" class="lead-label">
+                    Casas de banho
+                  </label>
+                  <select id="lead-wc" name="casas_de_banho" class="field field-select">
+                    <option value="">—</option>
+                    {casasDeBanho.map(([v, l]) => (
+                      <option value={v}>{l}</option>
+                    ))}
+                  </select>
+                </div>
+                <div class="sm:col-span-2">
+                  <label for="lead-terreno" class="lead-label">
+                    Área do terreno (m²)
+                  </label>
+                  <input
+                    id="lead-terreno"
+                    name="area_terreno"
+                    type="number"
+                    min="0"
+                    step="1"
+                    inputmode="numeric"
+                    class="field"
+                  />
+                </div>
+                <div class="sm:col-span-2">
+                  <label for="lead-ano" class="lead-label">
+                    Ano de construção
+                  </label>
+                  <input
+                    id="lead-ano"
+                    name="ano"
+                    type="number"
+                    min="1800"
+                    max="2100"
+                    step="1"
+                    inputmode="numeric"
+                    class="field"
+                  />
+                </div>
+                <div class="sm:col-span-2">
+                  <label for="lead-estado" class="lead-label">
+                    Estado
+                  </label>
+                  <select id="lead-estado" name="estado" class="field field-select">
+                    <option value="">—</option>
+                    {estados.map(([v, l]) => (
+                      <option value={v}>{l}</option>
+                    ))}
+                  </select>
+                </div>
+                <div class="col-span-2 sm:col-span-6 lg:col-span-8">
+                  <span class="lead-label">Características</span>
+                  <div class="mt-2 flex flex-wrap gap-2">
+                    {extras.map(([, l]) => (
+                      <label class="lead-chip">
+                        <input type="checkbox" name="extras" value={l} class="peer sr-only" />
+                        <span>{l}</span>
+                      </label>
+                    ))}
+                  </div>
+                </div>
+                <div class="col-span-2 sm:col-span-3 lg:col-span-4">
+                  <label for="lead-preco" class="lead-label">
+                    Preço pretendido (€)
+                  </label>
+                  <input
+                    id="lead-preco"
+                    name="preco"
+                    type="number"
+                    min="0"
+                    step="1000"
+                    inputmode="numeric"
+                    class="field"
+                  />
+                </div>
+              </div>
+            </details>
+          </fieldset>
+
+          <!-- BUY -->
+          <fieldset class="lead-group" data-panel="comprar" hidden disabled>
+            <legend>O que procura</legend>
+            <div class="grid grid-cols-2 gap-x-3 gap-y-4 sm:grid-cols-6 sm:gap-x-4 lg:grid-cols-8">
+              <div class="col-span-2 sm:col-span-6 lg:col-span-8">
+                <span class="lead-label">Zonas de interesse</span>
+                <div class="mt-2 flex flex-wrap gap-2">
+                  {zoneList.map((z) => (
+                    <label class="lead-chip">
+                      <input type="checkbox" name="zonas" value={z} class="peer sr-only" />
+                      <span>{z}</span>
+                    </label>
+                  ))}
+                </div>
+              </div>
+              <div class="col-span-2 sm:col-span-6 lg:col-span-8">
+                <span class="lead-label">Tipo de imóvel</span>
+                <div class="mt-2 flex flex-wrap gap-2">
+                  {buyTypes.map(([, l]) => (
+                    <label class="lead-chip">
+                      <input type="checkbox" name="tipos" value={l} class="peer sr-only" />
+                      <span>{l}</span>
+                    </label>
+                  ))}
+                </div>
+              </div>
+              <div class="sm:col-span-2">
+                <label for="lead-quartos-min" class="lead-label">
+                  Quartos (mínimo)
+                </label>
+                <select id="lead-quartos-min" name="quartos_min" class="field field-select">
+                  <option value="">—</option>
+                  {quartos.map(([v, l]) => (
+                    <option value={v}>{l}</option>
+                  ))}
+                </select>
+              </div>
+              <div class="order-1 col-span-2 sm:order-none sm:col-span-2">
+                <label for="lead-orcamento" class="lead-label">
+                  Orçamento máximo (€) *
+                </label>
+                <input
+                  id="lead-orcamento"
+                  name="orcamento"
+                  type="number"
+                  min="0"
+                  step="1000"
+                  inputmode="numeric"
+                  required
+                  class="field"
+                />
+              </div>
+              <div class="sm:col-span-2">
+                <label for="lead-fin" class="lead-label">
+                  Financiamento
+                </label>
+                <select id="lead-fin" name="financiamento" class="field field-select">
+                  <option value="">—</option>
+                  {financiamento.map(([, l]) => (
+                    <option value={l}>{l}</option>
+                  ))}
+                </select>
+              </div>
+            </div>
+          </fieldset>
+        </div>
+
+        <div class="lead-msg">
+          <label for="lead-msg" class="lead-label">
+            Mensagem
+          </label>
+          <textarea
+            id="lead-msg"
+            name="message"
+            rows="3"
+            maxlength="2000"
+            class="field resize-y"
+            placeholder="Algo mais que devamos saber?"
+          ></textarea>
+        </div>
+
+        <div class="lead-bottom">
+          <label class="flex items-start gap-3 text-sm text-muted">
+            <input
+              type="checkbox"
+              name="consent"
+              required
+              class="mt-0.5 size-5 shrink-0 accent-[#4b6a1a]"
+            />
+            <span>
+              Aceito que a JPP Properties trate os meus dados para responder a este pedido, conforme
+              a{' '}
+              <a
+                href="/politica-de-privacidade/"
+                class="underline underline-offset-2 hover:text-ink"
+              >
+                Política de Privacidade
+              </a>
+              .
+            </span>
+          </label>
+
+          {siteKey && <div class="cf-turnstile" data-sitekey={siteKey} data-theme="light"></div>}
+
+          <div class="flex flex-wrap items-center gap-4">
+            <button type="submit" class="btn btn-dark" data-submit>
+              <span data-submit-label>Pedir avaliação</span>
+              <Icon name="arrowRight" class="size-4" />
+            </button>
+            <p class="text-xs text-muted">* Campos obrigatórios</p>
+          </div>
+
+          <p
+            class="hidden rounded-xl p-4 text-sm"
+            role="status"
+            aria-live="polite"
+            data-lead-status
+          ></p>
+        </div>
+      </form>
+    </div>
+  </div>
+</section>
+
+{siteKey && (
+  <script
+    is:inline
+    src="https://challenges.cloudflare.com/turnstile/v0/api.js"
+    async
+    defer
+  ></script>
+)}
+
+<script>
+  const copy = {
+    vender: {
+      title: 'Quer vender o seu imóvel?',
+      text: 'Diga-nos onde fica e o que tem. Avaliamos o imóvel e propomos a melhor forma de o apresentar a quem procura.',
+      submit: 'Pedir avaliação',
+      ok: 'Pedido enviado. Obrigado! A nossa equipa vai analisar o imóvel e entrar em contacto consigo.',
+    },
+    comprar: {
+      title: 'Procura casa no Algarve?',
+      text: 'Descreva o imóvel ideal e procuramos por si, incluindo propriedades que ainda não estão no site.',
+      submit: 'Enviar pedido',
+      ok: 'Pedido enviado. Obrigado! A nossa equipa vai procurar opções para si e entrar em contacto.',
+    },
+  } as const;
+  type Intent = keyof typeof copy;
+
+  const form = document.querySelector<HTMLFormElement>('[data-lead-form]');
+  if (form) {
+    const intentInput = form.querySelector<HTMLInputElement>('[data-intent]')!;
+    const tabs = document.querySelectorAll<HTMLButtonElement>('.lead-tab');
+    const panels = form.querySelectorAll<HTMLFieldSetElement>('[data-panel]');
+    const title = document.querySelector<HTMLElement>('[data-lead-title]');
+    const text = document.querySelector<HTMLElement>('[data-lead-text]');
+    const submitLabel = form.querySelector<HTMLElement>('[data-submit-label]')!;
+    const status = form.querySelector<HTMLElement>('[data-lead-status]')!;
+
+    const show = (intent: Intent) => {
+      intentInput.value = intent;
+      tabs.forEach((t) => t.setAttribute('aria-selected', String(t.dataset.tab === intent)));
+      panels.forEach((p) => {
+        const on = p.dataset.panel === intent;
+        p.hidden = !on;
+        p.disabled = !on; // disabled controls are neither validated nor sent
+      });
+      if (title) title.textContent = copy[intent].title;
+      if (text) text.textContent = copy[intent].text;
+      submitLabel.textContent = copy[intent].submit;
+      status.classList.add('hidden');
+    };
+    tabs.forEach((t) => t.addEventListener('click', () => show(t.dataset.tab as Intent)));
+    show('vender');
+
+    // "Outro" type: ask which one.
+    const tipologia = form.querySelector<HTMLSelectElement>('[data-tipologia]');
+    const outro = form.querySelector<HTMLElement>('[data-outro]');
+    const outroInput = outro?.querySelector<HTMLInputElement>('input');
+    tipologia?.addEventListener('change', () => {
+      const on = tipologia.value === 'outro';
+      if (outro) outro.hidden = !on;
+      if (outroInput) outroInput.required = on;
+    });
+
+    const say = (kind: 'ok' | 'error' | 'info', msg: string) => {
+      status.className =
+        'rounded-xl p-4 text-sm ' +
+        (kind === 'ok'
+          ? 'bg-lime/25 text-forest'
+          : kind === 'error'
+            ? 'bg-red-50 text-red-800'
+            : 'bg-paper-2 text-forest');
+      status.textContent = msg;
+    };
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      if (!form.checkValidity()) {
+        form.reportValidity();
+        return;
+      }
+      const button = form.querySelector<HTMLButtonElement>('[data-submit]')!;
+      button.disabled = true;
+      try {
+        const res = await fetch(form.action, { method: 'POST', body: new FormData(form) });
+        if (res.ok) {
+          const intent = intentInput.value as Intent;
+          form.reset();
+          form.querySelectorAll('details').forEach((d) => (d.open = false));
+          show(intent);
+          say('ok', copy[intent].ok);
+        } else if (res.status === 404 || res.status === 405) {
+          // Local prototype: the Pages Function only exists once deployed.
+          say(
+            'info',
+            'Protótipo: o envio só fica ativo depois da publicação. Os seus dados não foram enviados.',
+          );
+        } else if (res.status === 503) {
+          say(
+            'error',
+            'O envio ainda não está configurado. Por favor ligue-nos ou escreva para o nosso email.',
+          );
+        } else {
+          const data = (await res.json().catch(() => ({}))) as { message?: string };
+          say(
+            'error',
+            data.message ?? 'Não foi possível enviar. Tente novamente dentro de instantes.',
+          );
+        }
+      } catch {
+        say('error', 'Sem ligação. Verifique a internet e tente novamente.');
+      } finally {
+        button.disabled = false;
+      }
+    });
+  }
+</script>

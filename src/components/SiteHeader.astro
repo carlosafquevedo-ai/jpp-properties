@@ -1,0 +1,506 @@
+---
+import Flag from './Flag.astro';
+import Icon from './Icon.astro';
+import { logoImage, logoWhiteImage, propertyTypeLabels, zones } from '../data/properties';
+import { locales, localizedPath } from '../i18n/routes';
+import { useTranslations } from '../i18n/ui';
+import { email, instagramUrl, mainPhone, offices, openingHours, whatsappUrl } from '../lib/site';
+
+interface Props {
+  /** Home page: the header is transparent over the hero until the page is scrolled. */
+  overHero?: boolean;
+}
+const { overHero = false } = Astro.props;
+const path = Astro.url.pathname;
+type NavLink = { href: string; label: string; infoPanel?: boolean };
+type NavItem = {
+  id: string;
+  href: string;
+  label: string;
+  match?: string;
+  /** Dropdown columns; the title is left out when there is only one column. */
+  groups?: { title?: string; links: NavLink[] }[];
+};
+const links: NavItem[] = [
+  {
+    id: 'imoveis',
+    href: '/imoveis/',
+    label: 'Imóveis',
+    match: '/imoveis',
+    groups: [
+      {
+        title: 'Negócio',
+        links: [
+          { href: '/imoveis/?tipo=comprar', label: 'Comprar' },
+          { href: '/imoveis/?tipo=arrendar', label: 'Arrendar' },
+          { href: '/imoveis/', label: 'Ver todos os imóveis' },
+        ],
+      },
+      {
+        title: 'Zonas',
+        links: Object.entries(zones).map(([id, z]) => ({ href: `/imoveis/?zona=${id}`, label: z.name })),
+      },
+      {
+        title: 'Tipo de imóvel',
+        links: Object.entries(propertyTypeLabels).map(([id, label]) => ({ href: `/imoveis/?imovel=${id}`, label })),
+      },
+    ],
+  },
+  { id: 'vender', href: '/#vender', label: 'Vender' },
+  {
+    id: 'sobre',
+    href: '/#sobre',
+    label: 'Sobre nós',
+    groups: [
+      {
+        links: [
+          { href: '/#sobre', label: 'Quem somos' },
+          { href: '/#equipa', label: 'A equipa' },
+          { href: '/#avaliacoes', label: 'Avaliações' },
+          { href: '/#sobre', label: 'Contactos', infoPanel: true },
+        ],
+      },
+    ],
+  },
+  { id: 'carreiras', href: '/carreiras/', label: 'Carreiras', match: '/carreiras' },
+];
+
+// TODO: EN/FR pages are placeholders for now, so the switcher points to their home pages.
+const currentLocale = 'pt';
+const t = useTranslations(currentLocale);
+const langLinks = locales.map((l) => ({
+  l,
+  href: localizedPath('home', l),
+  name: t(`lang.${l}` as 'lang.pt' | 'lang.en' | 'lang.fr'),
+}));
+const linkClass =
+  'rounded-full px-4 py-2 whitespace-nowrap text-[0.95rem] font-medium text-ink/80 transition-colors hover:bg-forest/8 hover:text-ink aria-[current=page]:bg-forest/8 aria-[current=page]:text-ink aria-[current=location]:bg-forest/8 aria-[current=location]:text-ink';
+---
+
+<header class="site-header" id="site-header" data-over-hero={overHero ? '' : undefined}>
+  <div class="hdr-bar">
+    <span class="hdr-progress" aria-hidden="true"></span>
+    <a href="/" aria-label="JPP Properties, página inicial" class="shrink-0">
+      <img
+        src={logoImage}
+        alt="JPP Properties"
+        class="logo-on-light h-10 w-auto"
+        width="133"
+        height="40"
+      />
+      <img src={logoWhiteImage} alt="" class="logo-on-dark h-10 w-auto" width="133" height="40" />
+    </a>
+
+    <nav class="hidden items-center lg:flex" aria-label="Principal">
+      <ul class="flex items-center gap-1">
+        {links.map((l) => (
+          <li class={l.groups ? 'nav-drop' : undefined} data-nav-drop={l.groups ? '' : undefined}>
+            <a
+              href={l.href}
+              aria-current={l.match && path.startsWith(l.match) ? 'page' : undefined}
+              class={`nav-top ${linkClass}`}
+            >
+              {l.label}
+            </a>
+            {l.groups && (
+              <>
+                <button
+                  type="button"
+                  class="nav-caret"
+                  aria-expanded="false"
+                  aria-controls={`nav-${l.id}`}
+                  aria-label={`Mostrar opções de ${l.label}`}
+                >
+                  <Icon name="chevronDown" class="size-4" />
+                </button>
+                <div id={`nav-${l.id}`} class="lang-menu nav-menu" data-cols={l.groups.length} hidden>
+                  {l.groups.map((g) => (
+                    <div class="nav-col">
+                      {g.title && <p class="nav-col-title">{g.title}</p>}
+                      <ul>
+                        {g.links.map((n) => (
+                          <li>
+                            <a href={n.href} class="mega-link nav-link" data-info-open={n.infoPanel ? '' : undefined}>
+                              {n.label}
+                            </a>
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  ))}
+                </div>
+              </>
+            )}
+          </li>
+        ))}
+      </ul>
+    </nav>
+
+    <div class="flex items-center gap-2">
+      <div class="relative hidden lg:block" data-lang>
+        <button
+          type="button"
+          class="lang-btn"
+          aria-expanded="false"
+          aria-controls="lang-menu"
+          aria-label={`Idioma: ${langLinks.find((x) => x.l === currentLocale)?.name}`}
+        >
+          <Flag locale={currentLocale} />
+          {currentLocale}
+          <Icon name="chevronDown" class="lang-caret size-4" />
+        </button>
+        <ul id="lang-menu" class="lang-menu" hidden>
+          {langLinks.map(({ l, href, name }) => (
+            <li>
+              <a
+                href={href}
+                hreflang={l}
+                lang={l}
+                aria-current={l === currentLocale ? 'true' : undefined}
+                class="mega-link lang-item"
+              >
+                <Flag locale={l} />
+                <span class="lang-name">{name}</span>
+                <Icon name="check" class="lang-check size-4" />
+              </a>
+            </li>
+          ))}
+        </ul>
+      </div>
+      <button
+        type="button"
+        class="hdr-icon hdr-info-btn hidden md:grid"
+        aria-haspopup="dialog"
+        aria-controls="info-panel"
+        aria-label="Contactos e horário"
+        data-info-open
+      >
+        <Icon name="dots" class="size-5" />
+      </button>
+      <a
+        href={instagramUrl}
+        class="hdr-icon hidden md:grid"
+        aria-label="Instagram"
+        target="_blank"
+        rel="noopener"
+      >
+        <Icon name="instagram" class="size-5" />
+      </a>
+      <a href="/#vender" class="btn hdr-cta btn-go hidden min-h-11 sm:inline-flex">
+        <span class="btn-go-icon" aria-hidden="true">
+          <Icon name="chevronRight" class="size-4" />
+        </span>
+        Contactar
+      </a>
+      <button
+        type="button"
+        id="menu-btn"
+        class="menu-toggle lg:hidden"
+        aria-expanded="false"
+        aria-controls="mobile-menu"
+        aria-label="Abrir menu"
+      >
+        <span class="menu-toggle-lines" aria-hidden="true"><i></i><i></i></span>
+      </button>
+    </div>
+  </div>
+
+  <!-- Phones and tablets: the header capsule unfolds into this panel (same gradient), links first, then the
+       contact actions as icons (as on desktop) and the language. -->
+  <div id="mobile-menu" hidden class="m-menu lg:hidden">
+    <nav aria-label="Menu móvel">
+      <ul class="m-menu-links">
+        {links.map((l) => (
+          <li>
+            {l.groups ? (
+              <details class="m-menu-group" name="m-menu">
+                <summary class="m-menu-link">
+                  <span>{l.label}</span>
+                  <Icon name="chevronDown" class="m-menu-chev size-5" />
+                </summary>
+                <div class="m-menu-sub">
+                  {l.groups.map((g) => (
+                    <div>
+                      {g.title && <p class="m-menu-sub-title">{g.title}</p>}
+                      <ul>
+                        {g.links.map((n) => (
+                          <li>
+                            <a href={n.href} data-info-open={n.infoPanel ? '' : undefined}>
+                              {n.label}
+                            </a>
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  ))}
+                </div>
+              </details>
+            ) : (
+              <a
+                href={l.href}
+                class="m-menu-link"
+                aria-current={l.match && path.startsWith(l.match) ? 'page' : undefined}
+              >
+                <span>{l.label}</span>
+                <Icon name="arrowUpRight" class="m-menu-arrow size-5" />
+              </a>
+            )}
+          </li>
+        ))}
+      </ul>
+    </nav>
+    <div class="m-menu-foot">
+      <div class="m-menu-actions">
+        <a href={`tel:${mainPhone.tel}`} class="m-icon m-icon-main" aria-label={`Ligar ${mainPhone.label}`}>
+          <Icon name="phone" class="size-5" />
+        </a>
+        <a href={whatsappUrl} class="m-icon" target="_blank" rel="noopener" aria-label="WhatsApp">
+          <Icon name="whatsapp" class="size-5" />
+        </a>
+        <a href={instagramUrl} class="m-icon" target="_blank" rel="noopener" aria-label="Instagram">
+          <Icon name="instagram" class="size-5" />
+        </a>
+        <button
+          type="button"
+          class="m-icon"
+          aria-haspopup="dialog"
+          aria-controls="info-panel"
+          aria-label="Contactos e horário"
+          data-info-open
+        >
+          <Icon name="dots" class="size-5" />
+        </button>
+      </div>
+      <nav class="m-menu-lang" aria-label="Idioma">
+        {langLinks.map(({ l, href, name }) => (
+          <a
+            href={href}
+            hreflang={l}
+            lang={l}
+            aria-label={name}
+            aria-current={l === currentLocale ? 'true' : undefined}
+          >
+            <Flag locale={l} />
+            {l.toUpperCase()}
+          </a>
+        ))}
+      </nav>
+    </div>
+  </div>
+</header>
+
+<!-- Contact panel (opened from the dots button): address, e-mail, phones, hours, social links. -->
+<dialog id="info-panel" class="info-panel" aria-labelledby="info-title">
+  <div class="info-head">
+    <h2 id="info-title" class="info-title">
+      Fale connosco
+    </h2>
+    <button type="button" class="info-close" aria-label="Fechar" data-info-close>
+      <Icon name="close" class="size-5" />
+    </button>
+  </div>
+  <div class="info-blocks">
+    {offices.map((o) => (
+      <section class="info-block">
+        <h3 class="info-label">Morada · {o.name}</h3>
+        <a href={o.mapUrl} target="_blank" rel="noopener" class="info-value info-link">
+          {o.address.map((l) => (
+            <span class="block">{l}</span>
+          ))}
+        </a>
+      </section>
+    ))}
+    <section class="info-block">
+      <h3 class="info-label">Email</h3>
+      <a href={`mailto:${email}`} class="info-value info-link">
+        {email}
+      </a>
+    </section>
+    <section class="info-block">
+      <h3 class="info-label">Telefone</h3>
+      <ul class="info-value info-phones">
+        {offices
+          .flatMap((o) => o.phones)
+          .map((p) => (
+            <li>
+              <a href={`tel:${p.tel}`} class="info-link">
+                {p.label}
+              </a>
+              <span class="info-note">({p.note})</span>
+            </li>
+          ))}
+      </ul>
+    </section>
+    <section class="info-block">
+      <h3 class="info-label">Horário</h3>
+      {openingHours.length > 0 ? (
+        <ul class="info-value">
+          {openingHours.map((h) => (
+            <li>{h}</li>
+          ))}
+        </ul>
+      ) : (
+        <p class="info-value info-todo">A confirmar</p>
+      )}
+    </section>
+    <section class="info-block">
+      <h3 class="info-label">Redes</h3>
+      <div class="info-social">
+        <a href={instagramUrl} target="_blank" rel="noopener" aria-label="Instagram">
+          <Icon name="instagram" class="size-5" />
+        </a>
+        <a href={whatsappUrl} target="_blank" rel="noopener" aria-label="WhatsApp">
+          <Icon name="whatsapp" class="size-5" />
+        </a>
+      </div>
+    </section>
+  </div>
+</dialog>
+
+<script>
+  const header = document.getElementById('site-header');
+  // Over the home hero the bar stays glass until the hero's bottom edge passes under it (data-past-hero).
+  const hero = header?.hasAttribute('data-over-hero') ? document.querySelector<HTMLElement>('.hero-shape') : null;
+  const bar = header?.querySelector<HTMLElement>('.hdr-bar');
+  const syncHeader = () => {
+    header?.toggleAttribute('data-stuck', window.scrollY > 24);
+    if (hero && bar)
+      header?.toggleAttribute(
+        'data-past-hero',
+        hero.getBoundingClientRect().bottom <= bar.getBoundingClientRect().bottom,
+      );
+  };
+  syncHeader();
+  window.addEventListener('scroll', syncHeader, { passive: true });
+  window.addEventListener('resize', syncHeader, { passive: true });
+
+  // Reading progress: a thin brand-green line along the bottom edge of the header capsule.
+  const setProgress = () => {
+    const max = document.documentElement.scrollHeight - window.innerHeight;
+    header?.style.setProperty(
+      '--progress',
+      max > 0 ? String(Math.min(window.scrollY / max, 1)) : '0',
+    );
+  };
+  setProgress();
+  window.addEventListener('scroll', setProgress, { passive: true });
+  window.addEventListener('resize', setProgress);
+
+  // Scrollspy (home page): highlight the nav link of the section that is on screen.
+  const spyLinks = [
+    ...document.querySelectorAll<HTMLAnchorElement>('nav[aria-label="Principal"] a.nav-top[href^="/#"]'),
+  ];
+  const spyTargets = spyLinks
+    .map((a) => ({ a, el: document.getElementById(a.getAttribute('href')!.slice(2)) }))
+    .filter((t): t is { a: HTMLAnchorElement; el: HTMLElement } => Boolean(t.el));
+  if (spyTargets.length && 'IntersectionObserver' in window) {
+    const io = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((e) => {
+          const hit = spyTargets.find((t) => t.el === e.target);
+          if (!hit) return;
+          if (e.isIntersecting) hit.a.setAttribute('aria-current', 'location');
+          else hit.a.removeAttribute('aria-current');
+        });
+      },
+      { rootMargin: '-40% 0px -50% 0px' },
+    );
+    spyTargets.forEach((t) => io.observe(t.el));
+  }
+
+  // Mobile menu
+  const btn = document.getElementById('menu-btn');
+  const panel = document.getElementById('mobile-menu');
+  const setOpen = (open: boolean) => {
+    if (!btn || !panel) return;
+    btn.setAttribute('aria-expanded', String(open));
+    btn.setAttribute('aria-label', open ? 'Fechar menu' : 'Abrir menu');
+    panel.hidden = !open;
+    header?.toggleAttribute('data-menu-open', open);
+  };
+  btn?.addEventListener('click', () => setOpen(btn.getAttribute('aria-expanded') !== 'true'));
+  panel?.addEventListener('click', (e) => {
+    if ((e.target as HTMLElement).closest('a, [data-info-open]')) setOpen(false);
+  });
+
+  // Dropdowns (language list, phone list): the language list opens on hover (mouse) and on the button
+  // (keyboard/touch); close on Esc, outside click or when focus leaves. Only one is open at a time.
+  const fine = window.matchMedia('(hover: hover) and (pointer: fine)');
+  type Drop = { root: HTMLElement; button: HTMLButtonElement; panel: HTMLElement; timer: number };
+  const drops: Drop[] = [];
+  const isOpen = (d: Drop) => !d.panel.hidden;
+  const open = (d: Drop) => {
+    clearTimeout(d.timer);
+    drops.filter((o) => o !== d).forEach(close);
+    d.panel.hidden = false;
+    d.button.setAttribute('aria-expanded', 'true');
+  };
+  const close = (d: Drop) => {
+    clearTimeout(d.timer);
+    d.panel.hidden = true;
+    d.button.setAttribute('aria-expanded', 'false');
+  };
+  const closeSoon = (d: Drop) => {
+    clearTimeout(d.timer);
+    d.timer = window.setTimeout(() => close(d), 180);
+  };
+  const register = (root: HTMLElement | null, panel: HTMLElement | null, hover = true) => {
+    const button = root?.querySelector<HTMLButtonElement>('button[aria-controls]');
+    if (!root || !panel || !button) return;
+    const d: Drop = { root, button, panel, timer: 0 };
+    drops.push(d);
+    if (hover) {
+      root.addEventListener('pointerenter', () => fine.matches && open(d));
+      root.addEventListener('pointerleave', () => fine.matches && closeSoon(d));
+      panel.addEventListener('pointerenter', () => clearTimeout(d.timer));
+      panel.addEventListener('pointerleave', () => fine.matches && closeSoon(d));
+    }
+    button.addEventListener('click', () => (isOpen(d) ? close(d) : open(d)));
+  };
+  register(
+    document.querySelector<HTMLElement>('[data-lang]'),
+    document.getElementById('lang-menu'),
+  );
+  // Main menu dropdowns (Imóveis, Sobre nós); following a link inside closes them.
+  document.querySelectorAll<HTMLElement>('[data-nav-drop]').forEach((root) => {
+    const menu = root.querySelector<HTMLElement>('.nav-menu');
+    register(root, menu);
+    menu?.addEventListener('click', (e) => {
+      if ((e.target as HTMLElement).closest('a')) drops.forEach(close);
+    });
+  });
+  // Contact panel: a modal dialog (Escape and the backdrop close it).
+  const infoPanel = document.getElementById('info-panel') as HTMLDialogElement | null;
+  if (infoPanel) {
+    document
+      .querySelectorAll<HTMLElement>('[data-info-open]')
+      .forEach((b) =>
+        b.addEventListener('click', (e) => {
+          e.preventDefault(); // links (the footer's "Contactos") open the panel instead of navigating
+          infoPanel.showModal();
+        }),
+      );
+    infoPanel
+      .querySelector<HTMLElement>('[data-info-close]')
+      ?.addEventListener('click', () => infoPanel.close());
+    infoPanel.addEventListener('click', (e) => {
+      if (e.target === infoPanel) infoPanel.close();
+    });
+  }
+
+  document.addEventListener('keydown', (e) => {
+    if (e.key !== 'Escape') return;
+    setOpen(false);
+    const d = drops.find(isOpen);
+    if (d) {
+      close(d);
+      d.button.focus();
+    }
+  });
+  header?.addEventListener('focusout', (e) => {
+    if (!header.contains((e as FocusEvent).relatedTarget as Node | null)) drops.forEach(close);
+  });
+  document.addEventListener('pointerdown', (e) => {
+    if (header && !header.contains(e.target as Node)) drops.forEach(close);
+  });
+</script>

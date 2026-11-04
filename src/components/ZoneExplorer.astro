@@ -1,0 +1,104 @@
+---
+// "Explore por zona": the active zone's photo (blurred, toned) fills the panel, with its name, short text, a link to
+// its listings and the controls on the left; every zone is a card on the right, the active one wider and in full
+// colour. A card, the arrows or the timer change the zone (src/scripts/zone-explorer.ts). Without JS the first zone
+// shows and every card is a plain link to its listings.
+import Icon from './Icon.astro';
+import { zones, type ZoneId } from '../data/properties';
+
+interface Props {
+  tiles: { id: ZoneId; image?: string; count: number }[];
+}
+const { tiles } = Astro.props;
+const countLabel = (n: number) =>
+  n > 0 ? `${n} ${n === 1 ? 'imóvel disponível' : 'imóveis disponíveis'}` : 'Ver imóveis na zona';
+const pad = (n: number) => String(n).padStart(2, '0');
+---
+
+<div class="zx" data-zx style={`--zx-n: ${tiles.length}`}>
+  <div class="zx-stage" aria-hidden="true">
+    {tiles.map((t, i) =>
+      t.image ? (
+        <img
+          class="zx-bg"
+          src={t.image}
+          alt=""
+          data-active={i === 0 ? '' : undefined}
+          loading={i === 0 ? 'eager' : 'lazy'}
+          decoding="async"
+          referrerpolicy="no-referrer"
+        />
+      ) : (
+        <span class="zx-bg zone-plain" data-active={i === 0 ? '' : undefined} />
+      ),
+    )}
+    <span class="zx-shade"></span>
+    <span class="zx-beam"></span>
+  </div>
+
+  <div class="zx-content">
+    <h2 id="zonas-titulo" class="zx-eyebrow">Explore por zona</h2>
+    <div class="zx-texts" aria-live="polite">
+      {tiles.map((t, i) => (
+        <div class="zx-text" data-active={i === 0 ? '' : undefined}>
+          <h3 class="zx-name">{zones[t.id].name}</h3>
+          <p class="zx-blurb">{zones[t.id].blurb}</p>
+          <p class="zx-kicker">{countLabel(t.count)}</p>
+          <a href={`/imoveis/?zona=${t.id}`} class="btn btn-lime zx-go" tabindex={i === 0 ? undefined : -1}>
+            Ver imóveis <Icon name="arrowUpRight" class="size-4" />
+          </a>
+        </div>
+      ))}
+    </div>
+
+    <div class="zx-controls">
+      <button type="button" class="zx-nav" data-zx-prev aria-label="Zona anterior">
+        <Icon name="chevronLeft" class="size-5" />
+      </button>
+      <button type="button" class="zx-nav" data-zx-next aria-label="Zona seguinte">
+        <Icon name="chevronRight" class="size-5" />
+      </button>
+      {/* One segment per zone: the ones seen are full, the current one fills while the timer runs. */}
+      <span class="zx-steps" aria-hidden="true" data-zx-steps>
+        {tiles.map((_, i) => (
+          <span class:list={['zx-step', i === 0 && 'is-current']}><i /></span>
+        ))}
+      </span>
+      <span class="zx-count" aria-hidden="true">
+        <span data-zx-count>01</span><small>/{pad(tiles.length)}</small>
+      </span>
+    </div>
+  </div>
+
+  <div class="zx-side">
+    <ul class="zx-cards" aria-label="Escolher zona" data-zx-cards>
+      {tiles.map((t, i) => (
+        <li class="zx-card" data-active={i === 0 ? '' : undefined}>
+          <a
+            href={`/imoveis/?zona=${t.id}`}
+            data-name={zones[t.id].name}
+            aria-label={`Ver imóveis em ${zones[t.id].name}`}
+            aria-current={i === 0 ? 'true' : undefined}
+          >
+            {t.image ? (
+              <img src={t.image} alt="" loading="lazy" decoding="async" referrerpolicy="no-referrer" />
+            ) : (
+              <span class="zone-plain" />
+            )}
+            <span class="zx-card-ic" aria-hidden="true">
+              <Icon name="pin" class="size-4" />
+            </span>
+            <span class="zx-card-body">
+              <span class="zx-card-name">{zones[t.id].name}</span>
+              <span class="zx-card-meta">{countLabel(t.count)}</span>
+            </span>
+            {/* On the active card: a second click opens the zone's listings. */}
+            <span class="zx-card-go" aria-hidden="true">
+              <Icon name="arrowUpRight" class="size-4" />
+            </span>
+          </a>
+        </li>
+      ))}
+    </ul>
+  </div>
+</div>

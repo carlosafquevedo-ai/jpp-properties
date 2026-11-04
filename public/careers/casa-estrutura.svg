@@ -1,0 +1,191 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="50 48 1442 926">
+  <!-- Hand-drawn over a render: flat faces lit from the right, colours sampled from it. -->
+  <defs>
+    <linearGradient id="fascia" gradientUnits="userSpaceOnUse" x1="104" y1="0" x2="1048" y2="0"><stop offset="0" stop-color="#b9c0b0"/><stop offset=".55" stop-color="#c4cbbb"/><stop offset="1" stop-color="#bbc4b1"/></linearGradient>
+    <linearGradient id="lit" gradientUnits="userSpaceOnUse" x1="1000" y1="160" x2="1460" y2="650"><stop offset="0" stop-color="#f5f0e5"/><stop offset="1" stop-color="#efe9dc"/></linearGradient>
+    <linearGradient id="soffit" gradientUnits="userSpaceOnUse" x1="960" y1="260" x2="1400" y2="400"><stop offset="0" stop-color="#9f998a"/><stop offset="1" stop-color="#b9b09b"/></linearGradient>
+    <linearGradient id="soffit2" gradientUnits="userSpaceOnUse" x1="780" y1="590" x2="1450" y2="660"><stop offset="0" stop-color="#ada79a"/><stop offset="1" stop-color="#c9c0ae"/></linearGradient>
+    <linearGradient id="ceil" gradientUnits="userSpaceOnUse" x1="800" y1="310" x2="1120" y2="450"><stop offset="0" stop-color="#c2bcad"/><stop offset=".6" stop-color="#e3d9c0"/><stop offset="1" stop-color="#cec5b0"/></linearGradient>
+    <linearGradient id="ceil2" gradientUnits="userSpaceOnUse" x1="780" y1="620" x2="1200" y2="700"><stop offset="0" stop-color="#d6ccb4"/><stop offset=".5" stop-color="#e3d7bb"/><stop offset="1" stop-color="#d3cab4"/></linearGradient>
+    <linearGradient id="glow" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#f4eedf" stop-opacity="0"/><stop offset=".55" stop-color="#f6f0e3"/><stop offset="1" stop-color="#ebdfc4" stop-opacity="0"/></linearGradient>
+    <linearGradient id="wall" gradientUnits="userSpaceOnUse" x1="780" y1="0" x2="1000" y2="0"><stop offset="0" stop-color="#9aa193"/><stop offset="1" stop-color="#aaa8a4"/></linearGradient>
+    <linearGradient id="pierL" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#9ba391"/><stop offset="1" stop-color="#9ca395"/></linearGradient>
+    <linearGradient id="pierB" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#b6bfab"/><stop offset="1" stop-color="#bec5b5"/></linearGradient>
+    <linearGradient id="post" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#9ca392"/><stop offset="1" stop-color="#c2c7bc"/></linearGradient>
+    <linearGradient id="bay" gradientUnits="userSpaceOnUse" x1="0" y1="300" x2="0" y2="610"><stop offset="0" stop-color="#a29e95"/><stop offset="1" stop-color="#888682"/></linearGradient>
+    <linearGradient id="bayLow" gradientUnits="userSpaceOnUse" x1="0" y1="620" x2="0" y2="870"><stop offset="0" stop-color="#8a8883"/><stop offset="1" stop-color="#686662"/></linearGradient>
+    <linearGradient id="sun" gradientUnits="userSpaceOnUse" x1="640" y1="660" x2="712" y2="800"><stop offset="0" stop-color="#cccac6"/><stop offset=".55" stop-color="#d8d1c2"/><stop offset="1" stop-color="#efe6d2"/></linearGradient>
+  </defs>
+
+  <!-- Plinth, first: everything stands on it -->
+  <path d="M96 860l1194 4 140 8 55 15v33l-335 49-620-34-80-2-390-28v-28z" fill="#c6c5c1"/>
+  <path d="M96 860l222-5 8 14 216 4v12l-82 10-400-8z" fill="#d0d6c9"/>
+  <path d="M60 877l390 8v48L60 905z" fill="#b2bca6"/>
+  <path d="M450 885h80v50l-80-2z" fill="#ebe5d6"/>
+  <path d="M450 933l38-50h42v52z" fill="#b7c1ac" opacity=".55"/>
+  <path d="M530 858l760 6 140 8-303 20-597-13z" fill="#e6ddc8"/>
+  <path d="M530 879l597 13v30l-597-20z" fill="#b7c1ac"/>
+  <path d="M1127 892l303-20 2 14-305 36z" fill="#eee7d7"/>
+  <path d="M530 902l597 20 305-36-2-14 55 15-335 44z" fill="#ede7da"/>
+  <path d="M530 905l620 26v38l-620-34z" fill="#b2bca6"/>
+  <path d="M1150 931l335-44v33l-335 49z" fill="#eee7d7"/>
+
+  <!-- Roof pergola, right of the bars -->
+  <g>
+    <path d="M722 240l114 63-14 6-100-55z" fill="#eae4d5"/>
+    <path d="M722 254l100 55v8l-100-55z" fill="#a09c92"/>
+    <path d="M722 205l58 34v12l-58-34z" fill="#e5e0d3"/>
+    <path d="M784 206l86 50-16 7-70-41z" fill="#eae4d5"/>
+    <path d="M718 206l7-2v116l-7 3zM778 176l6-2v126l-6 3zM845 206l5-1v68l-5 2z" fill="#b0b8a6"/>
+    <path d="M725 204l5-2v116l-5 2zM784 174l5-2v126l-5 2zM850 205l5-2v68l-5 2z" fill="#f0ece2"/>
+    <path d="M552 270l234-118v17L640 245l-50 30z" fill="#c8cfbf"/>
+    <path d="M786 152l140 80-22 11-118-74z" fill="#f3eee2"/>
+  </g>
+
+  <!-- Rebar stubs and the four tall bars -->
+  <g fill="#b0bba5">
+    <path d="M145 427l9-3v34l-9 3zM192 391l6-1v49l-6 2zM201 390l6-1v48l-6 2zM209 387l6-1v51l-6 1z"/>
+    <path d="M358 217l8-2v92l-8 3zM369 212l8-2v90l-8 2zM381 209l9-2v86l-9 3z"/>
+    <path d="M524 209l13-2v30l-13 3zM555 201l6-1v50l-6-2zM564 198l7-1v56l-7-2zM573 195l8-1v62l-8-2z"/>
+    <path d="M654 72l9-3v240h-9zM667 65l9-3v249h-9zM680 60l9-3v254h-9zM694 55l9-2v258h-9z"/>
+  </g>
+  <g fill="#f3f0ea">
+    <path d="M663 69l3-1v243h-3zM676 62l3-1v250h-3zM689 57l3-1v254h-3zM703 53l2 1v258h-2z"/>
+    <path d="M366 215h2v90h-2zM377 210h3v90h-3zM390 207h2v88h-2z"/>
+    <path d="M561 200h2v50h-2zM571 197h2v56h-2zM581 194h2v62h-2z"/>
+  </g>
+
+  <!-- Left wing: posts -->
+  <path d="M121 476h11v178l-11 2zM192 436h6v206l-6 2zM198 434l14-1v204l-14 3zM119 672h13v190h-13zM191 660h8v200h-8zM200 658h11l1 201-12 1z" fill="url(#post)"/>
+
+  <!-- Left wing: upper slab -->
+  <path d="M104 476l214-69v104L150 478z" fill="#a4a29d"/>
+  <path d="M212 448l106 18v10l-106-18z" fill="url(#glow)"/>
+  <path d="M104 462l214-74v19L104 476z" fill="url(#fascia)"/>
+  <path d="M104 462l214-74" fill="none" stroke="#e2e6de" stroke-width="1.2"/>
+  <!-- Left wing: lower slab -->
+  <path d="M107 672l211-44v77l-178-28z" fill="#8c8a85"/>
+  <path d="M170 664l148-22v8l-148 22z" fill="#beb8aa" opacity=".7"/>
+  <path d="M106 655l212-44v17l-211 44z" fill="url(#fascia)"/>
+  <path d="M106 655l212-44" fill="none" stroke="#e2e6de" stroke-width="1.2"/>
+
+  <!-- Upper centre bay: a dim depth with lit beams -->
+  <path d="M442 296l230-16-6 330H489v-78l-47-12z" fill="url(#bay)"/>
+  <g fill="#eae3d2">
+    <path d="M442 330l88 27v16l-88-27zM442 402l100 26v13l-100-26zM540 345l128-40v14l-128 40zM442 468l222 34v8l-222-32z"/>
+  </g>
+  <g fill="#8a8883">
+    <path d="M442 346l88 27v9l-88-27zM442 415l100 26v7l-100-26zM540 359l128-40v8l-128 40zM442 478l222 32v6l-222-30z"/>
+  </g>
+  <path d="M442 448l222 14v7l-222-13zM442 520l224 18v6l-224-14z" fill="#c8c2b3"/>
+
+  <!-- Upper centre: slim columns -->
+  <path d="M528 264l9 3v326l-9 2zM565 356l7 1v232l-7 1zM594 362l6 1v226l-6 1zM620 294l8 2v294l-8 1z" fill="#9ba292"/>
+  <path d="M537 267l8-4v330l-8 2zM572 357l6-1v232l-6 1zM600 363l6-1v226l-6 1zM628 296l8-2v294l-8 2z" fill="#e6e1d5"/>
+
+  <!-- Left block: roof slab -->
+  <path d="M320 338l212-85 140 49v18l-132-30-98 28-76 22z" fill="#9e9a90"/>
+  <path d="M655 284l57 4v30l-57 22z" fill="#e6e1d6"/>
+  <path d="M532 227l140 63v12L532 250z" fill="#f1ece1"/>
+  <path d="M319 313l213-86v26L339 337l-20 2z" fill="url(#fascia)"/>
+  <path d="M319 313l213-86 140 63" fill="none" stroke="#eeedeb" stroke-width="1.2"/>
+
+  <!-- Left block: upper piers -->
+  <path d="M319 339h21v266h-21z" fill="url(#pierL)"/>
+  <path d="M340 337l20 4v265h-20z" fill="#868f7d"/>
+  <path d="M360 327h8v280h-8z" fill="#92998a"/>
+  <path d="M368 327l59-25v300h-59z" fill="url(#pierB)"/>
+  <path d="M427 302l15 3v285h-15z" fill="#ede5d2"/>
+
+  <path d="M646 315h52v292h-52z" fill="#d1d6cb"/>
+  <path d="M698 315h34v292h-34z" fill="#d4d1ca"/>
+  <path d="M732 315h48v292h-48z" fill="#aca79d"/>
+
+  <!-- Middle slab, left block -->
+  <path d="M360 624l170-42 142 22-30 12-200 12-54 8z" fill="#938f86"/>
+  <path d="M530 557l143 24v24l-143-16z" fill="#efe9d8"/>
+
+  <!-- Lower centre bay -->
+  <path d="M442 628l200-12v248H485V725l-43-5z" fill="url(#bayLow)"/>
+  <path d="M442 646l200 12v10l-200-11zM442 690l43 2v10l-43-2z" fill="#a29f98"/>
+  <path d="M442 682l43 2v7l-43-2z" fill="#eae2ce"/>
+  <path d="M485 650h14v212h-14zM512 652h6v210h-6zM528 654h10v208h-10zM566 626h13v238h-13zM594 622h11v242h-11zM621 616h12v248h-12z" fill="url(#post)"/>
+  <path d="M579 626h3v238h-3zM605 622h3v242h-3zM633 616h3v248h-3z" fill="#e8e2d4"/>
+
+  <!-- Left block: lower piers -->
+  <path d="M318 622h31v246h-31z" fill="url(#pierL)"/>
+  <path d="M349 622h19v246h-19z" fill="#7f8479"/>
+  <path d="M368 622l59-14v260h-59z" fill="url(#pierB)"/>
+  <path d="M427 608l15 2v258h-15z" fill="#eae0ca"/>
+
+  <path d="M318 605l212-48v32L360 631l-42-3z" fill="url(#fascia)"/>
+  <path d="M318 605l212-48 143 24" fill="none" stroke="#eeedeb" stroke-width="1.2"/>
+
+  <!-- Central pier, split by the slab: sun on the left faces, shade to the right -->
+  <path d="M640 606h75v266h-75z" fill="url(#sun)"/>
+  <path d="M715 596h27v276h-27z" fill="#918e86"/>
+  <path d="M742 596h30v276h-30z" fill="#6c6a66"/>
+  <path d="M762 596h3v276h-3z" fill="#54514c"/>
+
+  <!-- Right block, upper storey: ceiling, opening, glow -->
+  <path d="M780 345l170-63 330 113-25 25-240 42v38H780z" fill="url(#ceil)"/>
+  <path d="M780 386l116 30v6l-116-27z" fill="url(#glow)"/>
+  <path d="M780 400l104 22-104 14z" fill="#d5ccb7"/>
+  <path d="M1149 352l10 3v212l-10-3zM1183 362l10 3v206l-10-3z" fill="#888d82"/>
+  <path d="M1159 355l22 6v204l-22-6z" fill="#e3ddd0"/>
+  <path d="M1164 356l5 2v202l-5-1z" fill="#bfbdb8"/>
+  <path d="M1193 365l4 1v204l-4-1z" fill="#e9e5dc"/>
+
+  <!-- Upper balcony wall, pier and corner column -->
+  <path d="M780 473l221-62v96l-221 45z" fill="url(#wall)"/>
+  <path d="M1001 392l14 3v115l-14-3z" fill="#f0e9da"/>
+
+  <!-- Right block: roof slab -->
+  <path d="M780 316l268-97 373 170-134 24-29-22-308-109-170 77z" fill="url(#soffit)"/>
+  <path d="M968 268l80-18 333 133-96 13z" fill="#b3ab9a" opacity=".55"/>
+  <path d="M1010 158l411 192v39L1048 233v-43l-38 16z" fill="url(#lit)"/>
+  <path d="M895 207l115-49v47l-115 44z" fill="#ced4c6"/>
+  <path d="M640 341l408-151v43L697 352l-57 20z" fill="url(#fascia)"/>
+  <path d="M640 341l408-151M895 207l115-49 411 192" fill="none" stroke="#faf7f1" stroke-width="1.3"/>
+
+  <path d="M780 345l170-63 8 3-178 67zM958 285l198 67-4 6-192-66zM1156 352l106 39-2 5-104-38z" fill="#71766c"/>
+  <path d="M954 282l16 3v231l-16 4z" fill="#9ba68f"/>
+  <path d="M970 285l11-2v230l-11 3z" fill="#aaa69c"/>
+  <path d="M1256 391l15 4v180l-15-4z" fill="#888d82"/>
+  <path d="M1271 395l14 1 2 184-16-1z" fill="#e4dccb"/>
+
+  <!-- Railing -->
+  <g fill="none" stroke="#b8b9b1">
+    <path d="M1010 410l427 130" stroke-width="3.5"/>
+    <path d="M1285 561l152-20" stroke-width="3"/>
+    <path d="M1044 421v96M1388 528v74M1437 540v74" stroke-width="2.5"/>
+    <path d="M780 473l230-63" stroke-width="2.5" stroke="#d2d7cd"/>
+    <path d="M923 432v80" stroke-width="1.5" stroke="#b2b8ab"/>
+  </g>
+
+  <!-- Balcony slab -->
+  <path d="M770 590l231-46 459 106-170 30-35-18-305-55-180 33z" fill="url(#soffit2)"/>
+  <path d="M1001 507l459 113v30l-459-99z" fill="url(#lit)"/>
+  <path d="M673 585l107-33 221-45v44l-221 44-118 23 11-12z" fill="url(#fascia)"/>
+  <path d="M672 584l108-32 221-45 459 113" fill="none" stroke="#faf7f1" stroke-width="1.3"/>
+
+  <!-- Lower storey: ceiling, back wall, doorway -->
+  <path d="M770 640l180-33 306 55-6 6-240 34H770z" fill="url(#ceil2)"/>
+  <path d="M770 654l165 21v8l-165-19z" fill="url(#glow)"/>
+  <path d="M770 702h146v13l-74 10h-72z" fill="#ddd6c5"/>
+  <path d="M842 725l75-10v147h-75z" fill="#a09d99"/>
+  <path d="M916 702h84v160h-84z" fill="#f1ead8"/>
+  <path d="M916 702h22l-22 44z" fill="#d8d0bc"/>
+  <path d="M1000 702l10-1v161h-10z" fill="#9e998f"/>
+  <path d="M1010 702l5-1v161h-5z" fill="#ece6d9"/>
+  <path d="M770 640l180-33 8 3-188 34zM958 610l298 52-2 5-296-52z" fill="#71766c"/>
+
+  <!-- Lower columns -->
+  <path d="M934 608l22 2v268h-22z" fill="#969f8c"/>
+  <path d="M956 610l7 1v267h-7z" fill="#e5dbc5"/>
+  <path d="M1134 648l12 2v220h-12zM1178 656l6 1v212h-6zM1243 664l10 2v204h-10z" fill="#888d82"/>
+  <path d="M1150 650l11 2v218h-11zM1184 657l5 1v211h-5z" fill="#c4beb1"/>
+  <path d="M1253 666l16-5v209h-16z" fill="#a69f90"/>
+  <path d="M1269 661l21 3 2 206h-23z" fill="#f2ebdb"/>
+
+</svg>

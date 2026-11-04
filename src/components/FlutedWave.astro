@@ -1,0 +1,42 @@
+---
+// A ribbon of thin vertical fins following a wave (decorative, behind content). The fins are generated here so the
+// curve stays smooth at any width (preserveAspectRatio="none" stretches the shape). Fins are thin rects, not lines,
+// so each one can carry its own top-to-bottom fade (a gradient needs a box with width).
+interface Props {
+  class?: string;
+  fins?: number;
+}
+const { class: className, fins = 56 } = Astro.props;
+const W = 1000;
+const H = 400;
+const lines = Array.from({ length: fins }, (_, i) => {
+  const t = i / (fins - 1);
+  const x = t * W;
+  // The ribbon rises from bottom-left to top-right with one gentle swell, and thickens as it climbs.
+  const mid = H * (0.7 - 0.36 * t) + Math.sin(t * Math.PI * 2) * 22;
+  const half = 18 + 46 * Math.sin(t * Math.PI);
+  return { x: x.toFixed(1), y1: (mid - half).toFixed(1), h: (2 * half).toFixed(1), o: (0.35 + 0.65 * t).toFixed(2) };
+});
+---
+
+<svg
+  xmlns="http://www.w3.org/2000/svg"
+  viewBox={`0 0 ${W} ${H}`}
+  preserveAspectRatio="none"
+  class:list={['fluted-wave', className]}
+  aria-hidden="true"
+  focusable="false"
+>
+  <defs>
+    <linearGradient id="fw-fin" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#d6e896" stop-opacity="0" />
+      <stop offset="0.45" stop-color="#b9d15a" stop-opacity="1" />
+      <stop offset="1" stop-color="#4b6a1a" stop-opacity="0" />
+    </linearGradient>
+  </defs>
+  {
+    lines.map((l) => (
+      <rect x={l.x} y={l.y1} width="4" height={l.h} fill="url(#fw-fin)" opacity={l.o} />
+    ))
+  }
+</svg>

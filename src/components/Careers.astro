@@ -1,0 +1,48 @@
+---
+import Icon from './Icon.astro';
+import { offices } from '../lib/site';
+import { localizedPath } from '../i18n/routes';
+
+// TODO: provisional copy (PT), to confirm with the client; EN/FR pending.
+const careersUrl = localizedPath('careers', 'pt');
+const office = offices[0]!;
+const perks = [
+  { icon: 'clientCare', text: 'Formação e acompanhamento desde o primeiro dia.' },
+  { icon: 'houseKey', text: 'Imóveis no Algarve e o apoio de toda a equipa em cada negócio.' },
+  { icon: 'pinMap', text: `Um escritório local em ${office.name}, perto de quem compra e vende.` },
+] as const;
+---
+
+<section id="carreiras" class="container-x careers" aria-labelledby="carreiras-titulo">
+  <div class="careers-hero">
+    <div class="careers-cols" aria-hidden="true">
+      {Array.from({ length: 7 }, () => <span />)}
+    </div>
+    <div class="careers-copy">
+      <h2 id="carreiras-titulo" class="zones-title careers-title">
+        Faça carreira
+        <br />
+        connosco
+      </h2>
+      <p class="careers-lead">
+        Procuramos consultores imobiliários que queiram crescer no Algarve, a começar ou com
+        experiência.
+      </p>
+      <a href={careersUrl} class="btn btn-lime careers-cta">
+        Quero ser consultor <Icon name="arrowRight" class="size-4" />
+      </a>
+    </div>
+    <ul class="careers-perks">
+      {
+        perks.map(({ icon, text }) => (
+          <li class="careers-perk">
+            <span class="careers-perk-icon" aria-hidden="true">
+              <Icon name={icon} class="size-5" />
+            </span>
+            {text}
+          </li>
+        ))
+      }
+    </ul>
+  </div>
+</section>

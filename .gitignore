@@ -21,3 +21,9 @@ backups/
 !.vscode/extensions.json
 *.log
 .claude/settings.local.json
+
+# Client source files (originals); only the trimmed logos in public/brand are committed
+jpp_logos/
+
+# Local-only demo portraits (watermarked stock images, shown to the client; never commit)
+public/team-demo/

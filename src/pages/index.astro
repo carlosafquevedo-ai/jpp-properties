@@ -1,5 +1,729 @@
 ---
-import UnderConstruction from '../components/UnderConstruction.astro';
+import SiteLayout from '../layouts/SiteLayout.astro';
+import SearchBar from '../components/SearchBar.astro';
+import PropertyCard from '../components/PropertyCard.astro';
+import LeadForm from '../components/LeadForm.astro';
+import GoogleReviews from '../components/GoogleReviews.astro';
+import Careers from '../components/Careers.astro';
+import HowWeWork from '../components/HowWeWork.astro';
+import Results from '../components/Results.astro';
+import ZoneExplorer from '../components/ZoneExplorer.astro';
+import Icon from '../components/Icon.astro';
+import FlutedWave from '../components/FlutedWave.astro';
+import {
+  formatPrice,
+  zones,
+  visibleProperties,
+  type ZoneId,
+} from '../data/properties';
+import { featuredProperties, heroSlides } from '../lib/catalog';
+import { team } from '../data/team';
+import { AMI, email, offices } from '../lib/site';
+
+const featured = featuredProperties();
+const slides = heroSlides();
+
+// Zone photos used on the tiles. TODO: in production each zone document has its own photo (Sanity).
+const zoneImages: Partial<Record<ZoneId, string>> = {
+  vilamoura: '/zones/vilamoura.jpg', // TODO: confirm the photo's licence/credit with the client
+  loule: '/zones/loule.webp', // TODO: confirm the photo's licence/credit with the client
+  'vale-do-lobo': '/zones/vale-do-lobo.jpg', // TODO: confirm the photo's licence/credit with the client
+  'quinta-do-lago': '/zones/quinta-do-lago.jpg', // TODO: confirm the photo's licence/credit with the client
+  vilasol: '/zones/vilasol.jpg', // TODO: confirm the photo's licence/credit with the client
+  quarteira: '/zones/quarteira.jpg', // TODO: confirm the photo's licence/credit with the client
+};
+const aboutZones = (
+  ['vilamoura', 'quarteira', 'vilasol', 'vale-do-lobo', 'quinta-do-lago', 'loule'] as ZoneId[]
+).map((id) => ({ id, name: zones[id].name }));
+const zoneTiles = (Object.keys(zones) as ZoneId[]).map((id) => ({
+  id,
+  image: zoneImages[id],
+  count: visibleProperties.filter((p) => p.zone === id).length,
+}));
 ---
 
-<UnderConstruction locale="pt" />
+<SiteLayout
+  title="JPP Properties | Imóveis no Algarve"
+  description="Apartamentos e moradias em Vilamoura, Quarteira, Vale do Lobo e Quinta do Lago. JPP Properties, AMI 9361."
+  route="home"
+  padTop={false}
+>
+  <!-- Hero: full-bleed rotating photos, rounded bottom corners and a hanging tab that holds the search box -->
+  <section>
+    <div class="hero-shape hcard relative isolate z-20 flex flex-col justify-end">
+      <div class="absolute inset-0 -z-20 overflow-hidden" data-hero-media>
+        {slides.map((slide, i) => (
+          <img
+            src={slide.image}
+            alt={slide.alt}
+            class:list={['hero-slide size-full object-cover', i === 0 && 'is-active']}
+            loading={i === 0 ? 'eager' : 'lazy'}
+            fetchpriority={i === 0 ? 'high' : undefined}
+            referrerpolicy="no-referrer"
+          />
+        ))}
+      </div>
+      <div class="hero-shade absolute inset-0 -z-10"></div>
+
+      <div class="container-x hcard-inner pb-8 text-white lg:flex lg:items-start lg:justify-between lg:gap-10">
+        <div class="hero-copy">
+          <h1 class="max-w-4xl font-display text-[clamp(1.75rem,2.7vw,2.375rem)] leading-[1]">
+            Encontre a sua casa
+            <br />
+            no Algarve.
+          </h1>
+          <p class="mt-5 max-w-xl text-lg leading-relaxed text-white/90 [@media(max-height:740px)]:hidden">
+            Apartamentos e moradias em Vilamoura, Quarteira, Vale do Lobo e Quinta do Lago.
+            Acompanhamos cada passo, da primeira visita à decisão.
+          </p>
+          <div class="mt-6 grid grid-cols-2 gap-3 sm:flex sm:flex-wrap sm:items-center">
+            <a href="/imoveis/" class="btn btn-lime px-3 text-sm sm:px-6 sm:text-[0.95rem]">
+              Ver todos os imóveis
+            </a>
+            <a href="#vender" class="btn btn-soft px-3 text-sm sm:px-6 sm:text-[0.95rem]">
+              Quero vender
+            </a>
+          </div>
+        </div>
+
+        <div class="hero-deck mt-8 lg:mt-0 lg:w-[22rem] lg:shrink-0" data-deck>
+          <div class="hero-cards hidden lg:grid">
+            {slides.map((slide, i) =>
+              slide.property ? (
+                <article class="hero-card hc" data-slide={i} inert={i !== 0} aria-hidden={i !== 0}>
+                  <a
+                    href={`/imoveis/${slide.property.slug}/`}
+                    class="hc-photo group"
+                    tabindex="-1"
+                    aria-hidden="true"
+                  >
+                    <img
+                      src={slide.property.images[1] ?? slide.property.images[0]}
+                      alt=""
+                      class="transition-transform duration-500 group-hover:scale-[1.04]"
+                      loading="lazy"
+                      referrerpolicy="no-referrer"
+                    />
+                  </a>
+                  <ul class="hc-chips" aria-label="Características">
+                    {slide.property.features.slice(0, 2).map((f) => (
+                      <li>{f}</li>
+                    ))}
+                  </ul>
+                  <a href={`/imoveis/${slide.property.slug}/`} class="hc-product">
+                    <div class="hc-product-head">
+                      <p class="hc-title">{slide.property.title}</p>
+                      <span class="hc-arrow" aria-hidden="true">
+                        <Icon name="arrowUpRight" class="size-4" />
+                      </span>
+                    </div>
+                    <p class="hc-price">{formatPrice(slide.property.price)}</p>
+                    <p class="hc-facts">
+                      <span>
+                        <Icon name="pin" class="size-3.5" />
+                        {zones[slide.property.zone].name}
+                      </span>
+                      <span>
+                        <Icon name="area" class="size-3.5" />
+                        {slide.property.usableArea} m² úteis
+                      </span>
+                    </p>
+                  </a>
+                </article>
+              ) : null,
+            )}
+          </div>
+          <div class="hero-controls" role="group" aria-label="Imagens do topo">
+            {slides.map((_, i) => (
+              <button
+                type="button"
+                class="hero-dot"
+                data-dot={i}
+                aria-label={`Ver imagem ${i + 1} de ${slides.length}`}
+                aria-current={i === 0 ? 'true' : 'false'}
+              >
+                <span></span>
+              </button>
+            ))}
+            <button
+              type="button"
+              class="hero-pause"
+              data-pause
+              aria-label="Pausar a rotação das imagens"
+            >
+              <Icon name="pause" class="hero-ic-pause size-4" />
+              <Icon name="play" class="hero-ic-play size-4" />
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <div
+        class="relative z-10 mx-auto pb-10 lg:pb-16"
+        style="width: min(100% - 3rem, var(--page-w) - 1.5rem)"
+      >
+        <div class="glass-panel">
+          <SearchBar />
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Featured: carousel that starts on the page column and bleeds off the right edge -->
+  <section class="feat-section" aria-labelledby="destaques">
+    <div class="container-x flex flex-wrap items-end justify-between gap-x-10 gap-y-5">
+      <div class="max-w-xl">
+        <h2 id="destaques" class="zones-title">
+          Imóveis em destaque
+        </h2>
+        <p class="mt-3 text-ink/70">
+          Uma seleção dos imóveis que a nossa equipa recomenda neste momento.
+        </p>
+      </div>
+      <div class="flex w-full items-center justify-between gap-5 sm:w-auto sm:justify-start">
+        <a href="/imoveis/" class="feat-all">
+          Ver todos os imóveis <Icon name="arrowRight" class="size-4" />
+        </a>
+        <div class="flex gap-2">
+          <button type="button" class="feat-nav" data-feat-prev aria-label="Imóveis anteriores">
+            <Icon name="chevronLeft" class="size-5" />
+          </button>
+          <button type="button" class="feat-nav" data-feat-next aria-label="Imóveis seguintes">
+            <Icon name="chevronRight" class="size-5" />
+          </button>
+        </div>
+      </div>
+    </div>
+    <div class="container-x">
+      <div class="feat-track mt-7" data-feat-track data-reveal-group>
+        {featured.map((p, i) => (
+          <div class="feat-item reveal" style={`--i: ${i % 4}`}>
+            <PropertyCard property={p} eager={i < 4} />
+          </div>
+        ))}
+      </div>
+      <div class="feat-bar" aria-hidden="true">
+        <span data-feat-bar></span>
+      </div>
+    </div>
+  </section>
+
+  <!-- Zones: a full photo slider of the zones (src/components/ZoneExplorer.astro) -->
+  <section id="zonas" class="zones-section" aria-labelledby="zonas-titulo">
+    <div class="rise">
+      <ZoneExplorer tiles={zoneTiles} />
+    </div>
+  </section>
+
+  <!-- About: text + CTA, tall photo and pillars (home page "about us"), then the offices -->
+  <section id="sobre" class="container-x mt-20 lg:mt-24" aria-labelledby="sobre-titulo">
+    <div class="grid gap-8 lg:grid-cols-[minmax(0,0.95fr)_minmax(0,1.05fr)] lg:gap-20">
+      <div class="rise">
+        <!-- Map of Portugal (the Algarve at the foot) with the office as a pin; its pop-up card opens Google Maps. -->
+        <div class="pt-map">
+          <div class="pt-map-inner">
+            <img
+              src="/maps/portugal-drawn.webp"
+              alt=""
+              width="1254"
+              height="1254"
+              loading="lazy"
+              decoding="async"
+            />
+            <a
+              href={offices[0]!.mapUrl}
+              class="pt-pin"
+              target="_blank"
+              rel="noopener"
+              aria-label={`Abrir o escritório de ${offices[0]!.name} no Google Maps`}
+            >
+              <span class="pt-pin-dot" aria-hidden="true"></span>
+              <span class="pt-pin-card">
+                <span class="pt-pin-media">
+                  <img
+                    src="/office/escritorio-vilamoura.webp"
+                    alt=""
+                    class="pt-pin-photo"
+                    width="320"
+                    height="180"
+                    loading="lazy"
+                    decoding="async"
+                  />
+                  <span class="pt-pin-chip">Escritório</span>
+                </span>
+                <span class="pt-pin-body">
+                  <span class="pt-pin-name">{offices[0]!.name}</span>
+                  <span class="pt-pin-addr">
+                    <Icon name="pin" class="size-4 shrink-0" />
+                    <span>{offices[0]!.address.join(', ')}</span>
+                  </span>
+                  <span class="pt-pin-go">
+                    Ver no Google Maps
+                    <span class="pt-pin-go-ic">
+                      <Icon name="arrowUpRight" class="size-4" />
+                    </span>
+                  </span>
+                </span>
+              </span>
+            </a>
+          </div>
+        </div>
+      </div>
+      <div class="rise order-first flex flex-col items-start gap-6 lg:order-none lg:self-center">
+        <h2 id="sobre-titulo" class="zones-title">
+          Somos daqui. Sentimos o mercado como poucos.
+        </h2>
+        <div class="about-copy grid max-w-[40.5rem] content-start gap-4 text-left text-base leading-relaxed text-ink/80 md:text-justify sm:text-[1.0625rem]">
+          <!-- TODO: provisional SEO copy (PT). To be reviewed with the client; EN/FR versions pending. -->
+          <p>
+            A JPP Properties é uma imobiliária no Algarve (AMI {AMI}) especializada na compra,
+            venda e arrendamento de apartamentos, moradias e terrenos em{' '}
+            {aboutZones.map((z, i) => (
+              <>
+                <a href={`/imoveis/?zona=${z.id}`}>{z.name}</a>
+                {i < aboutZones.length - 2 ? ', ' : i === aboutZones.length - 2 ? ' e ' : '.'}
+              </>
+            ))}
+          </p>
+          <p>
+            Conhecemos cada zona por dentro e acompanhamos cada passo, da primeira visita à
+            escritura, para quem quer comprar casa no Algarve, vender o seu imóvel ou investir com
+            segurança.
+          </p>
+        </div>
+        <div class="flex flex-wrap gap-3">
+          <a href={`tel:${offices[0]!.phones[0]!.tel}`} class="btn btn-lime">
+            <Icon name="phone" class="size-4" /> Ligar
+          </a>
+          <a href={offices[0]!.mapUrl} class="btn btn-ghost" target="_blank" rel="noopener">
+            Ver no mapa
+          </a>
+        </div>
+        <!-- E-mail from the site settings, as a quiet line (same pattern as "Prefere falar já?" in the sell section);
+             the main phone is the "Ligar" button, the other numbers stay in the "Fale connosco" panel. -->
+        <p class="about-mail">
+          Prefere escrever?
+          <a href={`mailto:${email}`}>
+            <Icon name="mail" class="size-4" /> {email}
+          </a>
+        </p>
+      </div>
+    </div>
+
+    <ul class="about-pillars rise mt-16 grid border-y border-line md:grid-cols-3">
+      {(
+        [
+          {
+            icon: 'pinMap',
+            title: 'Conhecimento local',
+            text: 'Somos daqui. Trabalhamos todos os dias nas zonas onde vive quem compra e quem vende.',
+          },
+          {
+            icon: 'clientCare',
+            title: 'Atenção a cada cliente',
+            text: 'Damos prioridade ao que cada pessoa quer e precisa, da primeira visita à decisão.',
+          },
+          {
+            icon: 'houseKey',
+            title: 'As melhores opções',
+            text: 'Apresentamos as melhores opções de negócio para viver, arrendar ou investir.',
+          },
+        ] as const
+      ).map((p, i) => (
+        <li class="about-pillar group relative flex gap-5 px-0 py-8 md:px-8 md:first:pl-0 md:last:pr-0">
+          <span class="about-pillar-icon">
+            <Icon name={p.icon} class="size-7" />
+          </span>
+          <div class="min-w-0 flex-1">
+            <div class="flex items-baseline justify-between gap-3">
+              <h3 class="font-display text-xl text-forest">{p.title}</h3>
+              <span class="about-pillar-num" aria-hidden="true">
+                {String(i + 1).padStart(2, '0')}
+              </span>
+            </div>
+            <p class="mt-2 text-sm leading-relaxed text-muted">{p.text}</p>
+          </div>
+        </li>
+      ))}
+    </ul>
+
+    <!-- Team: full width, four per view, carousel when the team grows (the section keeps its height). -->
+    <div
+      id="equipa"
+      class="team-band mt-20 grid gap-8 lg:mt-24 lg:grid-cols-[minmax(0,16rem)_minmax(0,1fr)] lg:gap-14"
+    >
+      <FlutedWave class="team-wave" />
+      <div class="rise flex flex-col justify-between gap-8 lg:gap-0">
+        <h2 id="equipa-titulo" class="zones-title team-title">
+          <span class="team-title-row team-title-r1">
+            <img
+              src="/brand/logo-mark-black.png"
+              alt=""
+              class="team-title-mark"
+              width="276"
+              height="319"
+            />
+            <span>Conheça</span>
+          </span>
+          <span class="team-title-row team-title-r2">a equipa</span>
+          <span class="team-title-row team-title-r3">JPP</span>
+        </h2>
+        <!-- TODO: provisional SEO copy (PT); to be reviewed with the client. EN/FR pending. -->
+        <p class="team-lead">
+          Consultores imobiliários no Algarve que conhecem cada zona. Fale diretamente com quem o vai
+          acompanhar, da primeira visita à escritura.
+        </p>
+        <div class="team-nav" data-team-nav hidden>
+          <button type="button" class="feat-nav" data-team-prev aria-label="Agentes anteriores">
+            <Icon name="chevronLeft" class="size-5" />
+          </button>
+          <button type="button" class="feat-nav" data-team-next aria-label="Agentes seguintes">
+            <Icon name="chevronRight" class="size-5" />
+          </button>
+          <div class="team-bar" aria-hidden="true">
+            <span data-team-bar></span>
+          </div>
+        </div>
+      </div>
+      <div class="rise min-w-0">
+        <ul
+          class="team-grid"
+          aria-label="A nossa equipa"
+          data-team-track
+          style={`--n-sm: ${Math.min(team.length, 2)}; --n-md: ${Math.min(team.length, 3)}; --n-lg: ${Math.min(team.length, 4)}`}
+        >
+          {team.map((a) => (
+            <li class="team-card">
+              <div class="team-photo">
+                {a.photo ? (
+                  <img src={a.photo} alt={a.name} loading="lazy" />
+                ) : (
+                  <div class="team-ph" aria-hidden="true">
+                    <Icon name="user" class="team-ph-icon" />
+                  </div>
+                )}
+              </div>
+              <div class="team-name">
+                <h3 class="font-display text-xl leading-tight">{a.name}</h3>
+                <p class="mt-1 text-sm text-white/75">{a.role}</p>
+              </div>
+              <div class="team-contacts">
+                {a.phone && (
+                  <a href={`tel:${a.phone.tel}`} aria-label={`Ligar a ${a.name}`}>
+                    <Icon name="phone" class="size-4" />
+                    <span>Ligar</span>
+                  </a>
+                )}
+                {a.whatsapp && (
+                  <a
+                    href={`https://wa.me/${a.whatsapp}`}
+                    target="_blank"
+                    rel="noopener"
+                    aria-label={`WhatsApp de ${a.name}`}
+                  >
+                    <Icon name="whatsapp" class="size-4" />
+                    <span>WhatsApp</span>
+                  </a>
+                )}
+                {a.email && (
+                  <a href={`mailto:${a.email}`} aria-label={`Enviar email a ${a.name}`}>
+                    <Icon name="mail" class="size-4" />
+                    <span>Email</span>
+                  </a>
+                )}
+              </div>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- Google reviews (live from /api/reviews once the Places API key is set) -->
+  <GoogleReviews />
+
+  <!-- Results: four headline figures (provisional until the client confirms them) -->
+  <Results />
+
+  <!-- How we work: the sale process in six steps, leading into the request form -->
+  <HowWeWork />
+
+  <!-- Careers: invitation to join the team (links to a careers page, to be built) -->
+  <Careers />
+
+  <!-- Sell / buy request form (e-mailed to the team) -->
+  <LeadForm />
+</SiteLayout>
+
+<script>
+  import { initHeroDeckPanel } from '../scripts/hero-deck-panel';
+
+  // Hero listing deck: the glass panel follows its outline (src/scripts/hero-deck-panel.ts).
+  const heroDeck = document.querySelector<HTMLElement>('[data-deck]');
+  if (heroDeck && window.matchMedia('(min-width: 64rem)').matches) initHeroDeckPanel(heroDeck);
+</script>
+
+<script>
+  // Hero slideshow: crossfade between photos, with the matching listing card.
+  // Keeps rotating while people use the hero or the search box. It only pauses when the tab is
+  // hidden or on request (pause button), and never autoplays for people who prefer reduced motion.
+  const media = document.querySelector<HTMLElement>('[data-hero-media]');
+  const slides = [...document.querySelectorAll<HTMLElement>('.hero-slide')];
+  const cards = [...document.querySelectorAll<HTMLElement>('.hero-card')];
+  const dots = [...document.querySelectorAll<HTMLButtonElement>('.hero-dot')];
+  const pauseBtn = document.querySelector<HTMLButtonElement>('[data-pause]');
+  const hero = document.querySelector<HTMLElement>('.hero-shape');
+
+  if (media && slides.length > 1 && hero) {
+    const INTERVAL = 6500;
+    const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    let index = 0;
+    let timer = 0;
+    let userPaused = reduce;
+    document.documentElement.style.setProperty('--hero-interval', `${INTERVAL}ms`);
+
+    const show = (n: number) => {
+      index = (n + slides.length) % slides.length;
+      slides.forEach((s, k) => s.classList.toggle('is-active', k === index));
+      cards.forEach((c) => {
+        const on = Number(c.dataset.slide) === index;
+        c.toggleAttribute('data-active', on);
+        c.inert = !on;
+        c.setAttribute('aria-hidden', String(!on));
+      });
+      dots.forEach((d, k) => d.setAttribute('aria-current', String(k === index)));
+      restart();
+    };
+    const restart = () => {
+      clearTimeout(timer);
+      dots.forEach((d) => d.classList.remove('is-run'));
+      const running = !userPaused && !document.hidden;
+      if (!running) return;
+      void dots[index]?.offsetWidth; // restart the progress bar animation
+      dots[index]?.classList.add('is-run');
+      timer = window.setTimeout(() => show(index + 1), INTERVAL);
+    };
+    const setPaused = (value: boolean) => {
+      userPaused = value;
+      pauseBtn?.setAttribute(
+        'aria-label',
+        value ? 'Retomar a rotação das imagens' : 'Pausar a rotação das imagens',
+      );
+      pauseBtn?.toggleAttribute('data-paused', value);
+      restart();
+    };
+
+    dots.forEach((d, k) => d.addEventListener('click', () => show(k)));
+    pauseBtn?.addEventListener('click', () => setPaused(!userPaused));
+    document.addEventListener('visibilitychange', restart);
+    setPaused(userPaused);
+    show(0);
+  }
+</script>
+
+<script>
+  import { initZoneExplorer } from '../scripts/zone-explorer';
+
+  // Zones: the photo slider (src/scripts/zone-explorer.ts).
+  const zoneExplorer = document.querySelector<HTMLElement>('[data-zx]');
+  if (zoneExplorer) initZoneExplorer(zoneExplorer);
+</script>
+
+<script>
+  // Team carousel: cards keep their size and the row scrolls, so the section never grows when the team does.
+  // Controls only appear when there is more than fits.
+  const teamTrack = document.querySelector<HTMLElement>('[data-team-track]');
+  if (teamTrack) {
+    const nav = document.querySelector<HTMLElement>('[data-team-nav]');
+    const prev = document.querySelector<HTMLButtonElement>('[data-team-prev]');
+    const next = document.querySelector<HTMLButtonElement>('[data-team-next]');
+    const bar = document.querySelector<HTMLElement>('[data-team-bar]');
+    const step = () => {
+      const card = teamTrack.querySelector<HTMLElement>('.team-card');
+      return card ? card.offsetWidth + 16 : teamTrack.clientWidth;
+    };
+    const sync = () => {
+      const max = teamTrack.scrollWidth - teamTrack.clientWidth;
+      if (nav) nav.hidden = max <= 4;
+      const share = Math.min(teamTrack.clientWidth / teamTrack.scrollWidth, 1);
+      const pos = max > 0 ? teamTrack.scrollLeft / max : 0;
+      if (bar) {
+        bar.style.width = `${share * 100}%`;
+        bar.style.transform = `translateX(${pos * (1 / share - 1) * 100}%)`;
+      }
+      if (prev) prev.disabled = pos <= 0.01;
+      if (next) next.disabled = pos >= 0.99;
+    };
+    prev?.addEventListener('click', () =>
+      teamTrack.scrollBy({ left: -step(), behavior: 'smooth' }),
+    );
+    next?.addEventListener('click', () => teamTrack.scrollBy({ left: step(), behavior: 'smooth' }));
+    teamTrack.addEventListener('scroll', sync, { passive: true });
+    window.addEventListener('resize', sync);
+    sync();
+
+    // Desktop accordion: the card under the pointer (or focused / clicked) opens; the second one starts open (the first if there is only one).
+    const cards = [...teamTrack.querySelectorAll<HTMLElement>('.team-card')];
+    const open = (card: HTMLElement) => {
+      cards.forEach((c) => c.toggleAttribute('data-active', c === card));
+    };
+    const first = cards[1] ?? cards[0];
+    if (first) open(first);
+    cards.forEach((card) => {
+      card.addEventListener('mouseenter', () => open(card));
+      card.addEventListener('focusin', () => open(card));
+      card.addEventListener('click', () => open(card));
+    });
+  }
+</script>
+
+<script>
+  import { initPtGlobe } from '../scripts/pt-globe';
+
+  // "Somos daqui" map: a 3D dotted globe (src/scripts/pt-globe.ts); the pin and office card come in when it scrolls
+  // into view (CSS in global.css), the card last.
+  const ptMap = document.querySelector<HTMLElement>('.pt-map');
+  if (ptMap) initPtGlobe(ptMap);
+  if (ptMap && !window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    ptMap.dataset.draw = '';
+    new IntersectionObserver(
+      (entries, obs) => {
+        if (entries.some((e) => e.isIntersecting)) {
+          ptMap.dataset.draw = 'on';
+          obs.disconnect();
+        }
+      },
+      { threshold: 0.35 },
+    ).observe(ptMap);
+  }
+</script>
+
+<script>
+  // Hero deck: a gentle tilt that follows the mouse (fine pointers only, never with reduced motion).
+  const deck = document.querySelector<HTMLElement>('[data-deck]');
+  if (
+    deck &&
+    window.matchMedia('(hover: hover) and (pointer: fine)').matches &&
+    !window.matchMedia('(prefers-reduced-motion: reduce)').matches
+  ) {
+    deck.addEventListener('pointermove', (e) => {
+      const r = deck.getBoundingClientRect();
+      deck.style.setProperty(
+        '--ry',
+        `${(((e.clientX - r.left) / r.width - 0.5) * 5).toFixed(2)}deg`,
+      );
+      deck.style.setProperty(
+        '--rx',
+        `${((0.5 - (e.clientY - r.top) / r.height) * 4).toFixed(2)}deg`,
+      );
+    });
+    deck.addEventListener('pointerleave', () => {
+      deck.style.removeProperty('--rx');
+      deck.style.removeProperty('--ry');
+    });
+  }
+</script>
+
+<script>
+  // Featured carousel: the arrows move it one card at a time.
+  const featTrack = document.querySelector<HTMLElement>('[data-feat-track]');
+  if (featTrack) {
+    const step = () => {
+      const item = featTrack.querySelector<HTMLElement>('.feat-item');
+      return item ? item.offsetWidth + 24 : featTrack.clientWidth;
+    };
+    document
+      .querySelector('[data-feat-prev]')
+      ?.addEventListener('click', () => featTrack.scrollBy({ left: -step(), behavior: 'smooth' }));
+    document
+      .querySelector('[data-feat-next]')
+      ?.addEventListener('click', () => featTrack.scrollBy({ left: step(), behavior: 'smooth' }));
+
+    // Position bar: its length is the visible share of the row, its offset follows the scroll.
+    const bar = document.querySelector<HTMLElement>('[data-feat-bar]');
+    const prev = document.querySelector<HTMLButtonElement>('[data-feat-prev]');
+    const next = document.querySelector<HTMLButtonElement>('[data-feat-next]');
+    const syncBar = () => {
+      const max = featTrack.scrollWidth - featTrack.clientWidth;
+      const share = featTrack.clientWidth / featTrack.scrollWidth;
+      const pos = max > 0 ? featTrack.scrollLeft / max : 0;
+      if (bar) {
+        bar.style.width = `${Math.min(share, 1) * 100}%`;
+        bar.style.transform = `translateX(${pos * (1 / Math.min(share, 1) - 1) * 100}%)`;
+      }
+      if (prev) prev.disabled = pos <= 0.01;
+      if (next) next.disabled = max <= 0 || pos >= 0.99;
+    };
+    featTrack.addEventListener('scroll', syncBar, { passive: true });
+    window.addEventListener('resize', syncBar);
+    syncBar();
+
+    // Spotlight: the first visible card is the large one; the card under the pointer (or with focus) takes over
+    // while it is hovered. Only on wide screens, where several cards are visible.
+    const featItems = [...featTrack.querySelectorAll<HTMLElement>('.feat-item')];
+    const wide = window.matchMedia('(min-width: 64rem)');
+    let hovered: HTMLElement | null = null;
+    featTrack.scrollLeft = 0;
+    const firstVisible = () => {
+      const left = featTrack.scrollLeft;
+      const base = featItems[0]?.offsetLeft ?? 0;
+      return featItems.findIndex((it) => it.offsetLeft - base >= left - 8);
+    };
+    const spot = () => {
+      const target = !wide.matches
+        ? null
+        : (hovered ?? featItems[Math.max(firstVisible(), 0)] ?? null);
+      featItems.forEach((it) => it.toggleAttribute('data-spot', it === target));
+    };
+    featItems.forEach((it) => {
+      it.addEventListener('mouseenter', () => {
+        hovered = it;
+        spot();
+      });
+      it.addEventListener('focusin', () => {
+        hovered = it;
+        spot();
+      });
+    });
+    featTrack.addEventListener('mouseleave', () => {
+      hovered = null;
+      spot();
+    });
+    featTrack.addEventListener('focusout', (e) => {
+      if (!featTrack.contains((e as FocusEvent).relatedTarget as Node | null)) {
+        hovered = null;
+        spot();
+      }
+    });
+    let t = 0;
+    featTrack.addEventListener(
+      'scroll',
+      () => {
+        clearTimeout(t);
+        t = window.setTimeout(spot, 120);
+      },
+      { passive: true },
+    );
+    wide.addEventListener('change', spot);
+    spot();
+  }
+</script>
+
+<script>
+  // Cards rise in one after another (left to right) the first time they scroll into view.
+  const items = document.querySelectorAll<HTMLElement>('[data-reveal-group] .reveal, .rise');
+  if (items.length && 'IntersectionObserver' in window) {
+    const io = new IntersectionObserver(
+      (entries) =>
+        entries.forEach((e) => {
+          if (!e.isIntersecting) return;
+          e.target.classList.add('is-in');
+          io.unobserve(e.target);
+        }),
+      { threshold: 0.12, rootMargin: '0px 0px -6% 0px' },
+    );
+    items.forEach((el) => io.observe(el));
+  } else {
+    items.forEach((el) => el.classList.add('is-in'));
+  }
+</script>

@@ -1,0 +1,61 @@
+---
+import SiteLayout from '../layouts/SiteLayout.astro';
+import Icon from '../components/Icon.astro';
+
+// Page not found (Cloudflare Pages serves dist/404.html for any unknown address). One dark, centred screen in the
+// "Explore por zona" night (deep olive, soft green glows, grain): a large "404" lit from above and fading into the
+// dark, a horizon of light under it, one sentence and the two ways on. A soft lime light follows the pointer and the
+// digits lean towards it; they rise one after another when the page opens. Reduced motion: still.
+// TODO: EN/FR versions.
+---
+
+<SiteLayout
+  title="Página não encontrada | JPP Properties"
+  description="Esta página não existe ou mudou de endereço."
+  padTop={false}
+  intro={false}
+>
+  <section class="nf" aria-labelledby="nf-title" data-nf>
+    <div class="nf-inner">
+      <p class="nf-code" aria-hidden="true" data-nf-code>
+        <span style="--d: 0">4</span><span style="--d: 1">0</span><span style="--d: 2">4</span>
+      </p>
+      <span class="nf-horizon" aria-hidden="true"></span>
+      <h1 id="nf-title" class="nf-title">Página não encontrada</h1>
+      <p class="nf-text">O endereço pode ter mudado ou o imóvel já não estar disponível.</p>
+      <div class="nf-actions">
+        <a href="/" class="nf-btn nf-btn-light">
+          <Icon name="home" class="size-5" /> Página inicial
+        </a>
+        <a href="/imoveis/" class="nf-btn nf-btn-glass">
+          <Icon name="search" class="size-5" /> Ver imóveis
+        </a>
+      </div>
+    </div>
+  </section>
+</SiteLayout>
+
+<script>
+  // The light follows the pointer across the screen; the digits lean a few degrees towards it.
+  const nf = document.querySelector<HTMLElement>('[data-nf]');
+  const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const fine = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
+  if (nf && fine && !reduce) {
+    let raf = 0;
+    nf.addEventListener('pointermove', (e) => {
+      cancelAnimationFrame(raf);
+      raf = requestAnimationFrame(() => {
+        const r = nf.getBoundingClientRect();
+        const x = (e.clientX - r.left) / r.width;
+        const y = (e.clientY - r.top) / r.height;
+        nf.style.setProperty('--mx', `${(x * 100).toFixed(1)}%`);
+        nf.style.setProperty('--my', `${(y * 100).toFixed(1)}%`);
+        nf.style.setProperty('--ry', `${((x - 0.5) * 14).toFixed(2)}deg`);
+        nf.style.setProperty('--rx', `${((0.5 - y) * 10).toFixed(2)}deg`);
+      });
+    });
+    nf.addEventListener('pointerleave', () => {
+      ['--mx', '--my', '--rx', '--ry'].forEach((p) => nf.style.removeProperty(p));
+    });
+  }
+</script>

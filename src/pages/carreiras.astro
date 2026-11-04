@@ -1,0 +1,411 @@
+---
+import SiteLayout from '../layouts/SiteLayout.astro';
+import Icon from '../components/Icon.astro';
+import type { IconName } from '../components/Icon.astro';
+import { AMI, offices } from '../lib/site';
+
+// Careers: dark top (title, house structure and text on the left, the application form on the right); benefits as icon
+// rows; the profile as expanding panels; where you will work (three office photos on a white strip); a testimonial
+// (only when there is a real one); how applying works; the FAQ; a closing call to action.
+// TODO: PROVISIONAL copy (PT), to confirm with the client: benefits, profile and answers describe a typical agency,
+// not confirmed facts about JPP (remuneration and licence answers especially). EN/FR pending.
+const office = offices[0]!;
+
+const benefits: { icon: IconName; title: string; text: string }[] = [
+  {
+    icon: 'clientCare',
+    title: 'Formação e acompanhamento',
+    text: 'Aprende connosco desde o primeiro dia, com o apoio de quem já conhece o mercado e o acompanhamento da equipa em cada passo.',
+  },
+  {
+    icon: 'houseKey',
+    title: 'Imóveis e apoio em cada negócio',
+    text: 'Trabalha com imóveis no Algarve e conta com toda a equipa, da primeira visita à escritura.',
+  },
+  {
+    icon: 'pinMap',
+    title: `Um escritório em ${office.name}`,
+    text: 'Uma base local, perto de quem compra e vende, onde se encontra com clientes e colegas.',
+  },
+];
+
+const profile: { label: string; icon: IconName; title: string; text: string; tags: string[] }[] = [
+  {
+    label: 'Pessoas',
+    icon: 'chat',
+    title: 'Gosto pelo contacto com pessoas',
+    text: 'Ouvir, explicar e acompanhar cada cliente, do primeiro contacto à entrega das chaves.',
+    tags: ['Ouvir', 'Explicar', 'Acompanhar'],
+  },
+  {
+    label: 'Aprender',
+    icon: 'book',
+    title: 'Vontade de aprender',
+    text: 'Ninguém começa a saber tudo: damos formação no início e ao longo do caminho.',
+    tags: ['Formação inicial', 'Ao longo do caminho'],
+  },
+  {
+    label: 'Algarve',
+    icon: 'pinMap',
+    title: 'Conhecimento do Algarve',
+    text: 'Conhecer as zonas onde trabalhamos, ou querer conhecê-las a fundo.',
+    tags: ['Vilamoura', 'Quarteira', 'Quinta do Lago'],
+  },
+  {
+    label: 'Autonomia',
+    icon: 'calendar',
+    title: 'Autonomia e organização',
+    text: 'Gerir a sua agenda, os seus clientes e os seus imóveis com método.',
+    tags: ['Agenda', 'Clientes', 'Imóveis'],
+  },
+  {
+    label: 'Equipa',
+    icon: 'team',
+    title: 'Espírito de equipa',
+    text: 'Partilhar informação e ajudar os colegas, porque cada negócio é de todos.',
+    tags: ['Partilhar informação', 'Ajudar os colegas'],
+  },
+];
+
+// Three office photos, equal, in one row.
+// TODO (client): real photos of the offices. The two office shots are small and the third is a stand-in of the marina.
+const officePhotos = [
+  { src: '/office/escritorio-vilamoura.webp', alt: `Montra do escritório da JPP Properties em ${office.name}`, w: 680, h: 510 },
+  { src: '/office/escritorio-entrada.webp', alt: `Entrada do escritório da JPP Properties em ${office.name}`, w: 287, h: 510 },
+  { src: '/zones/vilamoura.jpg', alt: 'Marina de Vilamoura', w: 1152, h: 768 },
+];
+
+// TODO (client): a real quote from a JPP consultant (with their consent). Until then the section stays hidden.
+type Testimonial = { quote: string; name: string; role: string };
+const testimonial = null as Testimonial | null;
+
+const applySteps: { icon: IconName; title: string; text: string }[] = [
+  { icon: 'mail', title: 'Envie a candidatura', text: 'Preencha o formulário desta página. O CV é opcional.' },
+  {
+    icon: 'chat',
+    title: 'Conversa no escritório',
+    text: `Se o seu perfil se ajustar, ligamos-lhe para uma conversa no escritório de ${office.name}.`,
+  },
+  { icon: 'book', title: 'Comece com formação', text: 'Tem formação e o acompanhamento da equipa desde o primeiro dia.' },
+];
+const faqs = [
+  {
+    q: 'Preciso de experiência no imobiliário?',
+    a: 'Não. Procuramos consultores a começar ou com experiência. Quem começa tem formação e o acompanhamento da equipa.',
+  },
+  {
+    q: 'Preciso de uma licença própria?',
+    a: `Não. Os consultores trabalham ao abrigo da licença de mediação imobiliária da JPP Properties (AMI ${AMI}).`,
+  },
+  {
+    q: 'Como é a remuneração?',
+    a: 'Explicamos o modelo de remuneração e as condições na primeira conversa, de acordo com o seu perfil.',
+  },
+];
+
+const experience = ['Sem experiência no setor', 'Menos de 2 anos', '2 a 5 anos', 'Mais de 5 anos'];
+---
+
+<SiteLayout
+  title="Carreiras | JPP Properties"
+  description="Faça carreira como consultor imobiliário no Algarve com a JPP Properties (AMI 9361). Envie a sua candidatura."
+  route="careers"
+>
+  <!-- Top: a dark olive night (the "Explore por zona" atmosphere). Left: title, the house structure and text. Right: the form. -->
+  <section class="cp-hero" aria-labelledby="cp-titulo">
+    <div class="container-x cp-crumbs">
+      <nav aria-label="Localização" class="text-sm">
+        <ol class="flex flex-wrap items-center gap-2">
+          <li>
+            <a href="/">Início</a>
+          </li>
+          <li aria-hidden="true">/</li>
+          <li aria-current="page">Carreiras</li>
+        </ol>
+      </nav>
+    </div>
+    <div class="container-x cp-hero-grid">
+      <div class="cp-hero-intro">
+        <!-- TODO: provisional title, to confirm with the client. EN/FR pending. -->
+        <h1 id="cp-titulo" class="cp-wall">
+          <span>Construímos juntos</span>
+          <span>o seu percurso.</span>
+        </h1>
+        <img
+          class="cp-hero-house"
+          src="/careers/casa-estrutura.svg"
+          alt=""
+          width="1442"
+          height="926"
+          fetchpriority="high"
+          decoding="async"
+        />
+        <p class="cp-lead">
+          Procuramos consultores imobiliários que queiram crescer no Algarve, a começar ou com
+          experiência, numa equipa local.
+        </p>
+      </div>
+
+      <div id="candidatura" class="pd-contact cp-card">
+        <h2 class="detail-title font-display text-2xl text-forest">Enviar candidatura</h2>
+        <!-- PROTOTYPE: submission is simulated. Real flow = Pages Function + Turnstile + Resend, with the CV as an
+             attachment (phase 5). Nothing is stored: personal data only travels to the team's inbox. -->
+        <form data-careers-form class="cp-form" novalidate>
+          <div>
+            <label for="cp-name" class="mb-1.5 block text-sm font-medium">Nome</label>
+            <input id="cp-name" name="name" type="text" autocomplete="name" required class="field" />
+          </div>
+          <div class="grid gap-3 sm:grid-cols-2">
+            <div>
+              <label for="cp-phone" class="mb-1.5 block text-sm font-medium">Telefone</label>
+              <input id="cp-phone" name="phone" type="tel" autocomplete="tel" required class="field" />
+            </div>
+            <div>
+              <label for="cp-email" class="mb-1.5 block text-sm font-medium">Email</label>
+              <input id="cp-email" name="email" type="email" autocomplete="email" required class="field" />
+            </div>
+          </div>
+          <div>
+            <label for="cp-exp" class="mb-1.5 block text-sm font-medium">Experiência no imobiliário</label>
+            <select id="cp-exp" name="experience" required class="field field-select">
+              <option value="">Escolha uma opção</option>
+              {experience.map((e) => <option value={e}>{e}</option>)}
+            </select>
+          </div>
+          <div>
+            <label for="cp-linkedin" class="mb-1.5 block text-sm font-medium">
+              Perfil no LinkedIn <span class="font-normal text-muted">(opcional)</span>
+            </label>
+            <input
+              id="cp-linkedin"
+              name="linkedin"
+              type="url"
+              inputmode="url"
+              placeholder="https://www.linkedin.com/in/..."
+              class="field"
+            />
+          </div>
+          <div>
+            <label for="cp-cv" class="mb-1.5 block text-sm font-medium">
+              CV <span class="font-normal text-muted">(opcional, PDF ou Word, até 5 MB)</span>
+            </label>
+            <div class="field cp-file">
+              <input
+                id="cp-cv"
+                name="cv"
+                type="file"
+                accept=".pdf,.doc,.docx,application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+                class="cp-file-input sr-only"
+              />
+              <label for="cp-cv" class="cp-file-btn">Escolher ficheiro</label>
+              <span class="cp-file-name" data-cv-name>Nenhum ficheiro selecionado</span>
+            </div>
+          </div>
+          <div class="cp-form-end">
+            <label class="flex items-start gap-3 text-sm text-muted">
+              <input type="checkbox" name="consent" required class="mt-0.5 size-5 shrink-0 accent-[#4b6a1a]" />
+              <span>
+                Aceito que a JPP Properties trate os meus dados para avaliar esta candidatura, conforme a{' '}
+                <a href="/politica-de-privacidade/" class="underline underline-offset-2 hover:text-ink">
+                  Política de Privacidade
+                </a>
+                .
+              </span>
+            </label>
+            <button type="submit" class="btn btn-lime w-full">
+              Enviar candidatura <Icon name="arrowRight" class="size-4" />
+            </button>
+            <p class="hidden rounded-xl bg-paper-2 p-4 text-sm text-forest" role="status" data-form-status></p>
+          </div>
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <!-- Benefits: title and text, then the icon rows side by side. -->
+  <section class="container-x cp-section" aria-labelledby="cp-vantagens">
+    <div>
+      <p class="cp-kicker">— Vantagens</p>
+      <h2 id="cp-vantagens" class="zones-title">Porque ser consultor na JPP</h2>
+      <p class="cp-lead">
+        Quer trabalhar por conta própria sem trabalhar sozinho? Na JPP Properties tem uma equipa
+        local, imóveis no Algarve e formação para crescer.
+      </p>
+      <ul class="cp-benefits">
+        {
+          benefits.map((b) => (
+            <li class="cp-benefit">
+              <span class="cp-benefit-icon" aria-hidden="true">
+                <Icon name={b.icon} class="size-5" />
+              </span>
+              <div>
+                <h3 class="cp-benefit-title">{b.title}</h3>
+                <p class="cp-benefit-text">{b.text}</p>
+              </div>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </section>
+
+  <!-- Profile: expanding panels (reference: MeewVision "Com quem trabalhamos"), on the green night with our own icons.
+       One panel is always open. Native <details>, so it works without JS; the script only stops the open one closing. -->
+  <section class="container-x cp-section cp-profile" aria-labelledby="cp-perfil">
+    <div class="cp-head cp-head-split">
+      <div>
+        <p class="cp-kicker">— Quem procuramos</p>
+        <h2 id="cp-perfil" class="zones-title">O seu perfil</h2>
+      </div>
+      <p class="cp-lead">
+        Qualquer pessoa pode ser consultor imobiliário: quem já trabalha no setor e quem vem de outra
+        profissão. Ensinamos o que precisa de saber e acompanhamo-lo enquanto cresce.
+      </p>
+    </div>
+    <div class="cp-panels">
+      {
+        profile.map((p, i) => (
+          <details class="cp-panel" name="cp-perfil" open={i === 0}>
+            <summary class="cp-panel-tab">
+              <span class="cp-panel-num">{String(i + 1).padStart(2, '0')}</span>
+              <Icon name={p.icon} class="cp-panel-tab-icon size-5" />
+              <span class="cp-panel-label">{p.label}</span>
+              <Icon name="chevronDown" class="cp-panel-chev size-4" />
+            </summary>
+            <div class="cp-panel-body">
+              <Icon name={p.icon} class="cp-panel-mark" />
+              <h3 class="cp-panel-title">{p.title}</h3>
+              <p class="cp-panel-text">{p.text}</p>
+              <ul class="cp-panel-tags">
+                {p.tags.map((t) => <li>{t}</li>)}
+              </ul>
+            </div>
+          </details>
+        ))
+      }
+    </div>
+  </section>
+
+  <!-- Where you will work: one sage mist band with three equal, square-cornered office photos in one row. -->
+  <section class="cp-gal" aria-labelledby="cp-onde">
+    <div class="container-x cp-head cp-head-split">
+      <h2 id="cp-onde" class="zones-title">Onde vai trabalhar</h2>
+      <p class="cp-lead">
+        Um escritório em {office.name} e imóveis nas zonas que conhecemos, de Quarteira à Quinta do
+        Lago.
+      </p>
+    </div>
+    <div class="container-x cp-gal-grid">
+      {
+        officePhotos.map((p) => (
+          <figure class="cp-gal-photo">
+            <img src={p.src} alt={p.alt} width={p.w} height={p.h} loading="lazy" decoding="async" />
+          </figure>
+        ))
+      }
+    </div>
+  </section>
+
+  {
+    testimonial && (
+      <section class="container-x cp-section cp-quote" aria-label="Testemunho">
+        <blockquote>
+          <p>“{testimonial.quote}”</p>
+          <footer>
+            <strong>{testimonial.name}</strong>, {testimonial.role}
+          </footer>
+        </blockquote>
+      </section>
+    )
+  }
+
+  <!-- How applying works: the site's "Como trabalhamos" steps, in three columns. -->
+  <section class="container-x cp-section" aria-labelledby="cp-passos">
+    <div class="cp-head cp-head-split">
+      <h2 id="cp-passos" class="zones-title">Como funciona a candidatura</h2>
+      <p class="cp-lead">Três passos, do formulário ao primeiro dia na equipa.</p>
+    </div>
+    <ol class="hww-flow cp-steps">
+      {
+        applySteps.map((s, i) => (
+          <li class="hww-card">
+            <span class="hww-dot" aria-hidden="true" />
+            <span class="hww-card-icon" aria-hidden="true">
+              <Icon name={s.icon} class="size-4" />
+            </span>
+            <span class="hww-card-num" aria-hidden="true">
+              {String(i + 1).padStart(2, '0')}
+            </span>
+            <h3 class="hww-card-title">{s.title}</h3>
+            <p class="hww-card-text">{s.text}</p>
+          </li>
+        ))
+      }
+    </ol>
+  </section>
+
+  <!-- FAQ. -->
+  <section id="perguntas" class="container-x cp-section cp-faq" aria-labelledby="cp-faq">
+    <div class="cp-head cp-head-center">
+      <h2 id="cp-faq" class="zones-title">Perguntas frequentes</h2>
+    </div>
+    <div class="cp-acc">
+      {
+        faqs.map((f) => (
+          <details class="cp-acc-item" name="cp-faq">
+            <summary>
+              {f.q}
+              <Icon name="chevronDown" class="cp-acc-chev size-4" />
+            </summary>
+            <p>{f.a}</p>
+          </details>
+        ))
+      }
+    </div>
+  </section>
+
+  <!-- Closing call to action: back to the form at the top of the page. -->
+  <section class="container-x cp-section" aria-labelledby="cp-cta">
+    <div class="cp-cta">
+      <div>
+        <h2 id="cp-cta" class="zones-title">Pronto para dar o primeiro passo?</h2>
+        <p class="cp-lead">Envie a sua candidatura. Se o seu perfil se ajustar, ligamos-lhe.</p>
+      </div>
+      <a href="#candidatura" class="btn btn-lime">
+        Candidatar-me <Icon name="arrowRight" class="size-4" />
+      </a>
+    </div>
+  </section>
+</SiteLayout>
+
+<script>
+  // Profile panels: one is always open, so clicking the open one does nothing.
+  document.querySelectorAll<HTMLElement>('.cp-panel-tab').forEach((tab) => {
+    tab.addEventListener('click', (e) => {
+      if (tab.parentElement?.hasAttribute('open')) e.preventDefault();
+    });
+  });
+
+  const MAX_CV = 5 * 1024 * 1024;
+  document.querySelectorAll<HTMLFormElement>('form[data-careers-form]').forEach((form) => {
+    const cv = form.querySelector<HTMLInputElement>('input[name="cv"]')!;
+    const cvName = form.querySelector<HTMLElement>('[data-cv-name]')!;
+    const noFile = cvName.textContent;
+    cv.addEventListener('change', () => {
+      const file = cv.files?.[0];
+      cvName.textContent = file ? file.name : noFile;
+      cv.setCustomValidity(file && file.size > MAX_CV ? 'O ficheiro tem mais de 5 MB.' : '');
+    });
+    form.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const status = form.querySelector<HTMLElement>('[data-form-status]')!;
+      if (!form.checkValidity()) {
+        form.reportValidity();
+        status.classList.add('hidden');
+        return;
+      }
+      status.classList.remove('hidden');
+      status.textContent = 'Protótipo: o envio ainda não está ligado. Os seus dados não foram enviados.';
+    });
+  });
+</script>
