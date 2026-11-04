@@ -7357,9 +7357,9 @@ footer.on-dark {
 }
 
 /* ==== Glass icon buttons =========================================================================================
-   Every icon-only button and icon tile shares the footer's social-button look (SiteFooter .bwf-soc): a charcoal
-   glass square with a lit top edge; on hover it lifts and lights up lime. The near-solid charcoal base keeps it
-   legible on white, on the green header and over photos alike. `:not(#\#)` adds id-level specificity so this one
+   Every icon-only button and icon tile shares one look: a soft dark green square with a pale lime icon, a faint light
+   edge and hardly any shadow; on hover it lifts and its edge lights up lime. The solid base keeps it legible on white,
+   on the green header and over photos alike. `:not(#\#)` adds id-level specificity so this one
    block wins over the many earlier per-component rules (white circles, frosted pills, green fills).
    New icon buttons: add the `glass-ic` class. */
 :is(
@@ -7375,20 +7375,23 @@ footer.on-dark {
     .team-contacts a,
     .about-pillar-icon,
     .hww-card-icon,
-    .careers-perk-icon
+    .careers-perk-icon,
+    .cp-benefit-icon,
+    .zx-card-ic,
+    .zx-nav,
+    .bwf-soc
   ):not(#\#) {
   border: 0;
   border-radius: 22%;
-  color: rgba(255, 255, 255, 0.75);
-  background-color: rgba(27, 30, 28, 0.9);
-  background-image: linear-gradient(180deg, rgba(255, 255, 255, 0.09), rgba(255, 255, 255, 0.025));
+  color: var(--g-100);
+  background-color: var(--g-800);
+  background-image: linear-gradient(180deg, var(--g-600) 0%, var(--g-800) 100%);
   /* No backdrop blur: at 90% opacity it would not show, and on a page of many icons it costs every scroll frame. */
   -webkit-backdrop-filter: none;
   backdrop-filter: none;
   box-shadow:
-    inset 0 0 0 1px rgba(255, 255, 255, 0.16),
-    inset 0 1px 0 rgba(255, 255, 255, 0.14),
-    0 6px 14px -8px rgba(0, 0, 0, 0.8);
+    inset 0 0 0 1px rgba(255, 255, 255, 0.12),
+    0 2px 5px -3px rgba(18, 26, 13, 0.35);
   transition:
     color 0.25s,
     box-shadow 0.35s,
@@ -7407,16 +7410,17 @@ footer.on-dark {
     .card-arrow,
     .hero-pause,
     .feat-nav,
-    .team-contacts a
+    .team-contacts a,
+    .zx-nav,
+    .bwf-soc
   ):is(:hover, :focus-visible, [aria-expanded='true']):not(:disabled):not(#\#),
-:is(.about-pillar:hover .about-pillar-icon, .hww-card:hover .hww-card-icon, .careers-perk:hover .careers-perk-icon):not(#\#) {
+:is(.about-pillar:hover .about-pillar-icon, .hww-card:hover .hww-card-icon, .careers-perk:hover .careers-perk-icon, .cp-benefit:hover .cp-benefit-icon):not(#\#) {
   color: #fff;
-  background-color: rgba(27, 30, 28, 0.9);
-  background-image: linear-gradient(180deg, rgba(158, 188, 58, 0.32), rgba(158, 188, 58, 0.08));
+  background-color: var(--g-800);
+  background-image: linear-gradient(180deg, var(--g-500) 0%, var(--g-700) 100%);
   box-shadow:
-    inset 0 0 0 1px rgba(158, 188, 58, 0.75),
-    inset 0 1px 0 rgba(255, 255, 255, 0.3),
-    0 10px 26px -8px rgba(158, 188, 58, 0.6);
+    inset 0 0 0 1px rgba(158, 188, 58, 0.6),
+    0 4px 10px -5px rgba(18, 26, 13, 0.4);
 }
 /* The lift, only when motion is welcome. */
 @media (prefers-reduced-motion: no-preference) {
