@@ -273,7 +273,7 @@ const zoneTiles = (Object.keys(zones) as ZoneId[]).map((id) => ({
         <h2 id="sobre-titulo" class="zones-title">
           Somos daqui. Sentimos o mercado como poucos.
         </h2>
-        <div class="about-copy grid max-w-[40.5rem] content-start gap-4 text-left text-base leading-relaxed text-ink/80 md:text-justify sm:text-[1.0625rem]">
+        <div id="about-copy" class="about-copy grid max-w-[40.5rem] content-start gap-4 text-left text-base leading-relaxed text-ink/80 md:text-justify sm:text-[1.0625rem]">
           <!-- TODO: provisional SEO copy (PT). To be reviewed with the client; EN/FR versions pending. -->
           <p>
             A JPP Properties é uma imobiliária no Algarve (AMI {AMI}) especializada na compra,
@@ -291,6 +291,11 @@ const zoneTiles = (Object.keys(zones) as ZoneId[]).map((id) => ({
             segurança.
           </p>
         </div>
+        <!-- Phones: the second paragraph folds behind "Ler mais" (the script reveals this button; without JS all the
+             text shows). -->
+        <button type="button" class="about-more" data-about-more aria-expanded="false" hidden>
+          Ler mais <Icon name="chevronDown" class="size-4" />
+        </button>
         <div class="flex flex-wrap gap-3">
           <a href={`tel:${offices[0]!.phones[0]!.tel}`} class="btn btn-lime">
             <Icon name="phone" class="size-4" /> Ligar
@@ -335,13 +340,14 @@ const zoneTiles = (Object.keys(zones) as ZoneId[]).map((id) => ({
             <Icon name={p.icon} class="size-7" />
           </span>
           <div class="min-w-0 flex-1">
-            <div class="flex items-baseline justify-between gap-3">
+            <div class="about-pillar-head flex items-baseline justify-between gap-3">
               <h3 class="font-display text-xl text-forest">{p.title}</h3>
               <span class="about-pillar-num" aria-hidden="true">
                 {String(i + 1).padStart(2, '0')}
               </span>
+              <Icon name="chevronDown" class="about-pillar-chev size-4" />
             </div>
-            <p class="mt-2 text-sm leading-relaxed text-muted">{p.text}</p>
+            <p id={`pillar-text-${i}`} class="about-pillar-text mt-2 text-sm leading-relaxed text-muted">{p.text}</p>
           </div>
         </li>
       ))}
@@ -725,5 +731,53 @@ const zoneTiles = (Object.keys(zones) as ZoneId[]).map((id) => ({
     items.forEach((el) => io.observe(el));
   } else {
     items.forEach((el) => el.classList.add('is-in'));
+  }
+
+  // Phones only: "Somos daqui" reads short. The second paragraph folds behind "Ler mais", and each pillar shows its
+  // title with the line opening on tap. Wider screens and no-JS visitors see everything.
+  {
+    const phone = window.matchMedia('(max-width: 39.99rem)');
+    const copy = document.getElementById('about-copy');
+    const more = document.querySelector<HTMLButtonElement>('[data-about-more]');
+    if (copy && more) {
+      copy.dataset.fold = '';
+      more.hidden = false;
+      more.setAttribute('aria-controls', 'about-copy');
+      more.addEventListener('click', () => {
+        const open = more.getAttribute('aria-expanded') !== 'true';
+        more.setAttribute('aria-expanded', String(open));
+        copy.toggleAttribute('data-open', open);
+        more.firstChild!.textContent = open ? 'Ler menos ' : 'Ler mais ';
+      });
+    }
+    document.querySelectorAll<HTMLElement>('.about-pillar').forEach((li, i) => {
+      const head = li.querySelector<HTMLElement>('.about-pillar-head');
+      if (!head) return;
+      const sync = () => {
+        if (phone.matches) {
+          head.setAttribute('role', 'button');
+          head.tabIndex = 0;
+          head.setAttribute('aria-controls', `pillar-text-${i}`);
+          head.setAttribute('aria-expanded', String(li.hasAttribute('data-open')));
+        } else {
+          ['role', 'tabindex', 'aria-controls', 'aria-expanded'].forEach((a) => head.removeAttribute(a));
+        }
+      };
+      const toggle = () => {
+        if (!phone.matches) return;
+        li.toggleAttribute('data-open');
+        sync();
+      };
+      li.dataset.fold = '';
+      head.addEventListener('click', toggle);
+      head.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          toggle();
+        }
+      });
+      phone.addEventListener('change', sync);
+      sync();
+    });
   }
 </script>

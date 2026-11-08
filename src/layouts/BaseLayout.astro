@@ -48,6 +48,9 @@ const xDefault = route
     <meta name="theme-color" content="#ffffff" />
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <!-- Marks the page as scripted before the first paint, so CSS can hold back no-JS fallbacks (such as the hero
+         deck's plain glass box) that JS replaces a moment later; without it they flash on load. -->
+    <script is:inline>document.documentElement.classList.add('js');</script>
     <title>{title}</title>
     <meta name="description" content={description} />
     <link rel="canonical" href={canonical} />

@@ -13,6 +13,9 @@ interface Props {
   route?: RouteKey;
   /** Inner pages reserve space under the floating header. */
   padTop?: boolean;
+  /** The header starts as clear glass over a photo hero (marked `.hero-shape` or `[data-header-hero]`) and turns
+      green once the hero has passed under it. Defaults to pages without top padding (home, 404). */
+  overHero?: boolean;
   /** The entrance curtain (off where it would only delay the message, e.g. the 404 page). */
   intro?: boolean;
   /** Share preview image, Open Graph type and structured data (see BaseLayout). */
@@ -21,12 +24,12 @@ interface Props {
   jsonLd?: Record<string, unknown>;
 }
 
-const { title, description, route, padTop = true, intro = true, image, ogType, jsonLd } = Astro.props;
+const { title, description, route, padTop = true, overHero = !padTop, intro = true, image, ogType, jsonLd } = Astro.props;
 ---
 
 <BaseLayout locale="pt" {title} {description} {route} {image} {ogType} {jsonLd} noindex>
   {intro && <SiteIntro />}
-  <SiteHeader overHero={!padTop} />
+  <SiteHeader {overHero} />
   <main id="main" class:list={[padTop && 'pt-28']}>
     <slot />
   </main>

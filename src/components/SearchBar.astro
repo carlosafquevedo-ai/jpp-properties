@@ -19,8 +19,9 @@ const price = getPriceRange();
     </label>
   </fieldset>
 
-  <div class="grid grid-cols-2 gap-x-3 gap-y-1 sm:grid-cols-3 lg:grid-cols-[1.1fr_1.1fr_0.9fr_1.4fr_auto] lg:gap-x-3 lg:items-center">
+  <div class="grid grid-cols-2 gap-x-3 gap-y-1 sm:grid-cols-3 lg:grid-cols-[minmax(0,1.1fr)_minmax(0,1.1fr)_minmax(0,0.9fr)_minmax(0,1.4fr)_auto] lg:gap-x-3 lg:items-center">
     <div class="glass-field col-span-2 sm:col-span-1">
+      <span class="sf-ic" aria-hidden="true"><Icon name="pin" class="size-5" /></span>
       <label for="s-zona">Zona</label>
       <select id="s-zona" name="zona" class="glass-select">
         <option value="">Todas as zonas</option>
@@ -30,6 +31,7 @@ const price = getPriceRange();
       </select>
     </div>
     <div class="glass-field">
+      <span class="sf-ic" aria-hidden="true"><Icon name="building" class="size-5" /></span>
       <label for="s-imovel">Tipo de imóvel</label>
       <select id="s-imovel" name="imovel" class="glass-select">
         <option value="">Todos os tipos</option>
@@ -39,6 +41,7 @@ const price = getPriceRange();
       </select>
     </div>
     <div class="glass-field">
+      <span class="sf-ic" aria-hidden="true"><Icon name="bed" class="size-5" /></span>
       <label for="s-quartos">Quartos</label>
       <select id="s-quartos" name="quartos" class="glass-select">
         <option value="">Qualquer</option>
@@ -53,6 +56,7 @@ const price = getPriceRange();
       data-min={price.min}
       data-max={price.max}
     >
+      <span class="sf-ic" aria-hidden="true"><Icon name="euro" class="size-5" /></span>
       <div class="glass-range-head">
         <label for="s-preco">Preço máximo</label>
         <output for="s-preco" class="glass-range-value">
