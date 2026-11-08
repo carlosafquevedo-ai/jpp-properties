@@ -23,7 +23,7 @@ const lo = Math.max(0, STEPS.findIndex((s) => s >= pMin) - 1);
 const hi = STEPS.findIndex((s) => s >= pMax);
 const priceSteps = STEPS.slice(lo, hi === -1 ? STEPS.length : hi + 1);
 
-const maxBaths = Math.min(Math.max(1, ...properties.map((p) => p.bathrooms)), 4);
+const maxBaths = Math.min(Math.max(1, ...properties.map((p) => p.bathrooms ?? 0)), 4);
 const bathOptions = Array.from({ length: maxBaths }, (_, i) => String(i + 1));
 const AREAS = [50, 75, 100, 150, 200, 300];
 ---

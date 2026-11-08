@@ -8,6 +8,7 @@ import {
   properties,
   zones,
   propertyTypeLabels,
+  formatArea,
   formatPrice,
   type Property,
 } from '../../data/properties';
@@ -33,23 +34,27 @@ const plans = p.floorPlans ?? [];
 const more = gallery.length - 5;
 
 // Typology (T0, T1, …) for homes; plots and shops have none.
-const typology = p.propertyType === 'apartment' || p.propertyType === 'villa' ? `T${p.bedrooms}` : null;
+const typology =
+  (p.propertyType === 'apartment' || p.propertyType === 'villa') && p.bedrooms != null ? `T${p.bedrooms}` : null;
 const tags = [
   p.listingType === 'rent' ? 'Arrendamento' : 'Venda',
   [propertyTypeLabels[p.propertyType], typology].filter(Boolean).join(' '),
   p.condition === 'new' ? 'Novo' : null,
 ].filter(Boolean) as string[];
 
-const facts: { icon: IconName; label: string; value: string }[] = [
-  { icon: 'bed', label: 'Quartos', value: String(p.bedrooms) },
-  { icon: 'bath', label: 'Casas de banho', value: String(p.bathrooms) },
-  { icon: 'car', label: 'Garagem', value: String(p.garageSpaces) },
-  { icon: 'area', label: 'Área útil', value: `${p.usableArea} m²` },
-  ...(p.grossArea ? [{ icon: 'area' as const, label: 'Área bruta', value: `${p.grossArea} m²` }] : []),
-  ...(p.plotArea ? [{ icon: 'area' as const, label: 'Área do terreno', value: `${p.plotArea} m²` }] : []),
-  { icon: 'calendar', label: 'Construção', value: String(p.yearBuilt) },
-  { icon: 'zap', label: 'Classe energética', value: p.energyClass ?? 'A indicar' }, // TODO: mandatory in real listings
-];
+// Only the facts the listing gives: an unknown value is left out, never shown as 0.
+const facts = (
+  [
+    { icon: 'bed', label: 'Quartos', value: p.bedrooms != null ? String(p.bedrooms) : '' },
+    { icon: 'bath', label: 'Casas de banho', value: p.bathrooms != null ? String(p.bathrooms) : '' },
+    { icon: 'car', label: 'Garagem', value: p.garageSpaces != null ? String(p.garageSpaces) : '' },
+    { icon: 'area', label: 'Área útil', value: formatArea(p.usableArea) },
+    { icon: 'area', label: 'Área bruta', value: formatArea(p.grossArea) },
+    { icon: 'area', label: 'Área do terreno', value: formatArea(p.plotArea) },
+    { icon: 'calendar', label: 'Construção', value: p.yearBuilt ? String(p.yearBuilt) : '' },
+    { icon: 'zap', label: 'Classe energética', value: p.energyClass ?? 'A indicar' }, // TODO: mandatory in real listings
+  ] as { icon: IconName; label: string; value: string }[]
+).filter((f) => f.value);
 
 // Long descriptions fold after a few lines ("Ler mais").
 const longText = p.description.join(' ').length > 600;
@@ -79,9 +84,9 @@ const jsonLd = {
   },
   itemOffered: {
     '@type': p.propertyType === 'apartment' ? 'Apartment' : p.propertyType === 'villa' ? 'SingleFamilyResidence' : 'Place',
-    numberOfBedrooms: p.bedrooms,
-    numberOfBathroomsTotal: p.bathrooms,
-    floorSize: { '@type': 'QuantitativeValue', value: p.usableArea, unitCode: 'MTK' },
+    ...(p.bedrooms != null ? { numberOfBedrooms: p.bedrooms } : {}),
+    ...(p.bathrooms != null ? { numberOfBathroomsTotal: p.bathrooms } : {}),
+    ...(p.usableArea ? { floorSize: { '@type': 'QuantitativeValue', value: p.usableArea, unitCode: 'MTK' } } : {}),
     address: {
       '@type': 'PostalAddress',
       addressLocality: zones[p.zone].name,
@@ -94,7 +99,7 @@ const jsonLd = {
 
 <SiteLayout
   title={`${p.title}, ${place} | JPP Properties`}
-  description={`${propertyTypeLabels[p.propertyType]}${typology ? ` ${typology}` : ''} em ${place}. ${p.usableArea} m². ${formatPrice(p.price)}.`}
+  description={`${propertyTypeLabels[p.propertyType]}${typology ? ` ${typology}` : ''} em ${place}.${p.usableArea ? ` ${formatArea(p.usableArea)}.` : ''} ${formatPrice(p.price)}.`}
   image={gallery[0]}
   ogType="product"
   {jsonLd}

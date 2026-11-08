@@ -31,7 +31,7 @@ export function getSearchOptions(list = visibleProperties) {
     label,
   }));
 
-  const maxBeds = Math.min(Math.max(1, ...list.map((p) => p.bedrooms)), 10);
+  const maxBeds = Math.min(Math.max(1, ...list.map((p) => p.bedrooms ?? 0)), 10);
   const bedroomOptions: Option[] = Array.from({ length: maxBeds }, (_, i) => ({
     value: String(i + 1),
     label: `${i + 1} ou mais`,

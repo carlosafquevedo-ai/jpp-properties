@@ -1,6 +1,7 @@
 ---
 import Icon from './Icon.astro';
 import { AMI, facebookUrl, instagramUrl, complaintsBookUrl } from '../lib/site';
+import { zones } from '../data/properties';
 
 // Beam wordmark footer: the charcoal closing section crossed by a slow diagonal shaft of lime light, with the
 // brand set as a giant, bottom-cropped wordmark the light runs through. Ported from a React component to plain
@@ -8,6 +9,9 @@ import { AMI, facebookUrl, instagramUrl, complaintsBookUrl } from '../lib/site';
 // the header's "Fale connosco" panel (without JS it goes to the contacts in "Somos daqui" on the home page).
 const year = new Date().getFullYear();
 const wordmark = 'JPP Properties';
+// "Vilamoura, Quarteira, … e Carvoeiro": every zone the site has, read from the zones list.
+const zoneNames = Object.values(zones).map((z) => z.name);
+const zoneLine = `${zoneNames.slice(0, -1).join(', ')} e ${zoneNames.at(-1)}`;
 
 const socials = [
   { label: 'Facebook', href: facebookUrl, icon: 'facebook' as const },
@@ -64,7 +68,7 @@ const delay = () => `--bwf-d:${(d += 70)}ms`;
       </ul>
       <div class="bwf-credits">
         <p class="bwf-fade" style={delay()}>
-          Mediação imobiliária no Algarve. Vilamoura, Quarteira, Vilasol, Vale do Lobo e Quinta do Lago.
+          Mediação imobiliária no Algarve. {zoneLine}.
         </p>
         <p class="bwf-fade" style={delay()}>
           Licença <b>AMI {AMI}</b>
