@@ -12564,3 +12564,20 @@ form .field:focus-visible {
   height: auto;
   aspect-ratio: 1 / 1;
 }
+
+/* Office photos a little wider (client's request): the row takes more of the column and each photo turns gently
+   landscape, still all the same size. */
+.cpx-photos {
+  max-width: 40rem;
+}
+.cpx-photo {
+  aspect-ratio: 5 / 4;
+}
+/* Desktop: the row reaches a little past the title's column on both sides (into the gap before the form). */
+@media (min-width: 64rem) {
+  .cpx-intro > .cpx-photos {
+    width: calc(100% + 3rem);
+    max-width: none;
+    margin-inline: -1.5rem;
+  }
+}
