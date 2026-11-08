@@ -7,7 +7,7 @@ import { useTranslations } from '../i18n/ui';
 import { email, instagramUrl, mainPhone, offices, openingHours, whatsappUrl } from '../lib/site';
 
 interface Props {
-  /** Home page: the header is transparent over the hero until the page is scrolled. */
+  /** Pages with a photo hero (home, careers): the header is clear glass over the hero until it has passed under. */
   overHero?: boolean;
 }
 const { overHero = false } = Astro.props;
@@ -19,7 +19,8 @@ type NavItem = {
   label: string;
   match?: string;
   /** Dropdown columns; the title is left out when there is only one column. */
-  groups?: { title?: string; links: NavLink[] }[];
+  /** `desktopOnly`: the group shows in the desktop dropdown but not in the phone/tablet menu. */
+  groups?: { title?: string; desktopOnly?: boolean; links: NavLink[] }[];
 };
 const links: NavItem[] = [
   {
@@ -38,6 +39,8 @@ const links: NavItem[] = [
       },
       {
         title: 'Zonas',
+        // Phones and tablets: left out of the menu (the zones are on the home page, "Explore por zona").
+        desktopOnly: true,
         links: Object.entries(zones).map(([id, z]) => ({ href: `/imoveis/?zona=${id}`, label: z.name })),
       },
       {
@@ -219,7 +222,7 @@ const linkClass =
                   <Icon name="chevronDown" class="m-menu-chev size-5" />
                 </summary>
                 <div class="m-menu-sub">
-                  {l.groups.map((g) => (
+                  {l.groups.filter((g) => !g.desktopOnly).map((g) => (
                     <div>
                       {g.title && <p class="m-menu-sub-title">{g.title}</p>}
                       <ul>
@@ -359,8 +362,10 @@ const linkClass =
 
 <script>
   const header = document.getElementById('site-header');
-  // Over the home hero the bar stays glass until the hero's bottom edge passes under it (data-past-hero).
-  const hero = header?.hasAttribute('data-over-hero') ? document.querySelector<HTMLElement>('.hero-shape') : null;
+  // Over a photo hero (home, careers) the bar stays glass until the hero's bottom edge passes under it (data-past-hero).
+  const hero = header?.hasAttribute('data-over-hero')
+    ? document.querySelector<HTMLElement>('.hero-shape, [data-header-hero]')
+    : null;
   const bar = header?.querySelector<HTMLElement>('.hdr-bar');
   const syncHeader = () => {
     header?.toggleAttribute('data-stuck', window.scrollY > 24);

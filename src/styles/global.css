@@ -1,13 +1,16 @@
 @import 'tailwindcss';
-@import '@fontsource-variable/outfit';
+@import '@fontsource/gloock/latin-400.css';
+@import '@fontsource-variable/inter';
 
 /* Colour palette. White is the base background of every section.
    Greens come from the brand green on the current site (#9EBC3A).
    TODO: confirm with the client once the logo files arrive. */
 @theme {
-  /* One geometric sans for everything (Futura-style, single-storey a), as in the approved reference. */
-  --font-sans: 'Outfit Variable', ui-sans-serif, system-ui, sans-serif;
-  --font-display: 'Outfit Variable', ui-sans-serif, system-ui, sans-serif;
+  /* Type (reference: RANTY, "THE PERFECT HOME"): Inter (variable) for everything, Gloock (a high-contrast serif, one
+     weight) only for the main headings (see "Serif headings" at the end). Both self-hosted (Fontsource, OFL). */
+  --font-sans: 'Inter Variable', ui-sans-serif, system-ui, sans-serif;
+  --font-display: 'Inter Variable', ui-sans-serif, system-ui, sans-serif;
+  --font-serif: 'Gloock', ui-serif, Georgia, 'Times New Roman', serif;
 
   /* Surfaces: white base, warm ivory for support */
   --color-paper: #ffffff; /* default background */
@@ -109,8 +112,8 @@
     background-image: linear-gradient(180deg, rgba(255, 255, 255, 0.16), rgba(0, 0, 0, 0.05));
     box-shadow:
       inset 0 1px 0 rgba(255, 255, 255, 0.4),
-      inset 0 -1px 0 rgba(0, 0, 0, 0.16),
-      0 6px 14px -8px rgba(0, 0, 0, 0.4);
+      inset 0 -1px 0 rgba(27, 30, 28, 0.16),
+      0 6px 14px -8px rgba(27, 30, 28, 0.4);
     transition:
       background-color 0.2s,
       color 0.2s,
@@ -121,14 +124,14 @@
     transform: translateY(-1px);
     box-shadow:
       inset 0 1px 0 rgba(255, 255, 255, 0.5),
-      inset 0 -1px 0 rgba(0, 0, 0, 0.16),
-      0 10px 18px -8px rgba(0, 0, 0, 0.45);
+      inset 0 -1px 0 rgba(27, 30, 28, 0.16),
+      0 10px 18px -8px rgba(27, 30, 28, 0.45);
   }
   .btn:active {
     transform: none;
     box-shadow:
-      inset 0 1px 3px rgba(0, 0, 0, 0.25),
-      0 3px 8px -6px rgba(0, 0, 0, 0.4);
+      inset 0 1px 3px rgba(27, 30, 28, 0.25),
+      0 3px 8px -6px rgba(27, 30, 28, 0.4);
   }
   @media (prefers-reduced-motion: reduce) {
     .btn:hover {
@@ -193,7 +196,7 @@
     border-color: var(--color-line);
     box-shadow:
       inset 0 1px 0 rgba(255, 255, 255, 0.9),
-      0 20px 40px -24px rgba(24, 35, 26, 0.35);
+      0 20px 40px -24px rgba(27, 30, 28, 0.35);
   }
   @media (max-width: 640px) {
     .site-header {
@@ -340,7 +343,7 @@
     .property-card:hover {
       --lift: -6px;
       border-color: rgba(24, 35, 26, 0.18);
-      box-shadow: 0 18px 28px -22px rgba(24, 35, 26, 0.4);
+      box-shadow: 0 18px 28px -22px rgba(27, 30, 28, 0.4);
     }
     .property-card:hover .card-photo img {
       transform: scale(1.05);
@@ -446,7 +449,7 @@
     border-radius: 9999px;
     background: #fff;
     color: var(--color-ink);
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.28);
+    box-shadow: 0 2px 10px rgba(27, 30, 28, 0.28);
     opacity: 0;
     transform: translateY(-50%);
     cursor: pointer;
@@ -487,7 +490,7 @@
     height: 0.5rem;
     border-radius: 9999px;
     background: rgba(255, 255, 255, 0.85);
-    box-shadow: 0 0 4px rgba(0, 0, 0, 0.35);
+    box-shadow: 0 0 4px rgba(27, 30, 28, 0.35);
     transition:
       width 0.2s,
       height 0.2s,
@@ -570,7 +573,7 @@
     border-radius: 9999px;
     background: #25d366; /* WhatsApp brand green */
     color: #fff;
-    box-shadow: 0 14px 30px -14px rgba(24, 35, 26, 0.55);
+    box-shadow: 0 14px 30px -14px rgba(27, 30, 28, 0.55);
     transition:
       background-color 0.25s,
       transform 0.3s var(--ease-out);
@@ -612,7 +615,7 @@
     border-radius: 0.75rem;
     background: var(--color-forest);
     color: #fff;
-    box-shadow: 0 14px 30px -14px rgba(24, 35, 26, 0.55);
+    box-shadow: 0 14px 30px -14px rgba(27, 30, 28, 0.55);
     cursor: pointer;
     opacity: 0;
     transform: translateY(0.75rem);
@@ -631,13 +634,12 @@
   .fab-top:hover {
     background: var(--color-forest-2);
   }
-  /* Desktop: above the WhatsApp button on the right, as on phones, so it never covers the filters or other content
-     on the left of the page. */
+  /* Desktop: bottom left corner, level with the WhatsApp button on the right. */
   @media (min-width: 64rem) {
     .fab-top {
-      left: auto;
-      right: var(--gutter);
-      bottom: 5.25rem;
+      left: var(--gutter);
+      right: auto;
+      bottom: 1.5rem;
     }
   }
 
@@ -864,7 +866,7 @@
     color: var(--color-lime);
     box-shadow:
       inset 0 0 0 1px rgba(158, 188, 58, 0.5),
-      0 8px 14px -10px rgba(24, 35, 26, 0.35);
+      0 8px 14px -10px rgba(27, 30, 28, 0.35);
     transition:
       color 0.3s,
       transform 0.4s var(--ease-out),
@@ -1344,8 +1346,8 @@
     /* Floats over the photo: a soft, deep shadow underneath. */
     box-shadow:
       inset 0 1px 0 rgba(255, 255, 255, 0.08),
-      0 34px 60px -26px rgba(0, 0, 0, 0.7),
-      0 10px 24px -12px rgba(0, 0, 0, 0.45);
+      0 34px 60px -26px rgba(27, 30, 28, 0.7),
+      0 10px 24px -12px rgba(27, 30, 28, 0.45);
     color: #fff;
   }
   .glass-seg {
@@ -1486,7 +1488,7 @@
     border: 3px solid var(--color-lime);
     border-radius: 50%;
     background: #fff;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
+    box-shadow: 0 2px 8px rgba(27, 30, 28, 0.5);
     transition: transform 0.15s;
   }
   .glass-slider:hover::-webkit-slider-thumb {
@@ -1541,7 +1543,7 @@
     border-radius: 1.125rem;
     background: linear-gradient(160deg, #1f2220 0%, #141615 100%);
     box-shadow:
-      0 28px 60px -22px rgba(0, 0, 0, 0.7),
+      0 28px 60px -22px rgba(27, 30, 28, 0.7),
       0 0 0 1px rgba(255, 255, 255, 0.22);
     color: #fff;
     transform-origin: top left;
@@ -1686,7 +1688,7 @@
     color: var(--color-ink);
     -webkit-backdrop-filter: blur(18px);
     backdrop-filter: blur(18px);
-    box-shadow: 0 24px 50px -24px rgba(24, 35, 26, 0.5);
+    box-shadow: 0 24px 50px -24px rgba(27, 30, 28, 0.5);
   }
   .lang-menu[hidden] {
     display: none;
@@ -2312,8 +2314,8 @@ textarea {
   background: linear-gradient(180deg, rgba(255, 255, 255, 0.98), rgba(250, 249, 245, 0.96));
   box-shadow:
     inset 0 1px 0 rgba(255, 255, 255, 1),
-    0 34px 60px -26px rgba(0, 0, 0, 0.55),
-    0 10px 24px -12px rgba(0, 0, 0, 0.35);
+    0 34px 60px -26px rgba(27, 30, 28, 0.55),
+    0 10px 24px -12px rgba(27, 30, 28, 0.35);
   color: var(--color-ink);
 }
 @media (min-width: 64rem) {
@@ -2372,13 +2374,13 @@ input:focus-visible + .glass-seg-opt {
   background: rgba(24, 35, 26, 0.14);
 }
 .glass-slider::-webkit-slider-thumb {
-  box-shadow: 0 2px 8px rgba(24, 35, 26, 0.35);
+  box-shadow: 0 2px 8px rgba(27, 30, 28, 0.35);
 }
 .glass-list {
   background: #fff;
   box-shadow:
-    0 28px 60px -22px rgba(24, 35, 26, 0.55),
-    0 0 0 1px rgba(24, 35, 26, 0.08);
+    0 28px 60px -22px rgba(27, 30, 28, 0.55),
+    0 0 0 1px rgba(27, 30, 28, 0.08);
   color: var(--color-ink);
 }
 .glass-opt[data-active] {
@@ -2544,9 +2546,9 @@ input:focus-visible + .glass-seg-opt {
   border-radius: 0.4rem;
 }
 
-/* Property card: square top (photo edge), small radius at the bottom like the search bar. */
+/* Property card: the same small radius on all four corners (the photo's top corners follow it). */
 .property-card {
-  border-radius: 0 0 0.75rem 0.75rem;
+  border-radius: 0.75rem;
 }
 
 /* Zones band: small radius (same as the search bar) on the corners that don't bleed off the screen. */
@@ -2781,7 +2783,7 @@ input:focus-visible + .glass-seg-opt {
   border-radius: 9999px;
   background: rgba(255, 255, 255, 0.92);
   color: var(--color-forest);
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.18);
+  box-shadow: 0 2px 8px rgba(27, 30, 28, 0.18);
   transition:
     transform 0.25s var(--ease-out),
     background-color 0.25s;
@@ -2916,8 +2918,8 @@ input:focus-visible + .glass-seg-opt {
 .team-band {
   background: linear-gradient(180deg, #eff2e6 0%, #e4e9d5 100%);
   box-shadow:
-    inset 0 1px 0 rgba(75, 106, 26, 0.14),
-    inset 0 -1px 0 rgba(75, 106, 26, 0.14);
+    inset 0 1px 0 rgba(27, 30, 28, 0.14),
+    inset 0 -1px 0 rgba(27, 30, 28, 0.14);
 }
 .team-band .team-bar {
   background: rgba(75, 106, 26, 0.18);
@@ -3725,7 +3727,7 @@ a.rv-author:hover {
   background: rgba(255, 255, 255, 0.96);
   -webkit-backdrop-filter: none;
   backdrop-filter: none;
-  box-shadow: 0 10px 22px -12px rgba(0, 0, 0, 0.55);
+  box-shadow: 0 10px 22px -12px rgba(27, 30, 28, 0.55);
 }
 .zone-mini:hover,
 .zone-mini:focus-visible {
@@ -4008,7 +4010,7 @@ a.rv-author:hover {
     linear-gradient(160deg, #f6f9ec 0%, #e6efc8 100%);
   box-shadow:
     0 1px 2px rgba(27, 30, 28, 0.05),
-    0 30px 60px -28px rgba(75, 106, 26, 0.45);
+    0 30px 60px -28px rgba(27, 30, 28, 0.45);
 }
 .lead-shell .lead-tabs {
   background: rgba(255, 255, 255, 0.6);
@@ -4049,7 +4051,7 @@ a.rv-author:hover {
   border-radius: 1rem;
   background: #1f2220;
   color: #fff;
-  box-shadow: 0 40px 80px -30px rgba(0, 0, 0, 0.6);
+  box-shadow: 0 40px 80px -30px rgba(27, 30, 28, 0.6);
   scrollbar-width: thin;
 }
 .info-panel::backdrop {
@@ -4407,8 +4409,8 @@ a.rv-author:hover {
     border-top: 3px solid var(--color-lime);
     border-radius: 1rem;
     box-shadow:
-      0 2px 6px rgba(0, 0, 0, 0.15),
-      0 34px 60px -24px rgba(0, 0, 0, 0.55);
+      0 2px 6px rgba(27, 30, 28, 0.15),
+      0 34px 60px -24px rgba(27, 30, 28, 0.55);
   }
   .hcard .hero-copy {
     max-width: calc(100% - 26rem);
@@ -4582,14 +4584,14 @@ a.rv-author:hover {
 .glass-panel {
   box-shadow:
     inset 0 1px 0 rgba(255, 255, 255, 1),
-    0 24px 44px -26px rgba(0, 0, 0, 0.42),
-    0 8px 18px -12px rgba(0, 0, 0, 0.24);
+    0 24px 44px -26px rgba(27, 30, 28, 0.42),
+    0 8px 18px -12px rgba(27, 30, 28, 0.24);
 }
 .glass-panel {
   box-shadow:
     inset 0 1px 0 rgba(255, 255, 255, 1),
-    0 18px 34px -24px rgba(0, 0, 0, 0.3),
-    0 6px 12px -10px rgba(0, 0, 0, 0.16);
+    0 18px 34px -24px rgba(27, 30, 28, 0.3),
+    0 6px 12px -10px rgba(27, 30, 28, 0.16);
 }
 
 /* Search bar on the page column (same width as the sections below), centred on the wider hero. */
@@ -4615,7 +4617,8 @@ a.rv-author:hover {
 /* One display heading size for the whole site (hero headline, team heading, zone name): the MeewVision hero
    size, clamp(28px, 2.7vw, 38px). Section titles (.zones-title) are the smaller second level. */
 :root {
-  --h-display: clamp(1.75rem, 2.7vw, 2.375rem);
+  /* Sized for Gloock (low x-height): a small step up from the old sans so the serif headings keep their presence. */
+  --h-display: clamp(1.9rem, 2.9vw, 2.6rem);
 }
 .hero-copy h1 {
   font-size: var(--h-display);
@@ -4990,7 +4993,7 @@ a.rv-author:hover {
   text-align: center;
   text-transform: uppercase;
   transform: rotate(40deg);
-  box-shadow: 0 6px 16px -6px rgba(0, 0, 0, 0.6);
+  box-shadow: 0 6px 16px -6px rgba(27, 30, 28, 0.6);
 }
 .results-sold-flag::before,
 .results-sold-flag::after {
@@ -5033,7 +5036,7 @@ a.rv-author:hover {
     color: var(--color-forest);
     box-shadow:
       0 2px 6px rgba(27, 30, 28, 0.12),
-      0 34px 60px -24px rgba(60, 80, 15, 0.55);
+      0 34px 60px -24px rgba(27, 30, 28, 0.55);
   }
   .hcard .hero-deck .hero-card-kicker {
     color: rgba(27, 30, 28, 0.78);
@@ -5084,8 +5087,8 @@ a.rv-author:hover {
     border-top: 2px solid var(--color-lime);
     color: #f5f2ea;
     box-shadow:
-      0 2px 6px rgba(20, 28, 8, 0.2),
-      0 34px 60px -26px rgba(20, 28, 8, 0.65),
+      0 2px 6px rgba(27, 30, 28, 0.2),
+      0 34px 60px -26px rgba(27, 30, 28, 0.65),
       inset 0 1px 0 rgba(255, 255, 255, 0.08);
   }
   .hcard .hero-deck .hero-card-kicker {
@@ -5141,8 +5144,8 @@ a.rv-author:hover {
     color: #fff;
     box-shadow:
       inset 0 1px 0 rgba(255, 255, 255, 0.22),
-      0 2px 6px rgba(20, 28, 8, 0.2),
-      0 34px 60px -26px rgba(20, 28, 8, 0.6);
+      0 2px 6px rgba(27, 30, 28, 0.2),
+      0 34px 60px -26px rgba(27, 30, 28, 0.6);
   }
   .hcard .hero-deck .hero-card-kicker {
     color: #d8ec8a;
@@ -5194,8 +5197,8 @@ a.rv-author:hover {
     color: #fff;
     box-shadow:
       0 0 0 4px rgba(158, 188, 58, 0.12),
-      0 2px 6px rgba(0, 0, 0, 0.2),
-      0 40px 70px -28px rgba(0, 0, 0, 0.7);
+      0 2px 6px rgba(27, 30, 28, 0.2),
+      0 40px 70px -28px rgba(27, 30, 28, 0.7);
     transition:
       transform 0.4s var(--ease-out),
       box-shadow 0.4s var(--ease-out);
@@ -5203,8 +5206,8 @@ a.rv-author:hover {
   .hcard .hero-deck:hover {
     box-shadow:
       0 0 0 6px rgba(158, 188, 58, 0.2),
-      0 2px 6px rgba(0, 0, 0, 0.2),
-      0 46px 80px -28px rgba(0, 0, 0, 0.75);
+      0 2px 6px rgba(27, 30, 28, 0.2),
+      0 46px 80px -28px rgba(27, 30, 28, 0.75);
   }
   .hcard .hero-deck .hero-card {
     display: flex;
@@ -5226,7 +5229,7 @@ a.rv-author:hover {
     font-weight: 700;
     letter-spacing: 0.1em;
     text-transform: uppercase;
-    box-shadow: 0 4px 12px -4px rgba(0, 0, 0, 0.45);
+    box-shadow: 0 4px 12px -4px rgba(27, 30, 28, 0.45);
   }
   .hcard .hero-deck .hero-card-go {
     right: 0.75rem;
@@ -5330,14 +5333,14 @@ a.rv-author:hover {
     color: #fff;
     box-shadow:
       inset 0 1px 0 rgba(255, 255, 255, 0.16),
-      0 2px 6px rgba(0, 0, 0, 0.2),
-      0 40px 70px -28px rgba(0, 0, 0, 0.7);
+      0 2px 6px rgba(27, 30, 28, 0.2),
+      0 40px 70px -28px rgba(27, 30, 28, 0.7);
   }
   .hcard .hero-deck:hover {
     box-shadow:
       inset 0 1px 0 rgba(255, 255, 255, 0.2),
-      0 2px 6px rgba(0, 0, 0, 0.2),
-      0 46px 80px -26px rgba(0, 0, 0, 0.78);
+      0 2px 6px rgba(27, 30, 28, 0.2),
+      0 46px 80px -26px rgba(27, 30, 28, 0.78);
   }
   /* The travelling light: a conic gradient clipped to a 1.5px ring. */
   .hcard .hero-deck::before {
@@ -5648,13 +5651,13 @@ footer.on-dark {
 
 }
 
-/* Back to top: on phones and tablets it moves to the right, above the contact bar, away from the reading column. */
+/* Back to top: bottom left on every screen; on phones and tablets it sits above the contact bar. */
 @media (max-width: 63.99rem) {
   .fab-top {
-    left: auto;
-    right: var(--gutter);
-    width: 2.75rem;
-    height: 2.75rem;
+    left: var(--gutter);
+    right: auto;
+    width: 3rem;
+    height: 3rem;
     border-radius: 9999px;
   }
 }
@@ -5793,7 +5796,7 @@ footer.on-dark {
   backdrop-filter: none;
   box-shadow:
     inset 0 1px 0 rgba(255, 255, 255, 0.14),
-    0 18px 36px -20px rgba(46, 63, 18, 0.55);
+    0 18px 36px -20px rgba(27, 30, 28, 0.55);
   color: #fff;
 }
 
@@ -6045,7 +6048,7 @@ footer.on-dark {
   box-shadow:
     inset 0 1px 0 rgba(255, 255, 255, 0.28),
     inset 0 0 0 1px rgba(255, 255, 255, 0.05),
-    0 18px 36px -20px rgba(46, 63, 18, 0.5);
+    0 18px 36px -20px rgba(27, 30, 28, 0.5);
 }
 .m-menu {
   background:
@@ -6088,7 +6091,7 @@ footer.on-dark {
     linear-gradient(165deg, #e6eec6 0%, #f3f1e6 55%, #faf8f2 100%);
   box-shadow:
     inset 0 1px 0 rgba(255, 255, 255, 0.8),
-    0 30px 60px -32px rgba(75, 106, 26, 0.4);
+    0 30px 60px -32px rgba(27, 30, 28, 0.4);
 }
 .lead-shell .lead-card::before {
   content: '';
@@ -6144,7 +6147,7 @@ footer.on-dark {
     backdrop-filter: blur(22px) saturate(160%);
     box-shadow:
       inset 0 1px 0 rgba(255, 255, 255, 0.7),
-      0 30px 60px -28px rgba(0, 0, 0, 0.55);
+      0 30px 60px -28px rgba(27, 30, 28, 0.55);
     color: var(--color-ink);
   }
   .hcard .hero-deck::before {
@@ -6160,7 +6163,7 @@ footer.on-dark {
     color: var(--color-ink);
     font-size: 0.6875rem;
     letter-spacing: 0.08em;
-    box-shadow: 0 4px 12px -6px rgba(0, 0, 0, 0.25);
+    box-shadow: 0 4px 12px -6px rgba(27, 30, 28, 0.25);
   }
   .hcard .hero-deck .hero-card {
     display: grid;
@@ -6223,7 +6226,7 @@ footer.on-dark {
     font-size: 0.75rem;
     font-weight: 500;
     color: var(--color-ink);
-    box-shadow: 0 2px 8px -4px rgba(0, 0, 0, 0.25);
+    box-shadow: 0 2px 8px -4px rgba(27, 30, 28, 0.25);
   }
   .hcard .hero-deck .hero-card-body {
     display: flex;
@@ -6278,7 +6281,7 @@ footer.on-dark {
     margin-inline: auto;
     overflow: hidden;
     border-radius: 1.75rem;
-    box-shadow: 0 30px 60px -28px rgba(0, 0, 0, 0.65);
+    box-shadow: 0 30px 60px -28px rgba(27, 30, 28, 0.65);
   }
   .hc-photo img {
     width: 100%;
@@ -6296,7 +6299,7 @@ footer.on-dark {
     border-radius: 9999px;
     background: #fff;
     color: var(--color-ink);
-    box-shadow: 0 10px 24px -10px rgba(0, 0, 0, 0.5);
+    box-shadow: 0 10px 24px -10px rgba(27, 30, 28, 0.5);
     transform: translate(-50%, -50%);
     transition:
       background-color 0.25s,
@@ -6318,7 +6321,7 @@ footer.on-dark {
     backdrop-filter: blur(18px) saturate(160%);
     box-shadow:
       inset 0 1px 0 rgba(255, 255, 255, 0.8),
-      0 18px 36px -18px rgba(0, 0, 0, 0.45);
+      0 18px 36px -18px rgba(27, 30, 28, 0.45);
     color: var(--color-ink);
   }
 
@@ -6438,7 +6441,7 @@ footer.on-dark {
     background: #fff;
     font-size: 0.6875rem;
     font-weight: 600;
-    box-shadow: 0 2px 6px -3px rgba(0, 0, 0, 0.3);
+    box-shadow: 0 2px 6px -3px rgba(27, 30, 28, 0.3);
   }
 
   /* Slide controls under the photo, centred, light on the dark hero. */
@@ -6560,7 +6563,7 @@ footer.on-dark {
   backdrop-filter: none;
   box-shadow:
     inset 0 1px 0 rgba(255, 255, 255, 0.12),
-    0 20px 40px -22px rgba(26, 33, 26, 0.6);
+    0 20px 40px -22px rgba(27, 30, 28, 0.6);
 }
 .m-menu {
   border-color: rgba(214, 232, 150, 0.18);
@@ -6627,7 +6630,7 @@ footer.on-dark {
 .site-header .hdr-cta {
   box-shadow:
     inset 0 1px 0 rgba(255, 255, 255, 0.16),
-    0 8px 18px -10px rgba(26, 33, 26, 0.6);
+    0 8px 18px -10px rgba(27, 30, 28, 0.6);
 }
 /* The arrow tile inside "Contactar" becomes a darker glass square on the green. */
 .site-header .hdr-cta.btn-go .btn-go-icon,
@@ -6679,7 +6682,7 @@ footer.on-dark {
   color: var(--color-forest);
   box-shadow:
     inset 0 1px 0 #fff,
-    0 6px 16px -8px rgba(0, 0, 0, 0.45);
+    0 6px 16px -8px rgba(27, 30, 28, 0.45);
 }
 .site-header .hdr-cta:hover,
 .site-header .hdr-cta:focus-visible,
@@ -6712,7 +6715,7 @@ footer.on-dark {
     linear-gradient(165deg, #eef2e2 0%, #f7f6ef 50%, #fbfaf6 100%);
   box-shadow:
     inset 0 1px 0 #fff,
-    0 30px 60px -32px rgba(26, 33, 26, 0.45);
+    0 30px 60px -32px rgba(27, 30, 28, 0.45);
 }
 .lead-shell .lead-card::before {
   display: none;
@@ -6756,9 +6759,9 @@ footer.on-dark {
     transform: translateZ(0);
     box-shadow:
       0 0 0 1px rgba(255, 255, 255, 0.28),
-      0 2px 4px rgba(0, 0, 0, 0.15),
-      0 24px 40px -18px rgba(0, 0, 0, 0.55),
-      0 50px 80px -40px rgba(0, 0, 0, 0.6);
+      0 2px 4px rgba(27, 30, 28, 0.15),
+      0 24px 40px -18px rgba(27, 30, 28, 0.55),
+      0 50px 80px -40px rgba(27, 30, 28, 0.6);
   }
   .hc-photo::after {
     content: '';
@@ -6776,7 +6779,7 @@ footer.on-dark {
     backdrop-filter: blur(10px);
     box-shadow:
       0 0 0 6px rgba(255, 255, 255, 0.18),
-      0 12px 26px -10px rgba(0, 0, 0, 0.55);
+      0 12px 26px -10px rgba(27, 30, 28, 0.55);
   }
 
   .hc-chips li,
@@ -6789,9 +6792,9 @@ footer.on-dark {
     box-shadow:
       inset 0 1px 0 rgba(255, 255, 255, 0.95),
       inset 0 -1px 0 rgba(255, 255, 255, 0.25),
-      0 1px 2px rgba(0, 0, 0, 0.1),
-      0 12px 24px -12px rgba(0, 0, 0, 0.4),
-      0 32px 50px -28px rgba(0, 0, 0, 0.5);
+      0 1px 2px rgba(27, 30, 28, 0.1),
+      0 12px 24px -12px rgba(27, 30, 28, 0.4),
+      0 32px 50px -28px rgba(27, 30, 28, 0.5);
   }
   .hc-chips {
     transform: translateZ(40px);
@@ -6950,7 +6953,7 @@ footer.on-dark {
 }
 
 /* No bottom contact bar on phones and tablets any more: the WhatsApp button floats on every screen size and the
-   back-to-top button sits just above it, on the right. */
+   back-to-top button is level with it, on the left. */
 .fab-wa {
   display: inline-flex;
 }
@@ -6959,8 +6962,9 @@ footer.on-dark {
     right: var(--gutter);
     bottom: 1rem;
   }
+  /* Level with the WhatsApp button, on the other side. */
   .fab-top {
-    bottom: 5rem;
+    bottom: 1rem;
   }
 }
 
@@ -7065,7 +7069,7 @@ footer.on-dark {
     background: linear-gradient(150deg, rgba(255, 255, 255, 0.82) 0%, rgba(255, 255, 255, 0.62) 100%);
     -webkit-backdrop-filter: blur(16px) saturate(150%);
     backdrop-filter: blur(16px) saturate(150%);
-    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.9), 0 10px 24px -12px rgba(0, 0, 0, 0.45);
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.9), 0 10px 24px -12px rgba(27, 30, 28, 0.45);
     color: var(--color-ink);
   }
   .team-band .team-name h3 {
@@ -7088,7 +7092,7 @@ footer.on-dark {
     width: 2.35rem;
     height: 2.35rem;
     background: #fff;
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+    box-shadow: 0 2px 6px rgba(27, 30, 28, 0.15);
   }
   .team-band .team-contacts a:first-child {
     background-color: #4b6a1a;
@@ -7395,7 +7399,7 @@ footer.on-dark {
   backdrop-filter: none;
   box-shadow:
     inset 0 0 0 1px rgba(255, 255, 255, 0.12),
-    0 2px 5px -3px rgba(18, 26, 13, 0.35);
+    0 2px 5px -3px rgba(27, 30, 28, 0.35);
   transition:
     color 0.25s,
     box-shadow 0.35s,
@@ -7424,7 +7428,7 @@ footer.on-dark {
   background-image: linear-gradient(180deg, var(--g-500) 0%, var(--g-700) 100%);
   box-shadow:
     inset 0 0 0 1px rgba(158, 188, 58, 0.6),
-    0 4px 10px -5px rgba(18, 26, 13, 0.4);
+    0 4px 10px -5px rgba(27, 30, 28, 0.4);
 }
 /* The lift, only when motion is welcome. */
 @media (prefers-reduced-motion: no-preference) {
@@ -7496,7 +7500,7 @@ footer.on-dark {
   color: var(--color-forest);
   box-shadow:
     inset 0 -1px 0 rgba(27, 30, 28, 0.06),
-    0 8px 20px -10px rgba(0, 0, 0, 0.45);
+    0 8px 20px -10px rgba(27, 30, 28, 0.45);
 }
 .site-header .hdr-cta:hover,
 .site-header .hdr-cta:focus-visible,
@@ -7564,8 +7568,8 @@ footer.on-dark {
     transform: none;
     box-shadow:
       0 0 0 1px rgba(255, 255, 255, 0.22),
-      0 30px 60px -30px rgba(0, 0, 0, 0.7),
-      0 12px 24px -12px rgba(0, 0, 0, 0.35);
+      0 30px 60px -30px rgba(27, 30, 28, 0.7),
+      0 12px 24px -12px rgba(27, 30, 28, 0.35);
   }
   .hcard .hero-deck .hc-photo::after {
     background: linear-gradient(180deg, rgba(20, 22, 21, 0.35) 0%, transparent 28%);
@@ -7618,8 +7622,8 @@ footer.on-dark {
     -webkit-backdrop-filter: none;
     backdrop-filter: none;
     box-shadow:
-      0 1px 2px rgba(0, 0, 0, 0.08),
-      0 24px 48px -20px rgba(0, 0, 0, 0.55);
+      0 1px 2px rgba(27, 30, 28, 0.08),
+      0 24px 48px -20px rgba(27, 30, 28, 0.55);
     transform: none;
     animation: none;
     transition:
@@ -7629,8 +7633,8 @@ footer.on-dark {
   .hcard .hero-deck .hc-product:hover {
     transform: translateY(-3px);
     box-shadow:
-      0 1px 2px rgba(0, 0, 0, 0.08),
-      0 30px 56px -20px rgba(0, 0, 0, 0.6);
+      0 1px 2px rgba(27, 30, 28, 0.08),
+      0 30px 56px -20px rgba(27, 30, 28, 0.6);
   }
   .hc-product-head {
     display: flex;
@@ -8262,7 +8266,7 @@ footer.on-dark {
   background: var(--g-800);
   color: #fff;
   text-decoration: none;
-  box-shadow: 0 24px 40px -28px rgba(0, 0, 0, 0.8);
+  box-shadow: 0 24px 40px -28px rgba(27, 30, 28, 0.8);
   transition: translate 0.35s var(--ease-out);
 }
 .zx-card a::before {
@@ -8369,7 +8373,7 @@ footer.on-dark {
   border-radius: 9999px;
   box-shadow:
     inset 0 1px 0 rgba(255, 255, 255, 0.16),
-    0 8px 18px -10px rgba(26, 33, 26, 0.6);
+    0 8px 18px -10px rgba(27, 30, 28, 0.6);
   opacity: 0;
   scale: 0.6;
   transition:
@@ -8524,7 +8528,8 @@ footer.on-dark {
 /* ==== Hero: glass panel behind the listing deck ===================================================================
    As the MeewVision hero's "Projetos em destaque" box: one quiet glass panel (clear green glass, a rim of light) holds the photo, the listing card and the controls together over the hero photo. It follows the deck's
    outline: around the photo and the controls, stepping out to the left only where the listing card overhangs
-   (src/scripts/hero-deck-panel.ts draws the shape; without JS the deck keeps a plain rounded box). */
+   (src/scripts/hero-deck-panel.ts draws the shape; without JS the deck keeps a plain rounded box. With JS that box is
+   never painted: the `js` class is set in <head>, before the first paint, so the box cannot flash on load). */
 @media (min-width: 64rem) {
   .hcard .hero-deck {
     --deck-pad: 0.75rem;
@@ -8536,7 +8541,8 @@ footer.on-dark {
     backdrop-filter: blur(18px) saturate(130%);
     box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.18);
   }
-  .hcard .hero-deck[data-shaped] {
+  .hcard .hero-deck[data-shaped],
+  .js .hcard .hero-deck {
     border-color: transparent;
     background: none;
     -webkit-backdrop-filter: none;
@@ -8556,6 +8562,13 @@ footer.on-dark {
     -webkit-backdrop-filter: blur(22px) saturate(120%) brightness(1.05);
     backdrop-filter: blur(22px) saturate(120%) brightness(1.05);
     pointer-events: none;
+    /* Fades in once drawn (it never shows unshaped). */
+    animation: hero-glass-in 0.5s ease-out both;
+  }
+  @keyframes hero-glass-in {
+    from {
+      opacity: 0;
+    }
   }
   .hero-deck-glass svg {
     position: absolute;
@@ -8582,7 +8595,7 @@ footer.on-dark {
   width: 1.25rem;
   height: 1.25rem;
   border-radius: 9999px;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.25);
+  box-shadow: 0 1px 3px rgba(27, 30, 28, 0.25);
   transition: transform 0.25s var(--ease-out);
 }
 .lang-btn {
@@ -9594,7 +9607,7 @@ main:has(> section#vender:last-of-type) + footer {
 .nf-btn-light {
   background: #fff;
   color: var(--color-forest);
-  box-shadow: 0 10px 26px -12px rgba(0, 0, 0, 0.6);
+  box-shadow: 0 10px 26px -12px rgba(27, 30, 28, 0.6);
 }
 .nf-btn-glass {
   border: 1px solid rgba(255, 255, 255, 0.22);
@@ -9665,7 +9678,7 @@ main:has(> .nf) + footer {
   backdrop-filter: blur(22px) saturate(140%);
   box-shadow:
     inset 0 -1px 0 rgba(255, 255, 255, 0.12),
-    0 30px 50px -24px rgba(0, 0, 0, 0.45);
+    0 30px 50px -24px rgba(27, 30, 28, 0.45);
 }
 
 /* ==== Listings: filters ==========================================================================================
@@ -10648,126 +10661,12 @@ main:has(> .nf) + footer {
 .cp-link:focus-visible {
   color: var(--color-olive);
 }
-/* Top: the "Explore por zona" night (near-black olive, soft green glows, the header's grain). Left: the title, the house
-   structure and the text. Right: the application form on the white sheet. Bottom corners round like the home hero. */
-.cp-hero {
-  --hero-r: 1.875rem;
-  position: relative;
-  isolation: isolate;
-  overflow: hidden;
-  /* Runs up behind the floating header (main's top padding is 7rem). */
-  margin-top: -7rem;
-  padding-top: 8.5rem;
-  padding-bottom: clamp(2rem, 4vw, 3.5rem);
-  border-radius: 0 0 var(--hero-r) var(--hero-r);
-  color: #fff;
-  /* Calm on purpose: one soft light behind the house, no grain. */
-  background:
-    radial-gradient(52% 60% at 26% 62%, rgba(95, 130, 34, 0.38) 0%, transparent 74%),
-    linear-gradient(180deg, var(--g-900) 0%, var(--g-950) 100%);
-}
-.cp-hero .cp-crumbs {
-  margin: 0;
-  color: rgba(255, 255, 255, 0.6);
-}
-.cp-hero .cp-crumbs a:hover {
-  color: #fff;
-}
-.cp-hero-grid {
-  display: grid;
-  gap: 2.5rem;
-  margin-top: 1.5rem;
-}
-.cp-hero .cp-card {
-  color: var(--color-ink);
-  scroll-margin-top: 7rem;
-}
-.cp-hero .cp-lead {
-  margin-top: 0;
-  color: rgba(255, 255, 255, 0.78);
-}
-.cp-hero-house {
-  display: block;
-  width: 100%;
-  height: auto;
-  margin-block: 1.75rem;
-  /* Grounds it: a soft shadow under the plinth. */
-  filter: drop-shadow(0 1.5rem 1.25rem rgba(8, 12, 5, 0.5));
-  animation: cp-house-rise 1.1s cubic-bezier(0.2, 0.7, 0.2, 1) both;
-}
-/* The page title: two aligned lines in capitals, one weight and one colour, white easing into a pale brand green. Sized
-   on its column, so it spans the same width as the house; the negative margin lines its capitals up with the form's top. */
-.cp-hero-intro {
-  container-type: inline-size;
-}
-.cp-wall {
-  margin-top: -0.14em;
-  padding-bottom: 0.05em;
-  font-family: var(--font-display, inherit);
-  font-size: 8.6cqi;
-  font-weight: 600;
-  line-height: 1.04;
-  letter-spacing: -0.015em;
-  text-transform: uppercase;
-  background: linear-gradient(180deg, #fff 15%, #dfe9bd 100%);
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
-}
-.cp-wall span {
-  display: block;
-  white-space: nowrap;
-}
-@keyframes cp-house-rise {
-  from {
-    opacity: 0;
-    transform: translateY(2.5rem);
-  }
-}
-@media (prefers-reduced-motion: reduce) {
-  .cp-hero-house {
-    animation: none;
-  }
-}
-@media (min-width: 40.0625rem) {
-  .cp-hero {
-    --hero-r: 3.25rem;
-  }
-}
-@media (min-width: 64rem) {
-  .cp-hero {
-    padding-top: 7.5rem;
-  }
-  .cp-hero-grid {
-    grid-template-columns: minmax(0, 1fr) minmax(0, 34rem);
-    align-items: stretch;
-    gap: 4rem;
-  }
-  /* Both columns share their top and bottom lines: the title meets the form's top, the text meets its bottom, and the
-     house, whole and as wide as the title's column, sits centred between them. */
-  .cp-hero-intro {
-    display: flex;
-    flex-direction: column;
-  }
-  .cp-hero-house {
-    flex: none;
-    margin-block: auto;
-  }
-  .cp-hero .cp-card {
-    display: flex;
-    flex-direction: column;
-    padding: 2rem;
-  }
-  .cp-form {
-    flex: 1;
-  }
-}
 /* The form: one quiet rhythm; the consent and the button close it at the bottom of the sheet. */
 .cp-form {
   display: flex;
   flex-direction: column;
   gap: 1rem;
-  margin-top: 1.25rem;
+  margin-top: 0;
 }
 .cp-form-end {
   display: grid;
@@ -10881,239 +10780,6 @@ main:has(> .nf) + footer {
   line-height: 1.55;
   color: var(--color-muted);
 }
-/* Profile: expanding panels, quiet and precise: near-white cards with a hairline edge that catches the light, one soft
-   shadow, and a thin vertical line of light on the closed cards (the site's light family). Olive line icons and titles
-   (lime is never text on white). The open card takes about two fifths of the row; the others keep a number, an icon and
-   a vertical title. Phones and tablets: a stack of rows, the open one showing its text. */
-.cp-profile {
-  padding-top: var(--section-gap);
-  border-top: 1px solid var(--color-line);
-}
-.cp-panels {
-  display: flex;
-  flex-direction: column;
-  gap: 0.6rem;
-}
-.cp-panel {
-  position: relative;
-  overflow: hidden;
-  border: 1px solid transparent;
-  border-radius: var(--r-card);
-  background:
-    linear-gradient(180deg, #fff 0%, #fafbf6 100%) padding-box,
-    linear-gradient(160deg, rgba(27, 30, 28, 0.14) 0%, rgba(27, 30, 28, 0.05) 50%, rgba(75, 106, 26, 0.24) 100%) border-box;
-  color: var(--color-ink);
-  box-shadow: 0 14px 30px -24px rgba(27, 30, 28, 0.35);
-  transition:
-    transform 0.35s var(--ease-out),
-    box-shadow 0.35s var(--ease-out);
-}
-.cp-panel:not([open]):hover {
-  transform: translateY(-2px);
-  box-shadow: 0 18px 34px -24px rgba(27, 30, 28, 0.45);
-}
-/* Open: the edge lights up in lime and a faint glow rises from the bottom. */
-.cp-panel[open] {
-  background:
-    radial-gradient(70% 45% at 30% 100%, rgba(158, 188, 58, 0.1) 0%, transparent 100%) padding-box,
-    linear-gradient(180deg, #fff 0%, #fafbf6 100%) padding-box,
-    linear-gradient(160deg, rgba(158, 188, 58, 0.85) 0%, rgba(27, 30, 28, 0.06) 45%, rgba(158, 188, 58, 0.5) 100%) border-box;
-  box-shadow: 0 22px 44px -28px rgba(46, 63, 18, 0.5);
-}
-.cp-panel-tab {
-  position: relative;
-  z-index: 1;
-  display: flex;
-  align-items: center;
-  gap: 0.75rem;
-  min-height: 3.75rem;
-  padding: 0.75rem 1.25rem;
-  cursor: pointer;
-  list-style: none;
-}
-.cp-panel-tab::-webkit-details-marker {
-  display: none;
-}
-.cp-panel-tab:focus-visible {
-  outline: 2px solid var(--color-olive);
-  outline-offset: -4px;
-  border-radius: var(--r-card);
-}
-.cp-panel-num {
-  font-size: 0.8rem;
-  font-variant-numeric: tabular-nums;
-  color: var(--color-muted);
-}
-.cp-panel-tab-icon {
-  flex: none;
-  color: var(--color-olive);
-}
-.cp-panel-label {
-  font-family: var(--font-display, inherit);
-  font-size: 1.05rem;
-  font-weight: 600;
-  color: var(--color-olive);
-}
-.cp-panel-chev {
-  flex: none;
-  margin-left: auto;
-  color: var(--color-muted);
-  transition: transform 0.3s var(--ease-out);
-}
-.cp-panel[open] .cp-panel-chev {
-  transform: rotate(180deg);
-}
-.cp-panel-body {
-  position: relative;
-  z-index: 1;
-  padding: 0.25rem 1.25rem 1.5rem;
-  animation: cp-panel-in 0.45s var(--ease-out) both;
-}
-@keyframes cp-panel-in {
-  from {
-    opacity: 0;
-    transform: translateY(0.6rem);
-  }
-}
-/* The open card's icon: phones and tablets already show it in the row. */
-.cp-panel-mark {
-  display: none;
-}
-.cp-panel-title {
-  font-family: var(--font-display, inherit);
-  font-size: var(--h-display);
-  font-weight: 600;
-  line-height: 1.08;
-  letter-spacing: -0.01em;
-  color: var(--color-olive);
-}
-.cp-panel-text {
-  margin-top: 0.75rem;
-  line-height: 1.55;
-  color: var(--color-muted);
-}
-.cp-panel-tags {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.4rem;
-  margin: 1.1rem 0 0;
-  padding: 0;
-  list-style: none;
-}
-.cp-panel-tags li {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.45rem;
-  padding: 0.3rem 0.75rem;
-  border: 1px solid rgba(27, 30, 28, 0.1);
-  border-radius: 9999px;
-  font-size: 0.8rem;
-  font-weight: 500;
-}
-.cp-panel-tags li::before {
-  content: '';
-  width: 6px;
-  height: 6px;
-  border-radius: 50%;
-  background: var(--color-lime);
-}
-@media (min-width: 64rem) {
-  .cp-panels {
-    flex-direction: row;
-    height: 24rem;
-    gap: 0.75rem;
-  }
-  .cp-panel {
-    flex: 1 1 0;
-    min-width: 0;
-    transition:
-      flex-grow 0.55s var(--ease-out),
-      transform 0.35s var(--ease-out),
-      box-shadow 0.35s var(--ease-out);
-  }
-  .cp-panel[open] {
-    flex-grow: 3;
-  }
-  /* Closed: the whole card is the tab: number and icon on top, the title reading upwards at the bottom. */
-  .cp-panel-tab {
-    position: absolute;
-    inset: 0;
-    flex-wrap: wrap;
-    align-content: space-between;
-    justify-content: space-between;
-    padding: 1.5rem;
-  }
-  .cp-panel-tab-icon {
-    width: 1.35rem;
-    height: 1.35rem;
-    stroke-width: 1.5;
-  }
-  .cp-panel-label {
-    flex-basis: 100%;
-    writing-mode: vertical-rl;
-    transform: rotate(180deg);
-    font-size: 1.4rem;
-    font-weight: 600;
-    line-height: 1;
-  }
-  /* Closed: a thin vertical line of light, from the number down towards the title. */
-  .cp-panel:not([open])::after {
-    content: '';
-    position: absolute;
-    top: 3.75rem;
-    left: calc(1.5rem + 0.7rem);
-    width: 1px;
-    height: 34%;
-    pointer-events: none;
-    background: linear-gradient(180deg, rgba(158, 188, 58, 0.9) 0%, rgba(158, 188, 58, 0) 100%);
-  }
-  .cp-panel-chev {
-    display: none;
-  }
-  /* Open: only a strip on top stays the tab, with the number; the icon sits at the corner, in the body. */
-  .cp-panel[open] .cp-panel-tab {
-    inset: 0 0 auto;
-    min-height: 0;
-    cursor: default;
-  }
-  .cp-panel[open] .cp-panel-tab-icon,
-  .cp-panel[open] .cp-panel-label {
-    display: none;
-  }
-  .cp-panel-body {
-    position: absolute;
-    inset: 1.5rem;
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-end;
-    padding: 0;
-    animation-delay: 0.15s;
-  }
-  .cp-panel-mark {
-    position: absolute;
-    display: block;
-    top: 0;
-    right: 0;
-    width: 1.75rem;
-    height: 1.75rem;
-    color: var(--color-olive);
-    stroke-width: 1.4;
-  }
-}
-@media (prefers-reduced-motion: reduce) {
-  .cp-panel,
-  .cp-panel-chev {
-    transition: none;
-  }
-  .cp-panel:not([open]):hover,
-  .cp-panel[open] {
-    transform: none;
-  }
-  .cp-panel-body {
-    animation: none;
-  }
-}
-
 /* Where you will work: one calm sage mist band, with three equal, square-cornered photos in one row on the page column,
    lifted by the one soft shadow. Phones: the row slides sideways, the next photo peeking. */
 .cp-gal {
@@ -11275,7 +10941,7 @@ main:has(> .nf) + footer {
     linear-gradient(180deg, #fff 0%, #fafbf6 100%) padding-box,
     linear-gradient(160deg, rgba(158, 188, 58, 0.85) 0%, rgba(27, 30, 28, 0.06) 45%, rgba(158, 188, 58, 0.5) 100%) border-box;
   color: var(--color-ink);
-  box-shadow: 0 22px 44px -28px rgba(46, 63, 18, 0.5);
+  box-shadow: var(--sheet-shadow);
 }
 .zx-stage,
 .zx-beam {
@@ -11432,7 +11098,7 @@ main:has(> .nf) + footer {
   background-color: #fff;
   background-image: linear-gradient(180deg, #fff 0%, #f4f8e8 100%);
   color: var(--color-ink);
-  box-shadow: 0 6px 14px -10px rgba(46, 63, 18, 0.45);
+  box-shadow: 0 6px 14px -10px rgba(27, 30, 28, 0.45);
 }
 :is(.site-header .hdr-cta, .btn-soft, .btn-ghost, .nf-btn-light, .pd-action, .flt-open):is(:hover, :focus-visible):not(#\#) {
   border-color: var(--color-lime);
@@ -11535,5 +11201,813 @@ input:checked + .glass-seg-opt:not(#\#),
   }
   50% {
     transform: translateY(2px);
+  }
+}
+
+/* Search bar: a round, soft-grey icon at the start of each field (zone, type, rooms, price), dark line icon, as in
+   the approved reference. The icon is taken out of the flow and the field's text steps in to make room. */
+.glass-panel .glass-field {
+  padding-left: 3.25rem;
+}
+.glass-panel .glass-field > .sf-ic {
+  position: absolute;
+  left: 0.6rem;
+  top: 50%;
+  display: grid;
+  width: 2.15rem;
+  height: 2.15rem;
+  place-items: center;
+  border-radius: 9999px;
+  background: #ecedea;
+  color: var(--color-forest);
+  translate: 0 -50%;
+  pointer-events: none;
+}
+.glass-panel .glass-field > .sf-ic svg {
+  width: 1.1rem;
+  height: 1.1rem;
+  stroke-width: 1.9;
+}
+@media (min-width: 64rem) {
+  .glass-panel .glass-field {
+    padding-left: 3.3rem;
+  }
+  .glass-panel .glass-field > .sf-ic {
+    left: 0.6rem;
+    width: 2.3rem;
+    height: 2.3rem;
+  }
+  .glass-panel .glass-field > .sf-ic svg {
+    width: 1.15rem;
+    height: 1.15rem;
+  }
+  .glass-panel .glass-field:hover > .sf-ic,
+  .glass-panel .glass-field:focus-within > .sf-ic {
+    background: #e2e4de;
+  }
+}
+/* Large icons only on wide screens; between 1280 and 1439px the one-row bar needs the room for its values. */
+@media (min-width: 90rem) {
+  .glass-panel .glass-field {
+    padding-left: 4.1rem;
+  }
+  .glass-panel .glass-field > .sf-ic {
+    left: 0.7rem;
+    width: 2.75rem;
+    height: 2.75rem;
+  }
+  .glass-panel .glass-field > .sf-ic svg {
+    width: 1.3rem;
+    height: 1.3rem;
+  }
+}
+
+/* Search bar, modern touch (desktop): a floating frosted pill with a soft long shadow, round hover fields, soft
+   gradient icon discs and a pill search button whose arrow nudges forward on hover. */
+@media (min-width: 64rem) {
+  .glass-panel {
+    border: 1px solid rgba(255, 255, 255, 0.85);
+    border-radius: 1.9rem;
+    background: rgba(255, 255, 255, 0.86);
+    -webkit-backdrop-filter: blur(18px) saturate(1.35);
+    backdrop-filter: blur(18px) saturate(1.35);
+    box-shadow:
+      0 1px 0 rgba(255, 255, 255, 0.9) inset,
+      var(--sheet-shadow);
+  }
+  .glass-panel .glass-seg,
+  .glass-panel .glass-seg-opt {
+    border-radius: 9999px;
+  }
+  .glass-panel .glass-field {
+    border-radius: 9999px;
+    transition:
+      background-color 0.25s,
+      box-shadow 0.25s;
+  }
+  .glass-panel .glass-field:hover,
+  .glass-panel .glass-field:focus-within {
+    background: rgba(255, 255, 255, 0.95);
+    box-shadow: 0 6px 18px -10px rgba(27, 30, 28, 0.35);
+  }
+  .glass-panel .glass-field > .sf-ic {
+    background: linear-gradient(160deg, #f6f7f2 0%, #e4e8dc 100%);
+    box-shadow:
+      inset 0 0 0 1px rgba(255, 255, 255, 0.9),
+      0 2px 6px -2px rgba(27, 30, 28, 0.25);
+    transition:
+      transform 0.35s var(--ease-out),
+      background 0.25s;
+  }
+  .glass-panel .glass-field:hover > .sf-ic,
+  .glass-panel .glass-field:focus-within > .sf-ic {
+    background: linear-gradient(160deg, #fff 0%, #dfe5d3 100%);
+    transform: scale(1.06);
+  }
+  .glass-panel button[type='submit'].btn {
+    border-radius: 9999px;
+    padding-inline: 1.6rem;
+    box-shadow: 0 10px 22px -10px rgba(27, 30, 28, 0.7);
+  }
+  .glass-panel button[type='submit'].btn svg {
+    transition: transform 0.3s var(--ease-out);
+  }
+  .glass-panel button[type='submit'].btn:hover svg {
+    transform: translateX(2px) scale(1.08);
+  }
+}
+
+/* Horizontal rows scroll sideways only. With `overflow-x: auto` the browser makes the vertical axis scrollable too, so
+   a card still waiting to rise in (translated down) or a lifted card left a few pixels of vertical overflow: a swipe
+   or wheel over the row then scrolled the row instead of the page and felt stuck. `overflow-y: hidden` clips nothing
+   new (an `auto` axis already clips both) and hands every vertical gesture back to the page. Scoped to the widths at
+   which each row actually scrolls, because on the others they are `overflow: visible`. */
+.feat-track,
+.card-scroller,
+.reviews-list,
+.zx-cards,
+[data-drag-scroll] {
+  overflow-y: hidden;
+}
+@media (max-width: 63.99rem) {
+  .team-grid,
+  .team-band .team-grid {
+    overflow-y: hidden;
+  }
+}
+@media (max-width: 47.99rem) {
+  .cp-gal-grid,
+  .pd-similar-row {
+    overflow-y: hidden;
+  }
+}
+
+/* Search bar on phones: one field per row (zone, type, rooms, price), each with its round icon on the left, as on
+   desktop. Side by side, the type and rooms fields were too narrow for an icon and their text (the icon covered the
+   label). Rows are a little tighter so the panel barely grows. */
+@media (max-width: 39.99rem) {
+  .glass-panel > form > div {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .glass-panel > form > div > * {
+    grid-column: 1 / -1;
+  }
+  .glass-panel .glass-field,
+  .glass-panel .glass-field:nth-child(2),
+  .glass-panel .glass-field:nth-child(3) {
+    padding: 0.55rem 0.95rem 0.5rem 3.35rem;
+  }
+  .glass-panel .glass-field:nth-child(2) {
+    border-right: 0;
+  }
+  .glass-panel .glass-field > .sf-ic {
+    left: 0.7rem;
+    width: 2rem;
+    height: 2rem;
+  }
+}
+
+/* Search bar on smaller desktops (1024-1279px): with the round icons the one-row layout no longer fits beside the
+   stacked Comprar/Arrendar column (values were cut short). Here the two tabs sit side by side above the fields, as on
+   tablets, so the four fields and the button keep the whole width. */
+@media (min-width: 64rem) and (max-width: 79.99rem) {
+  .glass-panel > form {
+    display: block;
+  }
+  .glass-panel > form > .glass-seg {
+    display: inline-flex;
+    flex-direction: row;
+    margin-bottom: 0.6rem;
+    padding-right: 0;
+    border-right: 0;
+  }
+}
+
+/* Search panel on every screen size: the site's one soft sheet shadow (it was a deep, dark drop under the panel). */
+.glass-panel {
+  box-shadow: var(--sheet-shadow);
+}
+
+/* "Explore por zona" on phones and tablets, quieter: the photos carry the section, so everything around them steps
+   back. No panel frame (no lime edge, no shadow: the section sits on the white page like the others), no fades at
+   the row's ends (they washed out the active photo). The cards themselves follow the desktop ones (see below).
+   Desktop keeps its panel. */
+@media (max-width: 63.99rem) {
+  .zx,
+  .zx.zx-fade {
+    padding: 0;
+    border: 0;
+    border-radius: 0;
+    background: none;
+    box-shadow: none;
+  }
+  .zx-cards,
+  .zx-cards[data-fade-l],
+  .zx-cards[data-fade-r],
+  .zx-cards[data-fade-l][data-fade-r] {
+    -webkit-mask-image: none;
+    mask-image: none;
+  }
+}
+
+/* "Somos daqui" on phones: less to read at once. The copy keeps its first paragraph (the zones, for search) and folds
+   the second behind "Ler mais"; the three pillars become compact rows (icon, title, chevron) that open their line on
+   tap. Only with JS (data-fold set by the script); tablets and desktop are unchanged. */
+.about-more {
+  display: none;
+}
+.about-pillar-chev {
+  display: none;
+}
+@media (max-width: 39.99rem) {
+  .about-copy[data-fold]:not([data-open]) > p:nth-of-type(n + 2) {
+    display: none;
+  }
+  .about-more:not([hidden]) {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    min-height: 2.75rem;
+    margin-top: -0.75rem;
+    font-size: 0.9375rem;
+    font-weight: 600;
+    color: var(--color-olive);
+    cursor: pointer;
+  }
+  .about-more svg {
+    transition: transform 0.3s var(--ease-out);
+  }
+  .about-more[aria-expanded='true'] svg {
+    transform: rotate(180deg);
+  }
+
+  .about-pillars {
+    margin-top: 2.5rem;
+  }
+  .about-pillar[data-fold] {
+    align-items: center;
+    gap: 0.9rem;
+    padding-block: 0.85rem;
+  }
+  .about-pillar[data-fold] .about-pillar-icon {
+    width: 2.6rem;
+    height: 2.6rem;
+    flex: none;
+  }
+  .about-pillar[data-fold] .about-pillar-icon svg {
+    width: 1.35rem;
+    height: 1.35rem;
+  }
+  .about-pillar[data-fold] .about-pillar-head {
+    align-items: center;
+    min-height: 2.75rem;
+    cursor: pointer;
+  }
+  .about-pillar[data-fold] .about-pillar-head h3 {
+    font-size: 1.0625rem;
+  }
+  .about-pillar[data-fold] .about-pillar-num {
+    display: none;
+  }
+  .about-pillar[data-fold] .about-pillar-chev {
+    display: block;
+    flex: none;
+    color: var(--color-muted);
+    transition: transform 0.3s var(--ease-out);
+  }
+  .about-pillar[data-open] .about-pillar-chev {
+    transform: rotate(180deg);
+  }
+  .about-pillar[data-fold]:not([data-open]) .about-pillar-text {
+    display: none;
+  }
+  .about-pillar[data-open] {
+    align-items: flex-start;
+  }
+  .about-pillar[data-open] .about-pillar-text {
+    margin-top: 0.15rem;
+  }
+}
+/* "Ler mais" sits between the copy and the buttons in the phone/tablet order of "Somos daqui". */
+@media (max-width: 63.99rem) {
+  #sobre .about-more {
+    order: 3;
+  }
+  #sobre .about-more + div {
+    order: 4;
+  }
+}
+
+/* Zone cards on phones and tablets, as on desktop but tuned for a thumb: a little narrower (the next card shows more
+   of itself), a calm 4:5 portrait, the pin in a small glass square, the active card in full colour with a hairline
+   lime edge and the round green arrow, the others under the olive veil. One soft shadow, in the site's tone. */
+@media (max-width: 63.99rem) {
+  .zx-card {
+    flex: 0 0 min(66%, 15.5rem);
+    height: auto;
+    aspect-ratio: 4 / 5;
+  }
+  .zx-card a {
+    padding: 1rem;
+    border-radius: 1.25rem;
+    box-shadow: var(--sheet-shadow);
+  }
+  .zx-card[data-active] a::before {
+    border-color: rgba(158, 188, 58, 0.9);
+    box-shadow: none;
+  }
+  .zx-card-ic {
+    top: 0.85rem;
+    left: 0.85rem;
+    width: 2.1rem;
+    height: 2.1rem;
+    border-radius: 0.6rem;
+  }
+  .zx-card-ic svg {
+    width: 0.95rem;
+    height: 0.95rem;
+  }
+  .zx-card-go {
+    top: 0.85rem;
+    right: 0.85rem;
+    width: 2.1rem;
+    height: 2.1rem;
+  }
+  .zx-card-name {
+    font-size: 1.3rem;
+  }
+  .zx-card-meta {
+    font-size: 0.8rem;
+  }
+}
+@media (min-width: 40rem) and (max-width: 63.99rem) {
+  .zx-card {
+    flex-basis: min(40%, 16rem);
+  }
+}
+
+/* "Conheça a equipa JPP" on phones and tablets: one line, the JPP bird after it (smaller, no divider rule), instead
+   of three stacked lines. Desktop keeps the three lines with the rule and the bird. */
+@media (max-width: 63.99rem) {
+  .zones-title.team-title {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    column-gap: 0.26em;
+    row-gap: 0;
+  }
+  .zones-title.team-title::after {
+    display: none;
+  }
+  .team-title-r1 > span,
+  .team-title-r2,
+  .team-title-r3 {
+    white-space: nowrap;
+  }
+  .team-title-mark {
+    order: 5;
+    height: 1.15em;
+    margin-left: 0.2em;
+  }
+}
+
+/* Listing "Ver mais": phones and tablets show the results 6 at a time (the script marks the rest data-beyond).
+   Desktop shows every result and never shows the button. */
+.res-more {
+  display: none;
+}
+@media (max-width: 63.99rem) {
+  #grid > [data-beyond] {
+    display: none;
+  }
+  .res-more:not([hidden]) {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.75rem;
+    margin-top: 2.5rem;
+  }
+  .res-more-note {
+    font-size: 0.875rem;
+    color: var(--color-muted);
+  }
+  .res-more-btn {
+    min-width: 12rem;
+    justify-content: center;
+  }
+}
+
+/* ==== Careers top (reference: RANTY) ============================================================================
+   A full-bleed photo of a house (runs up behind the floating header, rounded at the foot like the home hero). Left:
+   a large title, a light "/ … /" line and a dark pill button to the form. Right: the application form on a white
+   card. The photo is public/careers/hero-mar.jpg (the marina shows if it is missing). */
+.cpx-hero {
+  --hero-r: 1.875rem;
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  margin-top: -7rem;
+  padding: 8.5rem 0 clamp(2rem, 4vw, 3rem);
+  border-radius: 0 0 var(--hero-r) var(--hero-r);
+  color: #fff;
+}
+.cpx-bg {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  display: flex;
+  overflow: hidden;
+  /* Fine reeded glass over a deep olive night: a lime light rising from the foot (under the form), a pale one high on
+     the left, and a darker left edge so the white title always reads. */
+  background:
+    radial-gradient(60% 70% at 78% 108%, rgba(158, 188, 58, 0.7) 0%, rgba(95, 130, 34, 0.3) 45%, transparent 78%),
+    radial-gradient(45% 55% at 8% -8%, rgba(214, 232, 150, 0.32) 0%, transparent 70%),
+    linear-gradient(100deg, var(--g-950) 0%, var(--g-900) 38%, var(--g-700) 100%);
+}
+.cpx-bg span {
+  flex: 1 1 0;
+  background: linear-gradient(
+    90deg,
+    rgba(233, 239, 216, 0.22) 0%,
+    rgba(233, 239, 216, 0.06) 22%,
+    rgba(10, 16, 7, 0) 48%,
+    rgba(10, 16, 7, 0.34) 92%,
+    rgba(233, 239, 216, 0.12) 100%
+  );
+  box-shadow: inset 1px 0 0 rgba(214, 232, 150, 0.14);
+}
+/* Grain, a soft vignette and a lime horizon line on the foot, as in the header. */
+.cpx-bg::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(180deg, transparent 72%, rgba(158, 188, 58, 0.22) 100%),
+    linear-gradient(180deg, rgba(10, 16, 7, 0.35) 0%, transparent 22%),
+    var(--hdr-grain);
+  background-blend-mode: normal, normal, normal;
+  opacity: 1;
+  pointer-events: none;
+  box-shadow: inset 0 -2px 0 rgba(190, 215, 100, 0.55);
+}
+/* One slow band of light drifting over the glass. */
+.cpx-bg::before {
+  content: '';
+  position: absolute;
+  z-index: 1;
+  top: 0;
+  bottom: 0;
+  left: -30%;
+  width: 30%;
+  background: linear-gradient(90deg, transparent, rgba(233, 244, 190, 0.13), transparent);
+  transform: skewX(-14deg);
+  animation: cpx-drift 14s ease-in-out infinite;
+  pointer-events: none;
+}
+@keyframes cpx-drift {
+  0%, 15% { left: -30%; }
+  85%, 100% { left: 110%; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .cpx-bg::before { animation: none; display: none; }
+}
+@media (max-width: 767px) {
+  .cpx-bg span:nth-child(n + 13) { display: none; }
+}
+.cpx-hero .cp-crumbs {
+  margin: 0;
+  color: rgba(255, 255, 255, 0.72);
+}
+.cpx-hero .cp-crumbs a:hover {
+  color: #fff;
+}
+.cpx-top {
+  display: grid;
+  gap: 2.5rem;
+  margin-top: 2rem;
+}
+.cpx-title {
+  font-family: var(--font-display, inherit);
+  font-size: clamp(2.2rem, 7vw, 4rem);
+  font-weight: 600;
+  line-height: 0.98;
+  letter-spacing: -0.035em;
+  text-shadow: 0 2px 24px rgba(27, 30, 28, 0.25);
+}
+.cpx-title span {
+  display: block;
+}
+.cpx-sub {
+  margin-top: 1.25rem;
+  font-size: 1.0625rem;
+  color: rgba(255, 255, 255, 0.86);
+}
+.cpx-start {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  min-height: 3.25rem;
+  margin-top: 1.75rem;
+  padding: 0 1.9rem;
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  border-radius: 9999px;
+  background: rgba(27, 30, 28, 0.9);
+  color: #fff;
+  font-size: 0.9375rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  box-shadow: var(--sheet-shadow);
+  transition: background-color 0.25s;
+}
+.cpx-start svg {
+  color: var(--color-lime);
+  transition: transform 0.3s var(--ease-out);
+}
+.cpx-start:hover,
+.cpx-start:focus-visible {
+  background: var(--g-800);
+}
+.cpx-start:hover svg {
+  transform: translateX(3px);
+}
+
+/* The white card; the house steps out of its foot (negative margin), so the row below leaves room for it. */
+.cpx-card {
+  position: relative;
+  scroll-margin-top: 6rem;
+  padding: 1.5rem;
+  border-radius: 1.75rem;
+  background: #fff;
+  color: var(--color-ink);
+  box-shadow: var(--sheet-shadow);
+}
+.cpx-card-title {
+  font-family: var(--font-display, inherit);
+  font-size: 1.5rem;
+  font-weight: 500;
+  line-height: 1.15;
+  letter-spacing: -0.015em;
+}
+.cpx-card-text {
+  margin-top: 0.6rem;
+  font-size: 0.9375rem;
+  color: var(--color-muted);
+}
+
+@media (min-width: 40.0625rem) {
+  .cpx-hero {
+    --hero-r: 3.25rem;
+  }
+  .cpx-card {
+    padding: 1.5rem 1.75rem;
+  }
+  .cpx-card-title {
+    font-size: 1.5rem;
+  }
+}
+@media (min-width: 48rem) and (max-width: 63.99rem) {
+  .cpx-card {
+    max-width: 36rem;
+    width: 100%;
+    margin-inline: auto;
+  }
+}
+@media (min-width: 64rem) {
+  .cpx-hero {
+    padding-top: 6.5rem;
+    padding-bottom: 2.25rem;
+  }
+  .cpx-top {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 33rem);
+    align-items: center;
+    gap: 4rem;
+    margin-top: 1rem;
+  }
+}
+
+/* Application section: text on the left, the form's white sheet on the right. */
+
+@media (max-width: 40rem) {
+  .cpx-card-title {
+    font-size: 1.35rem;
+  }
+  .cpx-card-text {
+    font-size: 0.875rem;
+  }
+}
+
+/* The form on the hero card: a little space under the line above it. */
+.cpx-card .cp-form {
+  margin-top: 1.25rem;
+}
+
+/* ==== Type: Gloock + Inter ======================================================================================
+   Gloock has a single weight: never let the browser fake a bold or an italic of it (headings set 500/600 for the old
+   sans); its natural weight is the look. Headings in the serif sit a touch looser than the old geometric sans. */
+html {
+  font-synthesis: none;
+}
+:where(h1, h2, h3, h4, .zones-title, .font-display) {
+  font-feature-settings: 'kern', 'liga';
+}
+/* Inter runs wider than the old geometric sans: the search bar's values step down a touch to keep them whole. */
+@media (min-width: 64rem) {
+  .glass-panel .glass-select,
+  .glass-panel .glass-trigger {
+    font-size: 0.9375rem;
+    letter-spacing: -0.01em;
+  }
+}
+/* Serif headings: Gloock only on the page titles and the section titles (and the zone's name in "Explore por zona"),
+   used sparingly so it stays an accent; card titles, prices, numbers and the rest are Inter. Its own tracking and line
+   height (the values tuned for the old geometric sans made its letters touch). */
+:is(h1, .zones-title, .cpx-title, .zx-name):not(.sr-only):not(#\#) {
+  font-family: var(--font-serif);
+  font-weight: 400;
+  letter-spacing: 0;
+  line-height: 1.08;
+}
+
+/* Careers title as the reference's "THE PERFECT HOME": capitals, centred on its column, short stacked lines set close,
+   the first lines in the serif and the last in Inter (as "HOME"); the "/ … /" line and the button centred beneath. */
+.cpx-intro {
+  text-align: center;
+}
+.cpx-title:not(#\#):not(#\#) {
+  font-size: clamp(2.4rem, 8.5vw, 4.6rem);
+  line-height: 0.95;
+  letter-spacing: -0.01em;
+  text-transform: uppercase;
+}
+.cpx-title .cpx-title-sans {
+  font-family: var(--font-sans);
+  font-weight: 400;
+  letter-spacing: -0.035em;
+}
+.cpx-sub {
+  margin-top: 1.5rem;
+}
+@media (min-width: 64rem) {
+  .cpx-intro {
+    justify-self: center;
+  }
+}
+.cpx-sub {
+  text-shadow: 0 1px 14px rgba(27, 30, 28, 0.55);
+}
+
+/* ==== "Explore por zona" on desktop, calmer ======================================================================
+   Less to look at, better balanced. The panel is the site's one white sheet (hairline edge, no lime gradient border).
+   The text column reads in a clear order: light line, zone name, one sentence, a small pill with the count, the
+   button, and the controls pinned to the foot. The cards are taller with a rounder corner; the photos stay close to
+   their own colour (a light wash only at the foot, for the text) and only the zone being read shows its count, the
+   pin and the lime hairline, so the row stops repeating the same two lines on every card. Phones and tablets keep
+   their own rules (above). */
+@media (min-width: 64rem) {
+  .zx {
+    padding-block: 1.75rem;
+    border: 1px solid var(--sheet-edge);
+    background:
+      radial-gradient(50% 70% at 10% 110%, rgba(158, 188, 58, 0.08) 0%, transparent 100%) padding-box,
+      linear-gradient(180deg, #fff 0%, #fbfcf8 100%) padding-box;
+    border-right: 0;
+  }
+  .zx-content {
+    align-self: stretch;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding-right: 0.5rem;
+  }
+  .zx-eyebrow {
+    margin-bottom: 1rem;
+  }
+  .zx-blurb {
+    max-width: 20rem;
+  }
+  .zx-kicker {
+    display: flex;
+    width: fit-content;
+    margin-top: 1.1rem;
+    padding: 0.3rem 0.75rem 0.3rem 0.65rem;
+    border-radius: 9999px;
+    background: var(--mist);
+    font-size: 0.8rem;
+    color: var(--color-forest);
+  }
+  .zx-go {
+    margin-top: 1.5rem;
+  }
+  .zx-controls {
+    margin-top: 2rem;
+  }
+  .zx-count {
+    font-size: 1.5rem;
+  }
+  .zx-step {
+    height: 3px;
+  }
+  .zx-cards {
+    gap: 0.875rem;
+    min-height: clamp(18rem, 22vw, 21rem);
+  }
+  .zx-card a {
+    padding: 1.25rem;
+    border-radius: 1.25rem;
+    box-shadow: 0 18px 34px -26px rgba(27, 30, 28, 0.55);
+  }
+  .zx-card[data-active] a {
+    box-shadow: 0 26px 44px -26px rgba(27, 30, 28, 0.7);
+  }
+  .zx-card a::before {
+    border-color: rgba(255, 255, 255, 0.1);
+  }
+  .zx-card[data-active] a::before {
+    border-color: rgba(158, 188, 58, 0.9);
+    box-shadow: none;
+  }
+  .zx-card img,
+  .zx-card .zone-plain {
+    filter: saturate(0.85) brightness(0.9);
+  }
+  .zx-card[data-active] img,
+  .zx-card[data-active] .zone-plain,
+  .zx-card a:hover img {
+    filter: none;
+  }
+  .zx-card a::after,
+  .zx-card[data-active] a::after {
+    background: linear-gradient(180deg, transparent 45%, rgba(14, 20, 11, 0.78) 100%);
+  }
+  .zx-card-ic {
+    top: 1.1rem;
+    left: 1.1rem;
+    width: 2.25rem;
+    height: 2.25rem;
+    border-color: rgba(255, 255, 255, 0.14);
+    background: rgba(18, 26, 13, 0.32);
+    opacity: 0;
+    scale: 0.85;
+    transition:
+      opacity 0.35s ease,
+      scale 0.4s var(--ease-out);
+  }
+  .zx-card[data-active] .zx-card-ic {
+    opacity: 1;
+    scale: 1;
+  }
+  .zx-card-go {
+    top: 1.1rem;
+    right: 1.1rem;
+    width: 2.25rem;
+    height: 2.25rem;
+  }
+  .zx-card-name {
+    font-size: 1.25rem;
+    font-weight: 600;
+  }
+  .zx-card-meta {
+    display: none;
+  }
+  .zx-card[data-active] .zx-card-meta {
+    display: block;
+  }
+}
+
+/* "Conheça a equipa JPP" on desktop: the title, the sentence and the arrows stay together in the left column (they
+   were spread to the top and the foot of the band, leaving a hole between the heading and the text). The block is
+   centred on the portraits. */
+@media (min-width: 64rem) {
+  #equipa > div.rise:first-of-type {
+    justify-content: center;
+    gap: 1.5rem;
+  }
+  #equipa .team-lead {
+    margin-top: 0;
+  }
+}
+
+/* ==== Careers, "Onde vai trabalhar": cleaner ======================================================================
+   No tinted band: the section sits on the page white like the others. The three photos share one height and take
+   their natural proportions (wide office front, the narrow entrance, the marina), so nothing is cropped to a
+   square-ish box; a small corner radius and no shadow. The head keeps the title left and the sentence right. */
+.cp-gal {
+  background: none;
+  padding-block: 0;
+}
+.cp-gal-photo {
+  aspect-ratio: 4 / 5;
+  border-radius: 1rem;
+  box-shadow: none;
+}
+@media (min-width: 48rem) {
+  .cp-gal-grid {
+    grid-template-columns: 1.7fr 0.75fr 1.25fr;
+    height: clamp(17rem, 31vw, 26rem);
+    gap: 0.875rem;
+  }
+  .cp-gal-photo {
+    aspect-ratio: auto;
+    height: 100%;
   }
 }

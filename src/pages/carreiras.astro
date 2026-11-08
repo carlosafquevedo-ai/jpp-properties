@@ -4,10 +4,10 @@ import Icon from '../components/Icon.astro';
 import type { IconName } from '../components/Icon.astro';
 import { AMI, offices } from '../lib/site';
 
-// Careers: dark top (title, house structure and text on the left, the application form on the right); benefits as icon
-// rows; the profile as expanding panels; where you will work (three office photos on a white strip); a testimonial
-// (only when there is a real one); how applying works; the FAQ; a closing call to action.
-// TODO: PROVISIONAL copy (PT), to confirm with the client: benefits, profile and answers describe a typical agency,
+// Careers: a photo top (title and button on the left, the application form on a white card on the right); benefits as
+// icon rows; how applying works; where you will work (three office photos on a white strip); a testimonial
+// (only when there is a real one); the FAQ; a closing call to action.
+// TODO: PROVISIONAL copy (PT), to confirm with the client: benefits and answers describe a typical agency,
 // not confirmed facts about JPP (remuneration and licence answers especially). EN/FR pending.
 const office = offices[0]!;
 
@@ -26,44 +26,6 @@ const benefits: { icon: IconName; title: string; text: string }[] = [
     icon: 'pinMap',
     title: `Um escritório em ${office.name}`,
     text: 'Uma base local, perto de quem compra e vende, onde se encontra com clientes e colegas.',
-  },
-];
-
-const profile: { label: string; icon: IconName; title: string; text: string; tags: string[] }[] = [
-  {
-    label: 'Pessoas',
-    icon: 'chat',
-    title: 'Gosto pelo contacto com pessoas',
-    text: 'Ouvir, explicar e acompanhar cada cliente, do primeiro contacto à entrega das chaves.',
-    tags: ['Ouvir', 'Explicar', 'Acompanhar'],
-  },
-  {
-    label: 'Aprender',
-    icon: 'book',
-    title: 'Vontade de aprender',
-    text: 'Ninguém começa a saber tudo: damos formação no início e ao longo do caminho.',
-    tags: ['Formação inicial', 'Ao longo do caminho'],
-  },
-  {
-    label: 'Algarve',
-    icon: 'pinMap',
-    title: 'Conhecimento do Algarve',
-    text: 'Conhecer as zonas onde trabalhamos, ou querer conhecê-las a fundo.',
-    tags: ['Vilamoura', 'Quarteira', 'Quinta do Lago'],
-  },
-  {
-    label: 'Autonomia',
-    icon: 'calendar',
-    title: 'Autonomia e organização',
-    text: 'Gerir a sua agenda, os seus clientes e os seus imóveis com método.',
-    tags: ['Agenda', 'Clientes', 'Imóveis'],
-  },
-  {
-    label: 'Equipa',
-    icon: 'team',
-    title: 'Espírito de equipa',
-    text: 'Partilhar informação e ajudar os colegas, porque cada negócio é de todos.',
-    tags: ['Partilhar informação', 'Ajudar os colegas'],
   },
 ];
 
@@ -110,9 +72,14 @@ const experience = ['Sem experiência no setor', 'Menos de 2 anos', '2 a 5 anos'
   title="Carreiras | JPP Properties"
   description="Faça carreira como consultor imobiliário no Algarve com a JPP Properties (AMI 9361). Envie a sua candidatura."
   route="careers"
+  overHero
 >
-  <!-- Top: a dark olive night (the "Explore por zona" atmosphere). Left: title, the house structure and text. Right: the form. -->
-  <section class="cp-hero" aria-labelledby="cp-titulo">
+  <!-- Top (reference: RANTY): a full-bleed photo of a house, the title and the "Candidatar-me" button on the left, the
+       application form on a white card on the right. -->
+  <section class="cpx-hero" data-header-hero aria-labelledby="cp-titulo">
+    <div class="cpx-bg" aria-hidden="true">
+      {Array.from({ length: 28 }, () => <span />)}
+    </div>
     <div class="container-x cp-crumbs">
       <nav aria-label="Localização" class="text-sm">
         <ol class="flex flex-wrap items-center gap-2">
@@ -124,32 +91,27 @@ const experience = ['Sem experiência no setor', 'Menos de 2 anos', '2 a 5 anos'
         </ol>
       </nav>
     </div>
-    <div class="container-x cp-hero-grid">
-      <div class="cp-hero-intro">
+
+    <div class="container-x cpx-top">
+      <div class="cpx-intro">
         <!-- TODO: provisional title, to confirm with the client. EN/FR pending. -->
-        <h1 id="cp-titulo" class="cp-wall">
-          <span>Construímos juntos</span>
-          <span>o seu percurso.</span>
+        <h1 id="cp-titulo" class="cpx-title">
+          <span>Construímos</span>
+          <span>juntos o seu</span>
+          <span class="cpx-title-sans">percurso.</span>
         </h1>
-        <img
-          class="cp-hero-house"
-          src="/careers/casa-estrutura.svg"
-          alt=""
-          width="1442"
-          height="926"
-          fetchpriority="high"
-          decoding="async"
-        />
-        <p class="cp-lead">
-          Procuramos consultores imobiliários que queiram crescer no Algarve, a começar ou com
-          experiência, numa equipa local.
-        </p>
+        <p class="cpx-sub">/ Carreiras na JPP Properties /</p>
+        <a href="#candidatura" class="cpx-start">
+          Candidatar-me <Icon name="arrowRight" class="size-4" />
+        </a>
       </div>
 
-      <div id="candidatura" class="pd-contact cp-card">
-        <h2 class="detail-title font-display text-2xl text-forest">Enviar candidatura</h2>
-        <!-- PROTOTYPE: submission is simulated. Real flow = Pages Function + Turnstile + Resend, with the CV as an
-             attachment (phase 5). Nothing is stored: personal data only travels to the team's inbox. -->
+      <!-- The application form on the hero's white card ("Candidatar-me" and the closing button land here).
+           PROTOTYPE: submission is simulated. Real flow = Pages Function + Turnstile + Resend, with the CV as an
+           attachment (phase 5). Nothing is stored: personal data only travels to the team's inbox. -->
+      <div id="candidatura" class="cpx-card">
+        <h2 class="cpx-card-title">Enviar candidatura</h2>
+        <p class="cpx-card-text">Preencha os seus dados. Se o seu perfil se ajustar, ligamos-lhe.</p>
         <form data-careers-form class="cp-form" novalidate>
           <div>
             <label for="cp-name" class="mb-1.5 block text-sm font-medium">Nome</label>
@@ -165,25 +127,27 @@ const experience = ['Sem experiência no setor', 'Menos de 2 anos', '2 a 5 anos'
               <input id="cp-email" name="email" type="email" autocomplete="email" required class="field" />
             </div>
           </div>
-          <div>
-            <label for="cp-exp" class="mb-1.5 block text-sm font-medium">Experiência no imobiliário</label>
-            <select id="cp-exp" name="experience" required class="field field-select">
-              <option value="">Escolha uma opção</option>
-              {experience.map((e) => <option value={e}>{e}</option>)}
-            </select>
-          </div>
-          <div>
-            <label for="cp-linkedin" class="mb-1.5 block text-sm font-medium">
-              Perfil no LinkedIn <span class="font-normal text-muted">(opcional)</span>
-            </label>
-            <input
-              id="cp-linkedin"
-              name="linkedin"
-              type="url"
-              inputmode="url"
-              placeholder="https://www.linkedin.com/in/..."
-              class="field"
-            />
+          <div class="grid gap-3 sm:grid-cols-2">
+            <div>
+              <label for="cp-exp" class="mb-1.5 block text-sm font-medium">Experiência no imobiliário</label>
+              <select id="cp-exp" name="experience" required class="field field-select">
+                <option value="">Escolha uma opção</option>
+                {experience.map((e) => <option value={e}>{e}</option>)}
+              </select>
+            </div>
+            <div>
+              <label for="cp-linkedin" class="mb-1.5 block text-sm font-medium">
+                Perfil no LinkedIn <span class="font-normal text-muted">(opcional)</span>
+              </label>
+              <input
+                id="cp-linkedin"
+                name="linkedin"
+                type="url"
+                inputmode="url"
+                placeholder="https://www.linkedin.com/in/..."
+                class="field"
+              />
+            </div>
           </div>
           <div>
             <label for="cp-cv" class="mb-1.5 block text-sm font-medium">
@@ -220,6 +184,7 @@ const experience = ['Sem experiência no setor', 'Menos de 2 anos', '2 a 5 anos'
         </form>
       </div>
     </div>
+
   </section>
 
   <!-- Benefits: title and text, then the icon rows side by side. -->
@@ -249,41 +214,29 @@ const experience = ['Sem experiência no setor', 'Menos de 2 anos', '2 a 5 anos'
     </div>
   </section>
 
-  <!-- Profile: expanding panels (reference: MeewVision "Com quem trabalhamos"), on the green night with our own icons.
-       One panel is always open. Native <details>, so it works without JS; the script only stops the open one closing. -->
-  <section class="container-x cp-section cp-profile" aria-labelledby="cp-perfil">
+  <!-- How applying works: the site's "Como trabalhamos" steps, in three columns. -->
+  <section class="container-x cp-section" aria-labelledby="cp-passos">
     <div class="cp-head cp-head-split">
-      <div>
-        <p class="cp-kicker">— Quem procuramos</p>
-        <h2 id="cp-perfil" class="zones-title">O seu perfil</h2>
-      </div>
-      <p class="cp-lead">
-        Qualquer pessoa pode ser consultor imobiliário: quem já trabalha no setor e quem vem de outra
-        profissão. Ensinamos o que precisa de saber e acompanhamo-lo enquanto cresce.
-      </p>
+      <h2 id="cp-passos" class="zones-title">Como funciona a candidatura</h2>
+      <p class="cp-lead">Três passos, do formulário ao primeiro dia na equipa.</p>
     </div>
-    <div class="cp-panels">
+    <ol class="hww-flow cp-steps">
       {
-        profile.map((p, i) => (
-          <details class="cp-panel" name="cp-perfil" open={i === 0}>
-            <summary class="cp-panel-tab">
-              <span class="cp-panel-num">{String(i + 1).padStart(2, '0')}</span>
-              <Icon name={p.icon} class="cp-panel-tab-icon size-5" />
-              <span class="cp-panel-label">{p.label}</span>
-              <Icon name="chevronDown" class="cp-panel-chev size-4" />
-            </summary>
-            <div class="cp-panel-body">
-              <Icon name={p.icon} class="cp-panel-mark" />
-              <h3 class="cp-panel-title">{p.title}</h3>
-              <p class="cp-panel-text">{p.text}</p>
-              <ul class="cp-panel-tags">
-                {p.tags.map((t) => <li>{t}</li>)}
-              </ul>
-            </div>
-          </details>
+        applySteps.map((s, i) => (
+          <li class="hww-card">
+            <span class="hww-dot" aria-hidden="true" />
+            <span class="hww-card-icon" aria-hidden="true">
+              <Icon name={s.icon} class="size-4" />
+            </span>
+            <span class="hww-card-num" aria-hidden="true">
+              {String(i + 1).padStart(2, '0')}
+            </span>
+            <h3 class="hww-card-title">{s.title}</h3>
+            <p class="hww-card-text">{s.text}</p>
+          </li>
         ))
       }
-    </div>
+    </ol>
   </section>
 
   <!-- Where you will work: one sage mist band with three equal, square-cornered office photos in one row. -->
@@ -319,31 +272,6 @@ const experience = ['Sem experiência no setor', 'Menos de 2 anos', '2 a 5 anos'
     )
   }
 
-  <!-- How applying works: the site's "Como trabalhamos" steps, in three columns. -->
-  <section class="container-x cp-section" aria-labelledby="cp-passos">
-    <div class="cp-head cp-head-split">
-      <h2 id="cp-passos" class="zones-title">Como funciona a candidatura</h2>
-      <p class="cp-lead">Três passos, do formulário ao primeiro dia na equipa.</p>
-    </div>
-    <ol class="hww-flow cp-steps">
-      {
-        applySteps.map((s, i) => (
-          <li class="hww-card">
-            <span class="hww-dot" aria-hidden="true" />
-            <span class="hww-card-icon" aria-hidden="true">
-              <Icon name={s.icon} class="size-4" />
-            </span>
-            <span class="hww-card-num" aria-hidden="true">
-              {String(i + 1).padStart(2, '0')}
-            </span>
-            <h3 class="hww-card-title">{s.title}</h3>
-            <p class="hww-card-text">{s.text}</p>
-          </li>
-        ))
-      }
-    </ol>
-  </section>
-
   <!-- FAQ. -->
   <section id="perguntas" class="container-x cp-section cp-faq" aria-labelledby="cp-faq">
     <div class="cp-head cp-head-center">
@@ -364,7 +292,7 @@ const experience = ['Sem experiência no setor', 'Menos de 2 anos', '2 a 5 anos'
     </div>
   </section>
 
-  <!-- Closing call to action: back to the form at the top of the page. -->
+  <!-- Closing call to action: back to the application form. -->
   <section class="container-x cp-section" aria-labelledby="cp-cta">
     <div class="cp-cta">
       <div>
@@ -379,10 +307,18 @@ const experience = ['Sem experiência no setor', 'Menos de 2 anos', '2 a 5 anos'
 </SiteLayout>
 
 <script>
-  // Profile panels: one is always open, so clicking the open one does nothing.
-  document.querySelectorAll<HTMLElement>('.cp-panel-tab').forEach((tab) => {
-    tab.addEventListener('click', (e) => {
-      if (tab.parentElement?.hasAttribute('open')) e.preventDefault();
+  // "Candidatar-me" (top and closing): bring the form into view and put the cursor in the first field.
+  document.querySelectorAll<HTMLAnchorElement>('a[href="#candidatura"]').forEach((a) => {
+    a.addEventListener('click', (e) => {
+      const name = document.getElementById('cp-name');
+      if (!name) return;
+      e.preventDefault();
+      document.getElementById('candidatura')?.scrollIntoView({
+        behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth',
+        block: 'start',
+      });
+      name.focus({ preventScroll: true });
+      history.replaceState(null, '', '#candidatura');
     });
   });
 

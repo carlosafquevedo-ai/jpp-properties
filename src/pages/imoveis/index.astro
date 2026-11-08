@@ -245,6 +245,14 @@ const AREAS = [50, 75, 100, 150, 200, 300];
         {properties.map((p, i) => <PropertyCard property={p} filterable eager={i < 3} />)}
       </div>
 
+      <!-- Phones and tablets: the results come 6 at a time; "Ver mais" shows the next 6 (desktop shows them all). -->
+      <div class="res-more" data-res-more hidden>
+        <p class="res-more-note" data-res-more-note></p>
+        <button type="button" class="btn btn-ghost res-more-btn" data-res-more-btn>
+          Ver mais <Icon name="chevronDown" class="size-4" />
+        </button>
+      </div>
+
       <div id="empty" hidden class="rounded-3xl bg-paper-2 p-10 text-center">
         <h2 class="font-display text-2xl text-forest">Não encontrámos imóveis com estes filtros</h2>
         <p class="mx-auto mt-3 max-w-md text-ink/80">
@@ -293,6 +301,13 @@ const AREAS = [50, 75, 100, 150, 200, 300];
   const count = document.getElementById('count')!;
   const empty = document.getElementById('empty')!;
   const grid = document.getElementById('grid')!;
+  // "Ver mais" (phones and tablets): how many matching results are on show; back to one batch when the search changes.
+  const STEP = 6;
+  let limit = STEP;
+  let lastSearch = '';
+  const moreBox = document.querySelector<HTMLElement>('[data-res-more]')!;
+  const moreNote = document.querySelector<HTMLElement>('[data-res-more-note]')!;
+  const moreBtn = document.querySelector<HTMLButtonElement>('[data-res-more-btn]')!;
   const activeBox = document.querySelector<HTMLElement>('[data-active]')!;
   const applyLabel = document.querySelector<HTMLElement>('[data-apply-label]')!;
   const openBtn = document.querySelector<HTMLButtonElement>('[data-flt-open]')!;
@@ -364,6 +379,11 @@ const AREAS = [50, 75, 100, 150, 200, 300];
   const apply = () => {
     const s = read();
     const q = s.q.toLowerCase();
+    const search = JSON.stringify([s, order.value]);
+    if (search !== lastSearch) {
+      lastSearch = search;
+      limit = STEP;
+    }
     let shown = 0;
     const sorted = [...cards].sort((a, b) => {
       if (order.value === 'preco-asc') return Number(a.dataset.price) - Number(b.dataset.price);
@@ -388,8 +408,12 @@ const AREAS = [50, 75, 100, 150, 200, 300];
         (!s.estado || d.condition === s.estado) &&
         (!s.garagem || Number(d.garage) > 0);
       c.hidden = !ok;
+      // Past the current batch: hidden on phones and tablets only (CSS), so desktop keeps the full list.
+      c.toggleAttribute('data-beyond', ok && shown >= limit);
       if (ok) shown++;
     });
+    moreBox.hidden = shown <= limit;
+    moreNote.textContent = `A mostrar ${Math.min(limit, shown)} de ${shown}`;
     count.textContent = plural(shown);
     applyLabel.textContent = shown ? `Ver ${plural(shown)}` : 'Sem resultados';
     empty.hidden = shown > 0;
@@ -488,6 +512,13 @@ const AREAS = [50, 75, 100, 150, 200, 300];
     if (pmin.value && pmax.value && +pmin.value > +pmax.value) pmin.value = '';
   });
 
+  moreBtn.addEventListener('click', () => {
+    const first = cards.filter((c) => c.hasAttribute('data-beyond')).sort((a, b) => Number(a.style.order) - Number(b.style.order))[0];
+    limit += STEP;
+    apply();
+    // Keyboard and screen-reader users land on the first of the new results.
+    first?.querySelector<HTMLElement>('a[href]')?.focus({ preventScroll: true });
+  });
   form.addEventListener('input', apply);
   form.addEventListener('change', apply);
   order.addEventListener('change', apply);

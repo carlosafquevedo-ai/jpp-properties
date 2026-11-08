@@ -1,6 +1,7 @@
 // "Somos daqui" map as a 3D globe: the land shape is read from the drawn map image (no map data or libraries),
-// smoothed into a contour, and laid on a sphere with a latitude/longitude graticule. The land is one solid shape in
-// the fern ramp with a light rim on its coast, and a fine network of light (hairlines between small glowing nodes,
+// smoothed into a contour, and laid on a pearly ball lit from the top left, with engraved latitude rings and the
+// neighbouring land (Spain, France, north-west Africa) in pale striped relief. Portugal is
+// raised off the ball (a dark slab and a soft shadow), its top a solid fern ramp and a light rim on its coast, and a fine network of light (hairlines between small glowing nodes,
 // the office pin as its hub) runs over it, the same thin green light as the site's other effects. The globe turns
 // into place when it scrolls into view, follows the mouse a little, and can be dragged; the office pin tracks its
 // point on the sphere. The <img> stays in the page as the fallback without JS.
@@ -22,14 +23,57 @@ const DEG = Math.PI / 180;
 const clamp = (v: number, lo: number, hi: number) => Math.min(hi, Math.max(lo, v));
 // Stylised globe: one degree of real latitude spans K degrees on the sphere, so Portugal covers a large cap and
 // the graticule curves visibly.
-const K = 16;
+const K = 13;
 const REAL_LAT_SPAN = 5.2; // mainland Portugal, north to south, in degrees
 const CAMERA = 3.4; // camera distance in sphere radii
-const REST = { yaw: 4 * DEG, pitch: -14 * DEG };
-const INTRO = { yaw: -38 * DEG, pitch: -34 * DEG };
+const REST = { yaw: 4 * DEG, pitch: 8 * DEG };
+const INTRO = { yaw: -38 * DEG, pitch: -14 * DEG };
 const LIMIT = 28 * DEG;
 
 const easeOut = (t: number) => 1 - Math.pow(1 - t, 3);
+
+// Neighbouring land, so the globe reads as a piece of the world and not Portugal alone: the rest of Iberia, the west
+// of France and north-west Africa, as simplified coastlines [lat, lon]. Placed with
+// the same stylised scale as Portugal (the drawing's box is mainland Portugal: 36.96–42.15 N, 9.50–6.19 W). Where a
+// coast runs past the horizon it is laid on the edge of the ball. Drawn pale, under Portugal, so Portugal stays the
+// one in colour.
+const GEO_CENTRE = { lat: 39.555, lon: -7.845 };
+const NEIGHBOURS: [number, number][][] = [
+  // Iberia and France, from Cape Finisterre clockwise (Portugal's coast included, under the drawn shape).
+  [
+    [42.88, -9.27], [43.37, -8.4], [43.79, -7.69], [43.55, -5.66], [43.46, -3.8], [43.35, -2.93], [43.36, -1.78],
+    [44.66, -1.25], [45.6, -1.2], [46.16, -1.15], [47.27, -2.2], [47.6, -3.1], [48.04, -4.73], [48.39, -4.49],
+    [48.7, -3.0], [48.65, -1.9], [49.65, -1.62], [49.49, 0.1], [50.1, 1.5], [50.95, 1.85], [51.1, 8], [43.8, 8],
+    [43.7, 7.26], [43.3, 5.37], [43.4, 3.6], [42.7, 3.0], [42.32, 3.32], [41.38, 2.17], [41.1, 1.25], [40.7, 0.85],
+    [39.47, -0.33], [38.73, 0.23], [38.34, -0.48], [37.63, -0.69], [36.72, -2.19], [36.83, -2.46], [36.72, -4.42],
+    [36.14, -5.35], [36.01, -5.6], [36.53, -6.29], [37.25, -6.95], [37.2, -7.41], [37.0, -7.93], [37.0, -8.94],
+    [37.95, -8.87], [38.78, -9.5], [39.36, -9.4], [40.64, -8.75], [41.15, -8.68], [41.69, -8.85], [41.87, -8.87],
+    [42.24, -8.72],
+  ],
+  // North-west Africa, from Cape Spartel eastwards and back up the Atlantic coast (closed far to the south).
+  [
+    [35.79, -5.92], [35.89, -5.31], [35.57, -5.37], [35.25, -3.93], [35.17, -2.93], [35.7, -0.63], [36.75, 3.06],
+    [37.1, 8], [26, 8], [26, -14.5], [27.9, -12.9], [28.5, -11.2], [29.6, -10.1], [30.42, -9.6], [31.5, -9.77],
+    [32.3, -9.24], [33.25, -8.5], [33.6, -7.6], [34.0, -6.83], [34.26, -6.6], [35.19, -6.15], [35.46, -6.03],
+  ],
+];
+/** Real latitude/longitude to a point on the stylised sphere (same scale as the drawing). */
+const geoOnSphere = (lat: number, lon: number) => {
+  // Kept inside the poles and the back meridian: at this scale far coasts would otherwise wrap round the ball.
+  const a = clamp((lon - GEO_CENTRE.lon) * Math.cos(lat * DEG) * K, -170, 170) * DEG;
+  const b = clamp((lat - GEO_CENTRE.lat) * K, -88, 88) * DEG;
+  return onSphere(a, b);
+};
+/** A coastline with extra points along each edge, so its curve follows the ball. */
+const densify = (ring: [number, number][], step = 0.2) => {
+  const out: [number, number][] = [];
+  ring.forEach((p, i) => {
+    const q = ring[(i + 1) % ring.length];
+    const n = Math.max(1, Math.ceil(Math.hypot(q[0] - p[0], q[1] - p[1]) / step));
+    for (let k = 0; k < n; k++) out.push([p[0] + ((q[0] - p[0]) * k) / n, p[1] + ((q[1] - p[1]) * k) / n]);
+  });
+  return out;
+};
 
 /** Point on the unit sphere for local angles a (east) and b (north), in radians. */
 const onSphere = (a: number, b: number) => ({
@@ -138,7 +182,7 @@ export function initPtGlobe(map: HTMLElement) {
     });
 
     // Smooth field and marching squares: each grid square keeps the part of it that is land (clipped at the 0.5
-    // contour, interpolated along its edges), so the fill and the coastline share one smooth outline.
+    // contour, interpolated along its edges), so the fill and the coastline share one smooth edge.
     let field = new Float32Array(N * N);
     for (let i = 0; i < N * N; i++) field[i] = grid[i];
     field = blur(field, N);
@@ -149,7 +193,6 @@ export function initPtGlobe(map: HTMLElement) {
     };
     const polys: P3[][] = [];
     const coast: [P3, P3][] = [];
-    const outline: P3[] = [];
     for (let y = minY - 2; y <= maxY + 1; y++)
       for (let x = minX - 2; x <= maxX + 1; x++) {
         const c: [number, number, number][] = [
@@ -175,7 +218,6 @@ export function initPtGlobe(map: HTMLElement) {
         polys.push(poly);
         for (let i = 0; i + 1 < cross.length; i += 2) {
           coast.push([cross[i], cross[i + 1]]);
-          outline.push(cross[i]);
         }
       }
     // North and south ends of the land, for the fern gradient.
@@ -229,6 +271,8 @@ export function initPtGlobe(map: HTMLElement) {
       .slice(0, 3)
       .forEach(({ i }) => links.push({ a: pinPoint, b: nodes[i], delay: 0.1, hub: true }));
 
+    const neighbours: P3[][] = NEIGHBOURS.map((ring) => densify(ring).map(([la, lo]) => geoOnSphere(la, lo)));
+
     const canvas = document.createElement('canvas');
     canvas.className = 'pt-globe';
     canvas.setAttribute('aria-hidden', 'true');
@@ -269,16 +313,12 @@ export function initPtGlobe(map: HTMLElement) {
       dpr = Math.min(window.devicePixelRatio || 1, 2);
       canvas.width = landLayer.width = Math.round(W * dpr);
       canvas.height = landLayer.height = Math.round(H * dpr);
-      let x0 = Infinity, x1 = -Infinity, y0 = Infinity, y1 = -Infinity;
-      scale = 1; ox = 0; oy = 0;
-      for (const d of outline) {
-        const q = project(rotate(d, REST.yaw, REST.pitch));
-        x0 = Math.min(x0, q.sx); x1 = Math.max(x1, q.sx);
-        y0 = Math.min(y0, q.sy); y1 = Math.max(y1, q.sy);
-      }
-      scale = Math.min((H * 0.84) / (y1 - y0), (W * 0.9) / (x1 - x0));
-      ox = W / 2 - ((x0 + x1) / 2) * scale;
-      oy = H / 2 - ((y0 + y1) / 2) * scale;
+      // The whole sphere sits in the square (a crisp 3D ball, not a cropped close-up), a little above centre so its
+      // shadow fits underneath.
+      const R = Math.min(W, H) * 0.38;
+      scale = (R * Math.sqrt(CAMERA * CAMERA - 1)) / CAMERA;
+      ox = W / 2;
+      oy = H * 0.475;
     };
 
     const draw = () => {
@@ -287,95 +327,202 @@ export function initPtGlobe(map: HTMLElement) {
       const yaw = view.yaw;
       const pitch = view.pitch;
 
-      // The sphere: silhouette radius for a camera at distance CAMERA, soft shading and a fine edge.
+      // The sphere: a pearly ball lit from the top left. A soft shadow on the ground first, then the body (white
+      // highlight to a cool sage shade), a darker rim on the shaded side and a small specular highlight.
       const R = scale * CAMERA / Math.sqrt(CAMERA * CAMERA - 1);
-      const g = ctx.createRadialGradient(ox - R * 0.35, oy - R * 0.4, R * 0.1, ox, oy, R);
-      g.addColorStop(0, 'rgba(255,255,255,1)');
-      g.addColorStop(0.7, 'rgba(242,247,232,1)');
-      g.addColorStop(1, 'rgba(222,233,203,1)');
       ctx.globalAlpha = 0.25 + 0.75 * reveal;
+      const floor = ctx.createRadialGradient(ox, oy + R * 1.04, 0, ox, oy + R * 1.04, R * 0.8);
+      floor.addColorStop(0, 'rgba(27,30,28,0.22)');
+      floor.addColorStop(1, 'rgba(27,30,28,0)');
+      ctx.save();
+      ctx.translate(ox, oy + R * 1.04);
+      ctx.scale(1, 0.16);
+      ctx.translate(-ox, -(oy + R * 1.04));
+      ctx.fillStyle = floor;
+      ctx.beginPath();
+      ctx.arc(ox, oy + R * 1.04, R * 0.8, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.restore();
+
+      const g = ctx.createRadialGradient(ox - R * 0.38, oy - R * 0.42, R * 0.05, ox + R * 0.1, oy + R * 0.12, R * 1.08);
+      g.addColorStop(0, 'rgb(255,255,255)');
+      g.addColorStop(0.4, 'rgb(248,250,244)');
+      g.addColorStop(0.78, 'rgb(230,236,222)');
+      g.addColorStop(1, 'rgb(204,213,194)');
       ctx.beginPath();
       ctx.arc(ox, oy, R, 0, Math.PI * 2);
       ctx.fillStyle = g;
       ctx.fill();
 
+      ctx.save();
+      ctx.clip();
+      // Shaded side: a soft dark crescent on the lower right.
+      const shade = ctx.createRadialGradient(ox - R * 0.3, oy - R * 0.35, R * 0.75, ox - R * 0.3, oy - R * 0.35, R * 1.5);
+      shade.addColorStop(0, 'rgba(27,30,28,0)');
+      shade.addColorStop(1, 'rgba(27,30,28,0.16)');
+      ctx.fillStyle = shade;
+      ctx.fillRect(0, 0, W, H);
+
       // Soft lime glow on the sphere around the Algarve; it follows the coast as the globe turns.
       const glow = project(rotate(pinPoint, yaw, pitch));
       if (glow.visible) {
-        ctx.save();
-        ctx.clip();
-        const gg = ctx.createRadialGradient(glow.sx, glow.sy, 0, glow.sx, glow.sy, R * 0.75);
-        gg.addColorStop(0, `rgba(183,212,74,${0.4 * reveal})`);
-        gg.addColorStop(0.45, `rgba(158,188,58,${0.14 * reveal})`);
+        const gg = ctx.createRadialGradient(glow.sx, glow.sy, 0, glow.sx, glow.sy, R * 0.6);
+        gg.addColorStop(0, `rgba(183,212,74,${0.22 * reveal})`);
         gg.addColorStop(1, 'rgba(158,188,58,0)');
         ctx.fillStyle = gg;
         ctx.fillRect(0, 0, W, H);
-        ctx.restore();
       }
-      ctx.lineWidth = 1;
-      ctx.strokeStyle = 'rgba(75,106,26,0.3)';
-      ctx.stroke();
 
-      // Graticule: every 10° on the stylised sphere (about 1° of real latitude).
-      ctx.strokeStyle = 'rgba(75,106,26,0.16)';
-      ctx.lineWidth = 0.8;
-      const line = (pts: { x: number; y: number; z: number }[]) => {
+      // Latitude rings, engraved: a light line with a faint shadow just below it, so they read as grooves that follow
+      // the curve of the ball (no meridians, as in the reference).
+      const ring = (b: number, dy: number, style: string, width: number) => {
         let pen = false;
         ctx.beginPath();
-        for (const p of pts) {
-          const q = project(rotate(p, yaw, pitch));
+        for (let a = -180; a <= 180; a += 3) {
+          const q = project(rotate(onSphere(a * DEG, b * DEG), yaw, pitch));
+          if (!q.visible) { pen = false; continue; }
+          if (pen) ctx.lineTo(q.sx, q.sy + dy);
+          else ctx.moveTo(q.sx, q.sy + dy);
+          pen = true;
+        }
+        ctx.strokeStyle = style;
+        ctx.lineWidth = width;
+        ctx.stroke();
+      };
+      for (let b = -75; b <= 75; b += 12.5) {
+        ring(b, 0.9, 'rgba(27,30,28,0.10)', 1);
+        ring(b, 0, 'rgba(255,255,255,0.95)', 1.2);
+      }
+
+      // Neighbouring land: light and neutral with fine stripes (as the reference's continents), a little raised (thin slab and soft shadow), with fine stripes along the
+      // latitude and a light rim, like the continents of a striped globe.
+      const horizon = 1 / CAMERA;
+      const onBall = (p: P3) => {
+        let q = rotate(p, yaw, pitch);
+        if (q.z <= horizon) {
+          // Past the horizon: laid on the visible edge of the ball, in the same direction.
+          const k = Math.sqrt((1 - horizon * horizon) / Math.max(q.x * q.x + q.y * q.y, 1e-6));
+          q = { x: q.x * k, y: q.y * k, z: horizon + 1e-4 };
+        }
+        return project(q);
+      };
+      const neighbourPath = (dx: number, dy: number) => {
+        ctx.beginPath();
+        for (const ringPts of neighbours) {
+          ringPts.forEach((p, i) => {
+            const q = onBall(p);
+            if (i) ctx.lineTo(q.sx + dx, q.sy + dy);
+            else ctx.moveTo(q.sx + dx, q.sy + dy);
+          });
+          ctx.closePath();
+        }
+      };
+      const lift = Math.max(2, R * 0.012);
+      ctx.save();
+      ctx.shadowColor = 'rgba(27,30,28,0.18)';
+      ctx.shadowBlur = R * 0.035;
+      ctx.shadowOffsetX = R * 0.012;
+      ctx.shadowOffsetY = R * 0.022;
+      neighbourPath(lift * 0.55, lift);
+      ctx.fillStyle = 'rgb(182,190,176)';
+      ctx.fill('nonzero');
+      ctx.restore();
+      neighbourPath(0, 0);
+      const pale = ctx.createLinearGradient(ox - R, oy - R, ox + R, oy + R);
+      pale.addColorStop(0, 'rgb(232,235,228)');
+      pale.addColorStop(1, 'rgb(206,212,200)');
+      ctx.fillStyle = pale;
+      ctx.fill('nonzero');
+      ctx.save();
+      ctx.clip('nonzero');
+      ctx.strokeStyle = 'rgba(150,160,142,0.45)';
+      ctx.lineWidth = 0.8;
+      ctx.beginPath();
+      for (let lb = -88; lb <= 88; lb += 1.1) {
+        let pen = false;
+        for (let la = -180; la <= 180; la += 4) {
+          const q = project(rotate(onSphere(la * DEG, lb * DEG), yaw, pitch));
           if (!q.visible) { pen = false; continue; }
           if (pen) ctx.lineTo(q.sx, q.sy);
           else ctx.moveTo(q.sx, q.sy);
           pen = true;
         }
-        ctx.stroke();
-      };
-      for (let b = -80; b <= 80; b += 10) {
-        const pts = [];
-        for (let a = -180; a <= 180; a += 4) pts.push(onSphere(a * DEG, b * DEG));
-        line(pts);
       }
-      for (let a = -180; a < 180; a += 10) {
-        const pts = [];
-        for (let b = -90; b <= 90; b += 4) pts.push(onSphere(a * DEG, b * DEG));
-        line(pts);
-      }
+      ctx.stroke();
+      ctx.restore();
+      neighbourPath(0, 0);
+      ctx.strokeStyle = 'rgba(255,255,255,0.85)';
+      ctx.lineWidth = 0.9;
+      ctx.lineJoin = 'round';
+      ctx.stroke();
+      ctx.restore();
 
-      // Land: one solid shape in the fern ramp (deep olive in the north to lime over the Algarve), with a soft
-      // light from the top left so it reads as tinted glass on the globe.
+      // Edge of the ball: a hairline, brighter where the light falls.
+      const edge = ctx.createLinearGradient(ox - R, oy - R, ox + R, oy + R);
+      edge.addColorStop(0, 'rgba(255,255,255,0.9)');
+      edge.addColorStop(1, 'rgba(75,106,26,0.28)');
+      ctx.beginPath();
+      ctx.arc(ox, oy, R - 0.5, 0, Math.PI * 2);
+      ctx.strokeStyle = edge;
+      ctx.lineWidth = 1;
+      ctx.stroke();
+      ctx.globalAlpha = 1;
+
+      // Land, raised off the ball: a dark slab underneath (its thickness, towards the shaded side) casting a soft
+      // shadow on the sphere, then the top face in the fern ramp (deep olive in the north to lime over the Algarve),
+      // solid so its shape reads at a glance, with a sheen from the top left.
       const P = (p: P3) => project(rotate(p, yaw, pitch));
       const landIn = easeOut(clamp(reveal / 0.6, 0, 1));
+      const landPath = (c: CanvasRenderingContext2D) => {
+        c.beginPath();
+        for (const poly of polys) {
+          poly.forEach((p, i) => {
+            const q = P(p);
+            if (i) c.lineTo(q.sx, q.sy);
+            else c.moveTo(q.sx, q.sy);
+          });
+          c.closePath();
+        }
+      };
       lctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      lctx.lineJoin = 'round';
+      lctx.lineWidth = 0.6;
+
+      // The slab: the land's silhouette in deep olive, stacked a few pixels towards the lower right.
+      lctx.clearRect(0, 0, W, H);
+      landPath(lctx);
+      lctx.fillStyle = lctx.strokeStyle = 'rgb(30,42,20)';
+      lctx.fill();
+      lctx.stroke();
+      const depth = Math.max(3, Math.round(R * 0.028));
+      ctx.globalAlpha = landIn;
+      ctx.save();
+      ctx.shadowColor = 'rgba(27,30,28,0.32)';
+      ctx.shadowBlur = R * 0.06;
+      ctx.shadowOffsetX = R * 0.025;
+      ctx.shadowOffsetY = R * 0.045;
+      ctx.drawImage(landLayer, depth * 0.55, depth, W, H);
+      ctx.restore();
+      for (let k = depth - 1; k >= 1; k--) ctx.drawImage(landLayer, k * 0.55, k, W, H);
+
+      // The top face.
       lctx.clearRect(0, 0, W, H);
       const qn = P(north);
       const qs = P(southEnd);
       const fern = lctx.createLinearGradient(qn.sx, qn.sy, qs.sx, qs.sy);
       for (const [pos, r, gr, b] of LAND) fern.addColorStop(pos, `rgb(${r},${gr},${b})`);
-      lctx.fillStyle = fern;
-      lctx.strokeStyle = fern;
-      lctx.lineWidth = 0.6;
-      lctx.lineJoin = 'round';
-      lctx.beginPath();
-      for (const poly of polys) {
-        poly.forEach((p, i) => {
-          const q = P(p);
-          if (i) lctx.lineTo(q.sx, q.sy);
-          else lctx.moveTo(q.sx, q.sy);
-        });
-        lctx.closePath();
-      }
+      landPath(lctx);
+      lctx.fillStyle = lctx.strokeStyle = fern;
       lctx.fill();
       lctx.stroke();
       lctx.globalCompositeOperation = 'source-atop';
       const sheen = lctx.createLinearGradient(qn.sx - R * 0.4, qn.sy, qs.sx + R * 0.4, qs.sy);
-      sheen.addColorStop(0, 'rgba(255,255,255,0.22)');
+      sheen.addColorStop(0, 'rgba(255,255,255,0.24)');
       sheen.addColorStop(0.5, 'rgba(255,255,255,0)');
       sheen.addColorStop(1, 'rgba(255,255,255,0.08)');
       lctx.fillStyle = sheen;
       lctx.fillRect(0, 0, W, H);
       lctx.globalCompositeOperation = 'source-over';
-      ctx.globalAlpha = 0.92 * landIn;
       ctx.drawImage(landLayer, 0, 0, W, H);
       ctx.globalAlpha = 1;
 
@@ -387,9 +534,9 @@ export function initPtGlobe(map: HTMLElement) {
         ctx.moveTo(q0.sx, q0.sy);
         ctx.lineTo(q1.sx, q1.sy);
       }
-      ctx.lineWidth = 1;
+      ctx.lineWidth = 1.6;
       ctx.lineCap = 'round';
-      ctx.strokeStyle = `rgba(214,232,150,${0.85 * landIn})`;
+      ctx.strokeStyle = `rgba(245,250,232,${landIn})`;
       ctx.stroke();
 
       // Network: hairlines grow from one node to the other, then the nodes light up.
@@ -402,7 +549,7 @@ export function initPtGlobe(map: HTMLElement) {
         ctx.moveTo(qa.sx, qa.sy);
         ctx.lineTo(qa.sx + (qb.sx - qa.sx) * t, qa.sy + (qb.sy - qa.sy) * t);
         ctx.lineWidth = l.hub ? 1.1 : 0.75;
-        ctx.strokeStyle = l.hub ? 'rgba(232,242,196,0.85)' : 'rgba(214,232,150,0.45)';
+        ctx.strokeStyle = l.hub ? 'rgba(232,242,196,0.6)' : 'rgba(214,232,150,0.28)';
         ctx.stroke();
       }
       for (const n of nodes) {
@@ -422,15 +569,6 @@ export function initPtGlobe(map: HTMLElement) {
         ctx.arc(q.sx, q.sy, r, 0, Math.PI * 2);
         ctx.fill();
       }
-
-      // Soft round vignette so nothing ends in the canvas's square edge.
-      ctx.globalCompositeOperation = 'destination-in';
-      const v = ctx.createRadialGradient(W / 2, H / 2, Math.min(W, H) * 0.4, W / 2, H / 2, Math.min(W, H) * 0.5);
-      v.addColorStop(0, 'rgba(0,0,0,1)');
-      v.addColorStop(1, 'rgba(0,0,0,0)');
-      ctx.fillStyle = v;
-      ctx.fillRect(0, 0, W, H);
-      ctx.globalCompositeOperation = 'source-over';
 
       // Pin follows its point on the sphere.
       const pq = project(rotate(pinPoint, yaw, pitch));
@@ -463,6 +601,148 @@ export function initPtGlobe(map: HTMLElement) {
     const kick = () => {
       if (!raf) raf = requestAnimationFrame(tick);
     };
+
+    // Ambient light: a second canvas above the globe (so the heavy drawing above is not redone every frame) with
+    // slow, quiet effects over the whole ball, most visible around the office card: a breathing lime glow, a soft
+    // sweep of light, glints that twinkle on the surface, light travelling along the parallels and rings that
+    // spread from the office. Only runs while the globe is on screen; with reduced motion it stays a still frame.
+    const fx = document.createElement('canvas');
+    fx.className = 'pt-globe pt-globe-fx';
+    fx.setAttribute('aria-hidden', 'true');
+    fx.style.pointerEvents = 'none';
+    inner.insertBefore(fx, pin);
+    const fctx = fx.getContext('2d')!;
+    const frand = seeded(7);
+    const glints = Array.from({ length: 46 }, () => {
+      const lat = Math.asin(frand() * 1.7 - 0.85);
+      const lon = (frand() - 0.5) * Math.PI * 1.7;
+      return {
+        p: { x: Math.cos(lat) * Math.sin(lon), y: Math.sin(lat), z: Math.cos(lat) * Math.cos(lon) },
+        phase: frand() * Math.PI * 2,
+        speed: 0.5 + frand() * 0.9,
+        size: 0.8 + frand() * 1.4,
+      };
+    });
+    const comets = [-0.62, -0.3, 0.12, 0.42, 0.7].map((lat, i) => ({
+      lat,
+      lon0: i * 1.3,
+      speed: (i % 2 ? -1 : 1) * (0.16 + 0.05 * i),
+    }));
+    let fxOn = false;
+    let fxRaf = 0;
+    const fxDraw = (now: number) => {
+      fxRaf = 0;
+      if (fx.width !== canvas.width || fx.height !== canvas.height) {
+        fx.width = canvas.width;
+        fx.height = canvas.height;
+      }
+      const t = reduced ? 2 : now / 1000;
+      const yaw = view.yaw;
+      const pitch = view.pitch;
+      const R = scale * CAMERA / Math.sqrt(CAMERA * CAMERA - 1);
+      fctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      fctx.clearRect(0, 0, W, H);
+      const a = 0.25 + 0.75 * reveal;
+      fctx.save();
+      fctx.beginPath();
+      fctx.arc(ox, oy, R * 0.995, 0, Math.PI * 2);
+      fctx.clip();
+      fctx.globalCompositeOperation = 'lighter';
+
+      // A breathing lime glow low on the left and a paler one high on the right (the empty sides of the card).
+      const breathe = 0.5 + 0.5 * Math.sin(t * 0.9);
+      const g1 = fctx.createRadialGradient(ox - R * 0.55, oy + R * 0.35, 0, ox - R * 0.55, oy + R * 0.35, R * 0.75);
+      g1.addColorStop(0, `rgba(158,188,58,${(0.1 + 0.12 * breathe) * a})`);
+      g1.addColorStop(1, 'rgba(158,188,58,0)');
+      fctx.fillStyle = g1;
+      fctx.fillRect(0, 0, W, H);
+      const g2 = fctx.createRadialGradient(ox + R * 0.5, oy - R * 0.45, 0, ox + R * 0.5, oy - R * 0.45, R * 0.7);
+      g2.addColorStop(0, `rgba(235,244,205,${(0.08 + 0.1 * (1 - breathe)) * a})`);
+      g2.addColorStop(1, 'rgba(235,244,205,0)');
+      fctx.fillStyle = g2;
+      fctx.fillRect(0, 0, W, H);
+
+      // A soft diagonal sweep of light, crossing the ball every ~9 s.
+      const sw = ((t % 9) / 9) * 2.6 - 0.8;
+      const cx = ox + (sw - 0.5) * R * 2;
+      const sweep = fctx.createLinearGradient(cx - R * 0.35, oy - R * 0.35, cx + R * 0.35, oy + R * 0.35);
+      sweep.addColorStop(0, 'rgba(255,255,255,0)');
+      sweep.addColorStop(0.5, `rgba(255,255,255,${0.16 * a})`);
+      sweep.addColorStop(1, 'rgba(255,255,255,0)');
+      fctx.fillStyle = sweep;
+      fctx.fillRect(0, 0, W, H);
+
+      // Rings spreading from the office, three at a time, one every 1.6 s.
+      const pq = project(rotate(pinPoint, yaw, pitch));
+      for (let i = 0; i < 3; i++) {
+        const ph = ((t / 4.8 + i / 3) % 1);
+        const r = R * (0.08 + 0.95 * ph);
+        fctx.beginPath();
+        fctx.arc(pq.sx, pq.sy, r, 0, Math.PI * 2);
+        fctx.lineWidth = 1.2;
+        fctx.strokeStyle = `rgba(214,232,150,${0.34 * (1 - ph) * (1 - ph) * a})`;
+        fctx.stroke();
+      }
+
+      // Light travelling along the parallels: a bright head with a fading tail.
+      fctx.lineCap = 'round';
+      for (const c of comets) {
+        const TAIL = 14;
+        for (let k = TAIL; k >= 0; k--) {
+          const lon = c.lon0 + t * c.speed - k * 0.035 * Math.sign(c.speed);
+          const lon2 = lon + 0.035 * Math.sign(c.speed);
+          const pa = rotate({ x: Math.cos(c.lat) * Math.sin(lon), y: Math.sin(c.lat), z: Math.cos(c.lat) * Math.cos(lon) }, yaw, pitch);
+          const pb = rotate({ x: Math.cos(c.lat) * Math.sin(lon2), y: Math.sin(c.lat), z: Math.cos(c.lat) * Math.cos(lon2) }, yaw, pitch);
+          if (pa.z < 0.15 || pb.z < 0.15) continue;
+          const qa = project(pa);
+          const qb = project(pb);
+          const f = 1 - k / TAIL;
+          fctx.beginPath();
+          fctx.moveTo(qa.sx, qa.sy);
+          fctx.lineTo(qb.sx, qb.sy);
+          fctx.lineWidth = 1 + 1.4 * f;
+          fctx.strokeStyle = `rgba(232,242,196,${0.6 * f * f * pa.z * a})`;
+          fctx.stroke();
+        }
+      }
+
+      // Glints: small four-point stars that fade in and out, kept to the front of the ball.
+      for (const gl of glints) {
+        const r = rotate(gl.p, yaw, pitch);
+        if (r.z < 0.2) continue;
+        const tw = Math.max(0, Math.sin(t * gl.speed + gl.phase));
+        const v = tw * tw * tw;
+        if (v < 0.03) continue;
+        const q = project(r);
+        const L = (2.5 + 5 * gl.size) * v * q.f;
+        const al = v * r.z * a;
+        const halo = fctx.createRadialGradient(q.sx, q.sy, 0, q.sx, q.sy, L * 1.1);
+        halo.addColorStop(0, `rgba(240,247,220,${0.55 * al})`);
+        halo.addColorStop(1, 'rgba(240,247,220,0)');
+        fctx.fillStyle = halo;
+        fctx.beginPath();
+        fctx.arc(q.sx, q.sy, L * 1.1, 0, Math.PI * 2);
+        fctx.fill();
+        fctx.strokeStyle = `rgba(255,255,255,${0.8 * al})`;
+        fctx.lineWidth = 0.8;
+        fctx.beginPath();
+        fctx.moveTo(q.sx - L, q.sy);
+        fctx.lineTo(q.sx + L, q.sy);
+        fctx.moveTo(q.sx, q.sy - L);
+        fctx.lineTo(q.sx, q.sy + L);
+        fctx.stroke();
+      }
+      fctx.restore();
+      if (fxOn && !reduced) fxRaf = requestAnimationFrame(fxDraw);
+    };
+    let inView = false;
+    const fxSet = (on: boolean) => {
+      inView = on;
+      fxOn = inView && !document.hidden;
+      if (fxOn && !fxRaf) fxRaf = requestAnimationFrame(fxDraw);
+    };
+    new IntersectionObserver((entries) => fxSet(entries.some((e) => e.isIntersecting))).observe(map);
+    document.addEventListener('visibilitychange', () => fxSet(inView));
 
     fit();
     draw();
