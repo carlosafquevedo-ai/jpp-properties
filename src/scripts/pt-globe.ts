@@ -1,10 +1,11 @@
 // "Somos daqui" map as a 3D globe: the land shape is read from the drawn map image (no map data or libraries),
-// smoothed into a contour, and laid on a pearly ball lit from the top left, with engraved latitude rings and the
-// neighbouring land (Spain, France, north-west Africa) in pale striped relief. Portugal is
-// raised off the ball (a dark slab and a soft shadow), its top a solid fern ramp and a light rim on its coast, and a fine network of light (hairlines between small glowing nodes,
-// the office pin as its hub) runs over it, the same thin green light as the site's other effects. The globe turns
-// into place when it scrolls into view, follows the mouse a little, and can be dragged; the office pin tracks its
-// point on the sphere. The <img> stays in the page as the fallback without JS.
+// smoothed into a contour, and laid on a frosted glass ball in the brand's pale greens (as the reference globe), with
+// soft, frosted land around it: the rest of Iberia, the west of France, north-west Africa and, on the left, the
+// Americas. Portugal is raised off the ball (a dark slab and a soft shadow), its top a solid fern ramp and a light rim
+// on its coast, and a fine network of light (hairlines between small glowing nodes, the office pin as its hub) runs
+// over it, the same thin green light as the site's other effects. The globe turns into place when it scrolls into
+// view, follows the mouse a little, and can be dragged; the office pin tracks its point on the sphere. The <img>
+// stays in the page as the fallback without JS.
 
 type P3 = { x: number; y: number; z: number };
 type Node = P3 & { south: number; delay: number };
@@ -57,6 +58,31 @@ const NEIGHBOURS: [number, number][][] = [
     [32.3, -9.24], [33.25, -8.5], [33.6, -7.6], [34.0, -6.83], [34.26, -6.6], [35.19, -6.15], [35.46, -6.03],
   ],
 ];
+// The Americas on the left of the ball, so the globe reads as the Atlantic world and its west side is not empty (as
+// in the reference: soft continents hugging the edge). At this stylised scale the real Americas would sit far behind
+// the ball, so they are drawn in the ball's own angles [b north, a east] in degrees, simplified and rounded: North
+// America with Greenland, a few Caribbean islands and South America. Coasts past the horizon are laid on its edge.
+const AMERICAS: [number, number][][] = [
+  // North America, from the Arctic down the east coast, the Gulf and Central America, back up past the edge.
+  [
+    [70, -60], [68, -50], [64, -44], [60, -47], [57, -40], [52, -43], [46, -47], [40, -50], [34, -54], [28, -56],
+    [21, -57], [24, -61], [25, -67], [19, -70], [13, -65], [7, -67], [2, -72], [4, -86], [22, -100], [55, -104],
+    [70, -96],
+  ],
+  // Greenland.
+  [[80, -46], [79, -32], [74, -30], [70, -36], [72, -44]],
+  // Caribbean islands.
+  [[17, -58], [15.5, -52], [13.5, -55]],
+  [[11.5, -51], [10.5, -48], [9, -50.5]],
+  // South America, from the north coast round the eastern bulge to the southern tip and back past the edge.
+  [
+    [0, -60], [-4, -50], [-11, -42], [-19, -37], [-27, -40], [-35, -46], [-44, -52], [-53, -59], [-60, -66],
+    [-56, -78], [-34, -96], [-4, -98], [3, -78],
+  ],
+];
+// Moved east into the free band between Portugal and the ball's edge (the coasts about 25° to 45° west of centre).
+const americasOnSphere = (b: number, a: number) => onSphere((-15 + (a + 27) * 0.75) * DEG, b * DEG);
+
 /** Real latitude/longitude to a point on the stylised sphere (same scale as the drawing). */
 const geoOnSphere = (lat: number, lon: number) => {
   // Kept inside the poles and the back meridian: at this scale far coasts would otherwise wrap round the ball.
@@ -271,7 +297,10 @@ export function initPtGlobe(map: HTMLElement) {
       .slice(0, 3)
       .forEach(({ i }) => links.push({ a: pinPoint, b: nodes[i], delay: 0.1, hub: true }));
 
-    const neighbours: P3[][] = NEIGHBOURS.map((ring) => densify(ring).map(([la, lo]) => geoOnSphere(la, lo)));
+    const neighbours: P3[][] = [
+      ...NEIGHBOURS.map((ring) => densify(ring).map(([la, lo]) => geoOnSphere(la, lo))),
+      ...AMERICAS.map((ring) => densify(ring, 2).map(([b, a]) => americasOnSphere(b, a))),
+    ];
 
     const canvas = document.createElement('canvas');
     canvas.className = 'pt-globe';
@@ -344,11 +373,13 @@ export function initPtGlobe(map: HTMLElement) {
       ctx.fill();
       ctx.restore();
 
-      const g = ctx.createRadialGradient(ox - R * 0.38, oy - R * 0.42, R * 0.05, ox + R * 0.1, oy + R * 0.12, R * 1.08);
-      g.addColorStop(0, 'rgb(255,255,255)');
-      g.addColorStop(0.4, 'rgb(248,250,244)');
-      g.addColorStop(0.78, 'rgb(230,236,222)');
-      g.addColorStop(1, 'rgb(204,213,194)');
+      // Frosted pearl, as the reference globe: near-white top left deepening to a soft sage at the lower right (the
+      // brand's pale greens instead of its blue).
+      const g = ctx.createRadialGradient(ox - R * 0.42, oy - R * 0.46, R * 0.04, ox + R * 0.05, oy + R * 0.1, R * 1.12);
+      g.addColorStop(0, 'rgb(238,244,228)');
+      g.addColorStop(0.3, 'rgb(205,220,184)');
+      g.addColorStop(0.68, 'rgb(166,190,138)');
+      g.addColorStop(1, 'rgb(112,142,88)');
       ctx.beginPath();
       ctx.arc(ox, oy, R, 0, Math.PI * 2);
       ctx.fillStyle = g;
@@ -373,26 +404,12 @@ export function initPtGlobe(map: HTMLElement) {
         ctx.fillRect(0, 0, W, H);
       }
 
-      // Latitude rings, engraved: a light line with a faint shadow just below it, so they read as grooves that follow
-      // the curve of the ball (no meridians, as in the reference).
-      const ring = (b: number, dy: number, style: string, width: number) => {
-        let pen = false;
-        ctx.beginPath();
-        for (let a = -180; a <= 180; a += 3) {
-          const q = project(rotate(onSphere(a * DEG, b * DEG), yaw, pitch));
-          if (!q.visible) { pen = false; continue; }
-          if (pen) ctx.lineTo(q.sx, q.sy + dy);
-          else ctx.moveTo(q.sx, q.sy + dy);
-          pen = true;
-        }
-        ctx.strokeStyle = style;
-        ctx.lineWidth = width;
-        ctx.stroke();
-      };
-      for (let b = -75; b <= 75; b += 12.5) {
-        ring(b, 0.9, 'rgba(27,30,28,0.10)', 1);
-        ring(b, 0, 'rgba(255,255,255,0.95)', 1.2);
-      }
+      // A soft light band across the upper left, as the sheen on a glass ball.
+      const ballSheen = ctx.createRadialGradient(ox - R * 0.45, oy - R * 0.5, 0, ox - R * 0.45, oy - R * 0.5, R * 0.9);
+      ballSheen.addColorStop(0, 'rgba(255,255,255,0.32)');
+      ballSheen.addColorStop(1, 'rgba(255,255,255,0)');
+      ctx.fillStyle = ballSheen;
+      ctx.fillRect(0, 0, W, H);
 
       // Neighbouring land: light and neutral with fine stripes (as the reference's continents), a little raised (thin slab and soft shadow), with fine stripes along the
       // latitude and a light rim, like the continents of a striped globe.
@@ -406,54 +423,54 @@ export function initPtGlobe(map: HTMLElement) {
         }
         return project(q);
       };
+      // Rounded coasts: a smooth curve through the midpoints of each coast, so the shapes read soft, as in the reference.
       const neighbourPath = (dx: number, dy: number) => {
         ctx.beginPath();
         for (const ringPts of neighbours) {
-          ringPts.forEach((p, i) => {
-            const q = onBall(p);
-            if (i) ctx.lineTo(q.sx + dx, q.sy + dy);
-            else ctx.moveTo(q.sx + dx, q.sy + dy);
-          });
+          const pts = ringPts.map((p) => onBall(p));
+          const n = pts.length;
+          const mid = (i: number) => {
+            const p = pts[i % n];
+            const q = pts[(i + 1) % n];
+            return { x: (p.sx + q.sx) / 2 + dx, y: (p.sy + q.sy) / 2 + dy };
+          };
+          const m0 = mid(n - 1);
+          ctx.moveTo(m0.x, m0.y);
+          for (let i = 0; i < n; i++) {
+            const m = mid(i);
+            ctx.quadraticCurveTo(pts[i].sx + dx, pts[i].sy + dy, m.x, m.y);
+          }
           ctx.closePath();
         }
       };
-      const lift = Math.max(2, R * 0.012);
+      const lift = Math.max(2, R * 0.014);
+      // Raised a little: a soft shadow to the lower right.
       ctx.save();
-      ctx.shadowColor = 'rgba(27,30,28,0.18)';
-      ctx.shadowBlur = R * 0.035;
+      ctx.shadowColor = 'rgba(27,30,28,0.24)';
+      ctx.shadowBlur = R * 0.045;
       ctx.shadowOffsetX = R * 0.012;
-      ctx.shadowOffsetY = R * 0.022;
-      neighbourPath(lift * 0.55, lift);
-      ctx.fillStyle = 'rgb(182,190,176)';
+      ctx.shadowOffsetY = R * 0.024;
+      neighbourPath(lift * 0.4, lift * 0.7);
+      ctx.fillStyle = 'rgba(120,146,100,0.7)';
       ctx.fill('nonzero');
       ctx.restore();
+      // Frosted top: lighter than the ball, brightest where the light falls.
       neighbourPath(0, 0);
-      const pale = ctx.createLinearGradient(ox - R, oy - R, ox + R, oy + R);
-      pale.addColorStop(0, 'rgb(232,235,228)');
-      pale.addColorStop(1, 'rgb(206,212,200)');
-      ctx.fillStyle = pale;
+      const frost = ctx.createLinearGradient(ox - R, oy - R, ox + R * 0.8, oy + R * 0.9);
+      frost.addColorStop(0, 'rgba(255,255,255,0.97)');
+      frost.addColorStop(0.55, 'rgba(243,248,236,0.94)');
+      frost.addColorStop(1, 'rgba(222,233,208,0.92)');
+      ctx.fillStyle = frost;
       ctx.fill('nonzero');
-      ctx.save();
-      ctx.clip('nonzero');
-      ctx.strokeStyle = 'rgba(150,160,142,0.45)';
-      ctx.lineWidth = 0.8;
-      ctx.beginPath();
-      for (let lb = -88; lb <= 88; lb += 1.1) {
-        let pen = false;
-        for (let la = -180; la <= 180; la += 4) {
-          const q = project(rotate(onSphere(la * DEG, lb * DEG), yaw, pitch));
-          if (!q.visible) { pen = false; continue; }
-          if (pen) ctx.lineTo(q.sx, q.sy);
-          else ctx.moveTo(q.sx, q.sy);
-          pen = true;
-        }
-      }
-      ctx.stroke();
-      ctx.restore();
-      neighbourPath(0, 0);
-      ctx.strokeStyle = 'rgba(255,255,255,0.85)';
-      ctx.lineWidth = 0.9;
+      // A light edge on the side facing the light, a faint darker one on the other.
       ctx.lineJoin = 'round';
+      neighbourPath(-0.6, -0.6);
+      ctx.strokeStyle = 'rgba(255,255,255,0.9)';
+      ctx.lineWidth = 1.1;
+      ctx.stroke();
+      neighbourPath(0.5, 0.7);
+      ctx.strokeStyle = 'rgba(75,106,26,0.12)';
+      ctx.lineWidth = 0.9;
       ctx.stroke();
       ctx.restore();
 
