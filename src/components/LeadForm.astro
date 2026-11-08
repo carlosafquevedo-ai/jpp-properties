@@ -72,7 +72,12 @@ const steps = [
         </button>
       </div>
 
-      <form data-lead-form action="/api/lead" method="post" novalidate class="lead-form mt-6">
+      <!-- Progress through the required fields (shown with JS). -->
+      <div class="form-progress mt-6" data-lead-progress hidden>
+        <span class="form-progress-bar" aria-hidden="true"><i data-progress-fill></i></span>
+        <span class="form-progress-text" data-progress-text aria-live="polite"></span>
+      </div>
+      <form data-lead-form action="/api/lead" method="post" novalidate class="lead-form mt-5">
         <input type="hidden" name="intent" value="vender" data-intent />
         <!-- Honeypot: humans never see it; bots fill it. -->
         <div class="absolute -left-[9999px]" aria-hidden="true">
@@ -454,6 +459,8 @@ const steps = [
 )}
 
 <script>
+  import { initFormFeedback } from '../scripts/form-feedback';
+
   const copy = {
     vender: {
       title: 'Quer vender o seu imóvel?',
@@ -479,6 +486,7 @@ const steps = [
     const text = document.querySelector<HTMLElement>('[data-lead-text]');
     const submitLabel = form.querySelector<HTMLElement>('[data-submit-label]')!;
     const status = form.querySelector<HTMLElement>('[data-lead-status]')!;
+    const feedback = initFormFeedback(form, { progress: document.querySelector<HTMLElement>('[data-lead-progress]') });
 
     const show = (intent: Intent) => {
       intentInput.value = intent;
@@ -492,6 +500,7 @@ const steps = [
       if (text) text.textContent = copy[intent].text;
       submitLabel.textContent = copy[intent].submit;
       status.classList.add('hidden');
+      feedback?.clear();
     };
     tabs.forEach((t) => t.addEventListener('click', () => show(t.dataset.tab as Intent)));
     show('vender');
@@ -504,6 +513,7 @@ const steps = [
       const on = tipologia.value === 'outro';
       if (outro) outro.hidden = !on;
       if (outroInput) outroInput.required = on;
+      feedback.refresh();
     });
 
     const say = (kind: 'ok' | 'error' | 'info', msg: string) => {
@@ -519,10 +529,7 @@ const steps = [
 
     form.addEventListener('submit', async (e) => {
       e.preventDefault();
-      if (!form.checkValidity()) {
-        form.reportValidity();
-        return;
-      }
+      if (!feedback.validateAll()) return;
       const button = form.querySelector<HTMLButtonElement>('[data-submit]')!;
       button.disabled = true;
       try {
@@ -532,6 +539,7 @@ const steps = [
           form.reset();
           form.querySelectorAll('details').forEach((d) => (d.open = false));
           show(intent);
+          feedback.clear();
           say('ok', copy[intent].ok);
         } else if (res.status === 404 || res.status === 405) {
           // Local prototype: the Pages Function only exists once deployed.

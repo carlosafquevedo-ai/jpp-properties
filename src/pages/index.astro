@@ -15,10 +15,12 @@ import {
   zones,
   visibleProperties,
   type ZoneId,
+  formatArea,
+  findProperty,
 } from '../data/properties';
 import { featuredProperties, heroSlides } from '../lib/catalog';
 import { team } from '../data/team';
-import { AMI, email, offices } from '../lib/site';
+import { email, offices } from '../lib/site';
 
 const featured = featuredProperties();
 const slides = heroSlides();
@@ -31,10 +33,11 @@ const zoneImages: Partial<Record<ZoneId, string>> = {
   'quinta-do-lago': '/zones/quinta-do-lago.jpg', // TODO: confirm the photo's licence/credit with the client
   vilasol: '/zones/vilasol.jpg', // TODO: confirm the photo's licence/credit with the client
   quarteira: '/zones/quarteira.jpg', // TODO: confirm the photo's licence/credit with the client
+  // TODO (client): a photo of Carvoeiro itself; for now the Primelife listing's front (from the old site).
+  carvoeiro: findProperty('primelife-t2-carvoeiro')?.images[0],
 };
-const aboutZones = (
-  ['vilamoura', 'quarteira', 'vilasol', 'vale-do-lobo', 'quinta-do-lago', 'loule'] as ZoneId[]
-).map((id) => ({ id, name: zones[id].name }));
+// Every zone the site has, in the zones' own order (a new zone shows up here by itself).
+const aboutZones = (Object.keys(zones) as ZoneId[]).map((id) => ({ id, name: zones[id].name }));
 const zoneTiles = (Object.keys(zones) as ZoneId[]).map((id) => ({
   id,
   image: zoneImages[id],
@@ -68,20 +71,21 @@ const zoneTiles = (Object.keys(zones) as ZoneId[]).map((id) => ({
       <div class="container-x hcard-inner pb-8 text-white lg:flex lg:items-start lg:justify-between lg:gap-10">
         <div class="hero-copy">
           <h1 class="max-w-4xl font-display text-[clamp(1.75rem,2.7vw,2.375rem)] leading-[1]">
-            Encontre a sua casa
+            Encontre a casa ideal
             <br />
-            no Algarve.
+            no Algarve
           </h1>
           <p class="mt-5 max-w-xl text-lg leading-relaxed text-white/90 [@media(max-height:740px)]:hidden">
-            Apartamentos e moradias em Vilamoura, Quarteira, Vale do Lobo e Quinta do Lago.
-            Acompanhamos cada passo, da primeira visita à decisão.
+            Descubra apartamentos e moradias em Vilamoura, Quarteira, Vale do Lobo e Quinta do Lago. Na JPP
+            Properties, acompanhamos cada etapa do processo, com conhecimento local, atenção personalizada e
+            dedicação para encontrar o imóvel certo para si.
           </p>
           <div class="mt-6 grid grid-cols-2 gap-3 sm:flex sm:flex-wrap sm:items-center">
             <a href="/imoveis/" class="btn btn-lime px-3 text-sm sm:px-6 sm:text-[0.95rem]">
-              Ver todos os imóveis
+              Explorar imóveis
             </a>
             <a href="#vender" class="btn btn-soft px-3 text-sm sm:px-6 sm:text-[0.95rem]">
-              Quero vender
+              Vender o meu imóvel
             </a>
           </div>
         </div>
@@ -123,10 +127,12 @@ const zoneTiles = (Object.keys(zones) as ZoneId[]).map((id) => ({
                         <Icon name="pin" class="size-3.5" />
                         {zones[slide.property.zone].name}
                       </span>
-                      <span>
-                        <Icon name="area" class="size-3.5" />
-                        {slide.property.usableArea} m² úteis
-                      </span>
+                      {slide.property.usableArea && (
+                        <span>
+                          <Icon name="area" class="size-3.5" />
+                          {formatArea(slide.property.usableArea)} úteis
+                        </span>
+                      )}
                     </p>
                   </a>
                 </article>
@@ -177,7 +183,7 @@ const zoneTiles = (Object.keys(zones) as ZoneId[]).map((id) => ({
           Imóveis em destaque
         </h2>
         <p class="mt-3 text-ink/70">
-          Uma seleção dos imóveis que a nossa equipa recomenda neste momento.
+          Uma seleção de apartamentos e moradias à venda no Algarve, escolhidos pela nossa equipa.
         </p>
       </div>
       <div class="flex w-full items-center justify-between gap-5 sm:w-auto sm:justify-start">
@@ -271,13 +277,13 @@ const zoneTiles = (Object.keys(zones) as ZoneId[]).map((id) => ({
       </div>
       <div class="rise order-first flex flex-col items-start gap-6 lg:order-none lg:self-center">
         <h2 id="sobre-titulo" class="zones-title">
-          Somos daqui. Sentimos o mercado como poucos.
+          Somos daqui. Conhecemos o Algarve.
         </h2>
-        <div id="about-copy" class="about-copy grid max-w-[40.5rem] content-start gap-4 text-left text-base leading-relaxed text-ink/80 md:text-justify sm:text-[1.0625rem]">
+        <div id="about-copy" class="about-copy grid max-w-[40.5rem] content-start gap-4 text-left text-base leading-relaxed text-ink/80">
           <!-- TODO: provisional SEO copy (PT). To be reviewed with the client; EN/FR versions pending. -->
           <p>
-            A JPP Properties é uma imobiliária no Algarve (AMI {AMI}) especializada na compra,
-            venda e arrendamento de apartamentos, moradias e terrenos em{' '}
+            A JPP Properties é uma agência imobiliária no Algarve, especializada na
+            compra, venda e arrendamento de apartamentos, moradias e terrenos em{' '}
             {aboutZones.map((z, i) => (
               <>
                 <a href={`/imoveis/?zona=${z.id}`}>{z.name}</a>
@@ -286,9 +292,8 @@ const zoneTiles = (Object.keys(zones) as ZoneId[]).map((id) => ({
             ))}
           </p>
           <p>
-            Conhecemos cada zona por dentro e acompanhamos cada passo, da primeira visita à
-            escritura, para quem quer comprar casa no Algarve, vender o seu imóvel ou investir com
-            segurança.
+            Acompanhamos cada etapa, da primeira visita à escritura, com proximidade e conhecimento
+            do mercado local.
           </p>
         </div>
         <!-- Phones: the second paragraph folds behind "Ler mais" (the script reveals this button; without JS all the
@@ -321,17 +326,17 @@ const zoneTiles = (Object.keys(zones) as ZoneId[]).map((id) => ({
           {
             icon: 'pinMap',
             title: 'Conhecimento local',
-            text: 'Somos daqui. Trabalhamos todos os dias nas zonas onde vive quem compra e quem vende.',
+            text: 'Conhecemos o mercado e as zonas onde trabalhamos, de Vilamoura a Quinta do Lago.',
           },
           {
             icon: 'clientCare',
             title: 'Atenção a cada cliente',
-            text: 'Damos prioridade ao que cada pessoa quer e precisa, da primeira visita à decisão.',
+            text: 'Cada cliente é único. Acompanhamos cada decisão com proximidade e dedicação.',
           },
           {
             icon: 'houseKey',
-            title: 'As melhores opções',
-            text: 'Apresentamos as melhores opções de negócio para viver, arrendar ou investir.',
+            title: 'As melhores oportunidades',
+            text: 'Selecionamos oportunidades para comprar, vender, arrendar ou investir no Algarve.',
           },
         ] as const
       ).map((p, i) => (
@@ -376,8 +381,8 @@ const zoneTiles = (Object.keys(zones) as ZoneId[]).map((id) => ({
         </h2>
         <!-- TODO: provisional SEO copy (PT); to be reviewed with the client. EN/FR pending. -->
         <p class="team-lead">
-          Consultores imobiliários no Algarve que conhecem cada zona. Fale diretamente com quem o vai
-          acompanhar, da primeira visita à escritura.
+          Consultores imobiliários com profundo conhecimento do Algarve, prontos para o acompanhar em
+          cada etapa, da primeira visita à escritura.
         </p>
         <div class="team-nav" data-team-nav hidden>
           <button type="button" class="feat-nav" data-team-prev aria-label="Agentes anteriores">
@@ -720,12 +725,20 @@ const zoneTiles = (Object.keys(zones) as ZoneId[]).map((id) => ({
   const items = document.querySelectorAll<HTMLElement>('[data-reveal-group] .reveal, .rise');
   if (items.length && 'IntersectionObserver' in window) {
     const io = new IntersectionObserver(
-      (entries) =>
+      (entries) => {
         entries.forEach((e) => {
           if (!e.isIntersecting) return;
           e.target.classList.add('is-in');
           io.unobserve(e.target);
-        }),
+        });
+        // A fast jump (End key, a link lower down) can skip a block: anything already above the fold shows too.
+        items.forEach((el) => {
+          if (!el.classList.contains('is-in') && el.getBoundingClientRect().bottom < innerHeight) {
+            el.classList.add('is-in');
+            io.unobserve(el);
+          }
+        });
+      },
       { threshold: 0.12, rootMargin: '0px 0px -6% 0px' },
     );
     items.forEach((el) => io.observe(el));

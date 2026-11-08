@@ -79,6 +79,7 @@ const experience = ['Sem experiência no setor', 'Menos de 2 anos', '2 a 5 anos'
   <section class="cpx-hero" data-header-hero aria-labelledby="cp-titulo">
     <div class="cpx-bg" aria-hidden="true">
       {Array.from({ length: 28 }, () => <span />)}
+      <span class="cpx-light"></span>
     </div>
     <div class="container-x cp-crumbs">
       <nav aria-label="Localização" class="text-sm">
@@ -100,6 +101,16 @@ const experience = ['Sem experiência no setor', 'Menos de 2 anos', '2 a 5 anos'
           <span>juntos o seu</span>
           <span class="cpx-title-sans">percurso.</span>
         </h1>
+        <!-- Where you will work, at a glance: the office front, its entrance and the marina, one height, natural widths. -->
+        <ul class="cpx-photos" aria-label={`O escritório em ${office.name}`}>
+          {
+            officePhotos.map((p, i) => (
+              <li class="cpx-photo" style={`--ar: ${p.w} / ${p.h}; --i: ${i}`}>
+                <img src={p.src} alt={p.alt} width={p.w} height={p.h} decoding="async" fetchpriority={i === 0 ? 'high' : undefined} />
+              </li>
+            ))
+          }
+        </ul>
         <p class="cpx-sub">/ Carreiras na JPP Properties /</p>
         <a href="#candidatura" class="cpx-start">
           Candidatar-me <Icon name="arrowRight" class="size-4" />
@@ -112,6 +123,11 @@ const experience = ['Sem experiência no setor', 'Menos de 2 anos', '2 a 5 anos'
       <div id="candidatura" class="cpx-card">
         <h2 class="cpx-card-title">Enviar candidatura</h2>
         <p class="cpx-card-text">Preencha os seus dados. Se o seu perfil se ajustar, ligamos-lhe.</p>
+        <!-- Progress through the required fields (shown with JS). -->
+        <div class="cp-progress" data-cp-progress hidden>
+          <span class="cp-progress-bar" aria-hidden="true"><i data-progress-fill></i></span>
+          <span class="cp-progress-text" data-progress-text aria-live="polite"></span>
+        </div>
         <form data-careers-form class="cp-form" novalidate>
           <div>
             <label for="cp-name" class="mb-1.5 block text-sm font-medium">Nome</label>
@@ -187,77 +203,59 @@ const experience = ['Sem experiência no setor', 'Menos de 2 anos', '2 a 5 anos'
 
   </section>
 
-  <!-- Benefits: title and text, then the icon rows side by side. -->
+  <!-- Benefits: the same split head as the other sections, then three quiet columns (icon, title, line). -->
   <section class="container-x cp-section" aria-labelledby="cp-vantagens">
-    <div>
-      <p class="cp-kicker">— Vantagens</p>
+    <div class="cp-head cp-head-split rise">
       <h2 id="cp-vantagens" class="zones-title">Porque ser consultor na JPP</h2>
       <p class="cp-lead">
         Quer trabalhar por conta própria sem trabalhar sozinho? Na JPP Properties tem uma equipa
         local, imóveis no Algarve e formação para crescer.
       </p>
-      <ul class="cp-benefits">
-        {
-          benefits.map((b) => (
-            <li class="cp-benefit">
-              <span class="cp-benefit-icon" aria-hidden="true">
-                <Icon name={b.icon} class="size-5" />
-              </span>
-              <div>
-                <h3 class="cp-benefit-title">{b.title}</h3>
-                <p class="cp-benefit-text">{b.text}</p>
-              </div>
-            </li>
-          ))
-        }
-      </ul>
     </div>
-  </section>
-
-  <!-- How applying works: the site's "Como trabalhamos" steps, in three columns. -->
-  <section class="container-x cp-section" aria-labelledby="cp-passos">
-    <div class="cp-head cp-head-split">
-      <h2 id="cp-passos" class="zones-title">Como funciona a candidatura</h2>
-      <p class="cp-lead">Três passos, do formulário ao primeiro dia na equipa.</p>
-    </div>
-    <ol class="hww-flow cp-steps">
+    <ul class="cp-benefits rise">
       {
-        applySteps.map((s, i) => (
-          <li class="hww-card">
-            <span class="hww-dot" aria-hidden="true" />
-            <span class="hww-card-icon" aria-hidden="true">
-              <Icon name={s.icon} class="size-4" />
+        benefits.map((b) => (
+          <li class="cp-benefit">
+            <span class="cp-benefit-icon glass-ic" aria-hidden="true">
+              <Icon name={b.icon} class="size-5" />
             </span>
-            <span class="hww-card-num" aria-hidden="true">
-              {String(i + 1).padStart(2, '0')}
-            </span>
-            <h3 class="hww-card-title">{s.title}</h3>
-            <p class="hww-card-text">{s.text}</p>
+            <div>
+              <h3 class="cp-benefit-title">{b.title}</h3>
+              <p class="cp-benefit-text">{b.text}</p>
+            </div>
           </li>
         ))
       }
-    </ol>
+    </ul>
   </section>
 
-  <!-- Where you will work: one sage mist band with three equal, square-cornered office photos in one row. -->
-  <section class="cp-gal" aria-labelledby="cp-onde">
-    <div class="container-x cp-head cp-head-split">
-      <h2 id="cp-onde" class="zones-title">Onde vai trabalhar</h2>
-      <p class="cp-lead">
-        Um escritório em {office.name} e imóveis nas zonas que conhecemos, de Quarteira à Quinta do
-        Lago.
-      </p>
-    </div>
-    <div class="container-x cp-gal-grid">
-      {
-        officePhotos.map((p) => (
-          <figure class="cp-gal-photo">
-            <img src={p.src} alt={p.alt} width={p.w} height={p.h} loading="lazy" decoding="async" />
-          </figure>
-        ))
-      }
+  <!-- How applying works: the site's "Como trabalhamos" steps, in three columns. -->
+  <section class="cp-band" aria-labelledby="cp-passos">
+    <div class="container-x">
+      <div class="cp-head cp-head-split rise">
+        <h2 id="cp-passos" class="zones-title">Como funciona a candidatura</h2>
+        <p class="cp-lead">Três passos, do formulário ao primeiro dia na equipa.</p>
+      </div>
+      <ol class="hww-flow cp-steps rise">
+        {
+          applySteps.map((s, i) => (
+            <li class="hww-card">
+              <span class="hww-dot" aria-hidden="true" />
+              <span class="hww-card-icon" aria-hidden="true">
+                <Icon name={s.icon} class="size-4" />
+              </span>
+              <span class="hww-card-num" aria-hidden="true">
+                {String(i + 1).padStart(2, '0')}
+              </span>
+              <h3 class="hww-card-title">{s.title}</h3>
+              <p class="hww-card-text">{s.text}</p>
+            </li>
+          ))
+        }
+      </ol>
     </div>
   </section>
+
 
   {
     testimonial && (
@@ -274,10 +272,15 @@ const experience = ['Sem experiência no setor', 'Menos de 2 anos', '2 a 5 anos'
 
   <!-- FAQ. -->
   <section id="perguntas" class="container-x cp-section cp-faq" aria-labelledby="cp-faq">
-    <div class="cp-head cp-head-center">
+    <div class="cp-head rise">
       <h2 id="cp-faq" class="zones-title">Perguntas frequentes</h2>
+      <p class="cp-lead">O que costumam perguntar antes de se candidatar.</p>
+      <!-- Opens the header's "Fale connosco" panel (without JS: the contacts on the home page). -->
+      <a href="/#sobre" class="feat-all cp-faq-link" data-info-open aria-haspopup="dialog">
+        Tem outra dúvida? Fale connosco <Icon name="arrowRight" class="size-4" />
+      </a>
     </div>
-    <div class="cp-acc">
+    <div class="cp-acc rise">
       {
         faqs.map((f) => (
           <details class="cp-acc-item" name="cp-faq">
@@ -294,7 +297,10 @@ const experience = ['Sem experiência no setor', 'Menos de 2 anos', '2 a 5 anos'
 
   <!-- Closing call to action: back to the application form. -->
   <section class="container-x cp-section" aria-labelledby="cp-cta">
-    <div class="cp-cta">
+    <div class="cp-cta rise">
+      <div class="cp-cta-glass" aria-hidden="true">
+        {Array.from({ length: 16 }, () => <span />)}
+      </div>
       <div>
         <h2 id="cp-cta" class="zones-title">Pronto para dar o primeiro passo?</h2>
         <p class="cp-lead">Envie a sua candidatura. Se o seu perfil se ajustar, ligamos-lhe.</p>
@@ -304,9 +310,15 @@ const experience = ['Sem experiência no setor', 'Menos de 2 anos', '2 a 5 anos'
       </a>
     </div>
   </section>
+  <!-- Phones and tablets: a floating "Candidatar-me" while neither the form nor the closing call is on screen. -->
+  <a href="#candidatura" class="cp-fab" data-cp-fab hidden>
+    Candidatar-me <Icon name="arrowRight" class="size-4" />
+  </a>
 </SiteLayout>
 
 <script>
+  import { initFormFeedback } from '../scripts/form-feedback';
+
   // "Candidatar-me" (top and closing): bring the form into view and put the cursor in the first field.
   document.querySelectorAll<HTMLAnchorElement>('a[href="#candidatura"]').forEach((a) => {
     a.addEventListener('click', (e) => {
@@ -322,21 +334,40 @@ const experience = ['Sem experiência no setor', 'Menos de 2 anos', '2 a 5 anos'
     });
   });
 
+  // The floating button shows once the form has left the screen, and steps aside again when the form or the
+  // closing call to action comes back into view.
+  const fab = document.querySelector<HTMLElement>('[data-cp-fab]');
+  const watched = [document.getElementById('candidatura'), document.getElementById('cp-cta')?.closest('section')].filter(
+    (el): el is HTMLElement => !!el,
+  );
+  if (fab && watched.length && 'IntersectionObserver' in window) {
+    const inView = new Map<Element, boolean>();
+    fab.hidden = false;
+    // One observer for both, so the button only shows when neither is on screen.
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach((e) => inView.set(e.target, e.isIntersecting));
+      fab.toggleAttribute('data-show', ![...inView.values()].some(Boolean));
+    });
+    watched.forEach((el) => io.observe(el));
+  }
+
   const MAX_CV = 5 * 1024 * 1024;
   document.querySelectorAll<HTMLFormElement>('form[data-careers-form]').forEach((form) => {
     const cv = form.querySelector<HTMLInputElement>('input[name="cv"]')!;
     const cvName = form.querySelector<HTMLElement>('[data-cv-name]')!;
     const noFile = cvName.textContent;
+    const feedback = initFormFeedback(form, {
+      progress: form.parentElement?.querySelector<HTMLElement>('[data-cp-progress]'),
+    });
     cv.addEventListener('change', () => {
       const file = cv.files?.[0];
       cvName.textContent = file ? file.name : noFile;
-      cv.setCustomValidity(file && file.size > MAX_CV ? 'O ficheiro tem mais de 5 MB.' : '');
+      cv.setCustomValidity(file && file.size > MAX_CV ? 'too-big' : '');
     });
     form.addEventListener('submit', (e) => {
       e.preventDefault();
       const status = form.querySelector<HTMLElement>('[data-form-status]')!;
-      if (!form.checkValidity()) {
-        form.reportValidity();
+      if (!feedback.validateAll()) {
         status.classList.add('hidden');
         return;
       }
@@ -344,4 +375,46 @@ const experience = ['Sem experiência no setor', 'Menos de 2 anos', '2 a 5 anos'
       status.textContent = 'Protótipo: o envio ainda não está ligado. Os seus dados não foram enviados.';
     });
   });
+
+  // Scroll entrances (as on the home page): blocks fade up once when they come into view.
+  const rises = document.querySelectorAll<HTMLElement>('.rise');
+  if ('IntersectionObserver' in window) {
+    const ro = new IntersectionObserver(
+      (entries, obs) => {
+        entries.forEach((e) => {
+          if (!e.isIntersecting) return;
+          e.target.classList.add('is-in');
+          obs.unobserve(e.target);
+        });
+        // A fast jump (End key, a link lower down) can skip a block: anything already above the fold shows too.
+        rises.forEach((el) => {
+          if (!el.classList.contains('is-in') && el.getBoundingClientRect().top < innerHeight) {
+            el.classList.add('is-in');
+            obs.unobserve(el);
+          }
+        });
+      },
+      { threshold: 0.15, rootMargin: '0px 0px -8% 0px' },
+    );
+    rises.forEach((el) => ro.observe(el));
+  } else {
+    rises.forEach((el) => el.classList.add('is-in'));
+  }
+
+  // The top: a soft lime light follows the pointer behind the glass (mouse only, not with reduced motion).
+  const hero = document.querySelector<HTMLElement>('.cpx-hero');
+  if (hero && matchMedia('(hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference)').matches) {
+    let frame = 0;
+    hero.addEventListener('pointermove', (e) => {
+      if (frame) return;
+      frame = requestAnimationFrame(() => {
+        frame = 0;
+        const r = hero.getBoundingClientRect();
+        hero.style.setProperty('--mx', `${((e.clientX - r.left) / r.width) * 100}%`);
+        hero.style.setProperty('--my', `${((e.clientY - r.top) / r.height) * 100}%`);
+        hero.setAttribute('data-lit', '');
+      });
+    });
+    hero.addEventListener('pointerleave', () => hero.removeAttribute('data-lit'));
+  }
 </script>
