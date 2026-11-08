@@ -64,6 +64,7 @@ export const zoneCentres: Record<ZoneId, LatLng> = {
   'vale-do-lobo': { lat: 37.0506, lng: -8.0627 },
   'quinta-do-lago': { lat: 37.0436, lng: -8.0266 },
   loule: { lat: 37.1377, lng: -8.0197 },
+  carvoeiro: { lat: 37.0966, lng: -8.472 },
 };
 
 const TILE = 256;

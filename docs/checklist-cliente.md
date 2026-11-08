@@ -43,6 +43,7 @@ Todos escritos por nós como proposta; o cliente tem de os aprovar ou corrigir:
 ## 5. Fotografias e licenças (obrigatório)
 
 - [ ] Licença ou crédito das 6 fotografias das zonas (Vilamoura, Quarteira, Vilasol, Vale do Lobo, Quinta do Lago, Loulé). Se não houver, o cliente envia fotografias próprias.
+- [ ] Fotografia de Carvoeiro (zona nova; hoje mostra a fachada do Primelife) e confirmar a frase da zona: "Aldeia à beira-mar no concelho de Lagoa, entre falésias e praias."
 - [ ] Logótipos em ficheiro vetorial (SVG ou PDF), para confirmar as cores da marca.
 - [ ] Uma fotografia da equipa ou do escritório para a secção de carreiras (opcional, hoje não tem foto).
 - [ ] Página de carreiras, "Onde vai trabalhar": 3 fotografias dos escritórios em boa resolução (mínimo 1400 px de largura). Hoje há 2 pequenas e 1 provisória da marina.
