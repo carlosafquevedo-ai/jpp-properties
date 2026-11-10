@@ -96,7 +96,7 @@ const filterAttrs = filterable
         <span class="truncate">
           {propertyTypeLabels[p.propertyType]}
           {p.listingType === 'rent' && ' para arrendar'}
-          {p.condition === 'new' && ' novo'}
+          {p.condition === 'new' && (p.propertyType === 'villa' || p.propertyType === 'shop' ? ' nova' : ' novo')}
         </span>
       </p>
       {p.reference && <span class="shrink-0 whitespace-nowrap text-xs">Ref. {p.reference}</span>}

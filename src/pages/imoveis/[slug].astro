@@ -39,7 +39,7 @@ const typology =
 const tags = [
   p.listingType === 'rent' ? 'Arrendamento' : 'Venda',
   [propertyTypeLabels[p.propertyType], typology].filter(Boolean).join(' '),
-  p.condition === 'new' ? 'Novo' : null,
+  p.condition === 'new' ? (p.propertyType === 'villa' || p.propertyType === 'shop' ? 'Nova' : 'Novo') : null,
 ].filter(Boolean) as string[];
 
 // Only the facts the listing gives: an unknown value is left out, never shown as 0.
@@ -52,7 +52,7 @@ const facts = (
     { icon: 'area', label: 'Área bruta', value: formatArea(p.grossArea) },
     { icon: 'area', label: 'Área do terreno', value: formatArea(p.plotArea) },
     { icon: 'calendar', label: 'Construção', value: p.yearBuilt ? String(p.yearBuilt) : '' },
-    { icon: 'zap', label: 'Classe energética', value: p.energyClass ?? 'A indicar' }, // TODO: mandatory in real listings
+    { icon: 'zap', label: 'Classe energética', value: p.energyClass ?? '' }, // TODO (client): mandatory; hidden until given
   ] as { icon: IconName; label: string; value: string }[]
 ).filter((f) => f.value);
 
@@ -316,7 +316,7 @@ const jsonLd = {
 
     <section class="pd-similar" aria-labelledby="sim">
       <div class="pd-similar-head">
-        <h2 id="sim" class="detail-title font-display text-2xl text-forest sm:text-3xl">Imóveis semelhantes</h2>
+        <h2 id="sim" class="detail-title font-display text-2xl text-forest">Imóveis semelhantes</h2>
         <a href={`/imoveis/?zona=${p.zone}`} class="feat-all">
           Ver todos em {zones[p.zone].name} <Icon name="arrowRight" class="size-4" />
         </a>

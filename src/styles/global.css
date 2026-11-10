@@ -12611,41 +12611,6 @@ form .field:focus-visible {
   }
 }
 
-/* Careers top on desktop: no empty middle. The title runs across the top of its column; below it, the photo deck
-   (larger) on the left and, beside it, the "/ … /" line and the button, so the space between the deck and the form is
-   used instead of left blank. Phones and tablets keep the stacked order. */
-@media (min-width: 64rem) {
-  .cpx-intro {
-    display: grid;
-    grid-template-columns: minmax(0, 1fr) max-content;
-    grid-template-rows: auto auto auto;
-    column-gap: clamp(1.5rem, 3vw, 2.75rem);
-    align-items: center;
-    justify-self: stretch;
-  }
-  .cpx-intro > .cpx-title {
-    grid-column: 1 / -1;
-  }
-  .cpx-intro > .cpx-deck {
-    grid-column: 1;
-    grid-row: 2 / span 2;
-    width: min(100%, 31rem);
-    margin: 1.75rem 0 0;
-  }
-  .cpx-intro > .cpx-sub {
-    grid-column: 2;
-    grid-row: 2;
-    align-self: end;
-    margin: 0 0 1.25rem;
-  }
-  .cpx-intro > .cpx-start {
-    grid-column: 2;
-    grid-row: 3;
-    align-self: start;
-    justify-self: start;
-    margin: 0;
-  }
-}
 
 /* Search bar icons, softer (client's request): a finer line in the brand's olive instead of black, on a paler round
    (white easing into the lightest sage) with a hairline edge and a barely-there shadow. The hover still lifts the
@@ -12673,4 +12638,1144 @@ form .field:focus-visible {
   box-shadow:
     inset 0 0 0 1px rgba(158, 188, 58, 0.45),
     0 4px 10px -6px rgba(27, 30, 28, 0.22);
+}
+
+/* ==== Quiet refinement: "Explore por zona", the office card and the careers photo deck ===========================
+   Less cartoon, more editorial: smaller radii, hairline edges instead of thick frames, softer and shorter shadows,
+   finer type (small tracked capitals for labels, the serif for names), outline controls instead of solid tiles, and
+   no chunky icon squares on the photos. */
+
+/* -- Explore por zona -- */
+.zx .zx-card a {
+  border-radius: 0.875rem;
+}
+.zx .zx-card a::before {
+  border-color: rgba(255, 255, 255, 0.08);
+}
+.zx .zx-card[data-active] a::before {
+  border: 1px solid rgba(158, 188, 58, 0.75);
+  box-shadow: none;
+}
+/* No pin tile on the photos; the active card keeps only a small outline arrow. */
+.zx .zx-card-ic {
+  display: none;
+}
+.zx .zx-card-go {
+  top: 1rem;
+  right: 1rem;
+  width: 2rem;
+  height: 2rem;
+  border: 1px solid rgba(255, 255, 255, 0.55);
+  background: rgba(18, 26, 13, 0.18);
+  -webkit-backdrop-filter: blur(6px);
+  backdrop-filter: blur(6px);
+  box-shadow: none;
+  color: #fff;
+}
+.zx .zx-card-go svg {
+  width: 0.95rem;
+  height: 0.95rem;
+}
+.zx .zx-card-name {
+  font-family: var(--font-serif);
+  font-size: 1.3rem;
+  font-weight: 400;
+  letter-spacing: 0;
+}
+.zx .zx-card-meta {
+  font-size: 0.7rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.78);
+}
+.zx .zx-card a::after,
+.zx .zx-card[data-active] a::after {
+  background: linear-gradient(180deg, transparent 50%, rgba(14, 20, 11, 0.62) 100%);
+}
+/* Left column: the eyebrow as tracked small capitals, the count as plain text with a fine lime rule. */
+.zx .zx-eyebrow {
+  font-size: 0.72rem;
+  font-weight: 500;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--color-muted);
+}
+.zx .zx-kicker {
+  padding: 0;
+  background: none;
+  font-size: 0.72rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--g-600);
+}
+.zx .zx-kicker::before {
+  width: 1.25rem;
+  height: 1px;
+  border-radius: 0;
+  background: var(--color-lime);
+}
+/* Arrows: thin outline circles instead of solid dark tiles. */
+.zx .zx-nav:not(#\#):not(#\#) {
+  width: 2.5rem;
+  height: 2.5rem;
+  border: 1px solid rgba(27, 30, 28, 0.18);
+  border-radius: 9999px;
+  background: transparent;
+  box-shadow: none;
+  color: var(--color-ink);
+}
+.zx .zx-nav:is(:hover, :focus-visible):not(#\#):not(#\#) {
+  border-color: var(--g-500);
+  background: var(--g-50);
+  color: var(--g-700);
+}
+.zx .zx-step {
+  height: 2px;
+}
+.zx .zx-count {
+  font-family: var(--font-sans);
+  font-weight: 300;
+  font-variant-numeric: tabular-nums lining-nums;
+}
+@media (min-width: 64rem) {
+  .zx {
+    box-shadow: 0 18px 40px -30px rgba(27, 30, 28, 0.35);
+  }
+}
+
+/* -- Office card on the globe -- */
+.pt-map .pt-pin-card {
+  padding: 0.35rem;
+  border: 1px solid rgba(27, 30, 28, 0.07);
+  border-radius: 0.75rem;
+  box-shadow:
+    0 1px 2px rgba(27, 30, 28, 0.05),
+    0 16px 32px -20px rgba(27, 30, 28, 0.35);
+}
+.pt-map .pt-pin-media {
+  border-radius: 0.5rem;
+}
+.pt-map .pt-pin-chip {
+  left: 0.55rem;
+  top: auto;
+  bottom: 0.55rem;
+  padding: 0.22rem 0.55rem;
+  border-radius: 9999px;
+  background: rgba(18, 26, 13, 0.55);
+  -webkit-backdrop-filter: blur(6px);
+  backdrop-filter: blur(6px);
+  font-size: 0.6rem;
+  font-weight: 500;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: #fff;
+}
+.pt-map .pt-pin-name {
+  font-family: var(--font-serif);
+  font-weight: 400;
+  letter-spacing: 0;
+}
+.pt-map .pt-pin-addr {
+  font-size: 0.74rem;
+}
+.pt-map .pt-pin-go {
+  font-size: 0.7rem;
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--g-700);
+}
+.pt-map .pt-pin-go-ic {
+  width: 1.6rem;
+  height: 1.6rem;
+  border: 1px solid rgba(75, 106, 26, 0.35);
+  background: transparent;
+  color: var(--g-600);
+}
+.pt-map .pt-pin:hover .pt-pin-go-ic,
+.pt-map .pt-pin:focus-visible .pt-pin-go-ic {
+  border-color: var(--g-500);
+  background: var(--g-50);
+}
+
+/* -- Careers photo deck -- */
+.cpx-slide {
+  padding: 0;
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  border-radius: 0.875rem;
+  background: none;
+  -webkit-backdrop-filter: none;
+  backdrop-filter: none;
+  box-shadow: 0 24px 44px -28px rgba(10, 16, 7, 0.85);
+}
+.cpx-slide img {
+  border-radius: inherit;
+}
+/* A quiet stack: the next photos sit straight behind, a step up and a little smaller, never tilted. */
+.cpx-slide[data-pos='1'] {
+  transform: translateY(-5%) scale(0.94);
+  opacity: 0.55;
+  filter: brightness(0.75) saturate(0.7);
+}
+.cpx-slide[data-pos='2'] {
+  transform: translateY(-10%) scale(0.88);
+  opacity: 0.3;
+  filter: brightness(0.6) saturate(0.6);
+}
+.cpx-slide-cap {
+  left: 0.9rem;
+  bottom: 0.9rem;
+  padding: 0.25rem 0.65rem;
+  background: rgba(18, 26, 13, 0.5);
+  font-size: 0.62rem;
+  font-weight: 500;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+.cpx-slide-cap::before {
+  width: 4px;
+  height: 4px;
+}
+/* Dots as fine segments, like the zones' progress line. */
+.cpx-deck-dots {
+  gap: 0.35rem;
+  margin-top: 1rem;
+  margin-left: 0;
+}
+.cpx-dot {
+  width: auto;
+  height: 1.25rem;
+  padding: 0;
+}
+.cpx-dot i {
+  width: 1.25rem;
+  height: 2px;
+  border-radius: 0;
+  background: rgba(255, 255, 255, 0.3);
+}
+.cpx-dot[aria-current] i {
+  width: 2.25rem;
+  background: var(--color-lime);
+}
+.cpx-sub {
+  font-size: 0.75rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.75);
+}
+
+/* ==== Quiet refinement, second pass: team, pillars, sold listings, careers band and careers top ==================
+   (The search box keeps its own look: the client preferred it as it was.)
+   Same language as the first pass: hairlines instead of thick frames, smaller radii, short soft shadows, labels in
+   small tracked capitals, outline controls instead of solid tiles. */
+
+/* -- Team band: role as tracked capitals, contacts as outline circles on glass -- */
+.team-band .team-name h3 {
+  font-family: var(--font-serif);
+  font-weight: 400;
+}
+.team-band .team-name p {
+  display: inline-block;
+  margin-bottom: 0.25rem;
+  padding: 0;
+  border: 0;
+  background: none;
+  font-size: 0.62rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.78);
+}
+.team-band .team-contacts a:not(#\#):not(#\#) {
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  border-radius: 9999px;
+  background: rgba(18, 26, 13, 0.25);
+  background-image: none;
+  -webkit-backdrop-filter: blur(6px);
+  backdrop-filter: blur(6px);
+  box-shadow: none;
+  color: #fff;
+}
+.team-band .team-contacts a:is(:hover, :focus-visible):not(#\#):not(#\#) {
+  border-color: var(--color-lime);
+  background: rgba(18, 26, 13, 0.45);
+}
+
+/* -- "Somos daqui" pillars: outline icon rounds instead of dark tiles -- */
+.about-pillar .about-pillar-icon:not(#\#):not(#\#) {
+  border: 1px solid rgba(75, 106, 26, 0.25);
+  border-radius: 9999px;
+  background: transparent;
+  background-image: none;
+  box-shadow: none;
+  color: var(--g-600);
+}
+.about-pillar:hover .about-pillar-icon:not(#\#):not(#\#) {
+  border-color: var(--color-lime);
+  background: var(--g-50);
+}
+
+/* -- Sold listings -- */
+.results-sold-photo {
+  border-radius: 0.75rem;
+}
+.results-sold-flag:not(#\#) {
+  padding: 0.22rem 0.6rem;
+  background: rgba(18, 26, 13, 0.5);
+  font-size: 0.6rem;
+  font-weight: 500;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+.results-sold-title {
+  font-size: 0.72rem;
+  font-weight: 500;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--color-muted);
+}
+.results-sold-name {
+  font-weight: 400;
+}
+
+/* -- "Faça carreira connosco": a thin glass sheet, outline icons -- */
+.careers-perks:not(#\#) {
+  border: 1px solid rgba(255, 255, 255, 0.45);
+  border-radius: 0.875rem;
+  background: rgba(255, 255, 255, 0.72);
+  box-shadow: 0 18px 36px -28px rgba(27, 30, 28, 0.5);
+}
+.careers-perk .careers-perk-icon:not(#\#):not(#\#) {
+  border: 1px solid rgba(75, 106, 26, 0.28);
+  border-radius: 9999px;
+  background: transparent;
+  background-image: none;
+  box-shadow: none;
+  color: var(--g-600);
+}
+.careers-perk {
+  font-size: var(--fs-body);
+}
+
+/* -- Careers top: a calmer form card and a slimmer start button -- */
+.cpx-card:not(#\#) {
+  border-radius: 1rem;
+  box-shadow: 0 24px 48px -32px rgba(10, 16, 7, 0.8);
+}
+.cpx-card-title {
+  font-family: var(--font-serif);
+  font-weight: 400;
+}
+.cpx-start:not(#\#) {
+  padding: 0.7rem 1.35rem;
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  background: rgba(18, 26, 13, 0.3);
+  -webkit-backdrop-filter: blur(8px);
+  backdrop-filter: blur(8px);
+  box-shadow: none;
+  font-size: 0.72rem;
+  font-weight: 500;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+.cpx-start:is(:hover, :focus-visible):not(#\#) {
+  border-color: var(--color-lime);
+  background: rgba(18, 26, 13, 0.5);
+}
+
+/* Results: smaller figures (client's request), a little lighter, so the row reads calmer. */
+.results-value:not(#\#) {
+  font-size: clamp(1.875rem, 2.8vw, 2.5rem);
+  font-weight: 500;
+}
+.results-unit:not(#\#) {
+  font-size: 0.5em;
+}
+
+/* Search box, a light touch (client's request: keep everything, just finer). Same layout, pill tabs, icons and
+   button; only the details ease: the panel's corner and shadow match the site's floating sheets, the field dividers
+   become hairlines, the labels sit a little quieter, and the tabs and the button lose a little weight. */
+@media (min-width: 64rem) {
+  .glass-panel:not(#\#) {
+    border-radius: var(--r-panel);
+    box-shadow: var(--sheet-shadow);
+  }
+  .glass-panel .glass-field:not(#\#) {
+    border-color: rgba(27, 30, 28, 0.07);
+  }
+  .glass-panel button[type='submit'].btn:not(#\#) {
+    font-weight: 500;
+    box-shadow: 0 10px 22px -14px rgba(27, 30, 28, 0.6);
+  }
+}
+.glass-panel .glass-field > label,
+.glass-panel .glass-range-head > label {
+  color: rgba(27, 30, 28, 0.55);
+}
+.glass-panel .glass-seg-opt {
+  font-weight: 500;
+}
+
+/* "Quer vender o seu imóvel?", a light refinement (same structure): the steps' numbers become hairline rounds (the
+   current one a fine lime ring, no glow), the group titles small tracked capitals, the fields white with a hairline
+   (the sage tint stays only on hover), the "Acrescentar detalhes" box a solid hairline instead of a dashed frame. */
+.lead-shell .lead-step-num:not(#\#) {
+  width: 1.85rem;
+  height: 1.85rem;
+  border: 1px solid rgba(27, 30, 28, 0.16);
+  background: transparent;
+  background-image: none;
+  box-shadow: none;
+  font-family: var(--font-sans);
+  font-size: 0.8rem;
+  font-weight: 400;
+  color: var(--color-muted);
+}
+.lead-shell .lead-steps li:first-child .lead-step-num:not(#\#) {
+  border-color: var(--color-lime);
+  background: var(--g-50);
+  box-shadow: none;
+  color: var(--g-700);
+}
+.lead-shell .lead-group > legend:not(#\#) {
+  font-family: var(--font-sans);
+  font-size: 0.72rem;
+  font-weight: 500;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--color-muted);
+}
+.lead-shell .field:not(#\#) {
+  border-color: rgba(27, 30, 28, 0.1);
+  background-color: #fff;
+}
+.lead-shell .field:hover:not(:focus):not(#\#) {
+  border-color: rgba(27, 30, 28, 0.2);
+  background-color: #fcfdf9;
+}
+.lead-shell .lead-more:not(#\#) {
+  border: 1px solid rgba(27, 30, 28, 0.1);
+  border-radius: 0.6rem;
+}
+.lead-shell .lead-label {
+  font-size: 0.8rem;
+}
+.lead-shell .lead-more > summary:not(#\#) {
+  border: 0;
+}
+
+/* "Como trabalhamos", a light refinement (same six cards and line): the numbers in a thin Inter, solid and quieter
+   instead of outlined, the icons in hairline rounds instead of dark tiles, smaller dots without the halo, finer card
+   edges and corners, and a little less weight on the titles. The careers steps share these cards. */
+.hww-card:not(#\#) {
+  border: 1px solid rgba(27, 30, 28, 0.06);
+  border-radius: 0.75rem;
+  box-shadow: 0 14px 30px -26px rgba(27, 30, 28, 0.35);
+}
+.hww-card-num:not(#\#):not(#\#) {
+  font-family: var(--font-sans);
+  font-size: 2rem;
+  font-weight: 200;
+  font-variant-numeric: tabular-nums lining-nums;
+  letter-spacing: 0;
+  color: var(--g-500);
+  -webkit-text-stroke: 0;
+  opacity: 0.75;
+}
+.hww-card .hww-card-icon:not(#\#):not(#\#) {
+  border: 1px solid rgba(75, 106, 26, 0.25);
+  border-radius: 9999px;
+  background: transparent;
+  background-image: none;
+  box-shadow: none;
+  color: var(--g-600);
+}
+.hww-card:hover .hww-card-icon:not(#\#):not(#\#) {
+  border-color: var(--color-lime);
+  background: var(--g-50);
+}
+.hww-card-title:not(#\#) {
+  font-weight: 500;
+}
+.hww-dot:not(#\#) {
+  width: 0.5rem;
+  height: 0.5rem;
+  box-shadow: 0 0 0 3px #fff;
+}
+
+/* "Somos daqui" pillars: clearer icons. The hairline round gets the lightest sage fill so the icon has something
+   to sit on; the icon is a touch smaller, darker and drawn as a clean line (the faint inner fills of the duotone
+   icons blurred at this size). */
+.about-pillar .about-pillar-icon:not(#\#):not(#\#) {
+  background: var(--g-50);
+  border-color: rgba(75, 106, 26, 0.22);
+  color: var(--g-700);
+}
+.about-pillar .about-pillar-icon svg {
+  width: 1.5rem;
+  height: 1.5rem;
+  stroke-width: 1.6;
+}
+.about-pillar .about-pillar-icon svg [fill='currentColor'][fill-opacity] {
+  fill: none;
+}
+
+/* Featured row: room under the cards inside the scroller, so the spotlit card's long shadow fades out softly instead
+   of being cut flat by the row's edge (the negative margin keeps the layout where it was). */
+.feat-track:not(#\#) {
+  padding-bottom: 3rem;
+  margin-bottom: -3rem;
+}
+
+/* ==== Careers top, redesigned ======================================================================================
+   One idea: a wide photo window set into the reeded glass, where the office, its entrance and the marina follow
+   each other in a slow crossfade. Around it everything is quiet and left-aligned: the title in sentence case in the
+   serif (two lines), one plain sentence, a white "Candidatar-me" and a text link to the steps. The window's caption
+   and progress sit inside the photo. The form stays on the right. */
+.cpx-hero .cpx-title:not(#\#):not(#\#):not(#\#) {
+  font-size: clamp(2.4rem, 4.4vw, 3.75rem);
+  line-height: 1.04;
+  letter-spacing: -0.012em;
+  text-transform: none;
+}
+.cpx-hero .cpx-title span {
+  display: block;
+}
+.cpx-lead {
+  max-width: 34rem;
+  margin-top: 1.25rem;
+  font-size: var(--fs-lead);
+  line-height: 1.6;
+  color: rgba(255, 255, 255, 0.82);
+}
+.cpx-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.75rem 1.5rem;
+  margin-top: 1.75rem;
+}
+.cpx-hero .cpx-start:not(#\#):not(#\#) {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  min-height: 3rem;
+  padding: 0 1.4rem;
+  border: 0;
+  border-radius: 9999px;
+  background: #fff;
+  -webkit-backdrop-filter: none;
+  backdrop-filter: none;
+  box-shadow: 0 14px 28px -18px rgba(10, 16, 7, 0.8);
+  color: var(--color-forest);
+  font-size: 0.95rem;
+  font-weight: 600;
+  letter-spacing: 0;
+  text-transform: none;
+  transition:
+    background-color 0.25s,
+    transform 0.3s var(--ease-out);
+}
+.cpx-hero .cpx-start:is(:hover, :focus-visible):not(#\#):not(#\#) {
+  background: var(--g-50);
+  transform: translateY(-1px);
+}
+.cpx-hero .cpx-start svg {
+  color: var(--g-500);
+}
+.cpx-how {
+  padding-block: 0.35rem;
+  border-bottom: 1px solid rgba(190, 215, 100, 0.7);
+  color: #fff;
+  font-size: 0.95rem;
+  font-weight: 500;
+  text-decoration: none;
+  transition: border-color 0.25s;
+}
+.cpx-how:hover,
+.cpx-how:focus-visible {
+  border-color: #fff;
+}
+
+/* The photo window. */
+.cpx-hero .cpx-deck:not(#\#) {
+  position: relative;
+  width: 100%;
+  max-width: 40rem;
+  margin: 2.5rem 0 0;
+}
+.cpx-hero .cpx-deck-stack {
+  position: relative;
+  aspect-ratio: 16 / 9;
+  overflow: hidden;
+  border-radius: 1rem;
+  background: var(--g-900);
+  box-shadow:
+    0 1px 0 rgba(255, 255, 255, 0.12) inset,
+    0 34px 60px -38px rgba(10, 16, 7, 0.95);
+}
+.cpx-hero .cpx-deck-stack::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 4;
+  border-radius: inherit;
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.16);
+  pointer-events: none;
+}
+.cpx-hero .cpx-slide:not(#\#):not(#\#) {
+  inset: 0;
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  background: none;
+  box-shadow: none;
+  opacity: 0;
+  filter: none;
+  transform: none;
+  cursor: pointer;
+  transition: opacity 1.2s ease;
+}
+.cpx-hero .cpx-slide[data-pos='0']:not(#\#):not(#\#) {
+  opacity: 1;
+}
+.cpx-hero .cpx-slide img {
+  border-radius: 0;
+  transform: scale(1.02);
+  transition: transform 6s linear;
+}
+.cpx-hero .cpx-slide[data-pos='0'] img {
+  transform: scale(1.07);
+}
+.cpx-hero .cpx-slide::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, transparent 55%, rgba(10, 16, 7, 0.62) 100%);
+  pointer-events: none;
+}
+.cpx-hero .cpx-slide-cap:not(#\#) {
+  left: 1.25rem;
+  bottom: 1.1rem;
+  z-index: 1;
+  padding: 0;
+  background: none;
+  -webkit-backdrop-filter: none;
+  backdrop-filter: none;
+  font-size: 0.9rem;
+  font-weight: 500;
+  letter-spacing: 0;
+  text-transform: none;
+  color: #fff;
+}
+.cpx-hero .cpx-slide-cap::before {
+  display: none;
+}
+.cpx-hero .cpx-deck-dots:not(#\#) {
+  position: absolute;
+  right: 1.25rem;
+  bottom: 1.15rem;
+  z-index: 5;
+  gap: 0.3rem;
+  margin: 0;
+}
+.cpx-hero .cpx-dot i {
+  width: 1.1rem;
+  height: 2px;
+  background: rgba(255, 255, 255, 0.45);
+}
+.cpx-hero .cpx-dot[aria-current] i {
+  width: 2rem;
+  background: #fff;
+}
+/* Without JS: the first photo only, and no segments. */
+.cpx-hero .cpx-deck:not([data-ready]) .cpx-slide[data-slide='0'] {
+  opacity: 1;
+}
+@media (prefers-reduced-motion: reduce) {
+  .cpx-hero .cpx-slide img,
+  .cpx-hero .cpx-slide[data-pos='0'] img {
+    transform: none;
+    transition: none;
+  }
+}
+/* Phones and tablets: the window comes after the form, full width. */
+@media (max-width: 63.99rem) {
+  .cpx-intro > .cpx-lead,
+  .cpx-intro > .cpx-actions {
+    justify-self: start;
+  }
+  .cpx-hero .cpx-deck:not(#\#) {
+    max-width: none;
+    margin-top: 2rem;
+  }
+}
+
+/* ==== Type harmony (one system across the site) ===================================================================
+   Three voices, each with one job, so nothing clashes:
+   - Serif (Marcellus 400): only the page titles, the section titles and the zone name in "Explore por zona".
+     Names on cards and small panels go back to Inter (the serif at card size competed with the titles).
+   - Card titles (Inter 500, 1.125rem): property cards, zone cards, team names, pillar and benefit titles, the office
+     card and the form card's title.
+   - Small labels on photos and meta (Inter 500, 0.6875rem, tracked capitals): one size and spacing everywhere.
+   Big figures (results, the Google rating) share one weight and size; decorative counters (steps, zone counter) share
+   one light weight. */
+.zx .zx-card-name:not(#\#),
+.pt-map .pt-pin-name:not(#\#),
+.team-band .team-name h3:not(#\#),
+.cpx-card-title:not(#\#):not(#\#) {
+  font-family: var(--font-sans);
+  font-weight: 500;
+  letter-spacing: -0.01em;
+}
+.zx .zx-card-name:not(#\#) {
+  font-size: 1.125rem;
+}
+.pt-map .pt-pin-name:not(#\#) {
+  font-size: 1.125rem;
+}
+.team-band .team-name h3:not(#\#) {
+  font-size: 1.25rem;
+}
+.cpx-card-title:not(#\#):not(#\#) {
+  font-size: 1.375rem;
+}
+.about-pillar h3:not(#\#),
+.cp-benefit-title:not(#\#) {
+  font-family: var(--font-sans);
+  font-size: 1.125rem;
+  font-weight: 500;
+  letter-spacing: -0.01em;
+}
+/* One label style. */
+.zx .zx-card-meta:not(#\#),
+.pt-map .pt-pin-chip:not(#\#),
+.team-band .team-name p:not(#\#),
+.results-sold-flag:not(#\#),
+.zx .zx-eyebrow:not(#\#),
+.zx .zx-kicker:not(#\#),
+.results-sold-title:not(#\#),
+.pt-map .pt-pin-go:not(#\#) {
+  font-size: 0.6875rem;
+  font-weight: 500;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+/* Big figures: one weight and size. */
+.reviews-score:not(#\#),
+.results-value:not(#\#):not(#\#) {
+  font-family: var(--font-sans);
+  font-size: clamp(1.875rem, 2.8vw, 2.5rem);
+  font-weight: 500;
+  letter-spacing: -0.02em;
+}
+/* Decorative counters: one light weight. */
+.hww-card-num:not(#\#):not(#\#):not(#\#),
+.zx .zx-count:not(#\#) {
+  font-weight: 300;
+}
+/* "Como funciona" on the same line as the button's text: the same height as "Candidatar-me", centred, with the
+   underline drawn under the words (not a separate rule floating below). */
+.cpx-how:not(#\#) {
+  display: inline-flex;
+  align-items: center;
+  min-height: 3rem;
+  padding: 0;
+  border: 0;
+  font-size: 0.95rem;
+  text-decoration: underline;
+  text-decoration-color: rgba(190, 215, 100, 0.75);
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.35em;
+  transition: text-decoration-color 0.25s;
+}
+.cpx-how:is(:hover, :focus-visible):not(#\#) {
+  text-decoration-color: #fff;
+}
+
+/* Careers top: "Como funciona" level with the button (the button kept an old top margin from the stacked layout). */
+.cpx-actions > .cpx-start:not(#\#):not(#\#) {
+  margin: 0;
+}
+
+/* Careers top, readable title and sentence: the reeds stay, but behind the text column a soft dark veil quiets them
+   (strongest at the left, gone before the form), the reeds' own light edges fade there, and the words get a faint
+   shadow so their edges stay clean on the stripes. */
+.cpx-bg::after {
+  background:
+    linear-gradient(90deg, rgba(10, 16, 7, 0.62) 0%, rgba(10, 16, 7, 0.5) 30%, rgba(10, 16, 7, 0.18) 52%, transparent 64%),
+    linear-gradient(180deg, transparent 72%, rgba(158, 188, 58, 0.22) 100%),
+    linear-gradient(180deg, rgba(10, 16, 7, 0.35) 0%, transparent 22%),
+    var(--hdr-grain);
+}
+.cpx-hero .cpx-title:not(#\#):not(#\#):not(#\#) {
+  text-shadow: 0 2px 24px rgba(10, 16, 7, 0.45);
+}
+.cpx-lead:not(#\#) {
+  color: rgba(255, 255, 255, 0.9);
+  text-shadow: 0 1px 12px rgba(10, 16, 7, 0.6);
+}
+@media (max-width: 63.99rem) {
+  .cpx-bg::after {
+    background:
+      linear-gradient(180deg, rgba(10, 16, 7, 0.5) 0%, rgba(10, 16, 7, 0.4) 45%, rgba(10, 16, 7, 0.15) 70%, transparent 100%),
+      var(--hdr-grain);
+  }
+}
+
+/* Type harmony, details: the FAQ questions are card titles (Inter 500, not 600). */
+.cp-acc-item > summary:not(#\#) {
+  font-weight: 500;
+}
+
+/* Listing page, light refinement (same layout): the search field and the filter rows take the site's quieter form
+   language, white fields with a hairline (sage only on hover), the filter labels a little quieter, and the result
+   count and sort line in the card-title voice. */
+.flt-search input:not(#\#) {
+  border-color: rgba(27, 30, 28, 0.1);
+  background: #fff;
+}
+.flt-search input:hover:not(:focus):not(#\#) {
+  border-color: rgba(27, 30, 28, 0.2);
+  background: #fcfdf9;
+}
+.flt .flt-label {
+  color: var(--color-ink);
+  font-weight: 500;
+}
+.flt-check-box:not(#\#) {
+  border-color: rgba(27, 30, 28, 0.22);
+  border-radius: 0.3rem;
+}
+.flt-check input:checked + .flt-check-box:not(#\#) {
+  border-color: var(--g-600);
+}
+
+/* "Faça carreira connosco", the three reasons: a crisp white sheet instead of the grey glass (which blurred into the
+   green and was hard to read). Same hairline and soft shadow as the site's floating sheets, darker text, and the icons
+   as on the "Somos daqui" pillars (lightest-sage rounds, clean line icons). */
+.careers-perks:not(#\#):not(#\#) {
+  border: 1px solid rgba(255, 255, 255, 0.9);
+  border-radius: 0.875rem;
+  background: #fff;
+  -webkit-backdrop-filter: none;
+  backdrop-filter: none;
+  box-shadow: 0 24px 48px -30px rgba(10, 16, 7, 0.75);
+}
+.careers-perk:not(#\#) {
+  color: var(--color-ink);
+  font-size: var(--fs-body);
+  line-height: 1.5;
+}
+.careers-perk + .careers-perk:not(#\#) {
+  border-top-color: rgba(27, 30, 28, 0.07);
+}
+.careers-perk .careers-perk-icon:not(#\#):not(#\#) {
+  border: 1px solid rgba(75, 106, 26, 0.22);
+  background: var(--g-50);
+  color: var(--g-700);
+}
+.careers-perk .careers-perk-icon svg {
+  stroke-width: 1.6;
+}
+.careers-perk .careers-perk-icon svg [fill='currentColor'][fill-opacity] {
+  fill: none;
+}
+
+/* Segmented filters (e.g. Quartos: Todos · 1+ · 2+ …): each option at least as wide as its word, so "Todos" never
+   squeezes into a round meant for "1+"; the rest share what is left. */
+.flt-seg:not(#\#) {
+  grid-auto-columns: minmax(max-content, 1fr);
+}
+.flt-seg span:not(#\#) {
+  padding: 0 0.6rem;
+}
+/* Small phones: the hero's two buttons stack, so "Vender o meu imóvel" is never squeezed in half the width. */
+@media (max-width: 29.99rem) {
+  .hero-copy > .grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+/* Phones: the steps' numbers fit their column ("Como trabalhamos" and the careers steps). */
+@media (max-width: 39.99rem) {
+  .hww-card-num:not(#\#):not(#\#):not(#\#) {
+    font-size: 1.6rem;
+  }
+}
+/* Tracked capitals add space after the last letter: balance the chip's padding. */
+.pt-map .pt-pin-chip:not(#\#):not(#\#) {
+  padding-right: 0.4rem;
+  padding-left: 0.55rem;
+}
+
+/* ==== Property page, light refinement (same content and order) ===================================================
+   - Head: tags, title and place stacked; below them one price line with "Partilhar" at its right end, on a hairline
+     (the price box used to drop under a long title with the button floating to its right).
+   - Facts: a quiet spec list instead of a boxed grid: hairlines between the rows, each fact with its icon in a
+     lightest-sage round; no grey filler cell when the count does not fill the last row.
+   - Tags: white pills with a hairline, a little lighter. */
+.pd-head:not(#\#) {
+  display: block;
+}
+.pd-price-box:not(#\#) {
+  flex-direction: row;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem 1.5rem;
+  margin-top: 1.5rem;
+  padding-bottom: 1.5rem;
+  border-bottom: 1px solid var(--color-line);
+}
+.pd-price:not(#\#) {
+  font-weight: 600;
+}
+.pd-toast:not(#\#) {
+  right: 0;
+  left: auto;
+}
+.pd-tags li:not(#\#) {
+  padding: 0.22rem 0.7rem;
+  border-color: rgba(27, 30, 28, 0.1);
+  background: #fff;
+  font-size: 0.75rem;
+  font-weight: 500;
+  color: var(--g-700);
+}
+.pd-head + dl:not(#\#) {
+  grid-template-columns: repeat(auto-fill, minmax(11rem, 1fr));
+  gap: 0 1.5rem;
+  margin-top: 0.5rem;
+  overflow: visible;
+  border: 0;
+  border-radius: 0;
+  background: none;
+}
+.pd-head + dl > div:not(#\#) {
+  gap: 0.85rem;
+  padding: 1.1rem 0;
+  border-bottom: 1px solid var(--color-line);
+  background: none;
+}
+.pd-head + dl > div > svg {
+  width: 2.5rem;
+  height: 2.5rem;
+  padding: 0.6rem;
+  border-radius: 9999px;
+  background: var(--g-50);
+  box-shadow: inset 0 0 0 1px rgba(75, 106, 26, 0.18);
+  color: var(--g-700);
+  stroke-width: 1.6;
+}
+.pd-head + dl dt {
+  font-size: 0.75rem;
+}
+.pd-head + dl dd:not(#\#) {
+  margin-top: 0.1rem;
+  font-weight: 500;
+}
+/* Contact card: the agent row on white with a hairline (not a sage block), the form's fields white with a hairline
+   like the other forms, a calmer shadow. */
+.pd-contact:not(#\#) {
+  box-shadow: 0 1px 2px rgba(27, 30, 28, 0.04), 0 22px 44px -32px rgba(27, 30, 28, 0.4);
+}
+.pd-agent:not(#\#) {
+  border: 1px solid var(--color-line);
+  background: #fff;
+}
+.pd-contact .field:not(#\#) {
+  border-color: rgba(27, 30, 28, 0.1);
+  background-color: #fff;
+}
+.pd-contact .field:hover:not(:focus):not(#\#) {
+  border-color: rgba(27, 30, 28, 0.2);
+  background-color: #fcfdf9;
+}
+
+/* Header, light refinement (same bar, links and order): the info and Instagram buttons become hairline rounds on the
+   bar's glass instead of solid dark tiles; "Contactar" keeps its light button but loses weight, and its arrow sits in
+   a small round instead of a square; the nav links a touch lighter. */
+.site-header .hdr-icon:not(#\#):not(#\#) {
+  width: 2.5rem;
+  height: 2.5rem;
+  border: 1px solid rgba(255, 255, 255, 0.32);
+  border-radius: 9999px;
+  background: rgba(255, 255, 255, 0.06);
+  background-image: none;
+  box-shadow: none;
+  color: #fff;
+}
+.site-header .hdr-icon:is(:hover, :focus-visible):not(#\#):not(#\#) {
+  border-color: var(--color-lime);
+  background: rgba(255, 255, 255, 0.12);
+}
+.site-header .hdr-cta:not(#\#):not(#\#) {
+  font-weight: 500;
+  box-shadow: 0 6px 16px -10px rgba(10, 16, 7, 0.55);
+}
+.site-header .hdr-cta .btn-go-icon:not(#\#) {
+  border-radius: 9999px;
+}
+.site-header .nav-top {
+  font-weight: 450;
+}
+/* Header menus with a dropdown: the link keeps equal padding on both sides, so its highlight (current page, hover)
+   centres the word; the caret sits just outside the highlight. */
+.nav-drop .nav-top:not(#\#) {
+  padding-right: 1rem;
+}
+.nav-drop .nav-caret:not(#\#) {
+  margin-left: -0.35rem;
+}
+/* The current page's link looks the same over the hero as on the green bar (a soft light fill with a lime underline),
+   instead of a solid white pill that only appeared on pages with a photo hero (home, careers). */
+.site-header[data-over-hero]:not([data-past-hero]) .hdr-bar nav a[aria-current]:not(#\#) {
+  background: rgba(255, 255, 255, 0.14);
+  color: #fff;
+  box-shadow: inset 0 -2px 0 var(--color-lime);
+}
+
+/* ==== Consistency: one icon button family =========================================================================
+   The last solid dark tiles move to the two hairline rounds already used elsewhere:
+   - on white (careers benefits, the "Fale connosco" panel): a lightest-sage round with an olive line icon, as the
+     "Somos daqui" pillars;
+   - on photos and dark surfaces (phone menu, card photo arrows, hero pause, footer socials, the gallery's viewer):
+     a hairline white round on dark glass, as the header icons.
+   (The floating back-to-top stays solid: it has to read over any content.) */
+:is(.cp-benefit-icon, .info-close, .info-social a):not(#\#):not(#\#) {
+  border: 1px solid rgba(75, 106, 26, 0.22);
+  border-radius: 9999px;
+  background: var(--g-50);
+  background-image: none;
+  box-shadow: none;
+  color: var(--g-700);
+}
+:is(.cp-benefit-icon, .info-close, .info-social a) svg [fill='currentColor'][fill-opacity] {
+  fill: none;
+}
+:is(.info-close, .info-social a):is(:hover, :focus-visible):not(#\#):not(#\#) {
+  border-color: var(--color-lime);
+  background: #fff;
+}
+:is(.m-icon, .card-arrow, .hero-pause, .bwf-soc, [data-lightbox] .glass-ic, dialog .glass-ic):not(#\#):not(#\#) {
+  border: 1px solid rgba(255, 255, 255, 0.35);
+  border-radius: 9999px;
+  background: rgba(18, 26, 13, 0.32);
+  background-image: none;
+  -webkit-backdrop-filter: blur(8px);
+  backdrop-filter: blur(8px);
+  box-shadow: none;
+  color: #fff;
+}
+:is(.m-icon, .card-arrow, .hero-pause, .bwf-soc, [data-lightbox] .glass-ic, dialog .glass-ic):is(:hover, :focus-visible):not(#\#):not(#\#) {
+  border-color: var(--color-lime);
+  background: rgba(18, 26, 13, 0.5);
+}
+
+/* ==== Consistency: one button shape and weight ====================================================================
+   Three roles, one shape. Primary (green surface) and secondary (light, or white on dark) text buttons share the same
+   corner (--r-btn), the same weight and the same height; text links stay links. The search button keeps its pill,
+   because it sits inside the pill-shaped search bar. */
+:root {
+  --r-btn: 0.75rem;
+}
+:is(.btn, .cpx-start, .pd-action, .flt-open, .careers-cta, .nf-btn-light):not(.glass-panel button[type='submit']):not(#\#):not(#\#) {
+  border-radius: var(--r-btn);
+  font-weight: 500;
+  letter-spacing: 0;
+}
+.cpx-hero .cpx-start:not(#\#):not(#\#):not(#\#) {
+  border-radius: var(--r-btn);
+}
+.pd-action:not(#\#):not(#\#) {
+  min-height: 2.5rem;
+}
+
+/* ==== Consistency: tracked capitals only on photo badges ===========================================================
+   Small capitals stay where they label a photo ("Vendido", "Escritório", the zone card's count, the consultant's role
+   on the portrait). Everywhere else labels go back to sentence case in the quiet label voice (Inter 500, small,
+   muted), as the rest of the site. */
+.zx .zx-eyebrow:not(#\#):not(#\#),
+.zx .zx-kicker:not(#\#):not(#\#),
+.results-sold-title:not(#\#):not(#\#),
+.pt-map .pt-pin-go:not(#\#):not(#\#),
+.lead-shell .lead-group > legend:not(#\#):not(#\#) {
+  font-size: 0.875rem;
+  font-weight: 500;
+  letter-spacing: 0;
+  text-transform: none;
+}
+.zx .zx-eyebrow:not(#\#):not(#\#) {
+  font-weight: 400;
+  color: var(--color-muted);
+}
+.zx .zx-kicker:not(#\#):not(#\#) {
+  color: var(--g-600);
+}
+.results-sold-title:not(#\#):not(#\#) {
+  font-size: 1rem;
+  color: var(--color-ink);
+}
+.pt-map .pt-pin-go:not(#\#):not(#\#) {
+  color: var(--color-ink);
+}
+.lead-shell .lead-group > legend:not(#\#):not(#\#) {
+  font-size: 1rem;
+  color: var(--color-ink);
+}
+
+/* ==== Accessibility: contrast fixes (WCAG AA, 4.5:1 for small text) ==============================================
+   Found with a contrast pass over the home, careers, listing and property pages. */
+.glass-panel .glass-field > label,
+.glass-panel .glass-range-head > label {
+  color: rgba(27, 30, 28, 0.72);
+}
+.about-pillar-num:not(#\#) {
+  color: var(--color-muted);
+}
+/* Dark pills over photos: dark enough for white text whatever the photo behind. */
+.property-card .card-count:not(#\#),
+.pt-map .pt-pin-chip:not(#\#):not(#\#),
+.results-sold-flag:not(#\#):not(#\#) {
+  background: rgba(14, 20, 11, 0.7);
+}
+.rv-avatar:not(#\#) {
+  background-color: var(--g-600);
+}
+
+/* Email and phone text links ("Prefere escrever?", "Prefere falar já?"): no underline rule; the icon and the medium
+   weight mark them as links, and they turn olive on hover. */
+.about-mail a:not(#\#),
+.lead-call a:not(#\#) {
+  border-bottom: 0;
+  font-weight: 500;
+  text-decoration: none;
+  transition: color 0.2s;
+}
+.about-mail a:is(:hover, :focus-visible):not(#\#),
+.lead-call a:is(:hover, :focus-visible):not(#\#) {
+  color: var(--g-600);
+}
+
+/* "Como trabalhamos" on phones: back to one sheet with rows. The desktop card refinement (border, corners, shadow)
+   was also applying to each row here, drawing cards inside the sheet. Rows are flat again, divided by hairlines,
+   the numbers in their own column inside the sheet's padding. */
+@media (max-width: 39.99rem) {
+  .hww-flow:not(#\#) {
+    padding: 0.25rem 1.25rem;
+  }
+  .hww-card:not(#\#):not(#\#) {
+    padding: 1.1rem 0;
+    border: 0;
+    border-radius: 0;
+    background: none;
+    box-shadow: none;
+    transform: none;
+  }
+  .hww-card + .hww-card:not(#\#):not(#\#) {
+    border-top: 1px solid var(--sheet-edge);
+  }
+  .hww-card-num:not(#\#):not(#\#):not(#\#) {
+    font-size: 1.5rem;
+    line-height: 1.1;
+  }
 }
