@@ -32,9 +32,9 @@ const benefits: { icon: IconName; title: string; text: string }[] = [
 // Three office photos, equal, in one row.
 // TODO (client): real photos of the offices. The two office shots are small and the third is a stand-in of the marina.
 const officePhotos = [
-  { src: '/office/escritorio-vilamoura.webp', alt: `Montra do escritório da JPP Properties em ${office.name}`, w: 680, h: 510 },
-  { src: '/office/escritorio-entrada.webp', alt: `Entrada do escritório da JPP Properties em ${office.name}`, w: 287, h: 510 },
-  { src: '/zones/vilamoura.jpg', alt: 'Marina de Vilamoura', w: 1152, h: 768 },
+  { src: '/office/escritorio-vilamoura.webp', alt: `Montra do escritório da JPP Properties em ${office.name}`, w: 680, h: 510, caption: `O escritório em ${office.name}` },
+  { src: '/office/escritorio-entrada.webp', alt: `Entrada do escritório da JPP Properties em ${office.name}`, w: 287, h: 510, caption: 'A entrada' },
+  { src: '/zones/vilamoura.jpg', alt: 'Marina de Vilamoura', w: 1152, h: 768, caption: 'A marina, a poucos minutos' },
 ];
 
 // TODO (client): a real quote from a JPP consultant (with their consent). Until then the section stays hidden.
@@ -101,16 +101,44 @@ const experience = ['Sem experiência no setor', 'Menos de 2 anos', '2 a 5 anos'
           <span>juntos o seu</span>
           <span class="cpx-title-sans">percurso.</span>
         </h1>
-        <!-- Where you will work, at a glance: the office front, its entrance and the marina, one height, natural widths. -->
-        <ul class="cpx-photos" aria-label={`O escritório em ${office.name}`}>
-          {
-            officePhotos.map((p, i) => (
-              <li class="cpx-photo" style={`--ar: ${p.w} / ${p.h}; --i: ${i}`}>
-                <img src={p.src} alt={p.alt} width={p.w} height={p.h} decoding="async" fetchpriority={i === 0 ? 'high' : undefined} />
-              </li>
-            ))
-          }
-        </ul>
+        <!-- Where you will work, at a glance: one photo in front, larger, and the others stacked behind it; they take
+             turns at the front every few seconds (paused on hover or focus, and with reduced motion), or on the dots. -->
+        <div class="cpx-deck" data-cpx-deck aria-roledescription="carrossel" aria-label={`O escritório em ${office.name}`}>
+          <div class="cpx-deck-stack">
+            {
+              officePhotos.map((p, i) => (
+                <figure
+                  class="cpx-slide"
+                  data-slide={i}
+                  data-pos={i}
+                  aria-hidden={i !== 0 ? 'true' : undefined}
+                  aria-roledescription="diapositivo"
+                  aria-label={`${i + 1} de ${officePhotos.length}`}
+                >
+                  <img
+                    src={p.src}
+                    alt={p.alt}
+                    width={p.w}
+                    height={p.h}
+                    decoding="async"
+                    fetchpriority={i === 0 ? 'high' : undefined}
+                    loading={i === 0 ? 'eager' : 'lazy'}
+                  />
+                  <figcaption class="cpx-slide-cap">{p.caption}</figcaption>
+                </figure>
+              ))
+            }
+          </div>
+          <div class="cpx-deck-dots" role="group" aria-label="Escolher fotografia">
+            {
+              officePhotos.map((p, i) => (
+                <button type="button" class="cpx-dot" data-go={i} aria-label={p.caption} aria-current={i === 0 ? 'true' : undefined}>
+                  <i />
+                </button>
+              ))
+            }
+          </div>
+        </div>
         <p class="cpx-sub">/ Carreiras na JPP Properties /</p>
         <a href="#candidatura" class="cpx-start">
           Candidatar-me <Icon name="arrowRight" class="size-4" />
@@ -375,6 +403,51 @@ const experience = ['Sem experiência no setor', 'Menos de 2 anos', '2 a 5 anos'
       status.textContent = 'Protótipo: o envio ainda não está ligado. Os seus dados não foram enviados.';
     });
   });
+
+  // Careers top: the office photo deck. One photo in front, the others stacked behind; every few seconds the front one
+  // moves to the back. Paused while hovered or focused, off screen, or with reduced motion; the dots pick a photo.
+  const deck = document.querySelector<HTMLElement>('[data-cpx-deck]');
+  if (deck) {
+    const slides = [...deck.querySelectorAll<HTMLElement>('.cpx-slide')];
+    const dots = [...deck.querySelectorAll<HTMLButtonElement>('[data-go]')];
+    const n = slides.length;
+    let front = 0;
+    const show = (i: number) => {
+      front = (i + n) % n;
+      slides.forEach((s, k) => {
+        const pos = (k - front + n) % n; // 0 = front, 1 = just behind, 2 = furthest back
+        s.dataset.pos = String(pos);
+        s.toggleAttribute('aria-hidden', pos !== 0);
+      });
+      dots.forEach((d, k) => d.toggleAttribute('aria-current', k === front));
+    };
+    const still = matchMedia('(prefers-reduced-motion: reduce)').matches;
+    let timer = 0;
+    let held = false;
+    let seen = true;
+    const stop = () => window.clearInterval(timer);
+    const start = () => {
+      stop();
+      if (!still && !held && seen) timer = window.setInterval(() => show(front + 1), 4500);
+    };
+    dots.forEach((d) =>
+      d.addEventListener('click', () => {
+        show(Number(d.dataset.go));
+        start();
+      }),
+    );
+    // Clicking the front photo brings the next one forward.
+    slides.forEach((s) => s.addEventListener('click', () => { show(front + 1); start(); }));
+    deck.addEventListener('pointerenter', () => { held = true; stop(); });
+    deck.addEventListener('pointerleave', () => { held = false; start(); });
+    deck.addEventListener('focusin', () => { held = true; stop(); });
+    deck.addEventListener('focusout', () => { held = false; start(); });
+    if ('IntersectionObserver' in window)
+      new IntersectionObserver(([e]) => { seen = e.isIntersecting; if (seen) start(); else stop(); }).observe(deck);
+    deck.setAttribute('data-ready', '');
+    show(0);
+    start();
+  }
 
   // Scroll entrances (as on the home page): blocks fade up once when they come into view.
   const rises = document.querySelectorAll<HTMLElement>('.rise');
