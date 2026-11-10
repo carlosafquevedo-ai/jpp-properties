@@ -34,8 +34,10 @@ MAP: dict[str, dict] = {
         'usableArea': 106, 'grossArea': 237,  # "Com 237 m² de área bruta e 106 m² de área útil"
     },
     'living-at-casuarinas-residences': {'slug': 'casuarinas-residences-vilamoura', 'zone': 'vilamoura', 'usableArea': None},
-    'luxury-construction-2': {'slug': 'apartamento-t2-casuarinas-vilamoura', 'zone': 'vilamoura', 'usableArea': None},
-    'luxury-construction': {'slug': 'townhouse-casuarinas-vilamoura', 'zone': 'vilamoura', 'type': 'villa'},
+    'luxury-construction-2': {'slug': 'apartamento-t2-casuarinas-vilamoura', 'zone': 'vilamoura', 'usableArea': None,
+                              'title': 'Apartamento T2 nas Casuarinas, Vilamoura'},
+    'luxury-construction': {'slug': 'townhouse-casuarinas-vilamoura', 'zone': 'vilamoura', 'type': 'villa',
+                            'title': 'Moradia em banda nas Casuarinas, Vilamoura'},
     'oliveiras-residence': {'slug': 'oliveiras-residence-quarteira', 'zone': 'quarteira', 'locality': 'Cascalheira'},
     'traditional-villa-in-querenca': {'slug': 'moradia-isolada-querenca', 'zone': 'loule', 'locality': 'Querença'},
     'two-bedroom-apartment-for-sale-in-vilamoura': {
@@ -49,19 +51,35 @@ MAP: dict[str, dict] = {
         'grossArea': 423,  # "423 m² de área edificada"
     },
     # Carvoeiro (Lagoa): Primelife (three units) and The Court (three units), zone added at the client's request.
-    'luxury-and-tranquillity-in-the-heart-of-carvoeiro': {'slug': 'primelife-t2-carvoeiro', 'zone': 'carvoeiro'},
-    'luxury-and-tranquillity-in-the-heart-of-carvoeiro-2': {'slug': 'primelife-t2-carvoeiro-2', 'zone': 'carvoeiro'},
-    'luxury-and-tranquillity-in-the-heart-of-carvoeiro-3': {'slug': 'primelife-t3-carvoeiro', 'zone': 'carvoeiro'},
-    'new-build-development': {'slug': 'the-court-t2-carvoeiro', 'zone': 'carvoeiro'},
-    'new-build-development-2': {'slug': 'the-court-carvoeiro-2', 'zone': 'carvoeiro'},
-    'new-build-development-3': {'slug': 'the-court-carvoeiro-3', 'zone': 'carvoeiro'},
+    # Repeated titles on the old site (one per unit of the same development): our titles name the development and the
+    # typology from each listing. TODO (client): the two Primelife T2 and the two The Court units without a typology
+    # still read alike; ask for what tells them apart (floor, view, unit letter).
+    'luxury-and-tranquillity-in-the-heart-of-carvoeiro': {'slug': 'primelife-t2-carvoeiro', 'zone': 'carvoeiro',
+        'title': 'Apartamento T2 no Primelife, Carvoeiro'},
+    'luxury-and-tranquillity-in-the-heart-of-carvoeiro-2': {'slug': 'primelife-t2-carvoeiro-2', 'zone': 'carvoeiro',
+        'title': 'Apartamento T2 no Primelife, Carvoeiro'},
+    'luxury-and-tranquillity-in-the-heart-of-carvoeiro-3': {'slug': 'primelife-t3-carvoeiro', 'zone': 'carvoeiro',
+        'title': 'Apartamento T3 no Primelife, Carvoeiro'},
+    'new-build-development': {'slug': 'the-court-t2-carvoeiro', 'zone': 'carvoeiro',
+        'title': 'Apartamento T2 no The Court, Carvoeiro'},
+    'new-build-development-2': {'slug': 'the-court-carvoeiro-2', 'zone': 'carvoeiro',
+        'title': 'Apartamento no The Court, Carvoeiro'},
+    'new-build-development-3': {'slug': 'the-court-carvoeiro-3', 'zone': 'carvoeiro',
+        'title': 'Apartamento no The Court, Carvoeiro'},
 }
 
 TYPES = {'apartment': 'apartment', 'houses': 'villa', 'house-in-condominium': 'villa', 'plot': 'plot', 'shop': 'shop'}
 REFERENCE = re.compile(r'^[A-Z]{2,}\d+[A-Z0-9-]*$')  # e.g. CRT2; free text such as "Casuarinas" is not a reference
 
 
+# A table header that the old editor flattened into one unreadable line (e.g. "LOTE A. LOTE A. UTIL A. BRUTA V. VENDA");
+# the rows under it read fine on their own, so the header is dropped.
+GARBLED_HEADER = re.compile(r'^(LOTE|PLOT)\s+A\.\s', re.I)
+
+
 def clean_line(line: str) -> str:
+    if GARBLED_HEADER.match(line.strip()):
+        return ''
     line = line.replace('—–', ' · ').replace('–—', ' · ')
     line = re.sub(r'\s+·\s+', ' · ', line)
     return re.sub(r'\s{2,}', ' ', line).strip()
@@ -88,7 +106,7 @@ def main():
         condition = 'new' if 'new' in labels else 'used' if 'used' in labels else None
         images = [i.get('use') or i['resized'] for i in r['images'] if i.get('use', True)]
         ref = r['details'].get('Property ID', '')
-        title = r['titlePt'] or r['titleEn']
+        title = m.get('title') or r['titlePt'] or r['titleEn']
         title = title.replace('Empreedimento', 'Empreendimento')
 
         def pick(key, src):

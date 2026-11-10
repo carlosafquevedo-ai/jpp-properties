@@ -97,12 +97,22 @@ const experience = ['Sem experiência no setor', 'Menos de 2 anos', '2 a 5 anos'
       <div class="cpx-intro">
         <!-- TODO: provisional title, to confirm with the client. EN/FR pending. -->
         <h1 id="cp-titulo" class="cpx-title">
-          <span>Construímos</span>
-          <span>juntos o seu</span>
-          <span class="cpx-title-sans">percurso.</span>
+          <span>Construímos juntos</span>
+          <span>o seu percurso.</span>
         </h1>
-        <!-- Where you will work, at a glance: one photo in front, larger, and the others stacked behind it; they take
-             turns at the front every few seconds (paused on hover or focus, and with reduced motion), or on the dots. -->
+        <!-- TODO: provisional copy, from the benefits below; to confirm with the client. EN/FR pending. -->
+        <p class="cpx-lead">
+          Junte-se à equipa da JPP Properties em {office.name}. Formação desde o primeiro dia, imóveis no Algarve
+          para trabalhar e uma equipa local em cada negócio.
+        </p>
+        <div class="cpx-actions">
+          <a href="#candidatura" class="cpx-start">
+            Candidatar-me <Icon name="arrowRight" class="size-4" />
+          </a>
+          <a href="#cp-passos" class="cpx-how">Como funciona</a>
+        </div>
+        <!-- Where you will work: one wide photo window; the office, its entrance and the marina take turns with a slow
+             crossfade every few seconds (paused on hover or focus, and with reduced motion), or on the segments. -->
         <div class="cpx-deck" data-cpx-deck aria-roledescription="carrossel" aria-label={`O escritório em ${office.name}`}>
           <div class="cpx-deck-stack">
             {
@@ -124,7 +134,6 @@ const experience = ['Sem experiência no setor', 'Menos de 2 anos', '2 a 5 anos'
                     fetchpriority={i === 0 ? 'high' : undefined}
                     loading={i === 0 ? 'eager' : 'lazy'}
                   />
-                  <figcaption class="cpx-slide-cap">{p.caption}</figcaption>
                 </figure>
               ))
             }
@@ -139,10 +148,6 @@ const experience = ['Sem experiência no setor', 'Menos de 2 anos', '2 a 5 anos'
             }
           </div>
         </div>
-        <p class="cpx-sub">/ Carreiras na JPP Properties /</p>
-        <a href="#candidatura" class="cpx-start">
-          Candidatar-me <Icon name="arrowRight" class="size-4" />
-        </a>
       </div>
 
       <!-- The application form on the hero's white card ("Candidatar-me" and the closing button land here).

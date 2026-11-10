@@ -156,7 +156,7 @@ const demoReviews = [
       const board = root.querySelector<HTMLElement>('[data-board]');
       if (!list || !board || !data.reviews?.length) return;
       // The site's dark greens (--g-700 … --g-400), so the avatars stay inside the palette.
-      const palette = ['#2e4114', '#3a5215', '#4b6a1a', '#5f8222'];
+      const palette = ['#2e4114', '#3a5215', '#4b6a1a', '#526f1f'];
       const colorFor = (name: string) =>
         palette[[...name].reduce((n, c) => n + c.charCodeAt(0), 0) % palette.length];
       const googleG = () => {

@@ -447,7 +447,7 @@ export const importedProperties: Property[] = [
   },
   {
     "slug": "primelife-t2-carvoeiro-2",
-    "title": "Luxo e Tranquilidade no Centro do Carvoeiro",
+    "title": "Apartamento T2 no Primelife, Carvoeiro",
     "listingType": "sale",
     "propertyType": "apartment",
     "condition": "new",
@@ -485,7 +485,7 @@ export const importedProperties: Property[] = [
   },
   {
     "slug": "primelife-t3-carvoeiro",
-    "title": "Luxo e Tranquilidade no Centro do Carvoeiro",
+    "title": "Apartamento T3 no Primelife, Carvoeiro",
     "listingType": "sale",
     "propertyType": "apartment",
     "condition": "new",
@@ -523,7 +523,7 @@ export const importedProperties: Property[] = [
   },
   {
     "slug": "primelife-t2-carvoeiro",
-    "title": "Luxo e Tranquilidade no Centro do Carvoeiro",
+    "title": "Apartamento T2 no Primelife, Carvoeiro",
     "listingType": "sale",
     "propertyType": "apartment",
     "condition": "new",
@@ -561,7 +561,7 @@ export const importedProperties: Property[] = [
   },
   {
     "slug": "apartamento-t2-casuarinas-vilamoura",
-    "title": "Construção de luxo",
+    "title": "Apartamento T2 nas Casuarinas, Vilamoura",
     "listingType": "sale",
     "propertyType": "apartment",
     "condition": "new",
@@ -612,7 +612,7 @@ export const importedProperties: Property[] = [
   },
   {
     "slug": "townhouse-casuarinas-vilamoura",
-    "title": "Construção de luxo",
+    "title": "Moradia em banda nas Casuarinas, Vilamoura",
     "listingType": "sale",
     "propertyType": "villa",
     "condition": "new",
@@ -704,7 +704,7 @@ export const importedProperties: Property[] = [
   },
   {
     "slug": "the-court-carvoeiro-2",
-    "title": "Empreendimento de nova construção",
+    "title": "Apartamento no The Court, Carvoeiro",
     "listingType": "sale",
     "propertyType": "apartment",
     "condition": "new",
@@ -744,7 +744,7 @@ export const importedProperties: Property[] = [
   },
   {
     "slug": "the-court-carvoeiro-3",
-    "title": "Empreendimento de nova construção",
+    "title": "Apartamento no The Court, Carvoeiro",
     "listingType": "sale",
     "propertyType": "apartment",
     "condition": "new",
@@ -782,7 +782,7 @@ export const importedProperties: Property[] = [
   },
   {
     "slug": "the-court-t2-carvoeiro",
-    "title": "Empreendimento de nova construção",
+    "title": "Apartamento T2 no The Court, Carvoeiro",
     "listingType": "sale",
     "propertyType": "apartment",
     "condition": "new",
@@ -869,7 +869,6 @@ export const importedProperties: Property[] = [
     ],
     "description": [
       "Descubra uma nova forma de viver no Oliveiras Residence, um exclusivo empreendimento de moradias contemporâneas localizado na Cascalheira, em Quarteira, onde a arquitetura moderna se alia a uma construção inovadora, elevados padrões de qualidade e uma forte aposta na eficiência energética.",
-      "LOTE A. LOTE A. UTIL A. BRUTA V. VENDA",
       "LOTE 12 · 629,85m2 · 160,00m2 · 200,00m2 · 1.390.000 €",
       "LOTE 13 · 401,50m2 · 160,00m2 · 200,00m2 · 1.250.000 €",
       "LOTE 14 · 401,50m2 · 160,00m2 · 200,00m2 · 1.250.000 €",

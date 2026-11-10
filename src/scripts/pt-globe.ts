@@ -446,12 +446,12 @@ export function initPtGlobe(map: HTMLElement) {
       const lift = Math.max(2, R * 0.014);
       // Raised a little: a soft shadow to the lower right.
       ctx.save();
-      ctx.shadowColor = 'rgba(27,30,28,0.24)';
-      ctx.shadowBlur = R * 0.045;
-      ctx.shadowOffsetX = R * 0.012;
-      ctx.shadowOffsetY = R * 0.024;
-      neighbourPath(lift * 0.4, lift * 0.7);
-      ctx.fillStyle = 'rgba(120,146,100,0.7)';
+      ctx.shadowColor = 'rgba(27,30,28,0.14)';
+      ctx.shadowBlur = R * 0.04;
+      ctx.shadowOffsetX = R * 0.006;
+      ctx.shadowOffsetY = R * 0.014;
+      neighbourPath(lift * 0.25, lift * 0.45);
+      ctx.fillStyle = 'rgba(120,146,100,0.45)';
       ctx.fill('nonzero');
       ctx.restore();
       // Frosted top: lighter than the ball, brightest where the light falls.
@@ -464,13 +464,13 @@ export function initPtGlobe(map: HTMLElement) {
       ctx.fill('nonzero');
       // A light edge on the side facing the light, a faint darker one on the other.
       ctx.lineJoin = 'round';
-      neighbourPath(-0.6, -0.6);
-      ctx.strokeStyle = 'rgba(255,255,255,0.9)';
-      ctx.lineWidth = 1.1;
+      neighbourPath(-0.4, -0.4);
+      ctx.strokeStyle = 'rgba(255,255,255,0.7)';
+      ctx.lineWidth = 0.6;
       ctx.stroke();
       neighbourPath(0.5, 0.7);
-      ctx.strokeStyle = 'rgba(75,106,26,0.12)';
-      ctx.lineWidth = 0.9;
+      ctx.strokeStyle = 'rgba(75,106,26,0.08)';
+      ctx.lineWidth = 0.6;
       ctx.stroke();
       ctx.restore();
 
@@ -565,23 +565,18 @@ export function initPtGlobe(map: HTMLElement) {
         ctx.beginPath();
         ctx.moveTo(qa.sx, qa.sy);
         ctx.lineTo(qa.sx + (qb.sx - qa.sx) * t, qa.sy + (qb.sy - qa.sy) * t);
-        ctx.lineWidth = l.hub ? 1.1 : 0.75;
-        ctx.strokeStyle = l.hub ? 'rgba(232,242,196,0.6)' : 'rgba(214,232,150,0.28)';
+        // Quiet: hairlines, barely there; the office's links a touch clearer.
+        ctx.lineWidth = l.hub ? 0.7 : 0.5;
+        ctx.strokeStyle = l.hub ? 'rgba(232,242,196,0.32)' : 'rgba(214,232,150,0.14)';
         ctx.stroke();
       }
       for (const n of nodes) {
         const t = clamp((reveal - n.delay - 0.2) / 0.3, 0, 1);
         if (t <= 0) continue;
         const q = P(n);
-        const r = (1.3 + 0.6 * n.south) * q.f;
-        const halo = ctx.createRadialGradient(q.sx, q.sy, 0, q.sx, q.sy, r * 4);
-        halo.addColorStop(0, `rgba(214,232,150,${0.45 * t})`);
-        halo.addColorStop(1, 'rgba(214,232,150,0)');
-        ctx.fillStyle = halo;
-        ctx.beginPath();
-        ctx.arc(q.sx, q.sy, r * 4, 0, Math.PI * 2);
-        ctx.fill();
-        ctx.fillStyle = `rgba(240,247,220,${t})`;
+        // Small points, no glow halos (they read as flashes).
+        const r = (0.9 + 0.3 * n.south) * q.f;
+        ctx.fillStyle = `rgba(240,247,220,${0.55 * t})`;
         ctx.beginPath();
         ctx.arc(q.sx, q.sy, r, 0, Math.PI * 2);
         ctx.fill();
@@ -619,32 +614,16 @@ export function initPtGlobe(map: HTMLElement) {
       if (!raf) raf = requestAnimationFrame(tick);
     };
 
-    // Ambient light: a second canvas above the globe (so the heavy drawing above is not redone every frame) with
-    // slow, quiet effects over the whole ball, most visible around the office card: a breathing lime glow, a soft
-    // sweep of light, glints that twinkle on the surface, light travelling along the parallels and rings that
-    // spread from the office. Only runs while the globe is on screen; with reduced motion it stays a still frame.
+    // Ambient light: a second canvas above the globe (so the heavy drawing above is not redone every frame) with a
+    // few slow, quiet effects: a faint lime glow that breathes very slowly, a soft sweep of light every 16 s and one
+    // faint ring that spreads from the office. No twinkles or moving streaks. Only runs while the globe is on screen;
+    // with reduced motion it stays a still frame.
     const fx = document.createElement('canvas');
     fx.className = 'pt-globe pt-globe-fx';
     fx.setAttribute('aria-hidden', 'true');
     fx.style.pointerEvents = 'none';
     inner.insertBefore(fx, pin);
     const fctx = fx.getContext('2d')!;
-    const frand = seeded(7);
-    const glints = Array.from({ length: 46 }, () => {
-      const lat = Math.asin(frand() * 1.7 - 0.85);
-      const lon = (frand() - 0.5) * Math.PI * 1.7;
-      return {
-        p: { x: Math.cos(lat) * Math.sin(lon), y: Math.sin(lat), z: Math.cos(lat) * Math.cos(lon) },
-        phase: frand() * Math.PI * 2,
-        speed: 0.5 + frand() * 0.9,
-        size: 0.8 + frand() * 1.4,
-      };
-    });
-    const comets = [-0.62, -0.3, 0.12, 0.42, 0.7].map((lat, i) => ({
-      lat,
-      lon0: i * 1.3,
-      speed: (i % 2 ? -1 : 1) * (0.16 + 0.05 * i),
-    }));
     let fxOn = false;
     let fxRaf = 0;
     const fxDraw = (now: number) => {
@@ -667,88 +646,40 @@ export function initPtGlobe(map: HTMLElement) {
       fctx.globalCompositeOperation = 'lighter';
 
       // A breathing lime glow low on the left and a paler one high on the right (the empty sides of the card).
-      const breathe = 0.5 + 0.5 * Math.sin(t * 0.9);
+      const breathe = 0.5 + 0.5 * Math.sin(t * 0.35);
       const g1 = fctx.createRadialGradient(ox - R * 0.55, oy + R * 0.35, 0, ox - R * 0.55, oy + R * 0.35, R * 0.75);
-      g1.addColorStop(0, `rgba(158,188,58,${(0.1 + 0.12 * breathe) * a})`);
+      g1.addColorStop(0, `rgba(158,188,58,${(0.05 + 0.05 * breathe) * a})`);
       g1.addColorStop(1, 'rgba(158,188,58,0)');
       fctx.fillStyle = g1;
       fctx.fillRect(0, 0, W, H);
       const g2 = fctx.createRadialGradient(ox + R * 0.5, oy - R * 0.45, 0, ox + R * 0.5, oy - R * 0.45, R * 0.7);
-      g2.addColorStop(0, `rgba(235,244,205,${(0.08 + 0.1 * (1 - breathe)) * a})`);
+      g2.addColorStop(0, `rgba(235,244,205,${(0.05 + 0.05 * (1 - breathe)) * a})`);
       g2.addColorStop(1, 'rgba(235,244,205,0)');
       fctx.fillStyle = g2;
       fctx.fillRect(0, 0, W, H);
 
       // A soft diagonal sweep of light, crossing the ball every ~9 s.
-      const sw = ((t % 9) / 9) * 2.6 - 0.8;
+      const sw = ((t % 16) / 16) * 2.6 - 0.8;
       const cx = ox + (sw - 0.5) * R * 2;
       const sweep = fctx.createLinearGradient(cx - R * 0.35, oy - R * 0.35, cx + R * 0.35, oy + R * 0.35);
       sweep.addColorStop(0, 'rgba(255,255,255,0)');
-      sweep.addColorStop(0.5, `rgba(255,255,255,${0.16 * a})`);
+      sweep.addColorStop(0.5, `rgba(255,255,255,${0.07 * a})`);
       sweep.addColorStop(1, 'rgba(255,255,255,0)');
       fctx.fillStyle = sweep;
       fctx.fillRect(0, 0, W, H);
 
       // Rings spreading from the office, three at a time, one every 1.6 s.
       const pq = project(rotate(pinPoint, yaw, pitch));
-      for (let i = 0; i < 3; i++) {
-        const ph = ((t / 4.8 + i / 3) % 1);
+      for (let i = 0; i < 1; i++) {
+        const ph = (t / 7) % 1;
         const r = R * (0.08 + 0.95 * ph);
         fctx.beginPath();
         fctx.arc(pq.sx, pq.sy, r, 0, Math.PI * 2);
-        fctx.lineWidth = 1.2;
-        fctx.strokeStyle = `rgba(214,232,150,${0.34 * (1 - ph) * (1 - ph) * a})`;
-        fctx.stroke();
-      }
-
-      // Light travelling along the parallels: a bright head with a fading tail.
-      fctx.lineCap = 'round';
-      for (const c of comets) {
-        const TAIL = 14;
-        for (let k = TAIL; k >= 0; k--) {
-          const lon = c.lon0 + t * c.speed - k * 0.035 * Math.sign(c.speed);
-          const lon2 = lon + 0.035 * Math.sign(c.speed);
-          const pa = rotate({ x: Math.cos(c.lat) * Math.sin(lon), y: Math.sin(c.lat), z: Math.cos(c.lat) * Math.cos(lon) }, yaw, pitch);
-          const pb = rotate({ x: Math.cos(c.lat) * Math.sin(lon2), y: Math.sin(c.lat), z: Math.cos(c.lat) * Math.cos(lon2) }, yaw, pitch);
-          if (pa.z < 0.15 || pb.z < 0.15) continue;
-          const qa = project(pa);
-          const qb = project(pb);
-          const f = 1 - k / TAIL;
-          fctx.beginPath();
-          fctx.moveTo(qa.sx, qa.sy);
-          fctx.lineTo(qb.sx, qb.sy);
-          fctx.lineWidth = 1 + 1.4 * f;
-          fctx.strokeStyle = `rgba(232,242,196,${0.6 * f * f * pa.z * a})`;
-          fctx.stroke();
-        }
-      }
-
-      // Glints: small four-point stars that fade in and out, kept to the front of the ball.
-      for (const gl of glints) {
-        const r = rotate(gl.p, yaw, pitch);
-        if (r.z < 0.2) continue;
-        const tw = Math.max(0, Math.sin(t * gl.speed + gl.phase));
-        const v = tw * tw * tw;
-        if (v < 0.03) continue;
-        const q = project(r);
-        const L = (2.5 + 5 * gl.size) * v * q.f;
-        const al = v * r.z * a;
-        const halo = fctx.createRadialGradient(q.sx, q.sy, 0, q.sx, q.sy, L * 1.1);
-        halo.addColorStop(0, `rgba(240,247,220,${0.55 * al})`);
-        halo.addColorStop(1, 'rgba(240,247,220,0)');
-        fctx.fillStyle = halo;
-        fctx.beginPath();
-        fctx.arc(q.sx, q.sy, L * 1.1, 0, Math.PI * 2);
-        fctx.fill();
-        fctx.strokeStyle = `rgba(255,255,255,${0.8 * al})`;
         fctx.lineWidth = 0.8;
-        fctx.beginPath();
-        fctx.moveTo(q.sx - L, q.sy);
-        fctx.lineTo(q.sx + L, q.sy);
-        fctx.moveTo(q.sx, q.sy - L);
-        fctx.lineTo(q.sx, q.sy + L);
+        fctx.strokeStyle = `rgba(214,232,150,${0.16 * (1 - ph) * (1 - ph) * a})`;
         fctx.stroke();
       }
+
       fctx.restore();
       if (fxOn && !reduced) fxRaf = requestAnimationFrame(fxDraw);
     };
