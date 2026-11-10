@@ -12423,70 +12423,6 @@ form .field:focus-visible {
   font-size: clamp(1.375rem, 1.6vw, 1.5rem);
 }
 
-/* ==== Careers top: the office photos under the title ===============================================================
-   Where you will work, at a glance, inside the hero: the office front, its narrow entrance and the marina in one row,
-   one height and each at its own proportions (nothing cropped to a box), centred under the title like the rest of
-   the column. Rounded, with a thin light edge and the site's soft shadow over the glass. The row always fits its
-   column: its height follows the column's width (container units). They come in one after another on load. */
-.cpx-photos {
-  container-type: inline-size;
-  width: 100%;
-  display: flex;
-  justify-content: center;
-  gap: 0.625rem;
-  margin: 1.75rem 0 0;
-  padding: 0;
-  list-style: none;
-}
-.cpx-photo {
-  flex: none;
-  height: min(9.5rem, calc((100cqw - 1.25rem) / 3.45));
-  aspect-ratio: var(--ar);
-  overflow: hidden;
-  border-radius: 0.875rem;
-  box-shadow:
-    inset 0 0 0 1px rgba(255, 255, 255, 0.22),
-    0 18px 34px -20px rgba(27, 30, 28, 0.75);
-}
-.cpx-photo img {
-  position: relative;
-  z-index: -1;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  transition: transform 0.8s var(--ease-out);
-}
-.cpx-photo {
-  position: relative;
-  isolation: isolate;
-}
-.cpx-photos + .cpx-sub {
-  margin-top: 1.5rem;
-}
-@media (hover: hover) and (prefers-reduced-motion: no-preference) {
-  .cpx-photo {
-    transition: transform 0.45s var(--ease-out);
-  }
-  .cpx-photo:hover {
-    transform: translateY(-3px);
-  }
-  .cpx-photo:hover img {
-    transform: scale(1.04);
-  }
-}
-@media (prefers-reduced-motion: no-preference) and (scripting: enabled) {
-  .cpx-photo {
-    animation: cpx-photo-in 0.9s var(--ease-out) both;
-    animation-delay: calc(0.35s + var(--i, 0) * 0.12s);
-  }
-  @keyframes cpx-photo-in {
-    from {
-      opacity: 0;
-      translate: 0 14px;
-    }
-  }
-}
-
 /* Careers top on phones and tablets: title, line and button first, then the form, and the office photos after the
    form (the form is what the visitor came for). The intro's children join the grid (display: contents) so the photos
    can be ordered after the card; spacing is set per item instead of the grid gap. Desktop keeps them under the title. */
@@ -12504,80 +12440,237 @@ form .field:focus-visible {
     order: 1;
     margin-top: 2.5rem;
   }
-  .cpx-intro > .cpx-photos {
+  .cpx-intro > .cpx-deck {
     order: 2;
-    margin-top: 1.5rem;
+    margin-top: 2rem;
   }
-  .cpx-photos + .cpx-sub {
+  .cpx-deck + .cpx-sub {
     margin-top: 1.25rem;
   }
 }
 
-/* Careers top, office photos refined: each photo sits in a thin frame of the hero's glass (frosted white, a fine
-   light edge, the light catching the top-left corner), the picture inset with the inner radius; a faint shade at the
-   foot settles it on the green; a softer, longer shadow. On hover the frame's edge warms to lime. */
-.cpx-photo {
-  padding: 5px;
-  border: 1px solid rgba(255, 255, 255, 0.24);
-  border-radius: 1.05rem;
-  background:
-    linear-gradient(135deg, rgba(255, 255, 255, 0.28) 0%, rgba(255, 255, 255, 0.08) 38%, rgba(255, 255, 255, 0.04) 100%);
+
+/* ==== Careers top: the office photo deck ==========================================================================
+   One photo in front, larger, framed in the hero's glass (a thin frosted frame, a fine light edge, a long soft
+   shadow) with a short caption on a dark glass pill; the other two stacked behind it, smaller, lifted and turned a
+   little, fading back. Every few seconds the front one moves to the back (src/pages/carreiras.astro); the dots under
+   the deck pick a photo. Without JS the first photo shows alone; with reduced motion nothing moves by itself. */
+.cpx-deck {
+  width: min(100%, 27rem);
+  margin: 1.75rem auto 0;
+}
+.cpx-deck-stack {
+  position: relative;
+  aspect-ratio: 16 / 11;
+}
+.cpx-slide {
+  position: absolute;
+  inset: 0;
+  margin: 0;
+  padding: 6px;
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.26);
+  border-radius: 1.25rem;
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.3) 0%, rgba(255, 255, 255, 0.08) 40%, rgba(255, 255, 255, 0.04) 100%);
   -webkit-backdrop-filter: blur(12px) saturate(1.2);
   backdrop-filter: blur(12px) saturate(1.2);
   box-shadow:
     inset 0 1px 0 rgba(255, 255, 255, 0.35),
-    0 26px 44px -30px rgba(18, 26, 13, 0.9);
+    0 30px 50px -28px rgba(18, 26, 13, 0.9);
+  cursor: pointer;
+  transform-origin: 50% 100%;
+  transition:
+    transform 0.9s var(--ease-out),
+    opacity 0.7s ease,
+    filter 0.7s ease;
 }
-.cpx-photo img {
-  z-index: 0;
-  border-radius: calc(1.05rem - 6px);
+.cpx-slide img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: calc(1.25rem - 7px);
 }
-.cpx-photo::after {
-  content: '';
+.cpx-slide-cap {
   position: absolute;
-  inset: 5px;
+  left: 1rem;
+  bottom: 1rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  padding: 0.35rem 0.75rem;
+  border-radius: 9999px;
+  background: rgba(18, 26, 13, 0.55);
+  -webkit-backdrop-filter: blur(8px);
+  backdrop-filter: blur(8px);
+  color: #fff;
+  font-size: var(--fs-small);
+  text-align: left;
+}
+.cpx-slide-cap::before {
+  content: '';
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--color-lime);
+}
+/* Without JS: only the first photo. */
+.cpx-deck:not([data-ready]) .cpx-slide:not([data-slide='0']) {
+  display: none;
+}
+/* The stack: front, just behind (up and to the right, a touch smaller), furthest back. */
+.cpx-slide[data-pos='0'] {
+  z-index: 3;
+  transform: none;
+}
+.cpx-slide[data-pos='1'] {
+  z-index: 2;
+  transform: translate(10%, -6%) rotate(4deg) scale(0.9);
+  opacity: 0.85;
+  filter: brightness(0.82) saturate(0.8);
+}
+.cpx-slide[data-pos='2'] {
   z-index: 1;
-  border-radius: calc(1.05rem - 6px);
-  background: linear-gradient(180deg, transparent 62%, rgba(18, 26, 13, 0.28) 100%);
-  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.08);
-  pointer-events: none;
+  transform: translate(-10%, -9%) rotate(-4deg) scale(0.84);
+  opacity: 0.6;
+  filter: brightness(0.7) saturate(0.7);
 }
-@media (hover: hover) {
-  .cpx-photo {
-    transition:
-      transform 0.45s var(--ease-out),
-      border-color 0.35s ease;
-  }
-  .cpx-photo:hover {
-    border-color: rgba(190, 215, 100, 0.65);
-  }
+.cpx-slide:not([data-pos='0']) .cpx-slide-cap {
+  opacity: 0;
 }
-
-/* Office photos: three equal squares that share the column's width (client's request: all the same size). */
-.cpx-photos {
+.cpx-deck-dots {
+  display: flex;
+  justify-content: center;
+  gap: 0.25rem;
+  margin-top: 0.85rem;
+}
+.cpx-deck:not([data-ready]) .cpx-deck-dots {
+  display: none;
+}
+.cpx-dot {
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  max-width: 34rem;
-  margin-inline: auto;
+  width: 2rem;
+  height: 1.5rem;
+  place-items: center;
+  border: 0;
+  background: none;
+  cursor: pointer;
 }
-.cpx-photo {
-  height: auto;
-  aspect-ratio: 1 / 1;
+.cpx-dot i {
+  display: block;
+  width: 0.5rem;
+  height: 0.5rem;
+  border-radius: 9999px;
+  background: rgba(255, 255, 255, 0.4);
+  transition:
+    width 0.4s var(--ease-out),
+    background-color 0.3s;
+}
+.cpx-dot[aria-current] i {
+  width: 1.5rem;
+  background: var(--color-lime);
+}
+.cpx-dot:focus-visible {
+  outline: 2px solid var(--color-lime);
+  outline-offset: 2px;
+  border-radius: 9999px;
+}
+.cpx-deck + .cpx-sub {
+  margin-top: 1.25rem;
+}
+@media (prefers-reduced-motion: reduce) {
+  .cpx-slide {
+    transition: opacity 0.2s;
+  }
+}
+/* A smaller title so the deck can be larger (client's request). */
+.cpx-title:not(#\#):not(#\#) {
+  font-size: clamp(2.1rem, 6.5vw, 3.5rem);
 }
 
-/* Office photos a little wider (client's request): the row takes more of the column and each photo turns gently
-   landscape, still all the same size. */
-.cpx-photos {
-  max-width: 40rem;
+/* Careers top, left-aligned (client's request): the title, the photo deck, the "/ … /" line and the button all start
+   on the page column's left edge, like the rest of the site, instead of being centred on their column. */
+.cpx-intro {
+  text-align: left;
 }
-.cpx-photo {
-  aspect-ratio: 5 / 4;
+.cpx-deck {
+  margin-left: 0;
+  margin-right: auto;
 }
-/* Desktop: the row reaches a little past the title's column on both sides (into the gap before the form). */
+.cpx-deck-dots {
+  justify-content: flex-start;
+  margin-left: -0.5rem;
+}
 @media (min-width: 64rem) {
-  .cpx-intro > .cpx-photos {
-    width: calc(100% + 3rem);
-    max-width: none;
-    margin-inline: -1.5rem;
+  .cpx-intro {
+    justify-self: start;
   }
+}
+@media (max-width: 63.99rem) {
+  .cpx-intro > .cpx-start {
+    justify-self: start;
+  }
+}
+
+/* Careers top on desktop: no empty middle. The title runs across the top of its column; below it, the photo deck
+   (larger) on the left and, beside it, the "/ … /" line and the button, so the space between the deck and the form is
+   used instead of left blank. Phones and tablets keep the stacked order. */
+@media (min-width: 64rem) {
+  .cpx-intro {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) max-content;
+    grid-template-rows: auto auto auto;
+    column-gap: clamp(1.5rem, 3vw, 2.75rem);
+    align-items: center;
+    justify-self: stretch;
+  }
+  .cpx-intro > .cpx-title {
+    grid-column: 1 / -1;
+  }
+  .cpx-intro > .cpx-deck {
+    grid-column: 1;
+    grid-row: 2 / span 2;
+    width: min(100%, 31rem);
+    margin: 1.75rem 0 0;
+  }
+  .cpx-intro > .cpx-sub {
+    grid-column: 2;
+    grid-row: 2;
+    align-self: end;
+    margin: 0 0 1.25rem;
+  }
+  .cpx-intro > .cpx-start {
+    grid-column: 2;
+    grid-row: 3;
+    align-self: start;
+    justify-self: start;
+    margin: 0;
+  }
+}
+
+/* Search bar icons, softer (client's request): a finer line in the brand's olive instead of black, on a paler round
+   (white easing into the lightest sage) with a hairline edge and a barely-there shadow. The hover still lifts the
+   round a little and warms the icon, so the effect stays. */
+.glass-panel .glass-field > .sf-ic {
+  background: linear-gradient(160deg, #ffffff 0%, var(--g-50) 100%);
+  color: var(--g-600);
+  box-shadow:
+    inset 0 0 0 1px rgba(75, 106, 26, 0.1),
+    0 1px 3px -1px rgba(27, 30, 28, 0.12);
+  transition:
+    transform 0.35s var(--ease-out),
+    background 0.25s,
+    color 0.25s,
+    box-shadow 0.25s;
+}
+.glass-panel .glass-field > .sf-ic svg {
+  stroke-width: 1.45;
+  opacity: 0.9;
+}
+.glass-panel .glass-field:hover > .sf-ic,
+.glass-panel .glass-field:focus-within > .sf-ic {
+  background: linear-gradient(160deg, #ffffff 0%, #e6edd8 100%);
+  color: var(--g-700);
+  box-shadow:
+    inset 0 0 0 1px rgba(158, 188, 58, 0.45),
+    0 4px 10px -6px rgba(27, 30, 28, 0.22);
 }
