@@ -18,8 +18,8 @@ export interface Agent {
 }
 
 /**
- * DEMO ONLY: portraits dropped in public/team-demo/ (git-ignored, watermarked stock images used to preview the layout
- * with the client) are picked up by order (the first one is reused if there are fewer photos than people). Without that folder every card falls back to the placeholder.
+ * DEMO ONLY: portraits in public/team-demo/ (the owner's own example portrait, committed so the client can preview the
+ * layout on the published prototype; TODO (client): replace with the team's real photos) are picked up by order (the first one is reused if there are fewer photos than people). Without that folder every card falls back to the placeholder.
  */
 const demoPhotos = Object.keys(import.meta.glob('/public/team-demo/*.{avif,webp,jpg,jpeg,png}'))
   .sort()
